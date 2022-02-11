@@ -53,24 +53,24 @@ That means, we use:
 * develop branch, for development version (next release)
 * feature branches, for features etc.
 
-### Known Problems
+### Problemas conhecidos
 
-- Some compatibility issues with some exotical distibutions.
+- Alguns problemas de compatibilidade com algumas distribuições exóticas.
 
 
-### Contributing
+### Contribuindo
 
 Contribuições são mais que bem-vindas.
 
 As solicitações de pull devem ser feitas para o branch Dev, pois esse é o branch de trabalho, o master é para o código de lançamento.   
 
-Look: [Contributing](https://github.com/otsoft/myaac/wiki/Contributing) in our wiki.
+Veja: [Contributing](https://github.com/otsoft/myaac/wiki/Contributing) em nosso wiki.
 
-### Other Notes
+### Outras notas
 
-If you have a great idea or want contribute to the project - visit our website at https://www.my-aac.org
+Se você tem uma grande ideia ou quer contribuir com o projeto - visite nosso site em https://www.my-aac.org
 
-### License
+### Licença
 
-This program and all associated files are released under the GNU Public License.  
-See [LICENSE](https://github.com/slawkens/myaac/blob/master/LICENSE) for details.
+Este programa e todos os arquivos associados são lançados sob a Licença Pública GNU.
+Consulte [LICENSE](https://github.com/slawkens/myaac/blob/master/LICENSE) para obter detalhes.
