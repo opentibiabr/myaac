@@ -7,7 +7,7 @@
 [![OpenTibia Discord](https://img.shields.io/discord/288399552581468162)](https://discord.gg/2J39Wus)
 [![Closed Issues](https://img.shields.io/github/issues-closed-raw/slawkens/myaac)](https://github.com/slawkens/myaac/issues?q=is%3Aissue+is%3Aclosed)
 
-MyAAC is a free and open-source Automatic Account Creator (AAC) written in PHP. It is a fork of the [Gesior](https://github.com/gesior/Gesior2012) project. It supports only MySQL databases.
+MyAAC é um Automatic Account Creator (AAC) gratuito e de código aberto escrito em PHP. É uma bifurcação do projeto Gesior. Ele suporta apenas bancos de dados MySQL. 
 
 ### Requirements
 
@@ -18,18 +18,18 @@ MyAAC is a free and open-source Automatic Account Creator (AAC) written in PHP. 
 	- ZIP PHP Extension
 	- (optional) mod_rewrite to use friendly_urls
 
-### Installation
+### Instalação
 
-	Just decompress and untar the source (which you should have done by now,
-	if you're reading this), into your webserver's document root.
+	Apenas descompacte e descompacte a fonte (o que você já deveria ter feito,
+	se você estiver lendo isso), na raiz de documentos do seu servidor web. 
 
-	MyAAC needs proper permissions to handle files correctly.
-	If you're using apache2, then your directory needs to have owner set to: www-data, you can do it by using following command:
+	MyAAC precisa de permissões adequadas para manipular arquivos corretamente.
+	Se você estiver usando o apache2, seu diretório precisa ter o proprietário definido como: www-data, você pode fazer isso usando o seguinte comando: 
 		chown -R www-data.www-data /var/www/*
-			(or any other path your MyAAC installation is located at..)
+			(ou qualquer outro caminho em que a instalação do MyAAC esteja localizada ..) 
 
 	  Note: Linux only
-		If you're under linux use these commands to set proper permissions:
+		Se você estiver no linux, use estes comandos para definir as permissões adequadas:
 			chmod 660 config.local.php
 			chmod 660 images/guilds
 			chmod 660 images/houses
@@ -38,10 +38,10 @@ MyAAC is a free and open-source Automatic Account Creator (AAC) written in PHP. 
 
 	Visit http://your_domain/install (http://localhost/install) and follow instructions in the browser.
 
-### Configuration
+### Configuração
 
-Check *config.php* to get more informations.
-Use *config.local.php* for your local configuration changes.
+Verifique *config.php* para obter mais informações.
+Use *config.local.php* para suas alterações de configuração local. 
 
 ### Branches
 
@@ -60,9 +60,9 @@ That means, we use:
 
 ### Contributing
 
-Contributions are more than welcome. 
+Contribuições são mais que bem-vindas.
 
-Pull requests should be made to the Dev branch as that is the working branch, master is for release code.  
+As solicitações de pull devem ser feitas para o branch Dev, pois esse é o branch de trabalho, o master é para o código de lançamento.   
 
 Look: [Contributing](https://github.com/otsoft/myaac/wiki/Contributing) in our wiki.
 
