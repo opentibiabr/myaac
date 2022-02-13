@@ -40,6 +40,7 @@ if(!$logged)
 	$twig->display('account.login.html.twig', array(
 		'redirect' => isset($_REQUEST['redirect']) ? $_REQUEST['redirect'] : null,
 		'account' => USE_ACCOUNT_NAME ? 'Name' : 'Number',
+		'account_login_by' => getAccountLoginByLabel(),
 		'error' => isset($errors[0]) ? $errors[0] : null
 	));
 
@@ -58,27 +59,34 @@ $errors = array();
 		return;
 	}
 
-	if($action == '')
-	{
+	if($action == '') {
 		$freePremium = isset($config['lua']['freePremium']) && getBoolean($config['lua']['freePremium']) || $account_logged->getPremDays() == OTS_Account::GRATIS_PREMIUM_DAYS;
 		$dayOrDays = $account_logged->getPremDays() == 1 ? 'day' : 'days';
 		/**
 		 * @var OTS_Account $account_logged
 		 */
 		$recovery_key = $account_logged->getCustomField('key');
-		if(!$account_logged->isPremium())
-			$account_status = '<b><span style="color: red">Free Account</span></b>';
-		else
-			$account_status = '<b><span style="color: green">' . ($freePremium ? 'Gratis Premium Account' : 'Premium Account, ' . $account_logged->getPremDays() . ' '.$dayOrDays.' left') . '</span></b>';
-
-		if(empty($recovery_key))
-			$account_registered = '<b><span style="color: red">No</span></b>';
-		else
-		{
+		
+		if(!$account_logged->isPremium()) {
+			$account_premdays = $account_logged->getPremDays();
+		} else {
+			$account_premdays = $account_logged->getPremDays();
+		}
+		
+		$account_coins = $account_logged->getPremDays();
+		
+		if(!$account_logged->isPremium()) {
+			$account_status = '<b><span style="color: red;">Free Account</span></b>';
+		} else{
+			$account_status = '<b><span style="color: green;">' . ($freePremium ? 'Free Premium Account' : 'Premium Account, ' . $account_logged->getPremDays() . ' '.$dayOrDays.' left') . '</span></b>';
+		}
+		if(empty($recovery_key)) {
+			$account_registered = '<span style="color: red"><img src="' . $template_path .'/images/premiumfeatures/icon_no.png"> Not registered.</span>';
+		} else {
 			if($config['generate_new_reckey'] && $config['mail_enabled'])
 				$account_registered = '<b><span style="color: green">Yes ( <a href="' . getLink('account/register/new') . '"> Buy new Recovery Key </a> )</span></b>';
 			else
-				$account_registered = '<b><span style="color: green">Yes</span></b>';
+				$account_registered = '<b><span style="color: green"><img src="' . $template_path .'/images/premiumfeatures/icon_yes.png"> Registered.</span></b>';
 		}
 
 		$account_created = $account_logged->getCreated();
@@ -126,7 +134,9 @@ $errors = array();
 			'email_request' => $email_request,
 			'email_new_time' => $email_new_time,
 			'email_new' => isset($email_new) ? $email_new : '',
-			'account' => USE_ACCOUNT_NAME ? $account_logged->getName() : $account_logged->getId(),
+			'account' => USE_ACCOUNT_NAME ? $account_logged->getName() : $account_logged->getNumber(),
+			'account_premdays' => $account_premdays,
+			'account_coins' => $account_coins,
 			'account_email' => $account_email,
 			'account_created' => $account_created,
 			'account_status' => $account_status,

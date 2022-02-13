@@ -27,11 +27,19 @@ class __TwigTemplate_6d7501f2749f45d3c9afbda265a178b1bbb9db6a6b3fa5ca277e8a170f9
     protected function doDisplay(array $context, array $blocks = [])
     {
         // line 1
-        $context["button_name"] = "Logout";
+        ob_start(function () { return ''; });
         // line 2
-        $context["button_image"] = "_sbutton_logout";
+        echo "<div class=\"BigButton\" style=\"background-image:url(";
+        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+        echo "/images/global/buttons/sbutton_red.gif)\">
+<div onmouseover=\"MouseOverBigButton(this);\" onmouseout=\"MouseOutBigButton(this);\"><div class=\"BigButtonOver\" style=\"background-image: url(";
         // line 3
-        $this->loadTemplate("buttons.base.html.twig", "buttons.logout.html.twig", 3)->display($context);
+        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+        echo "/images/global/buttons/sbutton_red_over.gif); visibility: hidden;\"></div>
+<input class=\"BigButtonText\" type=\"submit\" value=\"Logout\"></div>
+</div>
+";
+        echo trim(preg_replace('/>\s+</', '><', ob_get_clean()));
     }
 
     public function getTemplateName()
@@ -46,7 +54,7 @@ class __TwigTemplate_6d7501f2749f45d3c9afbda265a178b1bbb9db6a6b3fa5ca277e8a170f9
 
     public function getDebugInfo()
     {
-        return array (  34 => 3,  32 => 2,  30 => 1,);
+        return array (  37 => 3,  32 => 2,  30 => 1,);
     }
 
     /** @deprecated since 1.27 (to be removed in 2.0). Use getSourceContext() instead */

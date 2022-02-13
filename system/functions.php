@@ -1244,6 +1244,23 @@ function getCustomPage($page, &$success)
 	return $content;
 }
 
+function getAccountLoginByLabel()
+{
+	$ret = '';
+	if (config('account_login_by_email')) {
+		$ret = 'Email Address';
+		if (config('account_login_by_email_fallback')) {
+			$ret .= ' or ';
+		}
+	}
+
+	if (!config('account_login_by_email') || config('account_login_by_email_fallback')) {
+		$ret .= 'Account ' . (USE_ACCOUNT_NAME ? 'Name' : 'Number');
+	}
+
+	return $ret;
+}
+
 // validator functions
 require_once LIBS . 'validator.php';
 require_once SYSTEM . 'compat.php';

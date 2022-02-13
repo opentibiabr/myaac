@@ -65,7 +65,7 @@ if(isset($config['boxes']))
 		function LoadLoginBox()
 		{
 		  if(loginStatus == "false") {
-			document.getElementById('ButtonText').style.backgroundImage = "url('" + IMAGES + "/global/buttons/mediumbutton_login.png.gif')";
+			document.getElementById('ButtonText').style.backgroundImage = "url('" + IMAGES + "/global/buttons/mediumbutton_login.png')";
 			document.getElementById('LoginstatusText_2').style.backgroundImage = "url('" + IMAGES + "/loginbox/loginbox-font-create-account.gif')";
 			document.getElementById('LoginstatusText_2_1').style.backgroundImage = "url('" + IMAGES + "/loginbox/loginbox-font-create-account.gif')";
 			document.getElementById('LoginstatusText_2_2').style.backgroundImage = "url('" + IMAGES + "/loginbox/loginbox-font-create-account-over.gif')";
@@ -556,8 +556,34 @@ $monstermount= $monsterquery["lookmount"];
 		});
 	});
 </script>
+<script>
+	$(document).ready(function(){
+		//Check to see if the window is top if not then display button
+		$(window).scroll(function(){
+			if ($(this).scrollTop() > 100) {
+				$('.TopButton').fadeIn();
+			} else {
+				$('.TopButton').fadeOut();
+			}
+		});
+		//Click event to scroll to top
+		$('.TopButton').click(function(){
+			$('html, body').animate({scrollTop : 0},800);
+			return false;
+		});
+	});
+</script>
+<div class="scrollToTop" style="background: url(<?php echo $template_path; ?>/images/global/content/top.png) no-repeat 0 0;"></div>
 
-<div class="scrollToTop" style="background: url(<?php echo $template_path; ?>/images/global/content/top.png) no-repeat 0 0;"><!--<p class="scrollToTopText">BACK</p>--></div>
+<script src="<?php echo $template_path; ?>/js/generic.js"></script>
+<div id="HelperDivContainer" style="background-image: url(<?php echo $template_path; ?>/images/global/content/scroll.gif);">
+	<div class="HelperDivArrow" style="background-image: url(<?php echo $template_path; ?>/images/global/content/helper-div-arrow.png);"></div>
+	<div id="HelperDivHeadline"></div>
+	<div id="HelperDivText"></div>
+	<center><img class="Ornament" src="<?php echo $template_path; ?>/images/global/content/ornament.gif"></center><br>
+</div>
+
+
 
 </body>
 </html>

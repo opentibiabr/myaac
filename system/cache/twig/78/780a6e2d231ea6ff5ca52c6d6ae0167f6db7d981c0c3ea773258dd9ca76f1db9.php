@@ -94,55 +94,70 @@ class __TwigTemplate_c79db27b7a9cad87e914ae6fdc857afa50d3d2783607edfb794ad0633a6
 \t\t\t\t\t\t<div class=\"TableContentContainer\">
 \t\t\t\t\t\t\t<table class=\"TableContent\" width=\"100%\" style=\"border:1px solid #faf0d7;\"><tbody>
 \t\t\t\t\t\t\t<tr>
-\t\t\t\t\t\t\t<td><img class=\"AccountStatusImage\" src=\"";
-        // line 35
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/account/account-status_red.gif\" alt=\"free account\"></td>
-\t\t\t\t\t\t\t<td width=\"100%\" valign=\"middle\">
-\t\t\t\t\t\t\t<span class=\"BigBoldText\" >
+\t\t\t\t\t\t\t
+\t\t\t\t\t\t\t<td>
 \t\t\t\t\t\t\t";
-        // line 39
+        // line 37
+        if ($this->getAttribute(($context["account_logged"] ?? null), "isPremium", [], "method")) {
+            // line 38
+            echo "\t\t\t\t\t\t\t\t<img class=\"AccountStatusImage\" src=\"";
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/account/account-status_green.gif\" title=\"Premium Account\" alt=\"premium account\">
+\t\t\t\t\t\t\t";
+        } else {
+            // line 40
+            echo "\t\t\t\t\t\t\t\t<img class=\"AccountStatusImage\" src=\"";
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/account/account-status_red.gif\" title=\"Free Account\" alt=\"free account\">
+\t\t\t\t\t\t\t";
+        }
+        // line 42
+        echo "\t\t\t\t\t\t\t</td>
+\t\t\t\t\t\t\t<td width=\"100%\" valign=\"middle\">
+\t\t\t\t\t\t\t<span class=\"BigBoldText\" style=\"font-size: 24px;\">
+\t\t\t\t\t\t\t";
+        // line 46
         echo "\t\t\t\t\t\t\t";
         echo ($context["account_status"] ?? null);
         echo "
 \t\t\t\t\t\t\t";
-        // line 41
+        // line 48
         echo "\t\t\t\t\t\t\t</span>
-\t\t\t\t\t\t\t<small><br>Your Premium Time expired at Jan&nbsp;14&nbsp;2022,&nbsp;03:00:36&nbsp;CET.<br>(Balance of Premium Time: 0 days)</small>
+\t\t\t\t\t\t\t<small><br>(Balance of Premium Time: ";
+        // line 49
+        echo twig_escape_filter($this->env, $this->getAttribute(($context["account_logged"] ?? null), "getPremDays", [], "method"), "html", null, true);
+        echo " days)</small>
 \t\t\t\t\t\t\t</td>
 \t\t\t\t\t\t\t<td>
 \t\t\t\t\t\t\t
-\t\t\t\t\t\t\t<form action=\"https://www.tibia.com/account/?subtopic=accountmanagement\" method=\"post\" style=\"padding:0px;margin:0px;\">
+\t\t\t\t\t\t\t";
+        // line 53
+        if ($this->getAttribute(($context["config"] ?? null), "gifts_system", [])) {
+            // line 54
+            echo "\t\t\t\t\t\t\t<a href=\"?points\" target=\"blank\">
 \t\t\t\t\t\t\t<div class=\"BigButton\" style=\"background-image:url(";
-        // line 47
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/global/buttons/sbutton.gif)\"><div onmouseover=\"MouseOverBigButton(this);\" onmouseout=\"MouseOutBigButton(this);\"><div class=\"BigButtonOver\" style=\"background-image:url(";
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/global/buttons/sbutton_over.gif);\"></div><input class=\"BigButtonText\" type=\"submit\" value=\"Manage Account\"></div></div>
-\t\t\t\t\t\t\t</form>
-\t\t\t\t\t\t\t
-\t\t\t\t\t\t\t<div style=\"font-size:1px;height:4px;\"></div>
-\t\t\t\t\t\t\t
-\t\t\t\t\t\t\t<div class=\"BigButton\" style=\"background-image:url(";
-        // line 52
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/global/buttons/sbutton_green.gif)\"><div onmouseover=\"MouseOverBigButton(this);\" onmouseout=\"MouseOutBigButton(this);\"><div class=\"BigButtonOver\" style=\"background-image:url(";
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/global/buttons/sbutton_green_over.gif);\"></div>
-\t\t\t\t\t\t\t<input class=\"BigButtonText\" type=\"submit\" value=\"Get Premium\"></div>
+            // line 55
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/global/buttons/sbutton_green.gif)\"><div onmouseover=\"MouseOverBigButton(this);\" onmouseout=\"MouseOutBigButton(this);\"><div class=\"BigButtonOver\" style=\"background-image:url(";
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/global/buttons/sbutton_green_over.gif);\"></div>
+\t\t\t\t\t\t\t<input class=\"BigButtonText\" type=\"submit\" value=\"Get Coins\"></div>
 \t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t
+\t\t\t\t\t\t\t</a>
+\t\t\t\t\t\t\t";
+        }
+        // line 60
+        echo "\t\t\t\t\t\t\t
 \t\t\t\t\t\t\t<div style=\"font-size:1px;height:4px;\"></div>
+\t\t\t\t\t\t\t
 \t\t\t\t\t\t\t<form action=\"";
-        // line 57
+        // line 63
         echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/logout"]), "html", null, true);
         echo "\" method=\"post\" style=\"padding:0px;margin:0px;\">
-\t\t\t\t\t\t\t<div class=\"BigButton\" style=\"background-image:url(";
-        // line 58
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/global/buttons/sbutton_red.gif)\"><div onmouseover=\"MouseOverBigButton(this);\" onmouseout=\"MouseOutBigButton(this);\"><div class=\"BigButtonOver\" style=\"background-image:url(";
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/global/buttons/sbutton_red_over.gif);\"></div><input class=\"BigButtonText\" type=\"submit\" value=\"Logout\"></div></div>
+\t\t\t\t\t\t\t\t";
+        // line 64
+        echo twig_include($this->env, $context, "buttons.logout.html.twig");
+        echo "
 \t\t\t\t\t\t\t</form>
 \t\t\t\t\t\t\t
 \t\t\t\t\t\t\t</td>
@@ -173,17 +188,17 @@ margin: auto 5x;
 \t\t\t\t\t\t\t<td class=\"premiumbenefits\">
 \t\t\t\t\t\t\t<div style=\"justify-content: flex-start\">
 \t\t\t\t\t\t\t<img class=\"PremiumFeatureImage1\" src=\"";
-        // line 88
+        // line 94
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/premiumfeatures/PremiumIcon-Travel.png\" alt=\"premium feature 1\" style=\"margin:0px 5px\"><div>use instant travel system</div></div>
 \t\t\t\t\t\t\t<div style=\"justify-content: center\">
 \t\t\t\t\t\t\t<img class=\"PremiumFeatureImage1\" src=\"";
-        // line 90
+        // line 96
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/premiumfeatures/PremiumIcon-VIPGroups.png\" alt=\"premium feature 1\" style=\"margin:0px 5px\"><div>add groups to organise your VIP list</div></div>
 \t\t\t\t\t\t\t<div style=\"justify-content: flex-end\">
 \t\t\t\t\t\t\t<img class=\"PremiumFeatureImage1\" src=\"";
-        // line 92
+        // line 98
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/premiumfeatures/PremiumIcon-Promotion.png\" alt=\"premium feature 1\" style=\"margin:0px 5px\"><div>get stronger with a promotion</div></div>
 \t\t\t\t\t\t\t</td>
@@ -204,36 +219,36 @@ margin: auto 5x;
 \t<div class=\"CaptionContainer\">
 \t\t<div class=\"CaptionInnerContainer\">
 \t\t\t<span class=\"CaptionEdgeLeftTop\" style=\"background-image:url(";
-        // line 110
+        // line 116
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/box-frame-edge.gif);\"></span>
 \t\t\t<span class=\"CaptionEdgeRightTop\" style=\"background-image:url(";
-        // line 111
+        // line 117
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/box-frame-edge.gif);\"></span>
 \t\t\t<span class=\"CaptionBorderTop\" style=\"background-image:url(";
-        // line 112
+        // line 118
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/table-headline-border.gif);\"></span>
 \t\t\t<span class=\"CaptionVerticalLeft\" style=\"background-image:url(";
-        // line 113
+        // line 119
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/box-frame-vertical.gif);\"></span>
 \t\t\t<div class=\"Text\">Download Client</div>
 \t\t\t<span class=\"CaptionVerticalRight\" style=\"background-image:url(";
-        // line 115
+        // line 121
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/box-frame-vertical.gif);\"></span>
 \t\t\t<span class=\"CaptionBorderBottom\" style=\"background-image:url(";
-        // line 116
+        // line 122
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/table-headline-border.gif);\"></span>
 \t\t\t<span class=\"CaptionEdgeLeftBottom\" style=\"background-image:url(";
-        // line 117
+        // line 123
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/box-frame-edge.gif);\"></span>
 \t\t\t<span class=\"CaptionEdgeRightBottom\" style=\"background-image:url(";
-        // line 118
+        // line 124
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/box-frame-edge.gif);\"></span>
 \t\t</div>
@@ -249,7 +264,7 @@ margin: auto 5x;
 \t\t\t\t\t\t\t<td><div style=\"height: 55px;\">
 \t\t\t\t\t\t\t\t<div id=\"DowloadBox\" style=\"position: relative; float:right;\">
 \t\t\t\t\t\t\t\t\t<a href=\"?downloadclient\"><img style=\"width: 45px; height: 45px; border: 0px; margin-right: 10px;\" src=\"";
-        // line 131
+        // line 137
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/account/download_windows.gif\"></a>
 \t\t\t\t\t\t\t\t\t<br>
@@ -268,40 +283,119 @@ margin: auto 5x;
 
 <br>
 
+";
+        // line 154
+        if (twig_test_empty(($context["recovery_key"] ?? null))) {
+            // line 155
+            echo "<div class=\"SmallBox\">
+\t<div class=\"MessageContainer\">
+\t\t<div class=\"BoxFrameHorizontal\" style=\"background-image:url(";
+            // line 157
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-horizontal.gif);\"></div>
+\t\t<div class=\"BoxFrameEdgeLeftTop\" style=\"background-image:url(";
+            // line 158
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-edge.gif);\"></div>
+\t\t<div class=\"BoxFrameEdgeRightTop\" style=\"background-image:url(";
+            // line 159
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-edge.gif);\"></div>
+\t\t<div class=\"Message\">
+\t\t\t<div class=\"BoxFrameVerticalLeft\" style=\"background-image:url(";
+            // line 161
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-vertical.gif);\"></div>
+\t\t\t<div class=\"BoxFrameVerticalRight\" style=\"background-image:url(";
+            // line 162
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-vertical.gif);\"></div>
+\t\t\t<table>
+\t\t\t\t<tr>
+\t\t\t\t\t<td class=\"LabelV\" >Your account is not registered!</td>
+\t\t\t\t\t<td>
+\t\t\t\t\t<form action=\"";
+            // line 167
+            echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/register"]), "html", null, true);
+            echo "\" method=\"post\">
+\t\t\t\t\t\t<td style=\"border:0;\">
+\t\t\t\t\t\t\t";
+            // line 169
+            echo twig_include($this->env, $context, "buttons.register_account.html.twig");
+            echo "
+\t\t\t\t\t\t</td>
+\t\t\t\t\t</form>
+\t\t\t\t\t</td>
+\t\t\t\t</tr>
+\t\t\t\t<tr>
+\t\t\t\t\t<td style=\"width:100%;\" >You can register your account for increased protection. Click on \"Register Account\" and get your free recovery key today!</td>
+\t\t\t\t</tr>
+\t\t\t</table>
+\t\t\t
+\t\t</div>
+\t\t<div class=\"BoxFrameHorizontal\" style=\"background-image:url(";
+            // line 180
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-horizontal.gif);\"></div>
+\t\t<div class=\"BoxFrameEdgeRightBottom\" style=\"background-image:url(";
+            // line 181
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-edge.gif);\"></div>
+\t\t<div class=\"BoxFrameEdgeLeftBottom\" style=\"background-image:url(";
+            // line 182
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-edge.gif);\"></div>
+\t</div>
+</div>
+<br/>
+";
+        }
+        // line 187
+        echo "
+<div class=\"TopButtonContainer\">
+\t<div class=\"TopButton\" >
+\t\t<a href=\"#top\">
+\t\t\t<img style=\"border:0px;\" src=\"";
+        // line 191
+        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+        echo "/images/content/back-to-top.gif\" />
+\t\t</a>
+\t</div>
+</div>
 <div class=\"TableContainer\">
 \t<div class=\"CaptionContainer\">
 \t\t<div class=\"CaptionInnerContainer\">
 \t\t\t<span class=\"CaptionEdgeLeftTop\" style=\"background-image:url(";
-        // line 151
+        // line 198
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/box-frame-edge.gif);\"></span>
 \t\t\t<span class=\"CaptionEdgeRightTop\" style=\"background-image:url(";
-        // line 152
+        // line 199
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/box-frame-edge.gif);\"></span>
 \t\t\t<span class=\"CaptionBorderTop\" style=\"background-image:url(";
-        // line 153
+        // line 200
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/table-headline-border.gif);\"></span>
 \t\t\t<span class=\"CaptionVerticalLeft\" style=\"background-image:url(";
-        // line 154
+        // line 201
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/box-frame-vertical.gif);\"></span>
 \t\t\t<div class=\"Text\">Characters</div>
 \t\t\t<span class=\"CaptionVerticalRight\" style=\"background-image:url(";
-        // line 156
+        // line 203
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/box-frame-vertical.gif);\"></span>
 \t\t\t<span class=\"CaptionBorderBottom\" style=\"background-image:url(";
-        // line 157
+        // line 204
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/table-headline-border.gif);\"></span>
 \t\t\t<span class=\"CaptionEdgeLeftBottom\" style=\"background-image:url(";
-        // line 158
+        // line 205
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/box-frame-edge.gif);\"></span>
 \t\t\t<span class=\"CaptionEdgeRightBottom\" style=\"background-image:url(";
-        // line 159
+        // line 206
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/global/content/box-frame-edge.gif);\"></span>
 \t\t</div>
@@ -335,32 +429,29 @@ margin: auto 5x;
 \t\t\t\t\t\t\t\t\t<td style=\"width: 100px !important;\">Status</td>
 \t\t\t\t\t\t\t\t\t<td style=\"width: 100px !important;\"></td>
 \t\t\t\t\t\t\t\t</tr>
-\t\t\t\t\t\t\t\t
-\t\t\t\t\t\t\t\t
-\t\t\t\t\t\t\t\t
 \t\t\t\t\t\t\t\t";
-        // line 194
+        // line 238
         $context["i"] = 0;
-        // line 195
+        // line 239
         echo "\t\t\t\t\t\t\t\t";
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable(($context["players"] ?? null));
         foreach ($context['_seq'] as $context["_key"] => $context["player"]) {
-            // line 196
+            // line 240
             echo "\t\t\t\t\t\t\t\t";
             $context["i"] = (($context["i"] ?? null) + 1);
-            // line 197
+            // line 241
             echo "\t\t\t\t\t\t\t\t<tr style=\"background-color: ";
             echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getStyle')->getCallable(), [($context["i"] ?? null)]), "html", null, true);
             echo "; height: 50px;\">
 \t\t\t\t\t\t\t\t\t<td style=\"font-weight: bold;\">";
-            // line 198
+            // line 242
             echo twig_escape_filter($this->env, ($context["i"] ?? null), "html", null, true);
             echo ".</td>
 \t\t\t\t\t\t\t\t\t<td>
 \t\t\t\t\t\t\t\t\t\t<span style=\"white-space: nowrap; vertical-align: middle; line-height: 12px;\">
 \t\t\t\t\t\t\t\t\t\t<span id=\"CharacterNameOf_0\" style=\"font-size:13pt; font-weight: bold;\">";
-            // line 201
+            // line 245
             echo twig_escape_filter($this->env, $this->getAttribute($context["player"], "getName", [], "method"), "html", null, true);
             if ($this->getAttribute($context["player"], "isDeleted", [], "method")) {
                 echo "<span style=\"color: red\"><b> [ DELETED ] </b></span>";
@@ -368,24 +459,13 @@ margin: auto 5x;
             echo " <img src=\"";
             echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
             echo "/images//account/maincharacter.png\" alt=\"(Main Character)\" title=\"Main Character\">
-\t\t\t\t\t\t\t\t\t\t";
-            // line 202
-            if ($this->getAttribute($context["player"], "isOnline", [], "method")) {
-                // line 203
-                echo "\t\t\t\t\t\t\t\t\t\t\t<img src=\"templates/tibiacom/images/on.gif\" title=\"Online\">
-\t\t\t\t\t\t\t\t\t\t\t";
-            } else {
-                // line 205
-                echo "\t\t\t\t\t\t\t\t\t\t\t<img src=\"templates/tibiacom/images/off.gif\" title=\"Offline\">
-\t\t\t\t\t\t\t\t\t\t";
-            }
-            // line 207
-            echo "\t\t\t\t\t\t\t\t\t\t</span>
+\t\t\t\t\t\t\t\t\t\t
+\t\t\t\t\t\t\t\t\t\t</span>
 \t\t\t\t\t\t\t\t\t\t<br>
 \t\t\t\t\t\t\t\t\t\t<small></small>
 \t\t\t\t\t\t\t\t\t\t<small>
 \t\t\t\t\t\t\t\t\t\t<span id=\"CharacterNameOf_0\">";
-            // line 211
+            // line 251
             echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute(($context["config"] ?? null), "vocations", []), $this->getAttribute($context["player"], "getVocation", [], "method"), [], "array"), "html", null, true);
             echo " - Level ";
             echo twig_escape_filter($this->env, $this->getAttribute($context["player"], "getLevel", [], "method"), "html", null, true);
@@ -393,21 +473,19 @@ margin: auto 5x;
             echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute(($context["config"] ?? null), "lua", [], "array"), "serverName", [], "array"), "html", null, true);
             echo "
 \t\t\t\t\t\t\t\t\t\t<span style=\"position: relative; top: 3px; margin-left: 5px;\">
-\t\t\t\t\t\t\t\t\t\t\t<span class=\"HelperDivIndicator\">
-\t\t\t\t\t\t\t\t\t\t\t\t<img style=\"border:0px;\" src=\"";
-            // line 214
+\t\t\t\t\t\t\t\t\t\t\t<span class=\"HelperDivIndicator\" onmouseover=\"ActivateHelperDiv(\$(this), 'BattlEye Protected Game World', '<p>This character lives on a game world which has been protected by BattleEye since April 19, 2018.</p>', '');\" onmouseout=\"\$('#HelperDivContainer').hide();\"><img style=\"border:0px;\" src=\"";
+            // line 253
             echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
             echo "/images/global/content/icon_battleye.gif\">
 \t\t\t\t\t\t\t\t\t\t\t</span>
 \t\t\t\t\t\t\t\t\t\t</span>
-\t\t\t\t\t\t\t\t\t\t
 \t\t\t\t\t\t\t\t\t\t";
-            // line 218
+            // line 256
             if ( !(null === $this->getAttribute(($context["guild"] ?? null), "rank", []))) {
-                // line 219
+                // line 257
                 echo "\t\t\t\t\t\t\t\t\t\t<br>
 \t\t\t\t\t\t\t\t\t\t\t<span>Guild Membership: ";
-                // line 220
+                // line 258
                 echo twig_escape_filter($this->env, $this->getAttribute(($context["guild"] ?? null), "rank", []), "html", null, true);
                 echo " of the <a href=\"\">";
                 echo $this->getAttribute(($context["guild"] ?? null), "link", []);
@@ -415,19 +493,32 @@ margin: auto 5x;
 \t\t\t\t\t\t\t\t\t\t\t</span>
 \t\t\t\t\t\t\t\t\t\t";
             }
-            // line 223
-            echo "\t\t\t\t\t\t\t\t\t\t
-\t\t\t\t\t\t\t\t\t\t</span>
+            // line 261
+            echo "\t\t\t\t\t\t\t\t\t\t</span>
 \t\t\t\t\t\t\t\t\t\t</small></span>
 \t\t\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t\t\t<td><img id=\"DailyReawardState\" src=\"";
-            // line 227
+\t\t\t\t\t\t\t\t\t<td>
+\t\t\t\t\t\t\t\t\t<img id=\"DailyReawardState\" src=\"";
+            // line 265
             echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-            echo "/images/global/content/icon-status-dailyreward-collected.png\" alt=\"Daily Reward collected\" title=\"Daily Reward collected\"></td>
+            echo "/images/global/content/icon-status-dailyreward-collected.png\" alt=\"Daily Reward collected\" title=\"Daily Reward collected\">
+\t\t\t\t\t\t\t\t\t";
+            // line 266
+            if ($this->getAttribute($context["player"], "isOnline", [], "method")) {
+                // line 267
+                echo "\t\t\t\t\t\t\t\t\t\t<img src=\"templates/tibiacom/images/on.gif\" title=\"Online\">
+\t\t\t\t\t\t\t\t\t\t";
+            } else {
+                // line 269
+                echo "\t\t\t\t\t\t\t\t\t\t<img src=\"templates/tibiacom/images/off.gif\" title=\"Offline\">
+\t\t\t\t\t\t\t\t\t";
+            }
+            // line 271
+            echo "\t\t\t\t\t\t\t\t\t</td>
 \t\t\t\t\t\t\t\t\t<td align=\"center\">
 \t\t\t\t\t\t\t\t\t\t<span id=\"CharacterOptionsOf_0\">
 \t\t\t\t\t\t\t\t\t\t<span style=\"font-weight:normal;\">[<a href=\"";
-            // line 230
+            // line 274
             echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), [("account/character/comment/" . call_user_func_array($this->env->getFilter('urlencode')->getCallable(), [$this->getAttribute($context["player"], "getName", [])]))]), "html", null, true);
             echo "\">Edit</a>]</span><br><span style=\"font-weight:normal;\">[<a href=\"";
             echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/character/delete"]), "html", null, true);
@@ -440,7 +531,7 @@ margin: auto 5x;
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['player'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 235
+        // line 279
         echo "\t\t\t\t\t\t\t\t
 \t\t\t\t\t\t\t\t
 \t\t\t\t\t\t\t\t
@@ -470,30 +561,30 @@ margin: auto 5x;
 
 \t<tr>
 <form action=\"";
-        // line 263
+        // line 307
         echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/character/create"]), "html", null, true);
         echo "\" method=\"post\" >
 \t<td style=\"border:0px;\" align=\"right\">
 \t";
-        // line 265
+        // line 309
         echo twig_include($this->env, $context, "buttons.create_character.html.twig");
         echo "
 \t</td>
 </form>
 
 ";
-        // line 269
+        // line 313
         if ($this->getAttribute(($context["config"] ?? null), "account_change_character_name", [])) {
-            // line 270
+            // line 314
             echo "<td>
 \t<form action=\"";
-            // line 271
+            // line 315
             echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/character/name"]), "html", null, true);
             echo "\" method=\"post\" >
 \t\t<tr>
 \t\t\t<td style=\"border:0px;\" align=\"right\">
 \t\t\t\t";
-            // line 274
+            // line 318
             echo twig_include($this->env, $context, "buttons.change_name.html.twig");
             echo "
 \t\t\t</td>
@@ -502,21 +593,21 @@ margin: auto 5x;
 </td>
 ";
         }
-        // line 280
+        // line 324
         echo "
 ";
-        // line 281
+        // line 325
         if ($this->getAttribute(($context["config"] ?? null), "account_change_character_sex", [])) {
-            // line 282
+            // line 326
             echo "<td>
 \t<form action=\"";
-            // line 283
+            // line 327
             echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/character/sex"]), "html", null, true);
             echo "\" method=\"post\" >
 \t\t<tr>
 \t\t\t<td style=\"border:0px;\" align=\"right\">
 \t\t\t\t";
-            // line 286
+            // line 330
             echo twig_include($this->env, $context, "buttons.change_sex.html.twig");
             echo "
 \t\t\t</td>
@@ -525,11 +616,8 @@ margin: auto 5x;
 </td>
 ";
         }
-        // line 292
+        // line 336
         echo "\t</tr>
-
-
-
 
 </div>
 </td>
@@ -552,171 +640,41 @@ margin: auto 5x;
 
 
 
-
-
-<div class=\"SmallBox\">
-\t<div class=\"MessageContainer\">
-\t\t<div class=\"BoxFrameHorizontal\" style=\"background-image:url(";
-        // line 322
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-horizontal.gif);\"></div>
-\t<div class=\"BoxFrameEdgeLeftTop\" style=\"background-image:url(";
-        // line 323
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-edge.gif);\"></div>
-\t\t<div class=\"BoxFrameEdgeRightTop\" style=\"background-image:url(";
-        // line 324
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-edge.gif);\"></div>
-\t\t<div class=\"Message\">
-\t\t\t<div class=\"BoxFrameVerticalLeft\" style=\"background-image:url(";
-        // line 326
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-vertical.gif);\"></div>
-\t\t\t<div class=\"BoxFrameVerticalRight\" style=\"background-image:url(";
-        // line 327
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-vertical.gif);\"></div>
-\t\t\t<table>
-\t\t\t\t<tr>
-\t\t\t\t\t<td width=\"100%\"></td>
-\t\t\t\t\t<td>
-\t\t\t\t\t\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" >
-\t\t\t\t\t\t\t<form action=\"";
-        // line 333
-        echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/logout"]), "html", null, true);
-        echo "\" method=\"post\" >
-\t\t\t\t\t\t\t\t<tr>
-\t\t\t\t\t\t\t\t\t<td style=\"border:0px;\">
-\t\t\t\t\t\t\t\t\t\t";
-        // line 336
-        echo twig_include($this->env, $context, "buttons.logout.html.twig");
-        echo "
-\t\t\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t\t</tr>
-\t\t\t\t\t\t\t</form>
-\t\t\t\t\t\t</table>
-\t\t\t\t\t</td>
-\t\t\t\t</tr>
-\t\t\t</table>
-\t\t</div>
-\t\t<div class=\"BoxFrameHorizontal\" style=\"background-image:url(";
-        // line 345
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-horizontal.gif);\"></div>
-\t\t<div class=\"BoxFrameEdgeRightBottom\" style=\"background-image:url(";
-        // line 346
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-edge.gif);\"></div>
-\t\t<div class=\"BoxFrameEdgeLeftBottom\" style=\"background-image:url(";
-        // line 347
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-edge.gif);\"></div>
-\t</div>
-</div>
-<br/>
 ";
-        // line 352
-        if (twig_test_empty(($context["recovery_key"] ?? null))) {
-            // line 353
-            echo "<div class=\"SmallBox\">
-\t<div class=\"MessageContainer\">
-\t\t<div class=\"BoxFrameHorizontal\" style=\"background-image:url(";
-            // line 355
-            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-            echo "/images/content/box-frame-horizontal.gif);\"></div>
-\t\t<div class=\"BoxFrameEdgeLeftTop\" style=\"background-image:url(";
-            // line 356
-            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-            echo "/images/content/box-frame-edge.gif);\"></div>
-\t\t<div class=\"BoxFrameEdgeRightTop\" style=\"background-image:url(";
-            // line 357
-            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-            echo "/images/content/box-frame-edge.gif);\"></div>
-\t\t<div class=\"Message\">
-\t\t\t<div class=\"BoxFrameVerticalLeft\" style=\"background-image:url(";
-            // line 359
-            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-            echo "/images/content/box-frame-vertical.gif);\"></div>
-\t\t\t<div class=\"BoxFrameVerticalRight\" style=\"background-image:url(";
-            // line 360
-            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-            echo "/images/content/box-frame-vertical.gif);\"></div>
-\t\t\t<table>
-\t\t\t\t<tr>
-\t\t\t\t\t<td class=\"LabelV\" >Hint:</td>
-\t\t\t\t\t<td style=\"width:100%;\" >You can register your account for increased protection. Click on \"Register Account\" and get your free recovery key today!</td>
-\t\t\t\t</tr>
-\t\t\t</table>
-\t\t\t<div style=\"text-align:center\">
-\t\t\t\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left: auto; margin-right: auto;\">
-\t\t\t\t\t<form action=\"";
-            // line 369
-            echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/register"]), "html", null, true);
-            echo "\" method=\"post\">
-\t\t\t\t\t\t<tr>
-\t\t\t\t\t\t\t<td style=\"border:0;\">
-\t\t\t\t\t\t\t\t";
-            // line 372
-            echo twig_include($this->env, $context, "buttons.register_account.html.twig");
-            echo "
-\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t</tr>
-\t\t\t\t\t</form>
-\t\t\t\t</table>
-\t\t\t</div>
-\t\t</div>
-\t\t<div class=\"BoxFrameHorizontal\" style=\"background-image:url(";
-            // line 379
-            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-            echo "/images/content/box-frame-horizontal.gif);\"></div>
-\t\t<div class=\"BoxFrameEdgeRightBottom\" style=\"background-image:url(";
-            // line 380
-            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-            echo "/images/content/box-frame-edge.gif);\"></div>
-\t\t<div class=\"BoxFrameEdgeLeftBottom\" style=\"background-image:url(";
-            // line 381
-            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-            echo "/images/content/box-frame-edge.gif);\"></div>
-\t</div>
-</div>
-<br/>
-";
-        }
-        // line 386
+        // line 360
         echo "
 ";
-        // line 387
+        // line 361
         if (($context["email_request"] ?? null)) {
-            // line 388
+            // line 362
             echo "<div class=\"SmallBox\">
 \t<div class=\"MessageContainer\">
 \t\t<div class=\"BoxFrameHorizontal\" style=\"background-image:url(";
-            // line 390
+            // line 364
             echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
             echo "/images/content/box-frame-horizontal.gif);\"></div>
 \t\t<div class=\"BoxFrameEdgeLeftTop\" style=\"background-image:url(";
-            // line 391
+            // line 365
             echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
             echo "/images/content/box-frame-edge.gif);\"></div>
 \t\t<div class=\"BoxFrameEdgeRightTop\" style=\"background-image:url(";
-            // line 392
+            // line 366
             echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
             echo "/images/content/box-frame-edge.gif);\"></div>
 \t\t<div class=\"Message\">
 \t\t\t<div class=\"BoxFrameVerticalLeft\" style=\"background-image:url(";
-            // line 394
+            // line 368
             echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
             echo "/images/content/box-frame-vertical.gif);\"></div>
 \t\t\t<div class=\"BoxFrameVerticalRight\" style=\"background-image:url(";
-            // line 395
+            // line 369
             echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
             echo "/images/content/box-frame-vertical.gif);\"></div>
 \t\t\t<table>
 \t\t\t\t<tr>
 \t\t\t\t\t<td class=\"LabelV\" >Note:</td>
 \t\t\t\t\t<td style=\"width:100%;\" >A request has been submitted to change the email address of this account to <b>";
-            // line 399
+            // line 373
             echo twig_escape_filter($this->env, ($context["email_new"] ?? null), "html", null, true);
             echo "</b>. After <b>";
             echo twig_escape_filter($this->env, twig_date_format_filter($this->env, ($context["email_new_time"] ?? null), "j F Y, G:i:s"), "html", null, true);
@@ -726,13 +684,13 @@ margin: auto 5x;
 \t\t\t<div style=\"text-align:center\">
 \t\t\t\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 \t\t\t\t\t<form action=\"";
-            // line 404
+            // line 378
             echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/email"]), "html", null, true);
             echo "\" method=\"post\">
 \t\t\t\t\t\t<tr>
 \t\t\t\t\t\t\t<td style=\"border:0px;\">
 \t\t\t\t\t\t\t\t";
-            // line 407
+            // line 381
             echo twig_include($this->env, $context, "buttons.edit.html.twig");
             echo "
 \t\t\t\t\t\t\t</td>
@@ -742,29 +700,29 @@ margin: auto 5x;
 \t\t\t</div>
 \t\t</div>
 \t\t<div class=\"BoxFrameHorizontal\" style=\"background-image:url(";
-            // line 414
+            // line 388
             echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
             echo "/images/content/box-frame-horizontal.gif);\"></div>
 \t\t<div class=\"BoxFrameEdgeRightBottom\" style=\"background-image:url(";
-            // line 415
+            // line 389
             echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
             echo "/images/content/box-frame-edge.gif);\"></div>
 \t\t<div class=\"BoxFrameEdgeLeftBottom\" style=\"background-image:url(";
-            // line 416
+            // line 390
             echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
             echo "/images/content/box-frame-edge.gif);\"></div>
 \t</div>
 </div>
-<br/><br/>
+<br/>
 ";
         }
-        // line 421
+        // line 395
         echo "<a name=\"General+Information\" ></a>
 <div class=\"TopButtonContainer\">
 \t<div class=\"TopButton\">
 \t\t<a href=\"#top\">
 \t\t\t<img style=\"border:0px;\" src=\"";
-        // line 425
+        // line 399
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/back-to-top.gif\" />
 \t\t</a>
@@ -775,36 +733,36 @@ margin: auto 5x;
 \t\t<div class=\"CaptionContainer\">
 \t\t\t<div class=\"CaptionInnerContainer\">
 \t\t\t\t<span class=\"CaptionEdgeLeftTop\" style=\"background-image:url(";
-        // line 433
+        // line 407
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/box-frame-edge.gif);\"></span>
 \t\t\t\t<span class=\"CaptionEdgeRightTop\" style=\"background-image:url(";
-        // line 434
+        // line 408
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/box-frame-edge.gif);\"></span>
 \t\t\t\t<span class=\"CaptionBorderTop\" style=\"background-image:url(";
-        // line 435
+        // line 409
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/table-headline-border.gif);\"></span>
 \t\t\t\t<span class=\"CaptionVerticalLeft\" style=\"background-image:url(";
-        // line 436
+        // line 410
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/box-frame-vertical.gif);\"></span>
 \t\t\t\t<div class=\"Text\" >General Information</div>
 \t\t\t\t<span class=\"CaptionVerticalRight\" style=\"background-image:url(";
-        // line 438
+        // line 412
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/box-frame-vertical.gif);\"></span>
 \t\t\t\t<span class=\"CaptionBorderBottom\" style=\"background-image:url(";
-        // line 439
+        // line 413
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/table-headline-border.gif);\"></span>
 \t\t\t\t<span class=\"CaptionEdgeLeftBottom\" style=\"background-image:url(";
-        // line 440
+        // line 414
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/box-frame-edge.gif);\"></span>
 \t\t\t\t<span class=\"CaptionEdgeRightBottom\" style=\"background-image:url(";
-        // line 441
+        // line 415
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/box-frame-edge.gif);\"></span>
 \t\t\t</div>
@@ -815,24 +773,16 @@ margin: auto 5x;
 \t\t\t\t\t<table style=\"width:100%;\" >
 \t\t\t\t\t\t<tr>
 \t\t\t\t\t\t\t<td>
-\t\t\t\t\t\t\t\t<div class=\"TableShadowContainerRightTop\">
-\t\t\t\t\t\t\t\t\t<div class=\"TableShadowRightTop\" style=\"background-image:url(";
-        // line 451
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-rt.gif);\"></div>
-\t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t\t<div class=\"TableContentAndRightShadow\" style=\"background-image:url(";
-        // line 453
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-rm.gif);\">
+\t\t\t\t\t\t\t\t
+\t\t\t\t\t\t\t\t<div class=\"TableContentAndRightShadow\">
 \t\t\t\t\t\t\t\t\t<div class=\"TableContentContainer\">
 \t\t\t\t\t\t\t\t\t\t<table class=\"TableContent\" width=\"100%\">
 \t\t\t\t\t\t\t\t\t\t\t<tr style=\"background-color: ";
-        // line 456
+        // line 428
         echo twig_escape_filter($this->env, $this->getAttribute(($context["config"] ?? null), "lightborder", []), "html", null, true);
-        echo ";\" >
+        echo ";\">
 \t\t\t\t\t\t\t\t\t\t\t\t<td class=\"LabelV\" >Account ";
-        // line 457
+        // line 429
         if (twig_constant("USE_ACCOUNT_NAME")) {
             echo "Name";
         } else {
@@ -840,80 +790,94 @@ margin: auto 5x;
         }
         echo ":</td>
 \t\t\t\t\t\t\t\t\t\t\t\t<td style=\"width:90%;\" >";
-        // line 458
+        // line 430
         echo twig_escape_filter($this->env, ($context["account"] ?? null), "html", null, true);
         echo "</td>
 \t\t\t\t\t\t\t\t\t\t\t</tr>
 \t\t\t\t\t\t\t\t\t\t\t<tr style=\"background-color: ";
-        // line 460
+        // line 432
         echo twig_escape_filter($this->env, $this->getAttribute(($context["config"] ?? null), "darkborder", []), "html", null, true);
-        echo ";\" >
+        echo ";\">
 \t\t\t\t\t\t\t\t\t\t\t\t<td class=\"LabelV\" >Email Address:</td>
 \t\t\t\t\t\t\t\t\t\t\t\t<td style=\"width:90%;\" >";
-        // line 462
+        // line 434
         echo twig_escape_filter($this->env, (($context["account_email"] ?? null) . ($context["email_change"] ?? null)), "html", null, true);
         echo "</td>
 \t\t\t\t\t\t\t\t\t\t\t</tr>
 \t\t\t\t\t\t\t\t\t\t\t<tr style=\"background-color: ";
-        // line 464
+        // line 436
         echo twig_escape_filter($this->env, $this->getAttribute(($context["config"] ?? null), "lightborder", []), "html", null, true);
-        echo ";\" >
+        echo ";\">
 \t\t\t\t\t\t\t\t\t\t\t\t<td class=\"LabelV\" >Created:</td>
 \t\t\t\t\t\t\t\t\t\t\t\t<td>";
-        // line 466
-        echo twig_escape_filter($this->env, twig_date_format_filter($this->env, ($context["account_created"] ?? null), "j F Y, G:i:s"), "html", null, true);
+        // line 438
+        echo twig_escape_filter($this->env, twig_date_format_filter($this->env, ($context["account_created"] ?? null), "M d Y, G:i:s"), "html", null, true);
         echo "</td>
 \t\t\t\t\t\t\t\t\t\t\t</tr>
 \t\t\t\t\t\t\t\t\t\t\t<tr style=\"background-color: ";
-        // line 468
+        // line 440
         echo twig_escape_filter($this->env, $this->getAttribute(($context["config"] ?? null), "darkborder", []), "html", null, true);
-        echo ";\" >
+        echo ";\">
 \t\t\t\t\t\t\t\t\t\t\t\t<td class=\"LabelV\" >Last Login:</td>
 \t\t\t\t\t\t\t\t\t\t\t\t<td>";
-        // line 470
-        echo twig_escape_filter($this->env, twig_date_format_filter($this->env, "now", "j F Y, G:i:s"), "html", null, true);
+        // line 442
+        echo twig_escape_filter($this->env, twig_date_format_filter($this->env, "now", "M d Y, G:i:s"), "html", null, true);
         echo "</td>
 \t\t\t\t\t\t\t\t\t\t\t</tr>
 \t\t\t\t\t\t\t\t\t\t\t";
-        // line 473
+        // line 445
         echo "\t\t\t\t\t\t\t\t\t\t\t<tr style=\"background-color: ";
         echo $this->getAttribute(($context["config"] ?? null), "lightborder", []);
-        echo ";\" >
+        echo ";\">
 \t\t\t\t\t\t\t\t\t\t\t\t<td class=\"LabelV\" >Account Status:</td>
 \t\t\t\t\t\t\t\t\t\t\t\t<td>";
-        // line 475
+        // line 447
         echo ($context["account_status"] ?? null);
         echo "</td>
 \t\t\t\t\t\t\t\t\t\t\t</tr>
 \t\t\t\t\t\t\t\t\t\t\t<tr style=\"background-color: ";
-        // line 477
+        // line 449
         echo $this->getAttribute(($context["config"] ?? null), "darkborder", []);
-        echo ";\" >
+        echo ";\">
+\t\t\t\t\t\t\t\t\t\t\t\t<td class=\"LabelV\" >Tibia Coins:</td>
+\t\t\t\t\t\t\t\t\t\t\t\t<td>";
+        // line 451
+        echo ($context["account_coins"] ?? null);
+        echo " <img src=\"";
+        echo ($context["template_path"] ?? null);
+        echo "/images/account/icon-tibiacoin.png\" class=\"VSCCoinImages\"></span> (Including: ";
+        echo ($context["account_coins"] ?? null);
+        echo " <img src=\"";
+        echo ($context["template_path"] ?? null);
+        echo "/images/account/icon-tibiacointrusted.png\" class=\"VSCCoinImages\">)
+\t\t\t\t\t\t\t\t\t\t\t\t</td>
+\t\t\t\t\t\t\t\t\t\t\t</tr>
+\t\t\t\t\t\t\t\t\t\t\t<tr style=\"background-color: ";
+        // line 454
+        echo $this->getAttribute(($context["config"] ?? null), "lightborder", []);
+        echo ";\">
+\t\t\t\t\t\t\t\t\t\t\t\t<td class=\"LabelV\" >Tournament Coins:</td>
+\t\t\t\t\t\t\t\t\t\t\t\t<td>0 <img src=\"";
+        // line 456
+        echo ($context["template_path"] ?? null);
+        echo "/images/account/icon-tournamentcoin.png\" class=\"VSCCoinImages\"></td>
+\t\t\t\t\t\t\t\t\t\t\t</tr>
+\t\t\t\t\t\t\t\t\t\t\t<tr style=\"background-color: ";
+        // line 458
+        echo $this->getAttribute(($context["config"] ?? null), "darkborder", []);
+        echo ";\">
 \t\t\t\t\t\t\t\t\t\t\t\t<td class=\"LabelV\" >Registered:</td>
 \t\t\t\t\t\t\t\t\t\t\t\t<td>";
-        // line 479
+        // line 460
         echo ($context["account_registered"] ?? null);
         echo "</td>
 \t\t\t\t\t\t\t\t\t\t\t</tr>
 \t\t\t\t\t\t\t\t\t\t\t";
-        // line 482
+        // line 463
         echo "\t\t\t\t\t\t\t\t\t\t</table>
 \t\t\t\t\t\t\t\t\t</div>
 \t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t\t<div class=\"TableShadowContainer\">
-\t\t\t\t\t\t\t\t\t<div class=\"TableBottomShadow\" style=\"background-image:url(";
-        // line 486
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-bm.gif);\" >
-\t\t\t\t\t\t\t\t\t\t<div class=\"TableBottomLeftShadow\" style=\"background-image:url(";
-        // line 487
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-bl.gif);\"></div>
-\t\t\t\t\t\t\t\t\t\t<div class=\"TableBottomRightShadow\" style=\"background-image:url(";
-        // line 488
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-br.gif);\"></div>  \t\t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t\t</div>
+\t\t\t\t\t\t\t\t
 \t\t\t\t\t\t\t</td>
 \t\t\t\t\t\t</tr>
 \t\t\t\t\t\t<tr>
@@ -923,13 +887,13 @@ margin: auto 5x;
 \t\t\t\t\t\t\t\t\t\t<td>
 \t\t\t\t\t\t\t\t\t\t\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 \t\t\t\t\t\t\t\t\t\t\t\t<form action=\"";
-        // line 498
+        // line 475
         echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/password"]), "html", null, true);
         echo "\" method=\"post\">
 \t\t\t\t\t\t\t\t\t\t\t\t\t<tr>
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"border:0px;\" >
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
-        // line 501
+        // line 478
         echo twig_include($this->env, $context, "buttons.change_password.html.twig");
         echo "
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>
@@ -940,7 +904,7 @@ margin: auto 5x;
 \t\t\t\t\t\t\t\t\t\t<td>
 \t\t\t\t\t\t\t\t\t\t\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 \t\t\t\t\t\t\t\t\t\t\t\t<form action=\"";
-        // line 509
+        // line 486
         echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/email"]), "html", null, true);
         echo "\" method=\"post\">
 \t\t\t\t\t\t\t\t\t\t\t\t\t<tr>
@@ -948,7 +912,7 @@ margin: auto 5x;
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input type=\"hidden\" name=\"newemail\" value=\"\"/>
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input type=\"hidden\" name=\"newemaildate\" value=\"0\">
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
-        // line 514
+        // line 491
         echo twig_include($this->env, $context, "buttons.change_email.html.twig");
         echo "
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>
@@ -958,20 +922,20 @@ margin: auto 5x;
 \t\t\t\t\t\t\t\t\t\t</td>
 \t\t\t\t\t\t\t\t\t\t<td width=\"100%\"></td>
 \t\t\t\t\t\t\t\t\t\t";
-        // line 522
+        // line 499
         echo "\t\t\t\t\t\t\t\t\t\t";
         if (twig_test_empty(($context["recovery_key"] ?? null))) {
-            // line 523
+            // line 500
             echo "\t\t\t\t\t\t\t\t\t\t<td>
 \t\t\t\t\t\t\t\t\t\t\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 \t\t\t\t\t\t\t\t\t\t\t\t<form action=\"";
-            // line 525
+            // line 502
             echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/register"]), "html", null, true);
             echo "\" method=\"post\">
 \t\t\t\t\t\t\t\t\t\t\t\t\t<tr>
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"border:0px;\">
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
-            // line 528
+            // line 505
             echo twig_include($this->env, $context, "buttons.register_account.html.twig");
             echo "
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>
@@ -981,7 +945,7 @@ margin: auto 5x;
 \t\t\t\t\t\t\t\t\t\t</td>
 \t\t\t\t\t\t\t\t\t\t";
         }
-        // line 535
+        // line 512
         echo "\t\t\t\t\t\t\t\t\t</tr>
 \t\t\t\t\t\t\t\t</table>
 \t\t\t\t\t\t\t</td>
@@ -992,15 +956,21 @@ margin: auto 5x;
 \t\t</tr>
 \t</table>
 </div>
+
 <br/>
-<a name=\"Public+Information\"></a>
+
+";
+        // line 525
+        if (twig_test_empty(($context["recovery_key"] ?? null))) {
+            // line 526
+            echo "<a name=\"Public+Information\"></a>
 <div class=\"TopButtonContainer\">
 \t<div class=\"TopButton\">
 \t\t<a href=\"#top\">
 \t\t\t<img style=\"border:0px;\" src=\"";
-        // line 550
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/back-to-top.gif\"/>
+            // line 530
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/back-to-top.gif\"/>
 \t\t</a>
 \t</div>
 </div>
@@ -1009,38 +979,38 @@ margin: auto 5x;
 \t\t<div class=\"CaptionContainer\">
 \t\t\t<div class=\"CaptionInnerContainer\">
 \t\t\t\t<span class=\"CaptionEdgeLeftTop\" style=\"background-image:url(";
-        // line 558
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-edge.gif);\"></span>
+            // line 538
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-edge.gif);\"></span>
 \t\t\t\t<span class=\"CaptionEdgeRightTop\" style=\"background-image:url(";
-        // line 559
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-edge.gif);\"></span>
+            // line 539
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-edge.gif);\"></span>
 \t\t\t\t<span class=\"CaptionBorderTop\" style=\"background-image:url(";
-        // line 560
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-headline-border.gif);\"></span>
+            // line 540
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/table-headline-border.gif);\"></span>
 \t\t\t\t<span class=\"CaptionVerticalLeft\" style=\"background-image:url(";
-        // line 561
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-vertical.gif);\"></span>
+            // line 541
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-vertical.gif);\"></span>
 \t\t\t\t<div class=\"Text\" >Public Information</div>
 \t\t\t\t<span class=\"CaptionVerticalRight\" style=\"background-image:url(";
-        // line 563
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-vertical.gif);\"></span>
+            // line 543
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-vertical.gif);\"></span>
 \t\t\t\t<span class=\"CaptionBorderBottom\" style=\"background-image:url(";
-        // line 564
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-headline-border.gif);\"></span>
+            // line 544
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/table-headline-border.gif);\"></span>
 \t\t\t\t<span class=\"CaptionEdgeLeftBottom\" style=\"background-image:url(";
-        // line 565
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-edge.gif);\"></span>
+            // line 545
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-edge.gif);\"></span>
 \t\t\t\t<span class=\"CaptionEdgeRightBottom\" style=\"background-image:url(";
-        // line 566
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-edge.gif);\"></span>
+            // line 546
+            echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
+            echo "/images/content/box-frame-edge.gif);\"></span>
 \t\t\t</div>
 \t\t</div>
 \t\t<tr>
@@ -1049,16 +1019,8 @@ margin: auto 5x;
 \t\t\t\t\t<table style=\"width:100%;\">
 \t\t\t\t\t\t<tr>
 \t\t\t\t\t\t\t<td>
-\t\t\t\t\t\t\t\t<div class=\"TableShadowContainerRightTop\">
-\t\t\t\t\t\t\t\t\t<div class=\"TableShadowRightTop\" style=\"background-image:url(";
-        // line 576
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-rt.gif);\" ></div>
-\t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t\t<div class=\"TableContentAndRightShadow\" style=\"background-image:url(";
-        // line 578
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-rm.gif);\" >
+\t\t\t\t\t\t\t\t
+\t\t\t\t\t\t\t\t<div class=\"TableContentAndRightShadow\">
 \t\t\t\t\t\t\t\t\t<div class=\"TableContentContainer\">
 \t\t\t\t\t\t\t\t\t\t<table class=\"TableContent\" width=\"100%\">
 \t\t\t\t\t\t\t\t\t\t\t<tr>
@@ -1067,31 +1029,31 @@ margin: auto 5x;
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td class=\"LabelV\" >Real Name:</td>
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"width:90%;\" >";
-        // line 586
-        echo twig_escape_filter($this->env, ($context["account_rlname"] ?? null), "html", null, true);
-        echo "</td>
+            // line 564
+            echo twig_escape_filter($this->env, ($context["account_rlname"] ?? null), "html", null, true);
+            echo "</td>
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>
-\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td class=\"LabelV\" >Location:</td>
+\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td class=\"LabelV\" >Address:</td>
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"width:90%;\" >";
-        // line 590
-        echo twig_escape_filter($this->env, ($context["account_location"] ?? null), "html", null, true);
-        echo "</td>
+            // line 568
+            echo twig_escape_filter($this->env, ($context["account_location"] ?? null), "html", null, true);
+            echo "</td>
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>
 \t\t\t\t\t\t\t\t\t\t\t\t\t</table>
 \t\t\t\t\t\t\t\t\t\t\t\t</td>
 \t\t\t\t\t\t\t\t\t\t\t\t<td align=right>
 \t\t\t\t\t\t\t\t\t\t\t\t\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t<form action=\"";
-        // line 596
-        echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/info"]), "html", null, true);
-        echo "\" method=\"post\">
+            // line 574
+            echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/info"]), "html", null, true);
+            echo "\" method=\"post\">
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"border:0px;\">
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
-        // line 599
-        echo twig_include($this->env, $context, "buttons.edit.html.twig");
-        echo "
+            // line 577
+            echo twig_include($this->env, $context, "buttons.edit.html.twig");
+            echo "
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>
 \t\t\t\t\t\t\t\t\t\t\t\t\t\t</form>
@@ -1101,20 +1063,7 @@ margin: auto 5x;
 \t\t\t\t\t\t\t\t\t\t</table>
 \t\t\t\t\t\t\t\t\t</div>
 \t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t\t<div class=\"TableShadowContainer\">
-\t\t\t\t\t\t\t\t\t<div class=\"TableBottomShadow\" style=\"background-image:url(";
-        // line 610
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-bm.gif);\">
-\t\t\t\t\t\t\t\t\t\t<div class=\"TableBottomLeftShadow\" style=\"background-image:url(";
-        // line 611
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-bl.gif);\"></div>
-\t\t\t\t\t\t\t\t\t\t<div class=\"TableBottomRightShadow\" style=\"background-image:url(";
-        // line 612
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-br.gif);\"></div>  \t\t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t\t</div>
+\t\t\t\t\t\t\t\t
 \t\t\t\t\t\t\t</td>
 \t\t\t\t\t\t</tr>
 \t\t\t\t\t</table>
@@ -1123,13 +1072,17 @@ margin: auto 5x;
 \t\t</tr>
 \t</table>
 </div>
-<br/>
+";
+        }
+        // line 597
+        echo "<br/>
+
 <a name=\"Account+Logs\" ></a>
 <div class=\"TopButtonContainer\">
 \t<div class=\"TopButton\">
 \t\t<a href=\"#top\">
 \t\t\t<img style=\"border:0px;\" src=\"";
-        // line 627
+        // line 603
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/back-to-top.gif\"/>
 \t\t</a>
@@ -1140,36 +1093,36 @@ margin: auto 5x;
 \t\t<div class=\"CaptionContainer\">
 \t\t\t<div class=\"CaptionInnerContainer\">
 \t\t\t\t<span class=\"CaptionEdgeLeftTop\" style=\"background-image:url(";
-        // line 635
+        // line 611
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/box-frame-edge.gif);\"></span>
 \t\t\t\t<span class=\"CaptionEdgeRightTop\" style=\"background-image:url(";
-        // line 636
+        // line 612
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/box-frame-edge.gif);\"></span>
 \t\t\t\t<span class=\"CaptionBorderTop\" style=\"background-image:url(";
-        // line 637
+        // line 613
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/table-headline-border.gif);\"></span>
 \t\t\t\t<span class=\"CaptionVerticalLeft\" style=\"background-image:url(";
-        // line 638
+        // line 614
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/box-frame-vertical.gif);\"></span>
 \t\t\t\t<div class=\"Text\" >Account logs</div>
 \t\t\t\t<span class=\"CaptionVerticalRight\" style=\"background-image:url(";
-        // line 640
+        // line 616
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/box-frame-vertical.gif);\"></span>
 \t\t\t\t<span class=\"CaptionBorderBottom\" style=\"background-image:url(";
-        // line 641
+        // line 617
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/table-headline-border.gif);\"></span>
 \t\t\t\t<span class=\"CaptionEdgeLeftBottom\" style=\"background-image:url(";
-        // line 642
+        // line 618
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/box-frame-edge.gif);\"></span>
 \t\t\t\t<span class=\"CaptionEdgeRightBottom\" style=\"background-image:url(";
-        // line 643
+        // line 619
         echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
         echo "/images/content/box-frame-edge.gif);\"></span>
 \t\t\t</div>
@@ -1180,16 +1133,7 @@ margin: auto 5x;
 \t\t\t\t\t<table style=\"width:100%;\">
 \t\t\t\t\t\t<tr>
 \t\t\t\t\t\t\t<td>
-\t\t\t\t\t\t\t\t<div class=\"TableShadowContainerRightTop\">
-\t\t\t\t\t\t\t\t\t<div class=\"TableShadowRightTop\" style=\"background-image:url(";
-        // line 653
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-rt.gif);\"></div>
-\t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t\t<div class=\"TableContentAndRightShadow\" style=\"background-image:url(";
-        // line 655
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-rm.gif);\" >
+\t\t\t\t\t\t\t\t<div class=\"TableContent\">
 \t\t\t\t\t\t\t\t\t<div class=\"TableContentContainer\" >
 \t\t\t\t\t\t\t\t\t\t<table class=\"TableContent\" width=\"100%\">
 \t\t\t\t\t\t\t\t\t\t\t<tr class=\"LabelH\">
@@ -1198,31 +1142,31 @@ margin: auto 5x;
 \t\t\t\t\t\t\t\t\t\t\t\t<td style=\"width:15%\">IP</td>
 \t\t\t\t\t\t\t\t\t\t\t</tr>
 \t\t\t\t\t\t\t\t\t\t\t";
-        // line 664
+        // line 637
         echo "\t\t\t\t\t\t\t\t\t\t\t";
         $context["i"] = 0;
-        // line 665
+        // line 638
         echo "\t\t\t\t\t\t\t\t\t\t\t";
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable(($context["actions"] ?? null));
         foreach ($context['_seq'] as $context["_key"] => $context["action"]) {
-            // line 666
+            // line 639
             echo "\t\t\t\t\t\t\t\t\t\t\t\t";
             $context["i"] = (($context["i"] ?? null) + 1);
-            // line 667
+            // line 640
             echo "\t\t\t\t\t\t\t\t\t\t\t<tr style=\"background-color: ";
             echo call_user_func_array($this->env->getFunction('getStyle')->getCallable(), [($context["i"] ?? null)]);
             echo "\">
 \t\t\t\t\t\t\t\t\t\t\t\t<td>";
-            // line 668
+            // line 641
             echo $this->getAttribute($context["action"], "action", []);
             echo "</td>
 \t\t\t\t\t\t\t\t\t\t\t\t<td>";
-            // line 669
-            echo twig_date_format_filter($this->env, $this->getAttribute($context["action"], "date", []), "jS F Y H:i:s");
+            // line 642
+            echo twig_date_format_filter($this->env, $this->getAttribute($context["action"], "date", []), "d M Y, H:i:s");
             echo "</td>
 \t\t\t\t\t\t\t\t\t\t\t\t<td>";
-            // line 670
+            // line 643
             echo $this->getAttribute($context["action"], "ip", []);
             echo "</td>
 \t\t\t\t\t\t\t\t\t\t\t</tr>
@@ -1231,29 +1175,12 @@ margin: auto 5x;
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['action'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 673
+        // line 646
         echo "\t\t\t\t\t\t\t\t\t\t\t";
-        // line 674
+        // line 647
         echo "\t\t\t\t\t\t\t\t\t\t</table>
 \t\t\t\t\t\t\t\t\t</div>
 \t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t\t<div class=\"TableShadowContainer\" >
-\t\t\t\t\t\t\t\t\t<div class=\"TableBottomShadow\" style=\"background-image:url(";
-        // line 678
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-bm.gif);\" >
-\t\t\t\t\t\t\t\t\t\t<div class=\"TableBottomLeftShadow\" style=\"background-image:url(";
-        // line 679
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-bl.gif);\"></div>
-\t\t\t\t\t\t\t\t\t\t<div class=\"TableBottomRightShadow\" style=\"background-image:url(";
-        // line 680
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-br.gif);\"></div>
-\t\t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t<td align=right>
 \t\t\t\t\t\t\t</td>
 \t\t\t\t\t\t</tr>
 \t\t\t\t\t</table>
@@ -1263,249 +1190,52 @@ margin: auto 5x;
 \t</table>
 </div>
 <br/>
-<a name=\"Characters\" ></a>
-<div class=\"TopButtonContainer\">
-\t<div class=\"TopButton\" >
-\t\t<a href=\"#top\">
-\t\t\t<img style=\"border:0px;\" src=\"";
-        // line 698
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/back-to-top.gif\" />
-\t\t</a>
-\t</div>
-</div>
-<div class=\"TableContainer\">
-\t<table class=\"Table5\" cellpadding=\"0\" cellspacing=\"0\">
-\t\t<div class=\"CaptionContainer\" >
-\t\t\t<div class=\"CaptionInnerContainer\">
-\t\t\t\t<span class=\"CaptionEdgeLeftTop\" style=\"background-image:url(";
-        // line 706
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-edge.gif);\"></span>
-\t\t\t\t<span class=\"CaptionEdgeRightTop\" style=\"background-image:url(";
-        // line 707
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-edge.gif);\"></span>
-\t\t\t\t<span class=\"CaptionBorderTop\" style=\"background-image:url(";
-        // line 708
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-headline-border.gif);\"></span>
-\t\t\t\t<span class=\"CaptionVerticalLeft\" style=\"background-image:url(";
-        // line 709
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-vertical.gif);\"></span>
-\t\t\t\t<div class=\"Text\">Characters</div>
-\t\t\t\t<span class=\"CaptionVerticalRight\" style=\"background-image:url(";
-        // line 711
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-vertical.gif);\"></span>
-\t\t\t\t<span class=\"CaptionBorderBottom\" style=\"background-image:url(";
-        // line 712
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-headline-border.gif);\"></span>
-\t\t\t\t<span class=\"CaptionEdgeLeftBottom\" style=\"background-image:url(";
-        // line 713
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-edge.gif);\"></span>
-\t\t\t\t<span class=\"CaptionEdgeRightBottom\" style=\"background-image:url(";
-        // line 714
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/box-frame-edge.gif);\"></span>
-\t\t\t</div>
-\t\t</div>
-\t\t<tr>
-\t\t\t<td>
-\t\t\t\t<div class=\"InnerTableContainer\">
-\t\t\t\t\t<table style=\"width:100%;\">
-\t\t\t\t\t\t<tr>
-\t\t\t\t\t\t\t<td>
-\t\t\t\t\t\t\t\t<div class=\"TableShadowContainerRightTop\">
-\t\t\t\t\t\t\t\t\t<div class=\"TableShadowRightTop\" style=\"background-image:url(";
-        // line 724
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-rt.gif);\"></div>
-\t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t\t<div class=\"TableContentAndRightShadow\" style=\"background-image:url(";
-        // line 726
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-rm.gif);\">
-\t\t\t\t\t\t\t\t\t<div class=\"TableContentContainer\">
-\t\t\t\t\t\t\t\t\t\t<table class=\"TableContent\" width=\"100%\">
-\t\t\t\t\t\t\t\t\t\t\t<tr class=\"LabelH\">
-\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"width:65%\">Name</td>
-\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"width:15%\">Level</td>
-\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"width:7%\">Status</td>
-\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"width:5%\">&#160;</td>
-\t\t\t\t\t\t\t\t\t\t\t</tr>
-\t\t\t\t\t\t\t\t\t\t\t";
-        // line 735
-        $context["i"] = 0;
-        // line 736
-        echo "\t\t\t\t\t\t\t\t\t\t\t";
-        $context['_parent'] = $context;
-        $context['_seq'] = twig_ensure_traversable(($context["players"] ?? null));
-        foreach ($context['_seq'] as $context["_key"] => $context["player"]) {
-            // line 737
-            echo "\t\t\t\t\t\t\t\t\t\t\t\t";
-            $context["i"] = (($context["i"] ?? null) + 1);
-            // line 738
-            echo "\t\t\t\t\t\t\t\t\t\t\t<tr style=\"background-color: ";
-            echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getStyle')->getCallable(), [($context["i"] ?? null)]), "html", null, true);
-            echo ";\">
-\t\t\t\t\t\t\t\t\t\t\t\t<td>
-\t\t\t\t\t\t\t\t\t\t\t\t\t<nobr>";
-            // line 740
-            echo twig_escape_filter($this->env, ($context["i"] ?? null), "html", null, true);
-            echo ". ";
-            echo twig_escape_filter($this->env, $this->getAttribute($context["player"], "getName", [], "method"), "html", null, true);
-            if ($this->getAttribute($context["player"], "isDeleted", [], "method")) {
-                echo "<span style=\"color: red\"><b> [ DELETED ] </b></span>";
-            }
-            echo "</nobr>
-\t\t\t\t\t\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t\t\t\t\t\t<td>
-\t\t\t\t\t\t\t\t\t\t\t\t\t<nobr>";
-            // line 743
-            echo twig_escape_filter($this->env, $this->getAttribute($context["player"], "getLevel", [], "method"), "html", null, true);
-            echo " ";
-            echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute(($context["config"] ?? null), "vocations", []), $this->getAttribute($context["player"], "getVocation", [], "method"), [], "array"), "html", null, true);
-            echo "</nobr>
-\t\t\t\t\t\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t\t\t\t\t\t";
-            // line 745
-            if ($this->getAttribute($context["player"], "isOnline", [], "method")) {
-                // line 746
-                echo "\t\t\t\t\t\t\t\t\t\t\t\t<td><span style=\"color: green\"><b>Online</b></span></td>
-\t\t\t\t\t\t\t\t\t\t\t\t";
-            } else {
-                // line 748
-                echo "\t\t\t\t\t\t\t\t\t\t\t\t<td><span style=\"color: red\"><b>Offline</b></span></td>
-\t\t\t\t\t\t\t\t\t\t\t\t";
-            }
-            // line 750
-            echo "\t\t\t\t\t\t\t\t\t\t\t\t<td>[<a href=\"";
-            echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), [("account/character/comment/" . call_user_func_array($this->env->getFilter('urlencode')->getCallable(), [$this->getAttribute($context["player"], "getName", [])]))]), "html", null, true);
-            echo "\" >Edit</a>]</td>
-\t\t\t\t\t\t\t\t\t\t\t</tr>
-\t\t\t\t\t\t\t\t\t\t\t";
-        }
-        $_parent = $context['_parent'];
-        unset($context['_seq'], $context['_iterated'], $context['_key'], $context['player'], $context['_parent'], $context['loop']);
-        $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 753
-        echo "\t\t\t\t\t\t\t\t\t\t</table>
-\t\t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t\t<div class=\"TableShadowContainer\">
-\t\t\t\t\t\t\t\t\t<div class=\"TableBottomShadow\" style=\"background-image:url('.\$template_path.'/images/content/table-shadow-bm.gif);\" >
-\t\t\t\t\t\t\t\t\t\t<div class=\"TableBottomLeftShadow\" style=\"background-image:url(";
-        // line 758
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-bl.gif);\"></div>
-\t\t\t\t\t\t\t\t\t\t<div class=\"TableBottomRightShadow\" style=\"background-image:url(";
-        // line 759
-        echo twig_escape_filter($this->env, ($context["template_path"] ?? null), "html", null, true);
-        echo "/images/content/table-shadow-br.gif);\"></div>  \t\t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t\t</div>
-\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t</tr>
-\t\t\t\t\t\t<tr>
-\t\t\t\t\t\t\t<td>
-\t\t\t\t\t\t\t\t<table class=\"InnerTableButtonRow\" cellpadding=\"0\" cellspacing=\"0\" >
-\t\t\t\t\t\t\t\t\t<tr>
-\t\t\t\t\t\t\t\t\t\t<td>
-\t\t\t\t\t\t\t\t\t\t\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" >
-\t\t\t\t\t\t\t\t\t\t\t\t<form action=\"";
-        // line 769
-        echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/character/create"]), "html", null, true);
-        echo "\" method=\"post\" >
-\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>
-\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"border:0px;\" >
-\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
-        // line 772
-        echo twig_include($this->env, $context, "buttons.create_character.html.twig");
-        echo "
-\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>
-\t\t\t\t\t\t\t\t\t\t\t\t</form>
-\t\t\t\t\t\t\t\t\t\t\t</table>
-\t\t\t\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t\t\t\t";
-        // line 778
+
+";
+        // line 660
         if ($this->getAttribute(($context["config"] ?? null), "account_change_character_name", [])) {
-            // line 779
-            echo "\t\t\t\t\t\t\t\t\t\t<td>
-\t\t\t\t\t\t\t\t\t\t\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" >
-\t\t\t\t\t\t\t\t\t\t\t\t<form action=\"";
-            // line 781
+            // line 661
+            echo "<td>
+\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" >
+\t\t<form action=\"";
+            // line 663
             echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/character/name"]), "html", null, true);
             echo "\" method=\"post\" >
-\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>
-\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"border:0px;\" >
-\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
-            // line 784
+\t\t\t<tr>
+\t\t\t\t<td style=\"border:0px;\" >
+\t\t\t\t\t";
+            // line 666
             echo twig_include($this->env, $context, "buttons.change_name.html.twig");
             echo "
-\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>
-\t\t\t\t\t\t\t\t\t\t\t\t</form>
-\t\t\t\t\t\t\t\t\t\t\t</table>
-\t\t\t\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t\t\t\t";
+\t\t\t\t</td>
+\t\t\t</tr>
+\t\t</form>
+\t</table>
+</td>
+";
         }
-        // line 791
-        echo "\t\t\t\t\t\t\t\t\t\t";
+        // line 673
         if ($this->getAttribute(($context["config"] ?? null), "account_change_character_sex", [])) {
-            // line 792
-            echo "\t\t\t\t\t\t\t\t\t\t<td>
-\t\t\t\t\t\t\t\t\t\t\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" >
-\t\t\t\t\t\t\t\t\t\t\t\t<form action=\"";
-            // line 794
+            // line 674
+            echo "<td>
+\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" >
+\t\t<form action=\"";
+            // line 676
             echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/character/sex"]), "html", null, true);
             echo "\" method=\"post\" >
-\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>
-\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"border:0px;\" >
-\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
-            // line 797
+\t\t\t<tr>
+\t\t\t\t<td style=\"border:0px;\" >
+\t\t\t\t\t";
+            // line 679
             echo twig_include($this->env, $context, "buttons.change_sex.html.twig");
             echo "
-\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>
-\t\t\t\t\t\t\t\t\t\t\t\t</form>
-\t\t\t\t\t\t\t\t\t\t\t</table>
-\t\t\t\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t\t\t\t";
-        }
-        // line 804
-        echo "\t\t\t\t\t\t\t\t\t\t<td style=\"width:100%;\" ></td>
-\t\t\t\t\t\t\t\t\t\t<td>
-\t\t\t\t\t\t\t\t\t\t\t<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
-\t\t\t\t\t\t\t\t\t\t\t\t<form action=\"";
-        // line 807
-        echo twig_escape_filter($this->env, call_user_func_array($this->env->getFunction('getLink')->getCallable(), ["account/character/delete"]), "html", null, true);
-        echo "\" method=\"post\">
-\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>
-\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"border:0px;\">
-\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t";
-        // line 810
-        echo twig_include($this->env, $context, "buttons.delete_character.html.twig");
-        echo "
-\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>
-\t\t\t\t\t\t\t\t\t\t\t\t</form>
-\t\t\t\t\t\t\t\t\t\t\t</table>
-\t\t\t\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t\t\t\t</tr>
-\t\t\t\t\t\t\t\t</table>
-\t\t\t\t\t\t\t</td>
-\t\t\t\t\t\t</tr>
-\t\t\t\t\t</table>
-\t\t\t\t</div>
-\t\t\t</td>
-\t\t</tr>
+\t\t\t\t</td>
+\t\t\t</tr>
+\t\t</form>
 \t</table>
-</div>
-<br/><br/>";
+</td>
+";
+        }
     }
 
     public function getTemplateName()
@@ -1520,7 +1250,7 @@ margin: auto 5x;
 
     public function getDebugInfo()
     {
-        return array (  1491 => 810,  1485 => 807,  1480 => 804,  1470 => 797,  1464 => 794,  1460 => 792,  1457 => 791,  1447 => 784,  1441 => 781,  1437 => 779,  1435 => 778,  1426 => 772,  1420 => 769,  1407 => 759,  1403 => 758,  1396 => 753,  1386 => 750,  1382 => 748,  1378 => 746,  1376 => 745,  1369 => 743,  1358 => 740,  1352 => 738,  1349 => 737,  1344 => 736,  1342 => 735,  1330 => 726,  1325 => 724,  1312 => 714,  1308 => 713,  1304 => 712,  1300 => 711,  1295 => 709,  1291 => 708,  1287 => 707,  1283 => 706,  1272 => 698,  1251 => 680,  1247 => 679,  1243 => 678,  1237 => 674,  1235 => 673,  1226 => 670,  1222 => 669,  1218 => 668,  1213 => 667,  1210 => 666,  1205 => 665,  1202 => 664,  1191 => 655,  1186 => 653,  1173 => 643,  1169 => 642,  1165 => 641,  1161 => 640,  1156 => 638,  1152 => 637,  1148 => 636,  1144 => 635,  1133 => 627,  1115 => 612,  1111 => 611,  1107 => 610,  1093 => 599,  1087 => 596,  1078 => 590,  1071 => 586,  1060 => 578,  1055 => 576,  1042 => 566,  1038 => 565,  1034 => 564,  1030 => 563,  1025 => 561,  1021 => 560,  1017 => 559,  1013 => 558,  1002 => 550,  985 => 535,  975 => 528,  969 => 525,  965 => 523,  962 => 522,  952 => 514,  944 => 509,  933 => 501,  927 => 498,  914 => 488,  910 => 487,  906 => 486,  900 => 482,  895 => 479,  890 => 477,  885 => 475,  879 => 473,  874 => 470,  869 => 468,  864 => 466,  859 => 464,  854 => 462,  849 => 460,  844 => 458,  836 => 457,  832 => 456,  826 => 453,  821 => 451,  808 => 441,  804 => 440,  800 => 439,  796 => 438,  791 => 436,  787 => 435,  783 => 434,  779 => 433,  768 => 425,  762 => 421,  754 => 416,  750 => 415,  746 => 414,  736 => 407,  730 => 404,  720 => 399,  713 => 395,  709 => 394,  704 => 392,  700 => 391,  696 => 390,  692 => 388,  690 => 387,  687 => 386,  679 => 381,  675 => 380,  671 => 379,  661 => 372,  655 => 369,  643 => 360,  639 => 359,  634 => 357,  630 => 356,  626 => 355,  622 => 353,  620 => 352,  613 => 347,  609 => 346,  605 => 345,  593 => 336,  587 => 333,  578 => 327,  574 => 326,  569 => 324,  565 => 323,  561 => 322,  529 => 292,  520 => 286,  514 => 283,  511 => 282,  509 => 281,  506 => 280,  497 => 274,  491 => 271,  488 => 270,  486 => 269,  479 => 265,  474 => 263,  444 => 235,  431 => 230,  425 => 227,  419 => 223,  411 => 220,  408 => 219,  406 => 218,  399 => 214,  389 => 211,  383 => 207,  379 => 205,  375 => 203,  373 => 202,  364 => 201,  358 => 198,  353 => 197,  350 => 196,  345 => 195,  343 => 194,  305 => 159,  301 => 158,  297 => 157,  293 => 156,  288 => 154,  284 => 153,  280 => 152,  276 => 151,  253 => 131,  237 => 118,  233 => 117,  229 => 116,  225 => 115,  220 => 113,  216 => 112,  212 => 111,  208 => 110,  187 => 92,  182 => 90,  177 => 88,  142 => 58,  138 => 57,  128 => 52,  118 => 47,  110 => 41,  105 => 39,  99 => 35,  85 => 24,  81 => 23,  77 => 22,  73 => 21,  68 => 19,  64 => 18,  60 => 17,  56 => 16,  45 => 8,  41 => 7,  36 => 5,  30 => 1,);
+        return array (  1230 => 679,  1224 => 676,  1220 => 674,  1218 => 673,  1208 => 666,  1202 => 663,  1198 => 661,  1196 => 660,  1181 => 647,  1179 => 646,  1170 => 643,  1166 => 642,  1162 => 641,  1157 => 640,  1154 => 639,  1149 => 638,  1146 => 637,  1126 => 619,  1122 => 618,  1118 => 617,  1114 => 616,  1109 => 614,  1105 => 613,  1101 => 612,  1097 => 611,  1086 => 603,  1078 => 597,  1055 => 577,  1049 => 574,  1040 => 568,  1033 => 564,  1012 => 546,  1008 => 545,  1004 => 544,  1000 => 543,  995 => 541,  991 => 540,  987 => 539,  983 => 538,  972 => 530,  966 => 526,  964 => 525,  949 => 512,  939 => 505,  933 => 502,  929 => 500,  926 => 499,  916 => 491,  908 => 486,  897 => 478,  891 => 475,  877 => 463,  872 => 460,  867 => 458,  862 => 456,  857 => 454,  845 => 451,  840 => 449,  835 => 447,  829 => 445,  824 => 442,  819 => 440,  814 => 438,  809 => 436,  804 => 434,  799 => 432,  794 => 430,  786 => 429,  782 => 428,  766 => 415,  762 => 414,  758 => 413,  754 => 412,  749 => 410,  745 => 409,  741 => 408,  737 => 407,  726 => 399,  720 => 395,  712 => 390,  708 => 389,  704 => 388,  694 => 381,  688 => 378,  678 => 373,  671 => 369,  667 => 368,  662 => 366,  658 => 365,  654 => 364,  650 => 362,  648 => 361,  645 => 360,  620 => 336,  611 => 330,  605 => 327,  602 => 326,  600 => 325,  597 => 324,  588 => 318,  582 => 315,  579 => 314,  577 => 313,  570 => 309,  565 => 307,  535 => 279,  522 => 274,  517 => 271,  513 => 269,  509 => 267,  507 => 266,  503 => 265,  497 => 261,  489 => 258,  486 => 257,  484 => 256,  478 => 253,  469 => 251,  455 => 245,  449 => 242,  444 => 241,  441 => 240,  436 => 239,  434 => 238,  399 => 206,  395 => 205,  391 => 204,  387 => 203,  382 => 201,  378 => 200,  374 => 199,  370 => 198,  360 => 191,  354 => 187,  346 => 182,  342 => 181,  338 => 180,  324 => 169,  319 => 167,  311 => 162,  307 => 161,  302 => 159,  298 => 158,  294 => 157,  290 => 155,  288 => 154,  268 => 137,  252 => 124,  248 => 123,  244 => 122,  240 => 121,  235 => 119,  231 => 118,  227 => 117,  223 => 116,  202 => 98,  197 => 96,  192 => 94,  159 => 64,  155 => 63,  150 => 60,  140 => 55,  137 => 54,  135 => 53,  128 => 49,  125 => 48,  120 => 46,  115 => 42,  109 => 40,  103 => 38,  101 => 37,  85 => 24,  81 => 23,  77 => 22,  73 => 21,  68 => 19,  64 => 18,  60 => 17,  56 => 16,  45 => 8,  41 => 7,  36 => 5,  30 => 1,);
     }
 
     /** @deprecated since 1.27 (to be removed in 2.0). Use getSourceContext() instead */

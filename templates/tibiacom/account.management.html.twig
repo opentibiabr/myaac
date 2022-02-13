@@ -32,30 +32,36 @@
 						<div class="TableContentContainer">
 							<table class="TableContent" width="100%" style="border:1px solid #faf0d7;"><tbody>
 							<tr>
-							<td><img class="AccountStatusImage" src="{{ template_path }}/images/account/account-status_red.gif" alt="free account"></td>
+							
+							<td>
+							{% if account_logged.isPremium() %}
+								<img class="AccountStatusImage" src="{{ template_path }}/images/account/account-status_green.gif" title="Premium Account" alt="premium account">
+							{% else %}
+								<img class="AccountStatusImage" src="{{ template_path }}/images/account/account-status_red.gif" title="Free Account" alt="free account">
+							{% endif %}
+							</td>
 							<td width="100%" valign="middle">
-							<span class="BigBoldText" >
+							<span class="BigBoldText" style="font-size: 24px;">
 							{% autoescape false %}
 							{{ account_status }}
 							{% endautoescape %}
 							</span>
-							<small><br>Your Premium Time expired at Jan&nbsp;14&nbsp;2022,&nbsp;03:00:36&nbsp;CET.<br>(Balance of Premium Time: 0 days)</small>
+							<small><br>(Balance of Premium Time: {{ account_logged.getPremDays() }} days)</small>
 							</td>
 							<td>
 							
-							<form action="https://www.tibia.com/account/?subtopic=accountmanagement" method="post" style="padding:0px;margin:0px;">
-							<div class="BigButton" style="background-image:url({{ template_path }}/images/global/buttons/sbutton.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image:url({{ template_path }}/images/global/buttons/sbutton_over.gif);"></div><input class="BigButtonText" type="submit" value="Manage Account"></div></div>
-							</form>
-							
-							<div style="font-size:1px;height:4px;"></div>
-							
+							{% if config.gifts_system %}
+							<a href="?points" target="blank">
 							<div class="BigButton" style="background-image:url({{ template_path }}/images/global/buttons/sbutton_green.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image:url({{ template_path }}/images/global/buttons/sbutton_green_over.gif);"></div>
-							<input class="BigButtonText" type="submit" value="Get Premium"></div>
+							<input class="BigButtonText" type="submit" value="Get Coins"></div>
 							</div>
+							</a>
+							{% endif %}
 							
 							<div style="font-size:1px;height:4px;"></div>
+							
 							<form action="{{ getLink('account/logout') }}" method="post" style="padding:0px;margin:0px;">
-							<div class="BigButton" style="background-image:url({{ template_path }}/images/global/buttons/sbutton_red.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image:url({{ template_path }}/images/global/buttons/sbutton_red_over.gif);"></div><input class="BigButtonText" type="submit" value="Logout"></div></div>
+								{{ include('buttons.logout.html.twig') }}
 							</form>
 							
 							</td>
@@ -145,6 +151,47 @@ margin: auto 5x;
 
 <br>
 
+{% if recovery_key is empty %}
+<div class="SmallBox">
+	<div class="MessageContainer">
+		<div class="BoxFrameHorizontal" style="background-image:url({{ template_path }}/images/content/box-frame-horizontal.gif);"></div>
+		<div class="BoxFrameEdgeLeftTop" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></div>
+		<div class="BoxFrameEdgeRightTop" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></div>
+		<div class="Message">
+			<div class="BoxFrameVerticalLeft" style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></div>
+			<div class="BoxFrameVerticalRight" style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></div>
+			<table>
+				<tr>
+					<td class="LabelV" >Your account is not registered!</td>
+					<td>
+					<form action="{{ getLink('account/register') }}" method="post">
+						<td style="border:0;">
+							{{ include('buttons.register_account.html.twig') }}
+						</td>
+					</form>
+					</td>
+				</tr>
+				<tr>
+					<td style="width:100%;" >You can register your account for increased protection. Click on "Register Account" and get your free recovery key today!</td>
+				</tr>
+			</table>
+			
+		</div>
+		<div class="BoxFrameHorizontal" style="background-image:url({{ template_path }}/images/content/box-frame-horizontal.gif);"></div>
+		<div class="BoxFrameEdgeRightBottom" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></div>
+		<div class="BoxFrameEdgeLeftBottom" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></div>
+	</div>
+</div>
+<br/>
+{% endif %}
+
+<div class="TopButtonContainer">
+	<div class="TopButton" >
+		<a href="#top">
+			<img style="border:0px;" src="{{ template_path }}/images/content/back-to-top.gif" />
+		</a>
+	</div>
+</div>
 <div class="TableContainer">
 	<div class="CaptionContainer">
 		<div class="CaptionInnerContainer">
@@ -188,9 +235,6 @@ margin: auto 5x;
 									<td style="width: 100px !important;">Status</td>
 									<td style="width: 100px !important;"></td>
 								</tr>
-								
-								
-								
 								{% set i = 0 %}
 								{% for player in players %}
 								{% set i = i + 1 %}
@@ -199,32 +243,32 @@ margin: auto 5x;
 									<td>
 										<span style="white-space: nowrap; vertical-align: middle; line-height: 12px;">
 										<span id="CharacterNameOf_0" style="font-size:13pt; font-weight: bold;">{{ player.getName() }}{% if player.isDeleted() %}<span style="color: red"><b> [ DELETED ] </b></span>{% endif %} <img src="{{ template_path }}/images//account/maincharacter.png" alt="(Main Character)" title="Main Character">
-										{% if player.isOnline() %}
-											<img src="templates/tibiacom/images/on.gif" title="Online">
-											{% else %}
-											<img src="templates/tibiacom/images/off.gif" title="Offline">
-										{% endif %}
+										
 										</span>
 										<br>
 										<small></small>
 										<small>
 										<span id="CharacterNameOf_0">{{ config.vocations[player.getVocation()] }} - Level {{ player.getLevel() }} - On {{ config['lua']['serverName'] }}
 										<span style="position: relative; top: 3px; margin-left: 5px;">
-											<span class="HelperDivIndicator">
-												<img style="border:0px;" src="{{ template_path }}/images/global/content/icon_battleye.gif">
+											<span class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), 'BattlEye Protected Game World', '<p>This character lives on a game world which has been protected by BattleEye since April 19, 2018.</p>', '');" onmouseout="$('#HelperDivContainer').hide();"><img style="border:0px;" src="{{ template_path }}/images/global/content/icon_battleye.gif">
 											</span>
 										</span>
-										
 										{% if guild.rank is not null %}
 										<br>
 											<span>Guild Membership: {{ guild.rank }} of the <a href="">{{ guild.link|raw }}</a>
 											</span>
 										{% endif %}
-										
 										</span>
 										</small></span>
 									</td>
-									<td><img id="DailyReawardState" src="{{ template_path }}/images/global/content/icon-status-dailyreward-collected.png" alt="Daily Reward collected" title="Daily Reward collected"></td>
+									<td>
+									<img id="DailyReawardState" src="{{ template_path }}/images/global/content/icon-status-dailyreward-collected.png" alt="Daily Reward collected" title="Daily Reward collected">
+									{% if player.isOnline() %}
+										<img src="templates/tibiacom/images/on.gif" title="Online">
+										{% else %}
+										<img src="templates/tibiacom/images/off.gif" title="Offline">
+									{% endif %}
+									</td>
 									<td align="center">
 										<span id="CharacterOptionsOf_0">
 										<span style="font-weight:normal;">[<a href="{{ getLink('account/character/comment/' ~ player.getName|urlencode) }}">Edit</a>]</span><br><span style="font-weight:normal;">[<a href="{{ getLink('account/character/delete') }}">Delete</a>]</span>
@@ -291,9 +335,6 @@ margin: auto 5x;
 {% endif %}
 	</tr>
 
-
-
-
 </div>
 </td>
 </tr>
@@ -315,74 +356,7 @@ margin: auto 5x;
 
 
 
-
-
-<div class="SmallBox">
-	<div class="MessageContainer">
-		<div class="BoxFrameHorizontal" style="background-image:url({{ template_path }}/images/content/box-frame-horizontal.gif);"></div>
-	<div class="BoxFrameEdgeLeftTop" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></div>
-		<div class="BoxFrameEdgeRightTop" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></div>
-		<div class="Message">
-			<div class="BoxFrameVerticalLeft" style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></div>
-			<div class="BoxFrameVerticalRight" style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></div>
-			<table>
-				<tr>
-					<td width="100%"></td>
-					<td>
-						<table border="0" cellspacing="0" cellpadding="0" >
-							<form action="{{ getLink('account/logout') }}" method="post" >
-								<tr>
-									<td style="border:0px;">
-										{{ include('buttons.logout.html.twig') }}
-									</td>
-								</tr>
-							</form>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<div class="BoxFrameHorizontal" style="background-image:url({{ template_path }}/images/content/box-frame-horizontal.gif);"></div>
-		<div class="BoxFrameEdgeRightBottom" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></div>
-		<div class="BoxFrameEdgeLeftBottom" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></div>
-	</div>
-</div>
-<br/>
 {# if account dont have recovery key show hint #}
-{% if recovery_key is empty %}
-<div class="SmallBox">
-	<div class="MessageContainer">
-		<div class="BoxFrameHorizontal" style="background-image:url({{ template_path }}/images/content/box-frame-horizontal.gif);"></div>
-		<div class="BoxFrameEdgeLeftTop" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></div>
-		<div class="BoxFrameEdgeRightTop" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></div>
-		<div class="Message">
-			<div class="BoxFrameVerticalLeft" style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></div>
-			<div class="BoxFrameVerticalRight" style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></div>
-			<table>
-				<tr>
-					<td class="LabelV" >Hint:</td>
-					<td style="width:100%;" >You can register your account for increased protection. Click on "Register Account" and get your free recovery key today!</td>
-				</tr>
-			</table>
-			<div style="text-align:center">
-				<table border="0" cellspacing="0" cellpadding="0" style="margin-left: auto; margin-right: auto;">
-					<form action="{{ getLink('account/register') }}" method="post">
-						<tr>
-							<td style="border:0;">
-								{{ include('buttons.register_account.html.twig') }}
-							</td>
-						</tr>
-					</form>
-				</table>
-			</div>
-		</div>
-		<div class="BoxFrameHorizontal" style="background-image:url({{ template_path }}/images/content/box-frame-horizontal.gif);"></div>
-		<div class="BoxFrameEdgeRightBottom" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></div>
-		<div class="BoxFrameEdgeLeftBottom" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></div>
-	</div>
-</div>
-<br/>
-{% endif %}
 
 {% if email_request %}
 <div class="SmallBox">
@@ -416,7 +390,7 @@ margin: auto 5x;
 		<div class="BoxFrameEdgeLeftBottom" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></div>
 	</div>
 </div>
-<br/><br/>
+<br/>
 {% endif %}
 <a name="General+Information" ></a>
 <div class="TopButtonContainer">
@@ -447,34 +421,41 @@ margin: auto 5x;
 					<table style="width:100%;" >
 						<tr>
 							<td>
-								<div class="TableShadowContainerRightTop">
-									<div class="TableShadowRightTop" style="background-image:url({{ template_path }}/images/content/table-shadow-rt.gif);"></div>
-								</div>
-								<div class="TableContentAndRightShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-rm.gif);">
+								
+								<div class="TableContentAndRightShadow">
 									<div class="TableContentContainer">
 										<table class="TableContent" width="100%">
-											<tr style="background-color: {{ config.lightborder }};" >
+											<tr style="background-color: {{ config.lightborder }};">
 												<td class="LabelV" >Account {% if constant('USE_ACCOUNT_NAME') %}Name{% else %}Number{% endif %}:</td>
 												<td style="width:90%;" >{{ account }}</td>
 											</tr>
-											<tr style="background-color: {{ config.darkborder }};" >
+											<tr style="background-color: {{ config.darkborder }};">
 												<td class="LabelV" >Email Address:</td>
 												<td style="width:90%;" >{{ account_email ~ email_change}}</td>
 											</tr>
-											<tr style="background-color: {{ config.lightborder }};" >
+											<tr style="background-color: {{ config.lightborder }};">
 												<td class="LabelV" >Created:</td>
-												<td>{{ account_created|date("j F Y, G:i:s") }}</td>
+												<td>{{ account_created|date("M d Y, G:i:s") }}</td>
 											</tr>
-											<tr style="background-color: {{ config.darkborder }};" >
+											<tr style="background-color: {{ config.darkborder }};">
 												<td class="LabelV" >Last Login:</td>
-												<td>{{ "now"|date("j F Y, G:i:s") }}</td>
+												<td>{{ "now"|date("M d Y, G:i:s") }}</td>
 											</tr>
 											{% autoescape false %}
-											<tr style="background-color: {{ config.lightborder }};" >
+											<tr style="background-color: {{ config.lightborder }};">
 												<td class="LabelV" >Account Status:</td>
 												<td>{{ account_status }}</td>
 											</tr>
-											<tr style="background-color: {{ config.darkborder }};" >
+											<tr style="background-color: {{ config.darkborder }};">
+												<td class="LabelV" >Tibia Coins:</td>
+												<td>{{ account_coins }} <img src="{{ template_path }}/images/account/icon-tibiacoin.png" class="VSCCoinImages"></span> (Including: {{ account_coins }} <img src="{{ template_path }}/images/account/icon-tibiacointrusted.png" class="VSCCoinImages">)
+												</td>
+											</tr>
+											<tr style="background-color: {{ config.lightborder }};">
+												<td class="LabelV" >Tournament Coins:</td>
+												<td>0 <img src="{{ template_path }}/images/account/icon-tournamentcoin.png" class="VSCCoinImages"></td>
+											</tr>
+											<tr style="background-color: {{ config.darkborder }};">
 												<td class="LabelV" >Registered:</td>
 												<td>{{ account_registered }}</td>
 											</tr>
@@ -482,11 +463,7 @@ margin: auto 5x;
 										</table>
 									</div>
 								</div>
-								<div class="TableShadowContainer">
-									<div class="TableBottomShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-bm.gif);" >
-										<div class="TableBottomLeftShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-bl.gif);"></div>
-										<div class="TableBottomRightShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-br.gif);"></div>  									</div>
-								</div>
+								
 							</td>
 						</tr>
 						<tr>
@@ -542,7 +519,10 @@ margin: auto 5x;
 		</tr>
 	</table>
 </div>
+
 <br/>
+
+{% if recovery_key is empty %}
 <a name="Public+Information"></a>
 <div class="TopButtonContainer">
 	<div class="TopButton">
@@ -572,10 +552,8 @@ margin: auto 5x;
 					<table style="width:100%;">
 						<tr>
 							<td>
-								<div class="TableShadowContainerRightTop">
-									<div class="TableShadowRightTop" style="background-image:url({{ template_path }}/images/content/table-shadow-rt.gif);" ></div>
-								</div>
-								<div class="TableContentAndRightShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-rm.gif);" >
+								
+								<div class="TableContentAndRightShadow">
 									<div class="TableContentContainer">
 										<table class="TableContent" width="100%">
 											<tr>
@@ -586,7 +564,7 @@ margin: auto 5x;
 															<td style="width:90%;" >{{ account_rlname }}</td>
 														</tr>
 														<tr>
-															<td class="LabelV" >Location:</td>
+															<td class="LabelV" >Address:</td>
 															<td style="width:90%;" >{{ account_location }}</td>
 														</tr>
 													</table>
@@ -606,11 +584,7 @@ margin: auto 5x;
 										</table>
 									</div>
 								</div>
-								<div class="TableShadowContainer">
-									<div class="TableBottomShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-bm.gif);">
-										<div class="TableBottomLeftShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-bl.gif);"></div>
-										<div class="TableBottomRightShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-br.gif);"></div>  									</div>
-								</div>
+								
 							</td>
 						</tr>
 					</table>
@@ -619,7 +593,9 @@ margin: auto 5x;
 		</tr>
 	</table>
 </div>
+{% endif %}
 <br/>
+
 <a name="Account+Logs" ></a>
 <div class="TopButtonContainer">
 	<div class="TopButton">
@@ -649,10 +625,7 @@ margin: auto 5x;
 					<table style="width:100%;">
 						<tr>
 							<td>
-								<div class="TableShadowContainerRightTop">
-									<div class="TableShadowRightTop" style="background-image:url({{ template_path }}/images/content/table-shadow-rt.gif);"></div>
-								</div>
-								<div class="TableContentAndRightShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-rm.gif);" >
+								<div class="TableContent">
 									<div class="TableContentContainer" >
 										<table class="TableContent" width="100%">
 											<tr class="LabelH">
@@ -666,7 +639,7 @@ margin: auto 5x;
 												{% set i = i + 1 %}
 											<tr style="background-color: {{ getStyle(i) }}">
 												<td>{{ action.action }}</td>
-												<td>{{ action.date|date("jS F Y H:i:s") }}</td>
+												<td>{{ action.date|date("d M Y, H:i:s") }}</td>
 												<td>{{ action.ip }}</td>
 											</tr>
 											{% endfor %}
@@ -674,14 +647,6 @@ margin: auto 5x;
 										</table>
 									</div>
 								</div>
-								<div class="TableShadowContainer" >
-									<div class="TableBottomShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-bm.gif);" >
-										<div class="TableBottomLeftShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-bl.gif);"></div>
-										<div class="TableBottomRightShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-br.gif);"></div>
-									</div>
-								</div>
-							</td>
-							<td align=right>
 							</td>
 						</tr>
 					</table>
@@ -691,136 +656,30 @@ margin: auto 5x;
 	</table>
 </div>
 <br/>
-<a name="Characters" ></a>
-<div class="TopButtonContainer">
-	<div class="TopButton" >
-		<a href="#top">
-			<img style="border:0px;" src="{{ template_path }}/images/content/back-to-top.gif" />
-		</a>
-	</div>
-</div>
-<div class="TableContainer">
-	<table class="Table5" cellpadding="0" cellspacing="0">
-		<div class="CaptionContainer" >
-			<div class="CaptionInnerContainer">
-				<span class="CaptionEdgeLeftTop" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
-				<span class="CaptionEdgeRightTop" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
-				<span class="CaptionBorderTop" style="background-image:url({{ template_path }}/images/content/table-headline-border.gif);"></span>
-				<span class="CaptionVerticalLeft" style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></span>
-				<div class="Text">Characters</div>
-				<span class="CaptionVerticalRight" style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></span>
-				<span class="CaptionBorderBottom" style="background-image:url({{ template_path }}/images/content/table-headline-border.gif);"></span>
-				<span class="CaptionEdgeLeftBottom" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
-				<span class="CaptionEdgeRightBottom" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
-			</div>
-		</div>
-		<tr>
-			<td>
-				<div class="InnerTableContainer">
-					<table style="width:100%;">
-						<tr>
-							<td>
-								<div class="TableShadowContainerRightTop">
-									<div class="TableShadowRightTop" style="background-image:url({{ template_path }}/images/content/table-shadow-rt.gif);"></div>
-								</div>
-								<div class="TableContentAndRightShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-rm.gif);">
-									<div class="TableContentContainer">
-										<table class="TableContent" width="100%">
-											<tr class="LabelH">
-												<td style="width:65%">Name</td>
-												<td style="width:15%">Level</td>
-												<td style="width:7%">Status</td>
-												<td style="width:5%">&#160;</td>
-											</tr>
-											{% set i = 0 %}
-											{% for player in players %}
-												{% set i = i + 1 %}
-											<tr style="background-color: {{ getStyle(i) }};">
-												<td>
-													<nobr>{{ i }}. {{ player.getName() }}{% if player.isDeleted() %}<span style="color: red"><b> [ DELETED ] </b></span>{% endif %}</nobr>
-												</td>
-												<td>
-													<nobr>{{ player.getLevel() }} {{ config.vocations[player.getVocation()] }}</nobr>
-												</td>
-												{% if player.isOnline() %}
-												<td><span style="color: green"><b>Online</b></span></td>
-												{% else %}
-												<td><span style="color: red"><b>Offline</b></span></td>
-												{% endif %}
-												<td>[<a href="{{ getLink('account/character/comment/' ~ player.getName|urlencode) }}" >Edit</a>]</td>
-											</tr>
-											{% endfor %}
-										</table>
-									</div>
-								</div>
-								<div class="TableShadowContainer">
-									<div class="TableBottomShadow" style="background-image:url('.$template_path.'/images/content/table-shadow-bm.gif);" >
-										<div class="TableBottomLeftShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-bl.gif);"></div>
-										<div class="TableBottomRightShadow" style="background-image:url({{ template_path }}/images/content/table-shadow-br.gif);"></div>  									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<table class="InnerTableButtonRow" cellpadding="0" cellspacing="0" >
-									<tr>
-										<td>
-											<table border="0" cellspacing="0" cellpadding="0" >
-												<form action="{{ getLink('account/character/create') }}" method="post" >
-													<tr>
-														<td style="border:0px;" >
-															{{ include('buttons.create_character.html.twig') }}
-														</td>
-													</tr>
-												</form>
-											</table>
-										</td>
-										{% if config.account_change_character_name %}
-										<td>
-											<table border="0" cellspacing="0" cellpadding="0" >
-												<form action="{{ getLink('account/character/name') }}" method="post" >
-													<tr>
-														<td style="border:0px;" >
-															{{ include('buttons.change_name.html.twig') }}
-														</td>
-													</tr>
-												</form>
-											</table>
-										</td>
-										{% endif %}
-										{% if config.account_change_character_sex %}
-										<td>
-											<table border="0" cellspacing="0" cellpadding="0" >
-												<form action="{{ getLink('account/character/sex') }}" method="post" >
-													<tr>
-														<td style="border:0px;" >
-															{{ include('buttons.change_sex.html.twig') }}
-														</td>
-													</tr>
-												</form>
-											</table>
-										</td>
-										{% endif %}
-										<td style="width:100%;" ></td>
-										<td>
-											<table border="0" cellspacing="0" cellpadding="0">
-												<form action="{{ getLink('account/character/delete') }}" method="post">
-													<tr>
-														<td style="border:0px;">
-															{{ include('buttons.delete_character.html.twig') }}
-														</td>
-													</tr>
-												</form>
-											</table>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</td>
-		</tr>
+
+{% if config.account_change_character_name %}
+<td>
+	<table border="0" cellspacing="0" cellpadding="0" >
+		<form action="{{ getLink('account/character/name') }}" method="post" >
+			<tr>
+				<td style="border:0px;" >
+					{{ include('buttons.change_name.html.twig') }}
+				</td>
+			</tr>
+		</form>
 	</table>
-</div>
-<br/><br/>
+</td>
+{% endif %}
+{% if config.account_change_character_sex %}
+<td>
+	<table border="0" cellspacing="0" cellpadding="0" >
+		<form action="{{ getLink('account/character/sex') }}" method="post" >
+			<tr>
+				<td style="border:0px;" >
+					{{ include('buttons.change_sex.html.twig') }}
+				</td>
+			</tr>
+		</form>
+	</table>
+</td>
+{% endif %}

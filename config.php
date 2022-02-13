@@ -29,7 +29,7 @@ $config = array(
 	 * WARNING2: on 'dev' all PHP errors/warnings are displayed
 	 * Recommended: 'prod' cause of speed (page load time is better)
 	 */
-	'env' => 'prod', // 'prod' for production and 'dev' for development
+	'env' => 'dev', // 'prod' for production and 'dev' for development
 
 	'template' => 'tibiacom', // template used by website (kathrine, tibiacom)
 	'template_allow_change' => false, // allow users to choose their own template while browsing website?
@@ -91,6 +91,8 @@ $config = array(
 
 	// account
 	'account_management' => true, // disable if you're using other method to manage users (fe. tfs account manager)
+	'account_login_by_email' => true, // use email instead of Account Name like in latest Tibia
+	'account_login_by_email_fallback' => false, // allow also additionally login by Account Name/Number (for users that might forget their email)
 	'account_create_auto_login' => false, // auto login after creating account?
 	'account_create_character_create' => true, // allow directly to create character on create account page?
 	'account_mail_verify' => false, // force users to confirm their email addresses when registering account

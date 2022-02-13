@@ -1,3 +1,6 @@
-{% set button_name = 'Logout' %}
-{% set button_image = '_sbutton_logout' %}
-{% include('buttons.base.html.twig') %}
+{% spaceless %}
+<div class="BigButton" style="background-image:url({{ template_path }}/images/global/buttons/sbutton_red.gif)">
+<div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url({{ template_path }}/images/global/buttons/sbutton_red_over.gif); visibility: hidden;"></div>
+<input class="BigButtonText" type="submit" value="Logout"></div>
+</div>
+{% endspaceless %}

@@ -23,4 +23,6 @@ if (isset($errors)) {
 $twig->display('admin.login.html.twig', array(
 	'logout' => $logout,
 	'account' => USE_ACCOUNT_NAME ? 'Name' : 'Number',
+	'account_login_by' => getAccountLoginByLabel(),
+	'errors' => isset($errors)? $errors : ''
 ));
