@@ -68,9 +68,8 @@ Veja: [Contributing](https://github.com/otsoft/myaac/wiki/Contributing) em nosso
 
 ### Outras notas
 
-Se você tem uma grande ideia ou quer contribuir com o projeto - visite nosso site em https://www.my-aac.org
+Se você tem uma grande ideia ou quer contribuir com o projeto.
 
 ### Licença
 
 Este programa e todos os arquivos associados são lançados sob a Licença Pública GNU.
-Consulte [LICENSE](https://github.com/slawkens/myaac/blob/master/LICENSE) para obter detalhes.
