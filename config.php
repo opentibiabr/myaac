@@ -143,6 +143,19 @@ $config = array(
 		0 => 'Female',
 		1 => 'Male'
 	),
+	
+	// vocations
+	'vocations' => array(
+		0 => 'None',
+		1 => 'Sorcerer',
+		2 => 'Druid',
+		3 => 'Paladin',
+		4 => 'Knight',
+		5 => 'Master Sorcerer',
+		6 => 'Elder Druid',
+		7 => 'Royal Paladin',
+		8 => 'Elite Knight',
+	),
 
 	// new character config
 	'character_samples' => array( // vocations, format: ID_of_vocation => 'Name of Character to copy'
@@ -187,7 +200,7 @@ $config = array(
 
 	// guilds
 	'guild_management' => true, // enable guild management system on the site?
-	'guild_need_level' => 1, // min. level to form a guild
+	'guild_need_level' => 100, // min. level to form a guild
 	'guild_need_premium' => true, // require premium account to form a guild?
 	'guild_image_size_kb' => 80, // maximum size of the guild logo image in KB (kilobytes)
 	'guild_description_chars_limit' => 1000, // limit of guild description
@@ -198,7 +211,7 @@ $config = array(
 	'online_record' => true, // display players record?
 	'online_vocations' => false, // display vocation statistics?
 	'online_vocations_images' => false, // display vocation images?
-	'online_skulls' => false, // display skull images
+	'online_skulls' => true, // display skull images
 	'online_outfit' => true,
 	'online_afk' => false,
 
@@ -227,16 +240,16 @@ $config = array(
 	// characters page
 	'characters' => array( // what things to display on character view page (true/false in each option)
 		'level' => true,
-		'experience' => false,
-		'magic_level' => false,
-		'balance' => false,
+		'experience' => true,
+		'magic_level' => true,
+		'balance' => true,
 		'marriage_info' => true, // only 0.3
 		'outfit' => true,
 		'creation_date' => true,
 		'quests' => true,
 		'skills' => true,
 		'equipment' => true,
-		'frags' => false,
+		'frags' => true,
 		'deleted' => false, // should deleted characters from same account be still listed on the list of characters? When enabled it will show that character is "[DELETED]"
 	),
 	'quests' => array(
@@ -261,9 +274,36 @@ $config = array(
 	'news_date_format' => 'j.n.Y', // check php manual date() function for more info about this
 	'news_author' => false, // show author of the news
 	
-	// custom systems
-	'client_link' => 'https://www.lucasgiovanni.com',
-	'discord_link' => 'https://www.lucasgiovanni.com',
+	// status bar
+	'status_bar' => true,
+	'client_link' => 'https://www.lucasgiovanni.com', // link to download tibia client
+	'discord_link' => 'https://www.lucasgiovanni.com', // link to join discord channel
+	'whatsapp_link' => '5511912345678', // wa.me/5511912345678
+	'instagram_link' => 'test', // www.instagram.com/PROFILE
+	'facebook_link' => 'test', // www.facebook.com/PAGE
+	'collapse_status' => false,
+	
+	// events
+	'events_xml' => $config['template_path'] . "data/xml/events.xml",
+	
+	// slide
+	'carousel_status' => false,
+	'carousel' => array(
+		'carousel_1' => 'runemaster_small.jpg',
+		'carousel_2' => 'merrygarb_small.jpg',
+		'carousel_3' => 'mothcape_small.jpg',
+	),
+	
+	// load page
+	'pace_load' => true, // load page top bar
+	'pace_theme' => 'flat-top', // big-counter, bounce, center-atom, center-circle, center-radar, center-simple, corner-indicator, fill-left, flash, flat-top, loading-bar, max-osx, material, minimal
+	'pace_color' => 'white', // black, blue, green, orange, pink, purple, red, silver, white, yellow
+	
+	// char bazaar
+	'bazaar_create' => 50, // price to create auction
+	'bazaar_tax' => 12, // tax to bid
+	'bazaar_bid' => 50, // price to bid
+	'bazaar_accountid' => 1, // account id to move auction character
 	
 	// gifts/shop system
 	'gifts_system' => true,

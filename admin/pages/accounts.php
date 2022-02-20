@@ -240,35 +240,31 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
 	<?php if (isset($account) && $account->isLoaded()) { ?>
 
 	<form action="<?php echo $base . ((isset($id) && $id > 0) ? '&id=' . $id : ''); ?>" method="post"
-		  class="form-horizontal">
-		<div class="col-md-8">
+		  class="form-horizontal col-md-8">
+		<div class="">
 			<div class="box box-primary">
 				<div class="box-body">
 					<div class="row">
 						<?php if(USE_ACCOUNT_NAME): ?>
-						<div class="col-xs-4">
+						<div class="col-4 mb-3">
 							<label for="name" class="control-label">Account Name:</label>
 							<input type="text" class="form-control" id="name" name="name"
 								   autocomplete="off" style="cursor: auto;"
 								   value="<?php echo $account->getName(); ?>"/>
 						</div>
 						<?php endif; ?>
-						<div class="col-xs-5">
+						<div class="col-5 mb-3">
 							<label for="c_pass" class="control-label">Password: (check to change)</label>
 							<div class="input-group">
-                            <span class="input-group-addon">
-                              <input type="checkbox"
-									 name="c_pass"
-									 id="c_pass"
-									 value="false"
-									 class="input_control"/>
-                            </span>
+                            <div class="input-group-addon btn">
+                              <input type="checkbox" name="c_pass" id="c_pass" value="false" class="input_control"/>
+                            </div>
 								<input type="text" class="form-control" id="pass" name="pass"
 									   autocomplete="off" maxlength="20"
 									   value=""/>
 							</div>
 						</div>
-						<div class="col-xs-3">
+						<div class="col-3 mb-3">
 							<label for="account_id" class="control-label">Account ID:</label>
 							<input type="text" class="form-control" id="account_id" name="account_id"
 								   autocomplete="off" style="cursor: auto;" size="8" maxlength="11" disabled
@@ -280,7 +276,7 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
 						$acc_group = $account->getAccGroupId();
 						if ($hasTypeColumn) {
 							$acc_type = array("Normal", "Tutor", "Senior Tutor", "Gamemaster", "God"); ?>
-							<div class="col-xs-6">
+							<div class="col-6">
 								<label for="group" class="control-label">Account Type:</label>
 								<select name="group" id="group" class="form-control">
 									<?php foreach ($acc_type as $id => $a_type): ?>
@@ -291,7 +287,7 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
 							<?php
 						} elseif ($hasGroupColumn) {
 							?>
-							<div class="col-xs-6">
+							<div class="col-6 mb-3">
 								<label for="group" class="control-label">Account Type:</label>
 								<select name="group" id="group" class="form-control">
 									<?php
@@ -301,7 +297,7 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
 								</select>
 							</div>
 						<?php } ?>
-						<div class="col-xs-6">
+						<div class="col-6 mb-3">
 							<label for="web_flags" class="control-label">Website Access:</label>
 							<select name="web_flags" id="web_flags" class="form-control">
 								<?php $web_acc = array("None", "Admin", "Super Admin", "(Admin + Super Admin)");
@@ -313,14 +309,14 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
 					</div>
 					<div class="row">
 						<?php if($hasSecretColumn): ?>
-						<div class="col-xs-6">
+						<div class="col-6 mb-3">
 							<label for="secret" class="control-label">Secret:</label>
 							<input type="text" class="form-control" id="secret" name="secret"
 								   autocomplete="off" style="cursor: auto;" size="8" maxlength="11"
 								   value="<?php echo $account->getCustomField('secret'); ?>"/>
 						</div>
 						<?php endif; ?>
-						<div class="col-xs-6">
+						<div class="col-6 mb-3">
 							<label for="key" class="control-label">Key:</label>
 							<input type="text" class="form-control" id="key" name="key"
 								   autocomplete="off" style="cursor: auto;" size="8" maxlength="11"
@@ -328,28 +324,28 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-6 mb-3">
 							<label for="email" class="control-label">Email:</label>
 							<input type="text" class="form-control" id="email" name="email"
 								   autocomplete="off" maxlength="20"
 								   value="<?php echo $account->getEMail(); ?>"/>
 						</div>
 						<?php if ($hasCoinsColumn): ?>
-							<div class="col-xs-6">
+							<div class="col-6 mb-3">
 								<label for="t_coins" class="control-label">Tibia Coins:</label>
 								<input type="text" class="form-control" id="t_coins" name="t_coins"
 									   autocomplete="off" maxlength="8"
 									   value="<?php echo $account->getCustomField('coins') ?>"/>
 							</div>
 						<?php endif; ?>
-						<div class="col-xs-6">
+						<div class="col-6 mb-3">
 							<label for="p_days" class="control-label">Premium Days:</label>
 							<input type="text" class="form-control" id="p_days" name="p_days"
 								   autocomplete="off" maxlength="11"
 								   value="<?php echo $account->getPremDays(); ?>"/>
 						</div>
 						<?php if ($hasPointsColumn): ?>
-							<div class="col-xs-6">
+							<div class="col-6 mb-3">
 								<label for="p_points" class="control-label">Premium Points:</label>
 								<input type="text" class="form-control" id="p_points" name="p_points"
 									   autocomplete="off" maxlength="8"
@@ -358,19 +354,19 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
 						<?php endif; ?>
 					</div>
 					<div class="row">
-						<div class="col-xs-4">
+						<div class="col-4 mb-3">
 							<label for="rl_name" class="control-label">RL Name:</label>
 							<input type="text" class="form-control" id="rl_name" name="rl_name"
 								   autocomplete="off" maxlength="20"
 								   value="<?php echo $account->getRLName(); ?>"/>
 						</div>
-						<div class="col-xs-4">
+						<div class="col-4 mb-3">
 							<label for="rl_loca" class="control-label">Location:</label>
 							<input type="text" class="form-control" id="rl_loca" name="rl_loca"
 								   autocomplete="off" maxlength="20"
 								   value="<?php echo $account->getLocation(); ?>"/>
 						</div>
-						<div class="col-xs-4">
+						<div class="col-4 mb-3">
 							<label for="rl_country" class="control-label">Country:</label>
 							<select name="rl_country" id="rl_country" class="form-control">
 								<?php foreach ($countries as $id => $a_type): ?>
@@ -380,13 +376,13 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-4">
+						<div class="col-4 mb-3">
 							<label for="created" class="control-label">Created:</label>
 							<input type="text" class="form-control" id="created" name="created"
 								   autocomplete="off" maxlength="20"
 								   value="<?php echo $account->getCustomField('created'); ?>"/>
 						</div>
-						<div class="col-xs-4">
+						<div class="col-4 mb-3">
 							<label for="web_lastlogin" class="control-label">Web Last Login:</label>
 							<input type="text" class="form-control" id="web_lastlogin" name="web_lastlogin"
 								   autocomplete="off" maxlength="20"
@@ -396,9 +392,9 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
 
 					<input type="hidden" name="save" value="yes"/>
 					<div class="box-footer">
-						<a href="<?php echo ADMIN_URL; ?>?p=accounts"><span class="btn btn-danger">Cancel</span></a>
+						<a href="<?php echo ADMIN_URL; ?>?p=accounts"><span class="btn btn-danger"><i class="fa fa-remove"></i> Cancel</span></a>
 						<div class="pull-right">
-							<input type="submit" class="btn btn-primary" value="Update">
+							<input type="submit" class="btn btn-success" value="Update">
 						</div>
 					</div>
 
@@ -423,7 +419,7 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
 					<input type="text" class="form-control" name="search_name" value="<?php echo $search_account; ?>"
 						   maxlength="32" size="32">
 					<span class="input-group-btn">
-                          <button type="submit" type="button" class="btn btn-info btn-flat">Search</button>
+                          <button type="submit" type="button" class="btn btn-success"><i class="fa fa-search"></i> Search</button>
                         </span>
 				</div>
 			</form>
@@ -456,7 +452,7 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
                             <td>' . $i . '.</td>
                             <td>' . $p['name'] . '</td>
                             <td>' . $p['level'] . '</td>
-                            <td><a href="?p=players&search_name=' . $p['name'] . '"><span class="btn btn-success btn-sm edit btn-flat"><i class="fa fa-edit"></i></span></a></span></td>
+                            <td><a href="?p=players&search_name=' . $p['name'] . '"><span class="btn btn-success btn-sm edit"><i class="fa fa-edit"></i></span></a></span></td>
                         </tr>';
 							$i++;
 						} ?>

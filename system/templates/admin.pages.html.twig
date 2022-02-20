@@ -2,7 +2,7 @@
 	<div class="box-header">
 		<h3 class="box-title">Pages:</h3>
 		<div class="box-tools pull-right">
-			<a href="?p=pages&action=new"><span class="btn btn-success">New</span></a>
+			<a href="?p=pages&action=new" title="New"><span class="btn btn-success"><i class="fa fa-plus-circle"></i> New</span></a>
 		</div>
 	</div>
 	<div class="box-body">
@@ -25,19 +25,19 @@
 							<td>{% if page.php %}Yes{% else %}No{% endif %}</td>
 							<td>
 								<a href="?p=pages&action=edit&id={{ page.id }}" class="ico" title="Edit"><span
-											class="btn btn-success btn-sm edit btn-flat"><i
+											class="btn btn-success btn-sm edit"><i
 												class="fa fa-edit"></i></span></a>
 								<a href="?p=pages&action=delete&id={{ page.id }}" class="ico"
 								   onclick="return confirm('Are you sure?');" title="Delete"><span
-											class="btn btn-danger btn-sm delete btn-flat"><i
+											class="btn btn-danger btn-sm delete"><i
 												class="fa fa-trash"></i></span></a>
 								<a href="?p=pages&action=hide&id={{ page.id }}" class="ico"
 								   title="{% if page.hidden != 1 %}Hide{% else %}Show{% endif %}">
 									{% if page.hidden != 1 %}
-										<span class="btn btn-primary btn-sm btn-flat"><i
+										<span class="btn btn-primary btn-sm"><i
 													class="fa fa-eye"></i></span>
 									{% else %}
-										<span class="btn btn-default btn-sm btn-flat"><i
+										<span class="btn btn-default btn-sm"><i
 													class="fa fa-eye-slash"></i></span>
 									{% endif %}
 								</a>

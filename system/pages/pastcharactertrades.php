@@ -1,1149 +1,1084 @@
-<style>
-form {
-    display: block;
-    margin-top: 0em;
-	margin-block-end: 0em;
+<?php
+/**
+ *
+ * Char Bazaar
+ *
+ */
+defined('MYAAC') or die('Direct access not allowed!');
+$title = 'Auction History';
 
-}
-.BigButtonText {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 135px;
-    height: 25px;
-    margin: 0;
-    padding: 0;
-    cursor: pointer;
-    background: 0 0;
-    border: none;
-    text-align: center;
-    color: #ffd18c;
-    font-family: Verdana,Arial,Times New Roman,sans-serif;
-    font-size: 12px;
-    font-weight: 400;
-    z-index: 20;
-    text-shadow: -1px -1px 0 #000, 0 -1px 0 #000, 1px -1px 0 #000, 1px 0 0 #000, 1px 1px 0 #000, 0 1px 0 #000, -1px 1px 0 #000, -1px 0 0 #000;
-}
-.LevelRange {
-    float: left;
-    height: 8px;
-    width: 8px;
-    margin-right: 5px;
-    border-bottom: 1px solid #000;
-}
-.LevelRangeInput {
-    text-align: right;
-    width: 100px;
+$getAccountCoins = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $account_logged->getId() .'');
+$getAccountCoins = $getAccountCoins->fetch();
+
+if($logged){
+?>
+<div class="CharacterTradeTibiaCoinBalance"><?php echo $getAccountCoins['coins'] ?><img src="<?php echo $template_path; ?>/images//account/icon-tibiacoin.png" class="VSCCoinImages" title="Tibia Coins"> <?php echo $getAccountCoins['coins'] ?><img src="<?php echo $template_path; ?>/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins"></div>
+<?php
 }
 
-.AuctionInput {
-    width: 115px;
-    margin-right: 7px;
-    float: left;
-}
-.AuctionFilterHelper {
-    clear: both;
-}
-.AuctionInputLong {
-    width: 237px;
-}
+$getPageAuctions = $_GET['subtopic'];
+$getPageDetails = $_GET['details'];
+$getPageAction = $_GET['action'];
 
-#CurrentTradesItemSearch #ItemInput {
-    width: 350px;
-}
+if(empty($getPageDetails) and empty($getPageAction)){
+?>
+<?php
+	if(!$logged){
+?>
+<div class="SmallBox">
+  <div class="MessageContainer">
+    <div class="BoxFrameHorizontal" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-horizontal.gif);"></div>
+    <div class="BoxFrameEdgeLeftTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></div>
+    <div class="BoxFrameEdgeRightTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></div>
+    <div class="Message">
+      <div class="BoxFrameVerticalLeft" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></div>
+      <div class="BoxFrameVerticalRight" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></div>
+      <table style="width: 100%;">
+        <tbody>
+          <tr>
+            <td><div style="float: right;">
+                  <a href="?account/manage" target="_blank"><div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div><input name="auction_confirm" class="BigButtonText" type="button" value="Login"></div></div></a>
+              </div>
+              <p>Below you find all characters which have been <b>auctioned in the last 30 days.</b></p>
+              <p><b>Log in</b> to your account for more options in this section.</p>
+			  </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="BoxFrameHorizontal" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-horizontal.gif);"></div>
+    <div class="BoxFrameEdgeRightBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></div>
+    <div class="BoxFrameEdgeLeftBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></div>
+  </div>
+</div>
+<br>
+<?php } ?>
 
-.DisplayOptionsContent #ItemInput {
-    width: 352px;
-}
-.DisplayOptionsContent {
-    min-height: 25px;
-    min-width: 600px;
-}
-.DisplayOptionsContent .DisplayOptionsLabel {
-    float: left;
-    padding-top: 2px;
-}
-.DisplayOptionsButton .BigButton {
-	position: absolute;
-	right: 5px;
-}
-
-.Content .BoxContent td {
-    font-family: Verdana,Arial,Times New Roman,sans-serif;
-    font-size: 10pt;
-    color: #5a2800;
-}
-.LabelV100 {
-    font-weight: 700;
-    padding-right: 10px;
-    white-space: nowrap;
-    vertical-align: top;
-    width: 100px;
-}
-.LabelV120 {
-    font-weight: 700;
-    padding-right: 10px;
-    white-space: nowrap;
-    vertical-align: top;
-    width: 120px;
-}
-.PageNavigation {
-    padding-right: 10px;
-    padding-bottom: 7px;
-}
-	
-.TableContentContainer {
-    border: 1px solid #5f4d41;
-    position: relative;
-    margin-right: 7px;
-    margin-bottom: 5px;
-    height: 100%;
-    background-color: #d4c0a1;
-    padding: 0;
-}
-.InnerTableContainer .TableContentContainer {
-    box-shadow: 3px 3px 2px #875f3e;
-}
-
-
-.AuctionLinks {
-    position: absolute;
-    right: 6px;
-    top: 4px;
-    height: 15px;
-}
-.AuctionLinks a {
-    margin-left: 5px;
-}
-.AuctionCharacterName {
-    font-weight: 700;
-	margin-bottom: 4px;
-}
-.AuctionBody {
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: stretch;
-    align-content: stretch;
-    margin-top: 5px;
-    padding-top: 5px;
-    border-top: 1px dashed #5a2800;
-}
-.AuctionOutfit {
-    position: relative;
-}
-.AuctionBodyBlock {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-.AuctionDisplay {
-    flex-basis: 76px;
-    flex-grow: 0;
-    flex-shrink: 0;
-    order: 0;
-    padding: 1px;
-    background-color: #f1e0c6;
-    border: 1px solid #5a2800;
-    box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 75%);
-    float: left;
-    margin-right: 10px;
-}
-.AuctionNewIcon {
-    position: absolute;
-    left: -4px;
-    top: -4px;
-    z-index: 100;
-}
-.AuctionOutfitImage {
-    position: absolute;
-    left: 5px;
-    top: 2px;
-    z-index: 100;
-    image-rendering: crisp-edges;
-    image-rendering: pixelated;
-}
-.AuctionItemsViewBox {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(36px,1fr));
-    grid-auto-rows: 38px;
-}
-
-.VSCCoinImages {
-    position: relative;
-    margin-left: 2px;
-    margin-right: 2px;
-}
-.CVIcon.CVIconObject {
-    width: 32px;
-    height: 32px;
-    overflow: hidden;
-}
-.CVIcon {
-    float: left;
-    position: relative;
-    z-index: 150;
-    cursor: help;
-    background-color: #d5c0a1;
-    border: 1px solid #5a2800;
-    margin: auto;
-    padding: 1px;
-    width: 64px;
-    height: 64px;
-    overflow: hidden;
-    image-rendering: crisp-edges;
-    image-rendering: pixelated;
-}
-.CVIcon.CVIconObject img {
-    width: 32px;
-    height: 32px;
-}
-
-.ObjectAmount {
-    position: absolute;
-    bottom: 0;
-    right: 2px;
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    z-index: 100;
-    color: #fff;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-}
-.ShortAuctionData {
-    position: relative;
-    min-width: 300px;
-    flex-shrink: 0;
-    flex-grow: 1;
-    padding: 10px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    text-align: left;
-    background-color: #f1e0c6;
-    border: 1px solid #5a2800;
-    box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 50%);
-}
-.ShortAuctionData .AuctionTimer {
-    position: absolute;
-    top: 18px;
-    right: 10px;
-    width: 200px;
-    text-align: right;
-    background-color: #f1e0c6;
-    color: red;
-}
-.ShortAuctionData .ShortAuctionDataLabel {
-    width: 115px;
-    font-weight: 700;
-    float: left;
-}
-.ShortAuctionDataValue {
-    text-align: right;
-}
-.ShortAuctionDataBidRow {
-    margin-top: 5px;
-}
-.CurrentBid {
-    width: 142px;
-    flex-shrink: 0;
-    margin-left: 10px;
-    padding: 5px;
-    text-align: center;
-    background-color: #f1e0c6;
-    border: 1px solid #5a2800;
-    box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 50%);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-.CurrentBid .Container {
-    margin-right: auto;
-    margin-left: auto;
-    text-align: center;
-}
-.MyMaxBidLabel {
-    font-weight: 700;
-}
-.MyMaxBidInput {
-    width: 131px;
-    margin-top: 4px;
-    margin-bottom: 4px;
-}
-.SpecialCharacterFeatures {
-    flex-basis: 300px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: stretch;
-    align-items: center;
-    padding: 10px;
-    background-color: #f1e0c6;
-    border: 1px solid #5a2800;
-    box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 50%);
-}
-.SpecialCharacterFeatures .Entry {
-    width: 100%;
-    min-width: 300px;
-    text-align: left;
-}
-.SpecialCharacterFeatures .CharacterFeatureCategory {
-    margin-right: 5px;
-}
-.AuctionInfo {
-    width: 100%;
-    text-align: center;
-    font-weight: 700;
-    font-size: 12px;
-    color: #ff9712;
-}
-
-
-
-.LabelColumn {
-    width: 80px!important;
-    white-space: nowrap;
-}
-.LevelColumn {
-    width: 30px!important;
-    text-align: right;
-}
-.PercentageColumn {
-    position: relative;
-    margin-right: 2px;
-}
-.PercentageColumn {
-    width: 100%;
-    position: relative;
-}
-.PercentageBar {
-    position: absolute;
-    height: 18px;
-    background-color: #5f4d41;
-    top: 1px;
-}
-.PercentageBarSpacer {
-    width: 5px;
-}
-.PercentageStringContainer {
-    width: 100%;
-    text-align: center;
-}
-.PercentageString {
-    position: absolute;
-    top: 3px;
-    width: 50%;
-    margin-left: 20px;
-    left: 0;
-    text-align: right;
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    color: #fff;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-}
-.BlockPageNavigationRow {
-    height: 20px;
-    margin-top: 3px;
-    margin-bottom: 5px;
-    padding: 6px;
-    padding-top: 3px;
-    padding-bottom: 0;
-    background-color: #d5c0a1;
-    border: 1px solid #5a2800;
-}
-.BlockPage.BlockPageObject {
-    grid-template-columns: repeat(auto-fill,minmax(36px,1fr));
-    grid-auto-rows: 38px;
-}
-.BlockPage {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(68px,1fr));
-    grid-auto-rows: 73px;
-    grid-gap: 1px;
-}
-.PageLink {
-    display: inline-block;
-    min-width: 15px;
-    text-align: center;
-}
-.BlockPageNavigationRow .CurrentPageLink {
-    display: block;
-    min-width: 15px;
-    padding-left: 2px;
-    padding-right: 2px;
-    background-color: #d5c0a1;
-}
-.CharacterDetailsBlock .ShowMoreOrLess {
-    padding: 7px;
-    padding-bottom: 7px;
-    font-size: 8pt;
-    text-align: right;
-}
-.CharacterDetailsBlock .ShowMoreOrLess a {
-    cursor: pointer;
-}
-.CollapsedBlock .TableContent tr:last-child {
-    display: table-row;
-    text-align: center;
-}
-.CollapsedBlock .IndicateMoreEntries {
-    font-style: italic;
-}
-.ColorGreen {
-    color: green;
-}
-</style>
+<div class="TableContainer">
+  <div class="CaptionContainer">
+    <div class="CaptionInnerContainer"> <span class="CaptionEdgeLeftTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionBorderTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span> <span class="CaptionVerticalLeft" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+      <div class="Text">Auction History</div>
+      <span class="CaptionVerticalRight" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span> <span class="CaptionBorderBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span> <span class="CaptionEdgeLeftBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> </div>
+  </div>
+  <table class="Table3" cellspacing="0" cellpadding="0">
+    <tbody>
+      <tr>
+        <td><div class="InnerTableContainer">
+            <table style="width:100%;">
+              <tbody>
 
 <?php
-defined('MYAAC') or die('Direct access not allowed!');
-$title = 'Current Auctions';
+$getAuctions = $db->query('SELECT `id`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price` FROM `myaac_charbazaar` ORDER BY `date_end` DESC');
+
+foreach($getAuctions as $Auction){
+
+/* GET INFO CHARACTER */
+$getCharacter = $db->query('SELECT `name`, `vocation`, `level`, `sex`, `looktype`, `lookaddons`, `lookhead`, `lookbody`, `looklegs`, `lookfeet`' . 'FROM `players`' . 'WHERE `id` = ' . $Auction['player_id'] .'');
+$getCharacter = $getCharacter->fetch();
+/* GET INFO CHARACTER END */
+
+/* OUTFIT CHARACTER */
+$outfit_url = $config['outfit_images_url'] . '?id=' . $getCharacter['looktype']	. (!empty($getCharacter['lookaddons']) ? '&addons=' . $getCharacter['lookaddons'] : '') . '&head=' . $getCharacter['lookhead'] . '&body=' . $getCharacter['lookbody'] . '&legs=' . $getCharacter['looklegs'] . '&feet=' . $getCharacter['lookfeet'];
+/* OUTFIT CHARACTER */
+
+/* EQUIPAMENT CHARACTER */
+global $db;
+$eq_sql = $db->query('SELECT `pid`, `itemtype` FROM player_items WHERE player_id = '.$Auction['player_id'].' AND (`pid` >= 1 and `pid` <= 10)');
+$equipment = array();
+foreach($eq_sql as $eq)
+	$equipment[$eq['pid']] = $eq['itemtype'];
+
+$empty_slots = array("", "no_helmet", "no_necklace", "no_backpack", "no_armor", "no_handleft", "no_handright", "no_legs", "no_boots", "no_ring", "no_ammo");
+for($i = 0; $i <= 10; $i++)
+{
+	if(!isset($equipment[$i]) || $equipment[$i] == 0)
+		$equipment[$i] = $empty_slots[$i];
+}
+
+for($i = 1; $i < 11; $i++)
+{
+	if(Validator::number($equipment[$i]))
+		$equipment[$i] = getItemImage($equipment[$i]);
+	else
+		$equipment[$i] = '<img src="images/items/' . $equipment[$i] . '.gif" width="32" height="32" border="0" alt=" ' . $equipment[$i] . '" />';
+}
+/* EQUIPAMENT CHARACTER END */
+
+/* CONVERT SEX */
+if($getCharacter['sex'] == 0){
+	$character_sex = 'Male';
+}else{
+	$character_sex = 'Female';
+}
+/* CONVERT SEX END */
+
+/* CONVERT VOCATION */
+if($getCharacter['vocation'] == 0){
+	$character_voc = 'None';
+}elseif($getCharacter['vocation'] == 1){
+	$character_voc = 'Sorcerer';
+}elseif($getCharacter['vocation'] == 2){
+	$character_voc = 'Druid';
+}elseif($getCharacter['vocation'] == 3){
+	$character_voc = 'Paladin';
+}elseif($getCharacter['vocation'] == 4){
+	$character_voc = 'Knight';
+}elseif($getCharacter['vocation'] == 5){
+	$character_voc = 'Master Sorcerer';
+}elseif($getCharacter['vocation'] == 6){
+	$character_voc = 'Elder Druid';
+}elseif($getCharacter['vocation'] == 7){
+	$character_voc = 'Royal Paladin';
+}elseif($getCharacter['vocation'] == 8){
+	$character_voc = 'Elite Knight';
+}
+/* CONVERT VOCATION END */
+
+/* GET MY BID */
+$getAuctionBid = $db->query('SELECT `account_id`, `auction_id`, `bid`, `date`' . 'FROM `myaac_charbazaar_bid`' . 'WHERE `auction_id` = ' . $Auction['id'] .'');
+$getAuctionBid = $getAuctionBid->fetch();
+
+
+if($account_logged == $getAuctionBid['account_id']){
+	$My_Bid = '<b>'.number_format($getAuctionBid['bid'], 0, ',', ',').'</b> <img src="'.$template_path.'/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins">';
+}else{
+	$My_Bid = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if(empty($getAuctionBid['account_id'])){
+	$My_Bid = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+
+/* GET MY BID END */
+	
+/* RIBBON NEW AUCTION */
+$Ribbon_date = date('d M Y');
+$ribbon_auctiondate = date('d M Y', strtotime($Auction['date_start']));
+$ribbon_status = '';
+if($Ribbon_date == $ribbon_auctiondate){
+	$ribbon_status = '<div class="AuctionNewIcon"><img src="'.$template_path.'/images/global/content/ribbon-new-top-left.png"></div>';
+}
+/* RIBBON NEW AUCTION END */
+
+/* VERIFY DATE */
+$Hoje = date('d-m-Y');
+$End = date('d-m-Y', strtotime($Auction['date_end']));
+
+if(strtotime($Hoje) > strtotime($End)){
+?>
+                <tr>
+                  <td><div class="TableContentContainer">
+                      <table class="TableContent" style="border:1px solid #faf0d7;" width="100%">
+                        <tbody>
+                          <tr>
+                            <td><div class="Auction">
+                                <div class="AuctionHeader">
+                                  <div class="AuctionLinks"><a href="?subtopic=pastcharactertrades&details=<?php echo $Auction['id'] ?>"><img title="show auction details" src="<?php echo $template_path; ?>/images/global/content/button-details-idle.png"></a></div>
+                                  <div class="AuctionCharacterName"><a href="?subtopic=pastcharactertrades&details=<?php echo $Auction['id'] ?>"><?php echo $getCharacter['name'] ?></a></div>
+                                  Level: <?php echo $getCharacter['level'] ?> | Vocation: <?php echo $character_voc ?> | <?php echo $character_sex ?><br>
+                                </div>
+                                <div class="AuctionBody">
+								
+                                  <div class="AuctionBodyBlock AuctionDisplay AuctionOutfit"><?php echo $ribbon_status ?><img class="AuctionOutfitImage" src="<?php echo $outfit_url ?>"></div>
+                                  <div class="AuctionBodyBlock AuctionDisplay AuctionItemsViewBox">
+                                    <div class="CVIcon CVIconObject" ><?php echo $equipment[2]; ?></div>
+                                    <div class="CVIcon CVIconObject" ><?php echo $equipment[1]; ?></div>
+                                    <div class="CVIcon CVIconObject" ><?php echo $equipment[3]; ?></div>
+                                    <div class="CVIcon CVIconObject" ><?php echo $equipment[6]; ?></div>
+									<div class="CVIcon CVIconObject" ><?php echo $equipment[4]; ?></div>
+									<div class="CVIcon CVIconObject" ><?php echo $equipment[5]; ?></div>
+									<div class="CVIcon CVIconObject" ><?php echo $equipment[9]; ?></div>
+									<div class="CVIcon CVIconObject" ><?php echo $equipment[7]; ?></div>
+									<div class="CVIcon CVIconObject" ><?php echo $equipment[10]; ?></div>
+                                  </div>
+                                  <div class="AuctionBodyBlock ShortAuctionData">
+                                    <div class="ShortAuctionDataLabel">Auction Start:</div>
+                                    <div class="ShortAuctionDataValue"><?php echo date('d M Y', strtotime($Auction['date_start'])) ?></div>
+                                    <div class="ShortAuctionDataLabel">Auction End:</div>
+                                    <div class="ShortAuctionDataValue"><?php echo date('d M Y', strtotime($Auction['date_end'])) ?></div>
+                                    <div class="ShortAuctionDataBidRow">
+                                      <div class="ShortAuctionDataLabel">Winning Bid:</div>
+                                      <div class="ShortAuctionDataValue"><b><?php echo number_format($Auction['bid_price'], 0, ',', ',')  ?></b> <img src="<?php echo $template_path; ?>/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins"></div>
+                                    </div>
+<?php
+if($logged){
+	if($account_logged == $getAuctionBid['account_id']){
+?>
+									<div class="ShortAuctionDataBidRow" style="background-color: #d4c0a1; padding: 5px; border: 1px solid #f0e8da; box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 50%);">
+                                      <div class="ShortAuctionDataLabel">My Bid:</div>
+                                      <div class="ShortAuctionDataValue"><?php echo $My_Bid ?></div>
+                                    </div>
+<?php } } ?>
+                                  </div>
+<?php
+if(strtotime($Hoje) > strtotime($End)){
+?>
+                                  <div class="AuctionBodyBlock CurrentBid">
+									  <div class="Container">
+                                      <div class="MyMaxBidLabel" style="font-weight: bold; color: green;">finished</div>
+                                    </div>
+                                  </div>
+<?php } ?>
+                                </div>
+                              </div></td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div></td>
+                </tr>
+<?php
+} /* VERIFY DATE */
+	} /* LOOP END */
+?>
+              </tbody>
+            </table>
+          </div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<?php
+	}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+if(isset($getPageDetails)){
+$auction_iddetails = $_GET['details'];
+
+
+/* GET INFO AUCTION */
+$getAuction = $db->query('SELECT `id`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price` FROM `myaac_charbazaar`' . 'WHERE `id` = ' . $auction_iddetails .'');
+$getAuction = $getAuction->fetch();
+/* GET INFO AUCTION END */
+
+
+/* GET INFO CHARACTER */
+$getCharacter = $db->query('SELECT `name`, `vocation`, `level`, `sex`, `looktype`, `lookaddons`, `lookhead`, `lookbody`, `looklegs`, `lookfeet`, `health`, `healthmax`, `mana`, `manamax`, `maglevel`, `manaspent`, `balance`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `skill_shielding`, `skill_shielding_tries`, `cap`, `soul`, `created`, `experience`, `blessings1`, `blessings2`, `blessings3`, `blessings4`, `blessings5`, `blessings6`, `blessings7`, `blessings8`' . 'FROM `players`' . 'WHERE `id` = ' . $getAuction['player_id'] .'');
+$getCharacter = $getCharacter->fetch();
+/* GET INFO CHARACTER END */
+
+
+/* GET ITEMS DEPOT */
+$getDepotItems = $db->query('SELECT `sid`, `pid`, `itemtype`, `count`, `attributes` FROM `player_depotitems`' . 'WHERE `player_id` = ' . $getAuction['player_id'] .'');
+$getDepotItems = $getDepotItems->fetch();
+/* GET ITEMS DEPOT END */
+
+
+/* GET BLESS */
+$BlessCount = 0;
+if($getCharacter['blessings1'] >= 1){
+	$BlessCount = $BlessCount++;
+}elseif($getCharacter['blessings2'] >= 1){
+	$BlessCount = $BlessCount++;
+}elseif($getCharacter['blessings3'] >= 1){
+	$BlessCount = $BlessCount++;
+}elseif($getCharacter['blessings4'] >= 1){
+	$BlessCount = $BlessCount++;
+}elseif($getCharacter['blessings5'] >= 1){
+	$BlessCount = $BlessCount++;
+}elseif($getCharacter['blessings6'] >= 1){
+	$BlessCount = $BlessCount++;
+}elseif($getCharacter['blessings7'] >= 1){
+	$BlessCount = $BlessCount++;
+}
+if($getCharacter['blessings8'] >= 1){
+	$BlessTwist = 'yes';
+}else{
+	$BlessTwist = 'no';
+}
+/* GET BLESS END */
+
+
+/* GET CHARM CHARACTER */
+$getCharm = $db->query('SELECT `player_guid`, `charm_points`, `charm_expansion`, `rune_wound`, `rune_enflame`, `rune_poison`, `rune_freeze`, `rune_zap`, `rune_curse`, `rune_cripple`, `rune_parry`, `rune_dodge`, `rune_adrenaline`, `rune_numb`, `rune_cleanse`, `rune_bless`, `rune_scavenge`, `rune_gut`, `rune_low_blow`, `rune_divine`, `rune_vamp`, `rune_void`, `UsedRunesBit` FROM `player_charms`' . 'WHERE `player_guid` = ' . $getAuction['player_id'] .'');
+$getCharm = $getCharm->fetch();
+
+$Charm_Points = $getCharm['charm_points'];
+if(empty($getCharm['charm_points'])){
+	$Charm_Points = '0';
+}else{
+	$Charm_Points = $getCharm['charm_points'];
+}
+
+$Charm_UsedPoints = $getCharm['UsedRunesBit'];
+if(empty($getCharm['UsedRunesBit'])){
+	$Charm_UsedPoints = '0';
+}else{
+	$Charm_UsedPoints = $getCharm['UsedRunesBit'];
+}
+
+$Charm_Expansion = $getCharm['charm_expansion'];
+if($getCharm['charm_expansion'] == 1){
+	$Charm_Expansion = '<img src="' . $template_path . '/images/premiumfeatures/icon_yes.png"> yes';
+}else{
+	$Charm_Expansion = '<img src="' . $template_path . '/images/premiumfeatures/icon_no.png"> no';
+}
+/* GET CHARM CHARACTER END */
+
+
+/* OUTFIT CHARACTER */
+$outfit_url = $config['outfit_images_url'] . '?id=' . $getCharacter['looktype']	. (!empty($getCharacter['lookaddons']) ? '&addons=' . $getCharacter['lookaddons'] : '') . '&head=' . $getCharacter['lookhead'] . '&body=' . $getCharacter['lookbody'] . '&legs=' . $getCharacter['looklegs'] . '&feet=' . $getCharacter['lookfeet'];
+/* OUTFIT CHARACTER */
+
+
+/* EQUIPAMENT CHARACTER */
+global $db;
+$eq_sql = $db->query('SELECT `pid`, `itemtype` FROM player_items WHERE player_id = '.$getAuction['player_id'].' AND (`pid` >= 1 and `pid` <= 10)');
+$equipment = array();
+foreach($eq_sql as $eq)
+	$equipment[$eq['pid']] = $eq['itemtype'];
+
+$empty_slots = array("", "no_helmet", "no_necklace", "no_backpack", "no_armor", "no_handleft", "no_handright", "no_legs", "no_boots", "no_ring", "no_ammo");
+for($i = 0; $i <= 10; $i++)
+{
+	if(!isset($equipment[$i]) || $equipment[$i] == 0)
+		$equipment[$i] = $empty_slots[$i];
+}
+
+for($i = 1; $i < 11; $i++)
+{
+	if(Validator::number($equipment[$i]))
+		$equipment[$i] = getItemImage($equipment[$i]);
+	else
+		$equipment[$i] = '<img src="images/items/' . $equipment[$i] . '.gif" width="32" height="32" border="0" alt=" ' . $equipment[$i] . '" />';
+}
+/* EQUIPAMENT CHARACTER END */
+
+
+/* CONVERT SEX */
+if($getCharacter['sex'] == 0){
+	$character_sex = 'Male';
+}else{
+	$character_sex = 'Female';
+}
+/* CONVERT SEX END */
+
+
+/* CONVERT VOCATION */
+if($getCharacter['vocation'] == 0){
+	$character_voc = 'None';
+}elseif($getCharacter['vocation'] == 1){
+	$character_voc = 'Sorcerer';
+}elseif($getCharacter['vocation'] == 2){
+	$character_voc = 'Druid';
+}elseif($getCharacter['vocation'] == 3){
+	$character_voc = 'Paladin';
+}elseif($getCharacter['vocation'] == 4){
+	$character_voc = 'Knight';
+}elseif($getCharacter['vocation'] == 5){
+	$character_voc = 'Master Sorcerer';
+}elseif($getCharacter['vocation'] == 6){
+	$character_voc = 'Elder Druid';
+}elseif($getCharacter['vocation'] == 7){
+	$character_voc = 'Royal Paladin';
+}elseif($getCharacter['vocation'] == 8){
+	$character_voc = 'Elite Knight';
+}
+/* CONVERT VOCATION END */
+
+
+/* GET QUESTS */
+$quests = $config['quests'];
+$sql_query_in = '';
+$i = 0;
+foreach($quests as $quest_name => $quest_storage)
+{
+	if($i != 0)
+		$sql_query_in .= ', ';
+
+	$sql_query_in .= $quest_storage;
+	$i++;
+}
+
+$storage_sql = $db->query('SELECT `key`, `value` FROM `player_storage` WHERE `player_id` = '.$getAuction['player_id'].' AND `key` IN (' . $sql_query_in . ')');
+$player_storage = array();
+foreach($storage_sql as $storage)
+	$player_storage[$storage['key']] = $storage['value'];
+
+foreach($quests as &$storage) {
+	$storage = isset($player_storage[$storage]) && $player_storage[$storage] > 0;
+}
+/* GET QUESTS END */
+
+
+/* GET MY BID */
+$getAuctionBid = $db->query('SELECT `account_id`, `auction_id`, `bid`, `date`' . 'FROM `myaac_charbazaar_bid`' . 'WHERE `auction_id` = ' . $getAuction['id'] .'');
+$getAuctionBid = $getAuctionBid->fetch();
+
+
+if($account_logged == $getAuctionBid['account_id']){
+	$My_Bid = '<b style="color: #7ece48; text-shadow: -1px -1px 0 #000, 0 -1px 0 #000, 1px -1px 0 #000, 1px 0 0 #000, 1px 1px 0 #000, 0 1px 0 #000, -1px 1px 0 #000, -1px 0 0 #000;">'.number_format($getAuctionBid['bid'], 0, ',', ',').'</b> <img src="'.$template_path.'/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins">';
+}else{
+	$My_Bid = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if(empty($getAuctionBid['account_id'])){
+	$My_Bid = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+/* GET MY BID END */
+
+/* VERIFY DATE */
+$Hoje = date('d-m-Y');
+$End = date('d-m-Y', strtotime($getAuction['date_end']));
+/* VERIFY DATE END */
 
 ?>
-<div class="TableContainer"> <div class="CaptionContainer"> <div class="CaptionInnerContainer"> <span class="CaptionEdgeLeftTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionBorderTop" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span> <span class="CaptionVerticalLeft" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span> <div class="Text">Auction Details</div> <span class="CaptionVerticalRight" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span> <span class="CaptionBorderBottom" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span> <span class="CaptionEdgeLeftBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> </div> </div><table class="Table5" cellpadding="0" cellspacing="0">  <tbody><tr> <td> <div class="InnerTableContainer"> <table style="width:100%;"><tbody><tr><td> <div class="TableContentContainer"> <table class="TableContent" width="100%" style="border:1px solid #faf0d7;"><tbody><tr><td><div class="Auction"><div class="AuctionHeader"><div class="AuctionLinks"></div><div class="AuctionCharacterName">Zed Top</div>Level: 257 | Vocation: Knight | Male | World: <a target="_blank" href="https://www.tibia.com/community/?subtopic=worlds&amp;world=Descubra">Descubra</a><br></div><div class="AuctionBody"><div class="AuctionBodyBlock AuctionDisplay AuctionOutfit"><img class="AuctionOutfitImage" src="https://static.tibia.com/images/charactertrade/outfits/128_0.gif"></div><div class="AuctionBodyBlock AuctionDisplay AuctionItemsViewBox"><div class="CVIcon CVIconObject" title="pair of soft boots"><img src="https://static.tibia.com/images/charactertrade/objects/6529.gif"></div><div class="CVIcon CVIconObject" title="emerald sword"><img src="https://static.tibia.com/images/charactertrade/objects/8102.gif"></div><div class="CVIcon CVIconObject" title="moon backpack"><img src="https://static.tibia.com/images/charactertrade/objects/9604.gif"></div><div class="CVIcon CVIconObject" title="prismatic armor"><img src="https://static.tibia.com/images/charactertrade/objects/16110.gif"></div></div><div class="AuctionBodyBlock ShortAuctionData"><div class="ShortAuctionDataLabel">Auction Start:</div><div class="ShortAuctionDataValue">Jan&nbsp;06&nbsp;2022, 10:07&nbsp;CET</div><div class="ShortAuctionDataLabel">Auction End:</div><div class="ShortAuctionDataValue">Jan&nbsp;10&nbsp;2022, 01:00&nbsp;CET</div><div class="ShortAuctionDataBidRow"><div class="ShortAuctionDataLabel">Winning Bid:</div><div class="ShortAuctionDataValue"><b>1,456</b> <img src="https://static.tibia.com/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins"></div></div></div><div class="AuctionBodyBlock CurrentBid"><div class="Container"><div class="AuctionInfo"><span class="ColorGreen">finished</span></div></div></div><div class="AuctionBodyBlock SpecialCharacterFeatures"><div class="Entry"><img class="CharacterFeatureCategory" src="https://static.tibia.com/images/charactertrade/usp-category-4.png">1x a mana cask (Store Item)</div><div class="Entry"><img class="CharacterFeatureCategory" src="https://static.tibia.com/images/charactertrade/usp-category-4.png">136x a supreme health potion (Store Item)</div><div class="Entry"><img class="CharacterFeatureCategory" src="https://static.tibia.com/images/charactertrade/usp-category-2.png">Achievement "Gnomish Art of War" accomplished</div><div class="Entry"><img class="CharacterFeatureCategory" src="https://static.tibia.com/images/charactertrade/usp-category-0.png">97 Sword Fighting (Loyalty bonus not included)</div><div class="Entry"><img class="CharacterFeatureCategory" src="https://static.tibia.com/images/charactertrade/usp-category-11.png">Character World Transfer available</div></div></div></div></td></tr> </tbody></table> </div></td></tr> </tbody></table> </div> </td> </tr> </tbody></table></div>
-
+<div class="TableContainer">
+  <div class="CaptionContainer">
+    <div class="CaptionInnerContainer"> <span class="CaptionEdgeLeftTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionBorderTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span> <span class="CaptionVerticalLeft" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+      <div class="Text">Auction Details</div>
+      <span class="CaptionVerticalRight" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span> <span class="CaptionBorderBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span> <span class="CaptionEdgeLeftBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> </div>
+  </div>
+  <table class="Table5" cellspacing="0" cellpadding="0">
+    <tbody>
+      <tr>
+        <td><div class="InnerTableContainer">
+            <table style="width:100%;">
+              <tbody>
+                <tr>
+                  <td><div class="TableContentContainer">
+                      <table class="TableContent" style="border:1px solid #faf0d7;" width="100%">
+                        <tbody>
+                          <tr>
+                            <td><div class="Auction">
+                                <div class="AuctionHeader">
+                                  <div class="AuctionLinks"></div>
+                                  <div class="AuctionCharacterName"><?php echo $getCharacter['name'] ?></div>
+                                  Level: <?php echo $getCharacter['level'] ?> | Vocation: <?php echo $character_voc ?> | <?php echo $character_sex ?><br>
+                                </div>
+                                <div class="AuctionBody">
+                                  <div class="AuctionBodyBlock AuctionDisplay AuctionOutfit" style="font-size: 10px; text-align: center;">
+									  Current outfit: 
+									  <img class="AuctionOutfitImage" src="<?php echo $outfit_url ?>">
+								  </div>
+                                  <div class="AuctionBodyBlock AuctionDisplay AuctionItemsViewBox">
+                                    <div class="CVIcon CVIconObject" title="amulet"><?php echo $equipment[2]; ?></div>
+                                    <div class="CVIcon CVIconObject" title="helmet"><?php echo $equipment[1]; ?></div>
+                                    <div class="CVIcon CVIconObject" title="backpack"><?php echo $equipment[3]; ?></div>
+                                    <div class="CVIcon CVIconObject" title="hand"><?php echo $equipment[6]; ?></div>
+									<div class="CVIcon CVIconObject" title="armor"><?php echo $equipment[4]; ?></div>
+									<div class="CVIcon CVIconObject" title="hand"><?php echo $equipment[5]; ?></div>
+									<div class="CVIcon CVIconObject" title="ring"><?php echo $equipment[9]; ?></div>
+									<div class="CVIcon CVIconObject" title="legs"><?php echo $equipment[7]; ?></div>
+									<div class="CVIcon CVIconObject" title="extra"><?php echo $equipment[10]; ?></div>
+									<div class="CVIcon CVIconObject" style="font-size: 10px; text-align: center;" title="soul">Soul<br><?php echo $getCharacter['soul'] ?></div>
+									<div class="CVIcon CVIconObject" title="boots"><?php echo $equipment[8]; ?></div>
+									<div class="CVIcon CVIconObject" style="font-size: 10px; text-align: center;" title="cap">Cap<br><?php echo $getCharacter['cap'] ?></div>
+                                  </div>
+                                  <div class="AuctionBodyBlock ShortAuctionData">
+                                    <div class="ShortAuctionDataLabel">Auction Start:</div>
+                                    <div class="ShortAuctionDataValue"><?php echo date('d M Y', strtotime($getAuction['date_start'])) ?></div>
+                                    <div class="ShortAuctionDataLabel">Auction End:</div>
+                                    <div class="ShortAuctionDataValue"><?php echo date('d M Y', strtotime($getAuction['date_end'])) ?></div>
+									<div class="ShortAuctionDataBidRow">
+                                      <div class="ShortAuctionDataLabel">Winning Bid:</div>
+                                      <div class="ShortAuctionDataValue"><b><?php echo number_format($getAuction['bid_price'], 0, ',', ',')  ?></b> <img src="<?php echo $template_path; ?>/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins"></div>
+                                    </div>
+<?php if($account_logged == $getAuctionBid['account_id']){ ?>
+									<div class="ShortAuctionDataBidRow" style="background-color: #d4c0a1; padding: 5px; border: 1px solid #f0e8da;">
+                                      <div class="ShortAuctionDataLabel">My Bid:</div>
+                                      <div class="ShortAuctionDataValue"><?php echo $My_Bid ?></div>
+                                    </div>
+<?php } ?>
+                                  </div>
+<?php
+	if(strtotime($Hoje) > strtotime($End)){
+?>
+								  <div class="AuctionBodyBlock CurrentBid">
+                                    <div class="Container">
+                                      <div class="MyMaxBidLabel" style="font-weight: bold; color: green;">finished</div>
+                                    </div>
+                                  </div>
+<?php } ?>
+                                  <div class="AuctionBodyBlock SpecialCharacterFeatures">
+                                    <div class="Entry">
+										<img class="CharacterFeatureCategory" src="<?php echo $template_path; ?>/images/charactertrade/usp-category-3.png">Blessings active: <?php echo $BlessCount ?>/7, Twist of Fate active: <?php echo $BlessTwist ?>
+                                    </div>
+                                    <div class="Entry">
+										<img class="CharacterFeatureCategory" src="<?php echo $template_path; ?>/images/charactertrade/usp-category-7.png">Total Charm Points <?php echo $Charm_Points ?>, Unused Charm Points: <?php echo $Charm_UsedPoints ?>
+                                    </div>
+                                    <div class="Entry">
+										<img class="CharacterFeatureCategory" src="<?php echo $template_path; ?>/images/charactertrade/usp-category-0.png">10 Distance Fighting (Loyalty bonus not included)
+                                    </div>
+                                    <div class="Entry">
+										<img class="CharacterFeatureCategory" src="<?php echo $template_path; ?>/images/charactertrade/usp-category-0.png">10 Shielding (Loyalty bonus not included)
+                                    </div>
+                                    
+                                  </div>
+                                </div>
+                              </div></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 <br>
-
 <center>
-<form action="" method="post" style="padding:0px;margin:0px;">
-<div class="BigButton" style="background-image:url(templates/tibiacom/images/global/buttons/sbutton.gif)">
-<div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(&quot;templates/tibiacom/images/global/buttons/sbutton_over.gif&quot;); visibility: hidden;"></div>
-<input class="BigButtonText" type="submit" value="Back"></div>
-</div>
-</form>
+	<a href="?subtopic=currentcharactertrades" target="_blank">
+		<div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div><input name="auction_confirm" class="BigButtonText" type="button" value="Back"></div></div>
+	</a>
 </center>
-
-<br><br>
-
-<div class="CharacterViewerNavigationBar">
-<div class="SmallBox">
-<div class="MessageContainer">
-<div class="BoxFrameHorizontal" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-horizontal.gif);"></div>
-<div class="BoxFrameEdgeLeftTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></div>
-<div class="BoxFrameEdgeRightTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></div>
-<div class="Message">
-<div class="BoxFrameVerticalLeft" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></div>
-<div class="BoxFrameVerticalRight" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></div>
-<table style="width:100%;">
-<tbody>
-<tr>
-<td style="width:100%;text-align:center;">
-<nobr>[<a href="">Auction Details</a>]</nobr>
-<nobr>[<a href="">General</a>]</nobr>
-<nobr>[<a href="">Item Summary</a>]</nobr>
-<nobr>[<a href="">Store Item Summary</a>]</nobr>
-<nobr>[<a href="">Mounts</a>]</nobr>
-<nobr>[<a href="">Store Mounts</a>]</nobr>
-<nobr>[<a href="">Outfits</a>]</nobr>
-<nobr>[<a href="">Store Outfits</a>]</nobr>
-<nobr>[<a href="">Familiars</a>]</nobr>
-<nobr>[<a href="">Blessings</a>]</nobr>
-<nobr>[<a href="">Imbuements</a>]</nobr>
-<nobr>[<a href="">Charms</a>]</nobr>
-<nobr>[<a href="">Completed Cyclopedia Map Areas</a>]</nobr>
-<nobr>[<a href="">Completed Quest Lines</a>]</nobr>
-<nobr>[<a href="">Titles</a>]</nobr>
-<nobr>[<a href="">Achievements</a>]</nobr>
-<nobr>[<a href="">Bestiary Progress</a>]</nobr>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="BoxFrameHorizontal" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-horizontal.gif);"></div>
-<div class="BoxFrameEdgeRightBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></div>
-<div class="BoxFrameEdgeLeftBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></div>
-</div>
-</div>
-</div>
-
 <br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="CharacterDetailsBlock" id="General"><a name="General"></a><div class="TopButtonContainer"><a name="General"></a><div class="TopButton"><a name="General"></a><a href=""><img style="border: 0px;" src="https://static.tibia.com/images/global/content/back-to-top.gif"></a></div></div><div class="TableContainer"> <div class="CaptionContainer"> <div class="CaptionInnerContainer"> <span class="CaptionEdgeLeftTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionBorderTop" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span> <span class="CaptionVerticalLeft" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span> <div class="Text">General</div> <span class="CaptionVerticalRight" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span> <span class="CaptionBorderBottom" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span> <span class="CaptionEdgeLeftBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> </div> </div><table class="Table5" cellpadding="0" cellspacing="0">  <tbody><tr> <td> <div class="InnerTableContainer"> <table style="width:100%;"><tbody><tr> <td> <table style="width: 100%;" cellpadding="0" cellspacing="0"> <tbody><tr> <td style="vertical-align:top;width:210px;;"> <div class="TableContentContainer"> <table class="TableContent" width="100%" style="border:1px solid #faf0d7;"><tbody><tr class="Even"><td><span class="LabelV">Hit Points:</span><div style="float:right; text-align: right;">3,475</div></td></tr><tr class="Odd"><td><span class="LabelV">Mana:</span><div style="float:right; text-align: right;">5,025</div></td></tr><tr class="Even"><td><span class="LabelV">Capacity:</span><div style="float:right; text-align: right;">7,050</div></td></tr><tr class="Odd"><td><span class="LabelV">Speed:</span><div style="float:right; text-align: right;">446</div></td></tr><tr class="Even"><td><span class="LabelV">Blessings:</span><div style="float:right; text-align: right;">7/7</div></td></tr><tr class="Odd"><td><span class="LabelV">Mounts:</span><div style="float:right; text-align: right;">3</div></td></tr><tr class="Even"><td><span class="LabelV">Outfits:</span><div style="float:right; text-align: right;">18</div></td></tr><tr class="Odd"><td><span class="LabelV">Titles:</span><div style="float:right; text-align: right;">6</div></td></tr> </tbody></table> </div></td><td> <div class="TableContentContainer"> <table class="TableContent" width="100%" style="border:1px solid #faf0d7;"><tbody><tr class="Even"><td class="LabelColumn"><b>Axe Fighting</b></td><td class="LevelColumn">14</td><td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: 20.19%"><div class="PercentageBarSpacer"></div></div><div class="PercentageStringContainer"><span class="PercentageString">20.19 %</span></div></td></tr><tr class="Odd"><td class="LabelColumn"><b>Club Fighting</b></td><td class="LevelColumn">29</td><td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: 1.50%"><div class="PercentageBarSpacer"></div></div><div class="PercentageStringContainer"><span class="PercentageString">1.50 %</span></div></td></tr><tr class="Even"><td class="LabelColumn"><b>Distance Fighting</b></td><td class="LevelColumn">119</td><td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: 18.06%"><div class="PercentageBarSpacer"></div></div><div class="PercentageStringContainer"><span class="PercentageString">18.06 %</span></div></td></tr><tr class="Odd"><td class="LabelColumn"><b>Fishing</b></td><td class="LevelColumn">10</td><td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: 50.00%"><div class="PercentageBarSpacer"></div></div><div class="PercentageStringContainer"><span class="PercentageString">50.00 %</span></div></td></tr><tr class="Even"><td class="LabelColumn"><b>Fist Fighting</b></td><td class="LevelColumn">25</td><td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: 54.34%"><div class="PercentageBarSpacer"></div></div><div class="PercentageStringContainer"><span class="PercentageString">54.34 %</span></div></td></tr><tr class="Odd"><td class="LabelColumn"><b>Magic Level</b></td><td class="LevelColumn">30</td><td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: 7.01%"><div class="PercentageBarSpacer"></div></div><div class="PercentageStringContainer"><span class="PercentageString">7.01 %</span></div></td></tr><tr class="Even"><td class="LabelColumn"><b>Shielding</b></td><td class="LevelColumn">106</td><td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: 2.26%"><div class="PercentageBarSpacer"></div></div><div class="PercentageStringContainer"><span class="PercentageString">2.26 %</span></div></td></tr><tr class="Odd"><td class="LabelColumn"><b>Sword Fighting</b></td><td class="LevelColumn">16</td><td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: 10.06%"><div class="PercentageBarSpacer"></div></div><div class="PercentageStringContainer"><span class="PercentageString">10.06 %</span></div></td></tr> </tbody></table> </div></td></tr></tbody></table></td></tr><tr><td> <div class="TableContentContainer"> <table class="TableContent" width="100%" style="border:1px solid #faf0d7;"><tbody><tr class="Even"><td><span class="LabelV">Creation Date:</span><div style="float:right; text-align: right;">Jun&nbsp;13&nbsp;2012,&nbsp;19:58:24&nbsp;CEST</div></td></tr><tr class="Odd"><td><span class="LabelV">Experience:</span><div style="float:right; text-align: right;">629,681,522</div></td></tr><tr class="Even"><td><span class="LabelV">Gold:</span><div style="float:right; text-align: right;">170,787</div></td></tr><tr class="Odd"><td><span class="LabelV">Achievement Points:</span><div style="float:right; text-align: right;">164</div></td></tr> </tbody></table> </div></td></tr><tr><td> <div class="TableContentContainer"> <table class="TableContent" width="100%" style="border:1px solid #faf0d7;"><tbody><tr class="Even"><td><span class="LabelV">Regular World Transfer:</span><div style="float:right; text-align: right;">can be purchased and used immediately<span style="position: relative; top: 3px; margin-left: 5px;"><span class="HelperDivIndicator"><img style="border:0px;" src="https://static.tibia.com/images/global/content/info.gif"></span></span></div></td></tr> </tbody></table> </div></td></tr><tr><td> <div class="TableContentContainer"> <table class="TableContent" width="100%" style="border:1px solid #faf0d7;"><tbody><tr class="Odd"><td><span class="LabelV">Charm Expansion:</span><div style="float:right; text-align: right;"><img src="https://static.tibia.com/images/premiumfeatures/icon_no.png"> no</div></td></tr><tr class="Even"><td><span class="LabelV">Available Charm Points:</span><div style="float:right; text-align: right;">0</div></td></tr><tr class="Odd"><td><span class="LabelV">Spent Charm Points:</span><div style="float:right; text-align: right;">0</div></td></tr> </tbody></table> </div></td></tr><tr><td> <div class="TableContentContainer"> <table class="TableContent" width="100%" style="border:1px solid #faf0d7;"><tbody><tr class="Even"><td><span class="LabelV">Daily Reward Streak:</span><div style="float:right; text-align: right;">1</div></td></tr> </tbody></table> </div></td></tr><tr><td> <div class="TableContentContainer"> <table class="TableContent" width="100%" style="border:1px solid #faf0d7;"><tbody><tr class="Odd"><td><span class="LabelV">Hunting Task Points:</span><div style="float:right; text-align: right;">0</div></td></tr><tr class="Even"><td><span class="LabelV">Permanent Hunting Task Slots:</span><div style="float:right; text-align: right;">0</div></td></tr><tr class="Odd"><td><span class="LabelV">Permanent Prey Slots:</span><div style="float:right; text-align: right;">0</div></td></tr><tr class="Even"><td><span class="LabelV">Prey Wildcards:</span><div style="float:right; text-align: right;">9</div></td></tr> </tbody></table> </div></td></tr><tr><td> <div class="TableContentContainer"> <table class="TableContent" width="100%" style="border:1px solid #faf0d7;"><tbody><tr class="Odd"><td><span class="LabelV">Hirelings:</span><div style="float:right; text-align: right;">0</div></td></tr><tr class="Even"><td><span class="LabelV">Hireling Jobs:</span><div style="float:right; text-align: right;">0</div></td></tr><tr class="Odd"><td><span class="LabelV">Hireling Outfits:</span><div style="float:right; text-align: right;">0</div></td></tr> </tbody></table> </div></td></tr><tr><td> <div class="TableContentContainer"> <table class="TableContent" width="100%" style="border:1px solid #faf0d7;"><tbody><tr class="Even"><td><span class="LabelV">Exalted Dust:</span><div style="float:right; text-align: right;">0/100</div></td></tr> </tbody></table> </div></td></tr> </tbody></table> </div> </td> </tr> </tbody></table></div></div>
-	
-<br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="CharacterDetailsBlock" id="ItemSummary">
-<a name="Item Summary"></a>
 <div class="TopButtonContainer">
-<a name="Item Summary"></a>
-<div class="TopButton"><a name="Item Summary"></a>
-<a href=""><img style="border: 0px;" src="https://static.tibia.com/images/global/content/back-to-top.gif"></a>
-</div>
+	<div class="TopButton" style="">
+		<a href="#top">
+			<img style="border:0px;" src="<?php echo $template_path; ?>/images/content/back-to-top.gif">
+		</a>
+	</div>
 </div>
 <div class="TableContainer">
-<div class="CaptionContainer"> <div class="CaptionInnerContainer">
-<span class="CaptionEdgeLeftTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionBorderTop" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionVerticalLeft" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<div class="Text">Item Summary</div>
-<span class="CaptionVerticalRight" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<span class="CaptionBorderBottom" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionEdgeLeftBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
+  <div class="CaptionContainer">
+    <div class="CaptionInnerContainer"> <span class="CaptionEdgeLeftTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionBorderTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span> <span class="CaptionVerticalLeft" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+      <div class="Text">General</div>
+      <span class="CaptionVerticalRight" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span> <span class="CaptionBorderBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span> <span class="CaptionEdgeLeftBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> </div>
+  </div>
+  <table class="Table5" cellspacing="0" cellpadding="0">
+    <tbody>
+    <tr>
+      <td><div class="InnerTableContainer">
+          <table style="width:100%;">
+            <tbody>
+              <tr>
+                <td><table style="width: 100%;" cellspacing="0" cellpadding="0">
+                    <tbody>
+                      <tr>
+                        <td style="vertical-align:top;width:210px;;"><div class="TableContentContainer">
+                            <table class="TableContent" style="border:1px solid #faf0d7;" width="100%">
+                              <tbody>
+                                <tr class="Even">
+                                  <td><span class="LabelV">Health:</span>
+                                    <div style="float:right; text-align: right;"><?php echo $getCharacter['health'] ?> / <?php echo $getCharacter['healthmax'] ?></div></td>
+                                </tr>
+                                <tr class="Odd">
+                                  <td><span class="LabelV">Mana:</span>
+                                    <div style="float:right; text-align: right;"><?php echo $getCharacter['mana'] ?> / <?php echo $getCharacter['manamax'] ?></div></td>
+                                </tr>
+                                <tr class="Even">
+                                  <td><span class="LabelV">Capacity:</span>
+                                    <div style="float:right; text-align: right;"><?php echo $getCharacter['cap'] ?></div></td>
+                                </tr>
+                                <tr class="Odd">
+                                  <td><span class="LabelV">Soul:</span>
+                                    <div style="float:right; text-align: right;"><?php echo $getCharacter['soul'] ?></div></td>
+                                </tr>
+                                <tr class="Even">
+                                  <td><span class="LabelV">Blessings:</span>
+                                    <div style="float:right; text-align: right;"><?php echo $BlessCount ?>/7</div></td>
+                                </tr>
+                                <tr class="Odd">
+                                  <td><span class="LabelV">Mounts:</span>
+                                    <div style="float:right; text-align: right;">0</div></td>
+                                </tr>
+                                <tr class="Even">
+                                  <td><span class="LabelV">Outfits:</span>
+                                    <div style="float:right; text-align: right;">0</div></td>
+                                </tr>
+                                <tr class="Odd">
+                                  <td><span class="LabelV">Titles:</span>
+                                    <div style="float:right; text-align: right;">0</div></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div></td>
+                        <td><div class="TableContentContainer">
+                            <table class="TableContent" style="border:1px solid #faf0d7;" width="100%">
+                              <tbody>
+                                <tr class="Even">
+                                  <td class="LabelColumn"><b>Axe Fighting</b></td>
+                                  <td class="LevelColumn"><?php echo $getCharacter['skill_axe'] ?></td>
+                                  <td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: <?php echo $getCharacter['skill_axe_tries'] ?>%">
+                                      <div class="PercentageBarSpacer"></div>
+                                    </div>
+                                    <div class="PercentageStringContainer"><span class="PercentageString"><?php echo $getCharacter['skill_axe_tries'] ?> %</span></div></td>
+                                </tr>
+                                <tr class="Odd">
+                                  <td class="LabelColumn"><b>Club Fighting</b></td>
+                                  <td class="LevelColumn"><?php echo $getCharacter['skill_club'] ?></td>
+                                  <td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: <?php echo $getCharacter['skill_club_tries'] ?>%">
+                                      <div class="PercentageBarSpacer"></div>
+                                    </div>
+                                    <div class="PercentageStringContainer"><span class="PercentageString"><?php echo $getCharacter['skill_club_tries'] ?> %</span></div></td>
+                                </tr>
+                                <tr class="Even">
+                                  <td class="LabelColumn"><b>Distance Fighting</b></td>
+                                  <td class="LevelColumn"><?php echo $getCharacter['skill_dist'] ?></td>
+                                  <td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: <?php echo $getCharacter['skill_dist_tries'] ?>%">
+                                      <div class="PercentageBarSpacer"></div>
+                                    </div>
+                                    <div class="PercentageStringContainer"><span class="PercentageString"><?php echo $getCharacter['skill_dist_tries'] ?> %</span></div></td>
+                                </tr>
+                                <tr class="Odd">
+                                  <td class="LabelColumn"><b>Fishing</b></td>
+                                  <td class="LevelColumn"><?php echo $getCharacter['skill_fishing'] ?></td>
+                                  <td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: <?php echo $getCharacter['skill_fishing_tries'] ?>%">
+                                      <div class="PercentageBarSpacer"></div>
+                                    </div>
+                                    <div class="PercentageStringContainer"><span class="PercentageString"><?php echo $getCharacter['skill_fishing_tries'] ?> %</span></div></td>
+                                </tr>
+                                <tr class="Even">
+                                  <td class="LabelColumn"><b>Fist Fighting</b></td>
+                                  <td class="LevelColumn"><?php echo $getCharacter['skill_fist'] ?></td>
+                                  <td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: <?php echo $getCharacter['skill_fist_tries'] ?>%">
+                                      <div class="PercentageBarSpacer"></div>
+                                    </div>
+                                    <div class="PercentageStringContainer"><span class="PercentageString"><?php echo $getCharacter['skill_fist_tries'] ?> %</span></div></td>
+                                </tr>
+                                <tr class="Odd">
+                                  <td class="LabelColumn"><b>Magic Level</b></td>
+                                  <td class="LevelColumn"><?php echo $getCharacter['maglevel'] ?></td>
+                                  <td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: 0%">
+                                      <div class="PercentageBarSpacer"></div>
+                                    </div>
+                                    <div class="PercentageStringContainer"><span class="PercentageString">0 %</span></div></td>
+                                </tr>
+                                <tr class="Even">
+                                  <td class="LabelColumn"><b>Shielding</b></td>
+                                  <td class="LevelColumn"><?php echo $getCharacter['skill_shielding'] ?></td>
+                                  <td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: <?php echo $getCharacter['skill_shielding_tries'] ?>%">
+                                      <div class="PercentageBarSpacer"></div>
+                                    </div>
+                                    <div class="PercentageStringContainer"><span class="PercentageString"><?php echo $getCharacter['skill_shielding_tries'] ?> %</span></div></td>
+                                </tr>
+                                <tr class="Odd">
+                                  <td class="LabelColumn"><b>Sword Fighting</b></td>
+                                  <td class="LevelColumn"><?php echo $getCharacter['skill_sword'] ?></td>
+                                  <td class="PercentageColumn"><div id="SkillBar" class="PercentageBar" style="width: <?php echo $getCharacter['skill_sword_tries'] ?>%">
+                                      <div class="PercentageBarSpacer"></div>
+                                    </div>
+                                    <div class="PercentageStringContainer"><span class="PercentageString"><?php echo $getCharacter['skill_sword_tries'] ?> %</span></div></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div></td>
+                      </tr>
+                    </tbody>
+                  </table></td>
+              </tr>
+              <tr>
+                <td><div class="TableContentContainer">
+                    <table class="TableContent" style="border:1px solid #faf0d7;" width="100%">
+                      <tbody>
+                        <tr class="Even">
+                          <td><span class="LabelV">Creation Date:</span>
+                            <div style="float:right; text-align: right;"><?php echo date('d M Y, G:i:s', $getCharacter['created']) ?></div></td>
+                        </tr>
+                        <tr class="Odd">
+                          <td><span class="LabelV">Experience:</span>
+                            <div style="float:right; text-align: right;"><?php echo number_format($getCharacter['experience'], 0, ',', ',')  ?></div></td>
+                        </tr>
+                        <tr class="Even">
+                          <td><span class="LabelV">Gold:</span>
+                            <div style="float:right; text-align: right;"><?php echo $getCharacter['balance'] ?></div></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div></td>
+              </tr>
+			  <tr>
+			  <td><div class="TableContentContainer">
+				  <table class="TableContent" style="border:1px solid #faf0d7;" width="100%">
+					<tbody>
+					  <tr class="Odd">
+						<td><span class="LabelV">Charm Expansion:</span>
+						  <div style="float:right; text-align: right;"><?php echo $Charm_Expansion ?></div></td>
+					  </tr>
+					  <tr class="Even">
+						<td><span class="LabelV">Available Charm Points:</span>
+						  <div style="float:right; text-align: right;"><?php echo $Charm_Points ?></div></td>
+					  </tr>
+					</tbody>
+				  </table>
+				</div></td>
+			</tr>
+            </tbody>
+          </table>
+        </div></td>
+    </tr>
+    </tbody>
+  </table>
 </div>
-</div>
-<table class="Table3" cellpadding="0" cellspacing="0">
-<tbody><tr>
-<td>
-<div class="InnerTableContainer">
-<table style="width:100%;"><tbody><tr><td>
-<div class="TableContentContainer">
-<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-<tbody>
-<tr>
-<td>
-<div class="DisplayOptionsButton">
-
-<div class="BigButton" style="background-image:url(templates/tibiacom/images/global/buttons/sbutton.gif)">
-<div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(&quot;templates/tibiacom/images/global/buttons/sbutton_over.gif&quot;); visibility: hidden;"></div>
-<input class="BigButtonText" type="submit" value="Search"></div>
-</div>
-
-</div>
-</div>
-<div class="DisplayOptionsContent">
-<div class="LabelV100 DisplayOptionsLabel">Item:</div>
-<input class="AuctionInput" id="ItemInput" type="text" name="searchstring" value="" maxlength="45">
-<div class="InInputResetButton CipAjaxLink" style="cursor: pointer;"></div></div></td></tr>
-</tbody></table>
-</div></td></tr><tr><td>
-<div class="TableContentContainer">
-<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-<tbody>
-<tr><td>
-<div class="DisplayOptionsButton">
-
-<div class="BigButton" style="background-image:url(templates/tibiacom/images/global/buttons/sbutton.gif)">
-<div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(&quot;templates/tibiacom/images/global/buttons/sbutton_over.gif&quot;); visibility: hidden;"></div>
-<input class="BigButtonText" type="submit" value="Apply"></div>
-</div>
-
-</div>
-</div>
-<div class="DisplayOptionsContent">
-<div class="LabelV100 DisplayOptionsLabel">Category:</div>
-<select name="itemcategory" class="AuctionFilterCategory">
-<option value="">all items (4,654 unique items)</option>
-<option value="Amulets">Amulets (77 unique items)</option>
-<option value="Armors">Armors (2 unique items)</option>
-<option value="Boots">Boots (3 unique items)</option>
-<option value="Containers">Containers (52 unique items)</option>
-<option value="Creature Products">Creature Products (330 unique items)</option>
-<option value="Decoration">Decoration (18 unique items)</option>
-<option value="Food">Food (436 unique items)</option>
-<option value="Helmets and Hats ">Helmets and Hats (9 unique items)</option>
-<option value="Legs">Legs (2 unique items)</option>
-<option value="Others">Others (19 unique items)</option>
-<option value="Potions">Potions (1,488 unique items)</option>
-<option value="Quivers">Quivers (no item)</option>
-<option value="Rings">Rings (61 unique items)</option>
-<option value="Runes">Runes (716 unique items)</option>
-<option value="Shields">Shields (2 unique items)</option>
-<option value="Tools">Tools (3 unique items)</option>
-<option value="Unsorted">Unsorted (30 unique items)</option>
-<option value="Valuables">Valuables (194 unique items)</option>
-<option value="Weapons: Ammo">Weapons: Ammo (1,178 unique items)</option>
-<option value="Weapons: Axes">Weapons: Axes (3 unique items)</option>
-<option value="Weapons: Clubs">Weapons: Clubs (1 unique item)</option>
-<option value="Weapons: Distance">Weapons: Distance (27 unique items)</option>
-<option value="Weapons: Swords">Weapons: Swords (1 unique item)</option>
-<option value="Weapons: Wands">Weapons: Wands (2 unique items)</option>
-</select>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</td>
-</tr>
-<tr>
-<td>
-<div class="TableContentContainer">
-<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-<tbody>
-<tr class="Even tmp-container-ItemSummary">
-<td>
-<div id="ajax-target-type-0" class="paged-container page-object-container"><div class="BlockPageNavigationRow"><small><div style="float: left;"><b>» Pages: <span class="PageLink "><span class="CurrentPageLink">1</span></span> <span class="PageLink "><a class="CipAjaxLink" ajaxcip="true" ajaxcip_datatype="Container" href="https://www.tibia.com/websiteservices/handle_charactertrades.php?auctionid=761870&amp;type=0&amp;currentpage=2">2</a></span> <span class="PageLink "><a class="CipAjaxLink" ajaxcip="true" ajaxcip_datatype="Container" href="https://www.tibia.com/websiteservices/handle_charactertrades.php?auctionid=761870&amp;type=0&amp;currentpage=3">3</a></span></b></div><div style="float: right;"><b>» Results: 194</b></div></small></div><div class="BlockPage BlockPageObject"><div class="CVIcon CVIconObject" title="health potion"><img src="https://static.tibia.com/images/charactertrade/objects/266.gif"></div><div class="CVIcon CVIconObject" title="book"><img src="https://static.tibia.com/images/charactertrade/objects/2816.gif"></div><div class="CVIcon CVIconObject" title="book"><img src="https://static.tibia.com/images/charactertrade/objects/2821.gif"></div><div class="CVIcon CVIconObject" title="3x bag"><img src="https://static.tibia.com/images/charactertrade/objects/2853.gif"><div class="ObjectAmount">3</div></div><div class="CVIcon CVIconObject" title="14x backpack"><img src="https://static.tibia.com/images/charactertrade/objects/2854.gif"><div class="ObjectAmount">14</div></div><div class="CVIcon CVIconObject" title="green bag"><img src="https://static.tibia.com/images/charactertrade/objects/2857.gif"></div><div class="CVIcon CVIconObject" title="green backpack"><img src="https://static.tibia.com/images/charactertrade/objects/2865.gif"></div><div class="CVIcon CVIconObject" title="2x blue backpack"><img src="https://static.tibia.com/images/charactertrade/objects/2869.gif"><div class="ObjectAmount">2</div></div><div class="CVIcon CVIconObject" title="golden backpack"><img src="https://static.tibia.com/images/charactertrade/objects/2871.gif"></div><div class="CVIcon CVIconObject" title="camouflage backpack"><img src="https://static.tibia.com/images/charactertrade/objects/2872.gif"></div><div class="CVIcon CVIconObject" title="3x golden mug"><img src="https://static.tibia.com/images/charactertrade/objects/2903.gif"><div class="ObjectAmount">3</div></div><div class="CVIcon CVIconObject" title="golden key"><img src="https://static.tibia.com/images/charactertrade/objects/2972.gif"></div><div class="CVIcon CVIconObject" title="9x black pearl"><img src="https://static.tibia.com/images/charactertrade/objects/3027.gif"><div class="ObjectAmount">9</div></div><div class="CVIcon CVIconObject" title="2x blue gem"><img src="https://static.tibia.com/images/charactertrade/objects/3041.gif"><div class="ObjectAmount">2</div></div><div class="CVIcon CVIconObject" title="41x garlic necklace"><img src="https://static.tibia.com/images/charactertrade/objects/3083.gif"><div class="ObjectAmount">41</div></div><div class="CVIcon CVIconObject" title="3x dwarven ring"><img src="https://static.tibia.com/images/charactertrade/objects/3097.gif"><div class="ObjectAmount">3</div></div><div class="CVIcon CVIconObject" title="76x destroy field rune"><img src="https://static.tibia.com/images/charactertrade/objects/3148.gif"><div class="ObjectAmount">76</div></div><div class="CVIcon CVIconObject" title="30x fire wall rune"><img src="https://static.tibia.com/images/charactertrade/objects/3190.gif"><div class="ObjectAmount">30</div></div><div class="CVIcon CVIconObject" title="24x fire bomb rune"><img src="https://static.tibia.com/images/charactertrade/objects/3192.gif"><div class="ObjectAmount">24</div></div><div class="CVIcon CVIconObject" title="3x knight axe"><img src="https://static.tibia.com/images/charactertrade/objects/3318.gif"><div class="ObjectAmount">3</div></div><div class="CVIcon CVIconObject" title="crusader helmet"><img src="https://static.tibia.com/images/charactertrade/objects/3391.gif"></div><div class="CVIcon CVIconObject" title="5x fish"><img src="https://static.tibia.com/images/charactertrade/objects/3578.gif"><div class="ObjectAmount">5</div></div><div class="CVIcon CVIconObject" title="358x brown mushroom"><img src="https://static.tibia.com/images/charactertrade/objects/3725.gif"><div class="ObjectAmount">358</div></div><div class="CVIcon CVIconObject" title="21x fire mushroom"><img src="https://static.tibia.com/images/charactertrade/objects/3731.gif"><div class="ObjectAmount">21</div></div><div class="CVIcon CVIconObject" title="botanists container
-It is empty"><img src="https://static.tibia.com/images/charactertrade/objects/4867.gif"></div><div class="CVIcon CVIconObject" title="2x jewelled backpack"><img src="https://static.tibia.com/images/charactertrade/objects/5801.gif"><div class="ObjectAmount">2</div></div><div class="CVIcon CVIconObject" title="3x flask of warriors sweat
-It contains the sweat spilled in many battles and is said to be used for certain perfumes too"><img src="https://static.tibia.com/images/charactertrade/objects/5885.gif"><div class="ObjectAmount">3</div></div><div class="CVIcon CVIconObject" title="6x fish fin
-It once belonged to a mighty creature of the deep"><img src="https://static.tibia.com/images/charactertrade/objects/5895.gif"><div class="ObjectAmount">6</div></div><div class="CVIcon CVIconObject" title="12x brown piece of cloth"><img src="https://static.tibia.com/images/charactertrade/objects/5913.gif"><div class="ObjectAmount">12</div></div><div class="CVIcon CVIconObject" title="3x green dragon scale"><img src="https://static.tibia.com/images/charactertrade/objects/5920.gif"><div class="ObjectAmount">3</div></div><div class="CVIcon CVIconObject" title="5x hardened bone"><img src="https://static.tibia.com/images/charactertrade/objects/5925.gif"><div class="ObjectAmount">5</div></div><div class="CVIcon CVIconObject" title="4x behemoth claw"><img src="https://static.tibia.com/images/charactertrade/objects/5930.gif"><div class="ObjectAmount">4</div></div><div class="CVIcon CVIconObject" title="2x beach backpack"><img src="https://static.tibia.com/images/charactertrade/objects/5949.gif"><div class="ObjectAmount">2</div></div><div class="CVIcon CVIconObject" title="beach bag"><img src="https://static.tibia.com/images/charactertrade/objects/5950.gif"></div><div class="CVIcon CVIconObject" title="5x fish tail"><img src="https://static.tibia.com/images/charactertrade/objects/5951.gif"><div class="ObjectAmount">5</div></div><div class="CVIcon CVIconObject" title="4x demon horn"><img src="https://static.tibia.com/images/charactertrade/objects/5954.gif"><div class="ObjectAmount">4</div></div><div class="CVIcon CVIconObject" title="jewel case"><img src="https://static.tibia.com/images/charactertrade/objects/6104.gif"></div><div class="CVIcon CVIconObject" title="3x death ring"><img src="https://static.tibia.com/images/charactertrade/objects/6299.gif"><div class="ObjectAmount">3</div></div><div class="CVIcon CVIconObject" title="cream cake"><img src="https://static.tibia.com/images/charactertrade/objects/6393.gif"></div><div class="CVIcon CVIconObject" title="10x candy"><img src="https://static.tibia.com/images/charactertrade/objects/6569.gif"><div class="ObjectAmount">10</div></div><div class="CVIcon CVIconObject" title="bar of chocolate"><img src="https://static.tibia.com/images/charactertrade/objects/6574.gif"></div><div class="CVIcon CVIconObject" title="fur backpack"><img src="https://static.tibia.com/images/charactertrade/objects/7342.gif"></div><div class="CVIcon CVIconObject" title="deer trophy"><img src="https://static.tibia.com/images/charactertrade/objects/7397.gif"></div><div class="CVIcon CVIconObject" title="15x berserk potion
-Drinking this potion temporarily increases your fighting skill while decreasing your defense"><img src="https://static.tibia.com/images/charactertrade/objects/7439.gif"><div class="ObjectAmount">15</div></div><div class="CVIcon CVIconObject" title="divine plate"><img src="https://static.tibia.com/images/charactertrade/objects/8057.gif"></div><div class="CVIcon CVIconObject" title="3x brocade backpack"><img src="https://static.tibia.com/images/charactertrade/objects/8860.gif"><div class="ObjectAmount">3</div></div><div class="CVIcon CVIconObject" title="brocade bag"><img src="https://static.tibia.com/images/charactertrade/objects/8861.gif"></div><div class="CVIcon CVIconObject" title="2x flask of rust remover
-It can be used to clean and polish old and rusty armors"><img src="https://static.tibia.com/images/charactertrade/objects/9016.gif"><div class="ObjectAmount">2</div></div><div class="CVIcon CVIconObject" title="demon backpack"><img src="https://static.tibia.com/images/charactertrade/objects/9601.gif"></div><div class="CVIcon CVIconObject" title="3x frosty heart"><img src="https://static.tibia.com/images/charactertrade/objects/9661.gif"><div class="ObjectAmount">3</div></div><div class="CVIcon CVIconObject" title="5x hydra head"><img src="https://static.tibia.com/images/charactertrade/objects/10282.gif"><div class="ObjectAmount">5</div></div><div class="CVIcon CVIconObject" title="2x dragon backpack"><img src="https://static.tibia.com/images/charactertrade/objects/10326.gif"><div class="ObjectAmount">2</div></div><div class="CVIcon CVIconObject" title="Zaoan helmet"><img src="https://static.tibia.com/images/charactertrade/objects/10385.gif"></div><div class="CVIcon CVIconObject" title="jade hat"><img src="https://static.tibia.com/images/charactertrade/objects/10451.gif"></div><div class="CVIcon CVIconObject" title="beetle necklace"><img src="https://static.tibia.com/images/charactertrade/objects/10457.gif"></div><div class="CVIcon CVIconObject" title="17x dragons tail"><img src="https://static.tibia.com/images/charactertrade/objects/11457.gif"><div class="ObjectAmount">17</div></div><div class="CVIcon CVIconObject" title="7x broken draken mail"><img src="https://static.tibia.com/images/charactertrade/objects/11660.gif"><div class="ObjectAmount">7</div></div><div class="CVIcon CVIconObject" title="2x broken slicer"><img src="https://static.tibia.com/images/charactertrade/objects/11661.gif"><div class="ObjectAmount">2</div></div><div class="CVIcon CVIconObject" title="black jade cobra"><img src="https://static.tibia.com/images/charactertrade/objects/11695.gif"></div><div class="CVIcon CVIconObject" title="buggy backpack"><img src="https://static.tibia.com/images/charactertrade/objects/14249.gif"></div><div class="CVIcon CVIconObject" title="700x crystalline arrow"><img src="https://static.tibia.com/images/charactertrade/objects/15793.gif"><div class="ObjectAmount">700</div></div><div class="CVIcon CVIconObject" title="gnomish spore gatherer
-It contains red, green, blue and yellow spores. Deliver it to the gnomes"><img src="https://static.tibia.com/images/charactertrade/objects/15821.gif"></div><div class="CVIcon CVIconObject" title="brown crystal splinter"><img src="https://static.tibia.com/images/charactertrade/objects/16123.gif"></div><div class="CVIcon CVIconObject" title="cliff strider claw"><img src="https://static.tibia.com/images/charactertrade/objects/16134.gif"></div><div class="CVIcon CVIconObject" title="jade Zaoan queen
-A Zaoan chess figure made of jade. It depicts the queen"><img src="https://static.tibia.com/images/charactertrade/objects/18327.gif"></div><div class="CVIcon CVIconObject" title="2x jade Zaoan knight
-A Zaoan chess figure made of jade. It depicts the knight"><img src="https://static.tibia.com/images/charactertrade/objects/18330.gif"><div class="ObjectAmount">2</div></div><div class="CVIcon CVIconObject" title="jade Zaoan rook
-A Zaoan chess figure made of jade. It depicts the rook"><img src="https://static.tibia.com/images/charactertrade/objects/18331.gif"></div><div class="CVIcon CVIconObject" title="2x Zaoan chess box
-This chess box is made of jade and obsidian. It will hold a full set of 32 Zaoan chess figures"><img src="https://static.tibia.com/images/charactertrade/objects/18339.gif"><div class="ObjectAmount">2</div></div><div class="CVIcon CVIconObject" title="2x bucket filled with gravel
-This gravel is quite finely granulated, combining it with chalk could be a base for mortar"><img src="https://static.tibia.com/images/charactertrade/objects/20053.gif"><div class="ObjectAmount">2</div></div><div class="CVIcon CVIconObject" title="7x frazzle tongue"><img src="https://static.tibia.com/images/charactertrade/objects/20198.gif"><div class="ObjectAmount">7</div></div><div class="CVIcon CVIconObject" title="3x frazzle skin"><img src="https://static.tibia.com/images/charactertrade/objects/20199.gif"><div class="ObjectAmount">3</div></div><div class="CVIcon CVIconObject" title="cake backpack"><img src="https://static.tibia.com/images/charactertrade/objects/20347.gif"></div><div class="CVIcon CVIconObject" title="crest of the deep seas"><img src="https://static.tibia.com/images/charactertrade/objects/21892.gif"></div><div class="CVIcon CVIconObject" title="4x bone toothpick"><img src="https://static.tibia.com/images/charactertrade/objects/24380.gif"><div class="ObjectAmount">4</div></div><div class="CVIcon CVIconObject" title="butterfly ring"><img src="https://static.tibia.com/images/charactertrade/objects/25698.gif"></div><div class="CVIcon CVIconObject" title="blueberry cupcake"><img src="https://static.tibia.com/images/charactertrade/objects/28484.gif"></div></div></div></td></tr> </tbody></table> </div></td></tr> </tbody></table> </div> </td> </tr> </tbody></table></div></div>
-
 <br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="CharacterDetailsBlock" id="StoreItemSummary">
-<a name="Store Item Summary"></a>
 <div class="TopButtonContainer">
-<a name="Store Item Summary"></a>
-<div class="TopButton">
-<a name="Store Item Summary"></a>
-<a href""><img style="border: 0px;" src="https://static.tibia.com/images/global/content/back-to-top.gif"></a>
-</div>
-</div>
-<div class="TableContainer"> <div class="CaptionContainer"> <div class="CaptionInnerContainer">
-<span class="CaptionEdgeLeftTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionBorderTop" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionVerticalLeft" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<div class="Text">Store Item Summary</div>
-<span class="CaptionVerticalRight" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<span class="CaptionBorderBottom" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionEdgeLeftBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-</div>
-</div>
-<table class="Table3" cellpadding="0" cellspacing="0">
-<tbody>
-<tr>
-<td>
-<div class="InnerTableContainer">
-<table style="width:100%;">
-<tbody>
-<tr>
-<td>
-<div class="TableContentContainer">
-<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-<tbody>
-<tr class="Even tmp-container-StoreItemSummary">
-<td>
-<div id="ajax-target-type-1" class="paged-container page-object-container">
-<div class="BlockPageNavigationRow">
-<small><div style="float: left;"><b>» Pages: <span class="PageLink ">
-<span class="CurrentPageLink">1</span>
-</span></b>
-</div>
-<div style="float: right;"><b>» Results: 3</b></div></small>
-</div>
-<div class="BlockPage BlockPageObject">
-<div class="CVIcon CVIconObject" title="10x magic wall rune">
-<img src="https://static.tibia.com/images/charactertrade/objects/3180.gif">
-<div class="ObjectAmount">10</div>
-</div>
-<div class="CVIcon CVIconObject" title="9x great spirit potion
-This potion can only be consumed by paladins of level 80 or higher"><img src="https://static.tibia.com/images/charactertrade/objects/7642.gif"><div class="ObjectAmount">9</div>
-</div>
-<div class="CVIcon CVIconObject" title="218x ultimate spirit potion
-This potion can only be consumed by paladins of level 130 or higher"><img src="https://static.tibia.com/images/charactertrade/objects/23374.gif"><div class="ObjectAmount">218</div>
-</div>
-</div>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="CharacterDetailsBlock" id="Mounts">
-<a name="Mounts"></a>
-<div class="TopButtonContainer">
-<a name="Mounts"></a>
-<div class="TopButton">
-<a name="Mounts"></a>
-<a href=""><img style="border: 0px;" src="https://static.tibia.com/images/global/content/back-to-top.gif"></a>
-</div>
+	<div class="TopButton" style="">
+		<a href="#top">
+			<img style="border:0px;" src="<?php echo $template_path; ?>/images/content/back-to-top.gif">
+		</a>
+	</div>
 </div>
 <div class="TableContainer">
-<div class="CaptionContainer">
-<div class="CaptionInnerContainer">
-<span class="CaptionEdgeLeftTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionBorderTop" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionVerticalLeft" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<div class="Text">Mounts</div>
-<span class="CaptionVerticalRight" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<span class="CaptionBorderBottom" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionEdgeLeftBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
+  <div class="CaptionContainer">
+    <div class="CaptionInnerContainer"> <span class="CaptionEdgeLeftTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionBorderTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span> <span class="CaptionVerticalLeft" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+      <div class="Text">Item Summary</div>
+      <span class="CaptionVerticalRight" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span> <span class="CaptionBorderBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span> <span class="CaptionEdgeLeftBottom" style="background-image:url(<?php echo $template_path; ?>https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> </div>
+  </div>
+  <table class="Table3" cellspacing="0" cellpadding="0">
+    <tbody>
+      <tr>
+        <td><div class="InnerTableContainer">
+            <table style="width:100%;">
+              <tbody>
+                
+                
+                <tr>
+                  <td><div class="TableContentContainer">
+                      <table class="TableContent" style="border:1px solid #faf0d7;" width="100%">
+                        <tbody>
+                          <tr class="Even tmp-container-ItemSummary">
+                            <td><div id="ajax-target-type-0" class="paged-container page-object-container">
+                                
+                                <div class="BlockPage BlockPageObject">
+<?php foreach($getDepotItems as $DepotItem){ ?>
+<div class="CVIcon CVIconObject">
+	<img src="<?php echo $template_path; ?>/images/charactertrade/objects/<?php echo $DepotItem['sid'] ?>.gif">
+<?php if($DepotItem['count'] > 1){ ?>
+	<div class="ObjectAmount"><?php echo $DepotItem['count'] ?></div>
+<?php } ?>
 </div>
+<?php } ?>
 </div>
-<table class="Table3" cellpadding="0" cellspacing="0">
-<tbody>
-<tr>
-<td>
-<div class="InnerTableContainer">
-<table style="width:100%;">
-<tbody>
-<tr><td>
-<div class="TableContentContainer">
-<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-<tbody>
-<tr class="Even tmp-container-Mounts">
-<td>
-<div id="ajax-target-type-2" class="paged-container page-object-container">
-<div class="BlockPageNavigationRow">
-<small>
-<div style="float: left;">
-<b>» Pages: <span class="PageLink "><span class="CurrentPageLink">1</span></span></b></div><div style="float: right;"><b>» Results: 3</b></div>
-</small>
+<?php if($DepotItem == 0){ ?>
+<div style="text-align: center;">No items.</div>
+<?php } ?>
+                              </div></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
-<div class="BlockPage">
-<div class="CVIcon" title="Racing Bird"><img src="https://static.tibia.com/images/charactertrade/mounts/369.gif"></div>
-<div class="CVIcon" title="Donkey"><img src="https://static.tibia.com/images/charactertrade/mounts/387.gif"></div>
-<div class="CVIcon" title="Magma Crawler"><img src="https://static.tibia.com/images/charactertrade/mounts/503.gif"></div>
-</div>
-</div>
-</td>
-</tr>
-</tbody></table>
-</div></td></tr>
-</tbody></table>
-</div>
-</td>
-</tr>
-</tbody></table></div></div>
-
 <br>
+<div class="CharacterDetailsBlock " id="Charms"><a name="Charms"></a>
+  <div class="TopButtonContainer"><a name="Charms"></a>
+    <div class="TopButton"><a name="Charms"></a><a onclick="ScrollToAnchor('top');"><img style="border: 0px;" src="<?php echo $template_path; ?>/images/global/content/back-to-top.gif"></a></div>
+  </div>
+  <div class="TableContainer">
+    <div class="CaptionContainer">
+      <div class="CaptionInnerContainer"> <span class="CaptionEdgeLeftTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionBorderTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span> <span class="CaptionVerticalLeft" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+        <div class="Text">Charms</div>
+        <span class="CaptionVerticalRight" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span> <span class="CaptionBorderBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span> <span class="CaptionEdgeLeftBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> </div>
+    </div>
+<?php
+$Charm_CountRunes = 0;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="CharacterDetailsBlock" id="StoreMounts">
-<a name="Store Mounts"></a>
-<div class="TopButtonContainer">
-<a name="Store Mounts"></a>
-<div class="TopButton">
-<a name="Store Mounts"></a>
-<a href=""><img style="border: 0px;" src="https://static.tibia.com/images/global/content/back-to-top.gif"></a>
-</div>
-</div>
-<div class="TableContainer">
-<div class="CaptionContainer">
-<div class="CaptionInnerContainer">
-<span class="CaptionEdgeLeftTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionBorderTop" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionVerticalLeft" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<div class="Text">Store Mounts</div>
-<span class="CaptionVerticalRight" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<span class="CaptionBorderBottom" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionEdgeLeftBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-</div>
-</div><table class="Table3" cellpadding="0" cellspacing="0">
-<tbody><tr>
-<td>
-<div class="InnerTableContainer">
-<table style="width:100%;">
-<tbody>
-<tr>
-<td>
-<div class="TableContentContainer">
-<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-<tbody>
+if($getCharm['rune_wound'] > 1){
+	$Charm_CountRunes++;
+	$rune_wound = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_wound = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_enflame'] > 1){
+	$Charm_CountRunes++;
+	$rune_enflame = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_enflame = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_poison'] > 1){
+	$Charm_CountRunes++;
+	$rune_poison = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_poison = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_freeze'] > 1){
+	$Charm_CountRunes++;
+	$rune_freeze = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_freeze = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_zap'] > 1){
+	$Charm_CountRunes++;
+	$rune_zap = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_zap = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_curse'] > 1){
+	$Charm_CountRunes++;
+	$rune_curse = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_curse = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_cripple'] > 1){
+	$Charm_CountRunes++;
+	$rune_cripple = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_cripple = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_parry'] > 1){
+	$Charm_CountRunes++;
+	$rune_parry = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_parry = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_dodge'] > 1){
+	$Charm_CountRunes++;
+	$rune_dodge = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_dodge = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_adrenaline'] > 1){
+	$Charm_CountRunes++;
+	$rune_adrenaline = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_adrenaline = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_numb'] > 1){
+	$Charm_CountRunes++;
+	$rune_numb = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_numb = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_cleanse'] > 1){
+	$Charm_CountRunes++;
+	$rune_cleanse = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_cleanse = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_bless'] > 1){
+	$Charm_CountRunes++;
+	$rune_bless = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_bless = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_scavenge'] > 1){
+	$Charm_CountRunes++;
+	$rune_scavenge = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_scavenge = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_gut'] > 1){
+	$Charm_CountRunes++;
+	$rune_gut = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_gut = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_low_blow'] > 1){
+	$Charm_CountRunes++;
+	$rune_low_blow = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_low_blow = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_divine'] > 1){
+	$Charm_CountRunes++;
+	$rune_divine = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_divine = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_vamp'] > 1){
+	$Charm_CountRunes++;
+	$rune_vamp = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_vamp = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+if($getCharm['rune_void'] > 1){
+	$Charm_CountRunes++;
+	$rune_void = '<img src="'.$template_path.'/images/premiumfeatures/icon_yes.png">';
+}else{
+	$rune_void = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+}
+?>
+    <table class="Table3" cellspacing="0" cellpadding="0">
+      <tbody>
+        <tr>
+          <td><div class="InnerTableContainer">
+              <table style="width:100%;">
+                <tbody>
+                  <tr>
+                    <td><div class="TableContentContainer">
+                        <table class="TableContent" style="border:1px solid #faf0d7;" width="100%">
+                          <tbody>
 <tr class="Even">
-<td>No mounts.</td>
-</tr>
-</tbody>
-</table>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="CharacterDetailsBlock" id="Outfits">
-<a name="Outfits"></a>
-<div class="TopButtonContainer"><a name="Outfits"></a><div class="TopButton"><a name="Outfits"></a>
-<a href=""><img style="border: 0px;" src="https://static.tibia.com/images/global/content/back-to-top.gif"></a>
-</div>
-</div>
-<div class="TableContainer">
-<div class="CaptionContainer">
-<div class="CaptionInnerContainer">
-<span class="CaptionEdgeLeftTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionBorderTop" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionVerticalLeft" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<div class="Text">Outfits</div>
-<span class="CaptionVerticalRight" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<span class="CaptionBorderBottom" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionEdgeLeftBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-</div>
-</div>
-<table class="Table3" cellpadding="0" cellspacing="0">
-<tbody>
-<tr>
-<td>
-<div class="InnerTableContainer">
-<table style="width:100%;"><tbody>
-<tr>
-<td>
-<div class="TableContentContainer">
-<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-<tbody>
-<tr class="Even tmp-container-Outfits">
-<td>
-<div id="ajax-target-type-4" class="paged-container page-object-container">
-<div class="BlockPageNavigationRow">
-<small>
-<div style="float: left;"><b>» Pages: <span class="PageLink "><span class="CurrentPageLink">1</span></span></b></div>
-<div style="float: right;"><b>» Results: 18</b></div>
-</small>
-</div>
-<div class="BlockPage">
-<div class="CVIcon" title="Citizen (base)"><img src="https://static.tibia.com/images/charactertrade/outfits/128_0.gif"></div>
-<div class="CVIcon" title="Hunter (base &amp; addon 2)"><img src="https://static.tibia.com/images/charactertrade/outfits/129_2.gif"></div>
-<div class="CVIcon" title="Mage (base)"><img src="https://static.tibia.com/images/charactertrade/outfits/130_0.gif"></div>
-<div class="CVIcon" title="Knight (base)"><img src="https://static.tibia.com/images/charactertrade/outfits/131_0.gif"></div>
-<div class="CVIcon" title="Nobleman (base)"><img src="https://static.tibia.com/images/charactertrade/outfits/132_0.gif"></div>
-<div class="CVIcon" title="Summoner (base)"><img src="https://static.tibia.com/images/charactertrade/outfits/133_0.gif"></div>
-<div class="CVIcon" title="Warrior (base &amp; addon 2)"><img src="https://static.tibia.com/images/charactertrade/outfits/134_2.gif"></div>
-<div class="CVIcon" title="Barbarian (base)"><img src="https://static.tibia.com/images/charactertrade/outfits/143_0.gif"></div>
-<div class="CVIcon" title="Druid (base)"><img src="https://static.tibia.com/images/charactertrade/outfits/144_0.gif"></div>
-<div class="CVIcon" title="Wizard (base)"><img src="https://static.tibia.com/images/charactertrade/outfits/145_0.gif"></div>
-<div class="CVIcon" title="Oriental (base)"><img src="https://static.tibia.com/images/charactertrade/outfits/146_0.gif"></div>
-<div class="CVIcon" title="Shaman (base)"><img src="https://static.tibia.com/images/charactertrade/outfits/154_0.gif"></div>
-<div class="CVIcon" title="Demon Hunter (base &amp; addon 1 &amp; addon 2)"><img src="https://static.tibia.com/images/charactertrade/outfits/289_3.gif"></div>
-<div class="CVIcon" title="Yalaharian (base)"><img src="https://static.tibia.com/images/charactertrade/outfits/325_0.gif"></div>
-<div class="CVIcon" title="Warmaster (base &amp; addon 1)"><img src="https://static.tibia.com/images/charactertrade/outfits/335_1.gif"></div>
-<div class="CVIcon" title="Wayfarer (base)"><img src="https://static.tibia.com/images/charactertrade/outfits/367_0.gif"></div>
-<div class="CVIcon" title="Afflicted (base &amp; addon 1 &amp; addon 2)"><img src="https://static.tibia.com/images/charactertrade/outfits/430_3.gif"></div>
-<div class="CVIcon" title="Demon Outfit (base &amp; addon 1)"><img src="https://static.tibia.com/images/charactertrade/outfits/541_1.gif">
-</div></div></div></td></tr>
-</tbody></table>
-</div></td></tr>
-</tbody></table>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="CharacterDetailsBlock" id="StoreOutfits">
-<a name="Store Outfits"></a>
-<div class="TopButtonContainer">
-<a name="Store Outfits"></a>
-<div class="TopButton">
-<a name="Store Outfits"></a>
-<a href=""><img style="border: 0px;" src="https://static.tibia.com/images/global/content/back-to-top.gif"></a>
-</div>
-</div>
-<div class="TableContainer">
-<div class="CaptionContainer">
-<div class="CaptionInnerContainer">
-<span class="CaptionEdgeLeftTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionBorderTop" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionVerticalLeft" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<div class="Text">Store Outfits</div>
-<span class="CaptionVerticalRight" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<span class="CaptionBorderBottom" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionEdgeLeftBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-</div>
-</div>
-<table class="Table3" cellpadding="0" cellspacing="0">
-<tbody>
-<tr>
-<td>
-<div class="InnerTableContainer">
-<table style="width:100%;">
-<tbody>
-<tr>
-<td>
-<div class="TableContentContainer">
-<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-<tbody>
-<tr class="Even">
-<td>No outfits.</td>
-</tr>
-</tbody>
-</table>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="CharacterDetailsBlock CollapsedBlock" id="BestiaryProgress">
-<a name="Bestiary Progress"></a>
-<div class="TopButtonContainer">
-<a name="Bestiary Progress"></a>
-<div class="TopButton">
-<a name="Bestiary Progress"></a>
-<a href=""><img style="border: 0px;" src="https://static.tibia.com/images/global/content/back-to-top.gif"></a>
-</div>
-</div>
-<div class="TableContainer">
-<div class="CaptionContainer">
-<div class="CaptionInnerContainer">
-<span class="CaptionEdgeLeftTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionBorderTop" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionVerticalLeft" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<div class="Text">Bestiary Progress</div>
-<span class="CaptionVerticalRight" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
-<span class="CaptionBorderBottom" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span>
-<span class="CaptionEdgeLeftBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-<span class="CaptionEdgeRightBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
-</div>
-</div>
-<table class="Table3" cellpadding="0" cellspacing="0">
-<tbody>
-<tr>
-<td>
-<div class="InnerTableContainer">
-<table style="width:100%;">
-<tbody>
-<tr>
-<td>
-<div class="TableContentContainer">
-<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-<tbody>
-<tr class="LabelH"><td>Step</td>
-<td>Kills</td>
-<td style="width: 98%;">Name</td>
+	<td><?php echo $rune_wound ?> Rune Wound</td>
 </tr>
 <tr class="Odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right; white-space: nowrap;">1 x</td>
-<td>Bat</td>
+	<td><?php echo $rune_enflame ?> Rune Enflame</td>
 </tr>
 <tr class="Even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right; white-space: nowrap;">1 x</td>
-<td>Bug</td>
+	<td><?php echo $rune_poison ?> Rune Poison</td>
 </tr>
 <tr class="Odd">
-<td style="text-align: right;">1</td>
-<td style="text-align: right; white-space: nowrap;">2 x</td>
-<td>Carrion Worm</td>
+	<td><?php echo $rune_freeze ?> Rune Freeze</td>
 </tr>
 <tr class="Even">
-<td style="text-align: right;">1</td>
-<td style="text-align: right; white-space: nowrap;">9 x</td>
-<td>Cave Rat</td>
+	<td><?php echo $rune_zap ?> Rune Zap</td>
 </tr>
 <tr class="Odd">
-<td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">1 x</td><td>Centipede</td></tr><tr class="Even"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">6 x</td><td>Cyclops</td></tr><tr class="Odd"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">14 x</td><td>Demon</td></tr><tr class="Even"><td style="text-align: right;">2</td><td style="text-align: right; white-space: nowrap;">7 x</td><td>Dog</td></tr><tr class="Odd"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">3 x</td><td>Draken Spellweaver</td></tr><tr class="Even"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">5 x</td><td>Feverish Citizen</td></tr><tr class="Odd"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">51 x</td><td>Frazzlemaw</td></tr><tr class="Even"><td style="text-align: right;">2</td><td style="text-align: right; white-space: nowrap;">123 x</td><td>Ghastly Dragon</td></tr><tr class="Odd"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">2 x</td><td>Ghoul</td></tr><tr class="Even"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">6 x</td><td>Grimeleech</td></tr><tr class="Odd"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">12 x</td><td>Guzzlemaw</td></tr><tr class="Even"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">1 x</td><td>Lion</td></tr><tr class="Odd"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">1 x</td><td>Marsh Stalker</td></tr><tr class="Even"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">5 x</td><td>Minotaur</td></tr><tr class="Odd"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">1 x</td><td>Orc Spearman</td></tr><tr class="Even"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">4 x</td><td>Orc Warrior</td></tr><tr class="Odd"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">2 x</td><td>Rat</td></tr><tr class="Even"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">14 x</td><td>Rotworm</td></tr><tr class="Odd"><td style="text-align: right;">2</td><td style="text-align: right; white-space: nowrap;">43 x</td><td>Sandcrawler</td></tr><tr class="Even"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">26 x</td><td>Silencer</td></tr><tr class="Odd"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">3 x</td><td>Skeleton</td></tr><tr class="Even"><td style="text-align: right;">2</td><td style="text-align: right; white-space: nowrap;">140 x</td><td>Skeleton Elite Warrior</td></tr><tr class="Odd"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">4 x</td><td>Snake</td></tr><tr class="Even"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">3 x</td><td>Spider</td></tr><tr class="Odd"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">1 x</td><td>Spit Nettle</td></tr><tr class="Even"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">1 x</td><td>Swampling</td></tr><tr class="Odd"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">6 x</td><td>Troll</td></tr><tr class="Even"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">91 x</td><td>Undead Elite Gladiator</td></tr><tr class="Odd"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">16 x</td><td>Vexclaw</td></tr><tr class="Even"><td style="text-align: right;">1</td><td style="text-align: right; white-space: nowrap;">7 x</td><td>Wolf</td></tr><tr class="Odd IndicateMoreEntries"><td colspan="3"><div class="IndicateMoreEntriesText">(24 more entries)</div></td></tr> </tbody></table> </div></td></tr><tr><td><div class="ShowMoreOrLess">[<a href="">show all</a>]</div></td></tr> </tbody></table> </div> </td> </tr> </tbody></table></div></div>
+	<td><?php echo $rune_curse ?> Rune Curse</td>
+</tr>
+<tr class="Even">
+	<td><?php echo $rune_cripple ?> Rune Cripple</td>
+</tr>
+<tr class="Odd">
+	<td><?php echo $rune_parry ?> Rune Parry</td>
+</tr>
+<tr class="Even">
+	<td><?php echo $rune_dodge ?> Rune Dodge</td>
+</tr>
+<tr class="Odd">
+	<td><?php echo $rune_adrenaline ?> Rune Aadrenaline</td>
+</tr>
+<tr class="Even">
+	<td><?php echo $rune_numb ?> Rune Numb</td>
+</tr>
+<tr class="Odd">
+	<td><?php echo $rune_cleanse ?> Rune Cleanse</td>
+</tr>
+<tr class="Even">
+	<td><?php echo $rune_bless ?> Rune Bless</td>
+</tr>
+<tr class="Odd">
+	<td><?php echo $rune_scavenge ?> Rune Scavenge</td>
+</tr>
+<tr class="Even">
+	<td><?php echo $rune_gut ?> Rune Gut</td>
+</tr>
+<tr class="Odd">
+	<td><?php echo $rune_low_blow ?> Rune Low Blow</td>
+</tr>
+<tr class="Even">
+	<td><?php echo $rune_divine ?> Rune Divine</td>
+</tr>
+<tr class="Odd">
+	<td><?php echo $rune_vamp ?> Rune Vamp</td>
+</tr>
+<tr class="Even">
+	<td><?php echo $rune_void ?> Rune Void</td>
+</tr>
 
+
+
+
+
+
+                          </tbody>
+                        </table>
+                      </div></td>
+                  </tr>
+                </tbody>
+              </table>
+			  
+            </div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<br>
+<div class="CharacterDetailsBlock " id="CompletedQuestLines"><a name="Completed Quest Lines"></a>
+  <div class="TopButtonContainer"><a name="Completed Quest Lines"></a>
+    <div class="TopButton"><a name="Completed Quest Lines"></a><a onclick="ScrollToAnchor('top');"><img style="border: 0px;" src="<?php echo $template_path; ?>/images/global/content/back-to-top.gif"></a></div>
+  </div>
+  <div class="TableContainer">
+    <div class="CaptionContainer">
+      <div class="CaptionInnerContainer"> <span class="CaptionEdgeLeftTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionBorderTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span> <span class="CaptionVerticalLeft" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+        <div class="Text">Completed Quest Lines</div>
+        <span class="CaptionVerticalRight" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span> <span class="CaptionBorderBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span> <span class="CaptionEdgeLeftBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span> </div>
+    </div>
+    <table class="Table3" cellspacing="0" cellpadding="0">
+      <tbody>
+        <tr>
+          <td><div class="InnerTableContainer">
+              <table style="width:100%;">
+                <tbody>
+                  <tr>
+                    <td><div class="TableContentContainer">
+                        <table class="TableContent" style="border:1px solid #faf0d7;" width="100%">
+                          <tbody>
+                            <tr class="LabelH">
+                              <td>Quest Line Name</td>
+                            </tr>
+<?php
+$i_bg = 0;
+foreach($quests as $quest_name => $quest_storage){
+$i_bg = $i_bg + 1;
+?>
+<tr bgcolor="<?php echo getStyle($i_bg) ?>">
+	<td> <?php echo $quest_name; ?></td>
+</tr>
+<?php } ?>
+                          </tbody>
+                        </table>
+                      </div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+
+
+
+<?php
+} /* END PAGE DETAILS*/
+?>

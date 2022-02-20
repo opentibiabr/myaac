@@ -165,26 +165,106 @@ else
 	}
 }
 ?>
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr>
-		<td><img src="<?php echo $template_path; ?>/images/general/blank.gif" width="10" height="1" border="0"></td>
-		<td>
-			<div style="text-align:center"><h2>Ranking for <?php echo ($skill == SKILL_FRAGS ? 'Frags' : ($skill == SKILL_BALANCE ? 'Balance' : getSkillName($skill))); if(isset($vocation)) echo ' (' . $vocation . ')';?> on <?php echo $config['lua']['serverName']; ?></h2></div><br/>
-			<table border="0" cellpadding="4" cellspacing="1" width="100%"></table>
-			<table border="0" cellpadding="4" cellspacing="1" width="100%">
-				<tr bgcolor="<?php echo $config['vdarkborder']; ?>">
-					<td width="10%" class="white"><b>Rank</b></td>
-					<?php if($config['highscores_outfit']): ?>
-					<td class="white"><b>Outfit</b></td>
-					<?php endif; ?>
-					<td width="75%" class="white"><b>Name</b></td>
-					<td width="15%" class="white"><b><?php echo ($skill != SKILL_FRAGS && $skill != SKILL_BALANCE ? 'Level' : ($skill == SKILL_BALANCE ? 'Balance' : 'Frags')); ?></b></td>
-					<?php if($skill == POT::SKILL__LEVEL): ?>
-					<td class="white"><b>Points</b></td>
-					<?php endif; ?>
+<div class="TableContainer">
+  <div class="CaptionContainer">
+    <div class="CaptionInnerContainer"> <span class="CaptionEdgeLeftTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionBorderTop" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span> <span class="CaptionVerticalLeft" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
+      <div class="Text">Highscores Filter</div>
+      <span class="CaptionVerticalRight" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span> <span class="CaptionBorderBottom" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span> <span class="CaptionEdgeLeftBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> </div>
+  </div>
+  <table class="Table1" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td><div class="InnerTableContainer">
+            <table style="width:100%;">
+              <tbody>
+				<form method="post" action="">
+				<tr>
+                  <td>World:</td>
+                  <td><select name="world">
+                      <option value="0" selected>All Worlds</option>
+                    </select></td>
+				</tr>
+                <tr>
+                  <td>Vocation:</td>
+                  <td><select name="profession">
+                      <option value="" selected>(all)</option>
+                      <option value="knight">Knights</option>
+                      <option value="paladin">Paladins</option>
+                      <option value="sorcerer">Sorcerers</option>
+                      <option value="druid">Druids</option>
+                    </select></td>
+					<td><div class="BigButton" style="background-image:url(https://static.tibia.com/images/global/buttons/button_blue.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image:url(https://static.tibia.com/images/global/buttons/button_blue_over.gif);"></div><input class="BigButtonText" type="submit" value="Submit"></div>
+                    </div></td>
 				</tr>
 				<tr>
+                  <td>Category:</td>
+                  <td><select name="category">
+                      <option value="axe">Axe Fighting</option>
+                      <option value="club">Club Fighting</option>
+                      <option value="distance">Distance Fighting</option>
+                      <option value="experience" selected="selected">Experience Points</option>
+                      <option value="fishing">Fishing</option>
+                      <option value="fist">Fist Fighting</option>
+                      <option value="magic">Magic Level</option>
+                      <option value="shield">Shielding</option>
+                      <option value="sword">Sword Fighting</option>
+                    </select></td>
+                </tr>
+				</form>
+              </tbody>
+            </table>
+          </div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<?php
+$rank_world = $_POST['world'];
+$rank_vocation = $_POST['profession'];
+$rank_category = $_POST['category'];
 
+if(empty($rank_vocation)){
+	if(isset($rank_category)){
+		header('Location: ?highscores/'.$rank_category.'');
+	}
+}else{
+	if(isset($rank_category)){
+		header('Location: ?highscores/'.$rank_category.'/'.$rank_vocation.'');
+	}
+}
+?>
+
+<p><i>Skills displayed in the Highscores do not include any bonuses (loyalty, equipment etc.).</i></p>
+
+
+<div class="TableContainer">
+  <div class="CaptionContainer">
+    <div class="CaptionInnerContainer"> <span class="CaptionEdgeLeftTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightTop" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionBorderTop" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span> <span class="CaptionVerticalLeft" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span>
+      <div class="Text">Highscores</div>
+      <span class="CaptionVerticalRight" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-vertical.gif);"></span> <span class="CaptionBorderBottom" style="background-image:url(https://static.tibia.com/images/global/content/table-headline-border.gif);"></span> <span class="CaptionEdgeLeftBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> <span class="CaptionEdgeRightBottom" style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span> </div>
+  </div>
+  <table class="Table3" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td><div class="InnerTableContainer">
+            <table style="width:100%;">
+              <tbody>
+                <tr>
+                  <td><div class="TableContentContainer">
+                      <table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
+                        <tbody>
+                          <tr class="LabelH">
+                            <td>Rank</td>
+							<?php if($config['highscores_outfit']){ ?>
+							<td style="width: 64px;">Outfit</td>
+							<?php } ?>
+                            <td style="width: 40%;">Name</td>
+                            <td style="text-align:right;">Vocation</td>
+                            <td style="text-align: right;"><?php echo ($skill != SKILL_FRAGS && $skill != SKILL_BALANCE ? 'Level' : ($skill == SKILL_BALANCE ? 'Balance' : 'Frags')); ?></td>
+							<?php if($skill == POT::SKILL__LEVEL){ ?>
+                            <td style="text-align: right;">Points</td>
+							<?php } ?>
+                          </tr>
 <?php
 
 $show_link_to_next_page = false;
@@ -223,7 +303,7 @@ foreach($skills as $player)
 		else if($skill == POT::SKILL__LEVEL)
 			$player['value'] = $player['level'];
 echo '
-			<td>' . ($offset + $i) . '.</td>';
+			<tr style="height: 64px;"><td>' . ($offset + $i) . '.</td>';
 			if($config['highscores_outfit'])
 			echo '<td><img style="position:absolute;margin-top:' . (in_array($player['looktype'], array(75, 266, 302)) ? '-15px;margin-left:5px' : '-45px;margin-left:-25px') . ';" src="' . $config['outfit_images_url'] . '?id=' . $player['looktype'] . ($outfit_addons ? '&addons=' . $player['lookaddons'] : '') . '&head=' . $player['lookhead'] . '&body=' . $player['lookbody'] . '&legs=' . $player['looklegs'] . '&feet=' . $player['lookfeet'] . '" alt="" /></td>';
 
@@ -242,16 +322,17 @@ echo '
 					if(isset($config['vocations'][$player['vocation']])) {
 						$tmp = $config['vocations'][$player['vocation']];
 					}
-					echo '<br/><small>' . $tmp . '</small>';
+					
 				}
 echo '
 			</td>
+			<td style="text-align:right;">' . $tmp . '</td>
 			<td>
-				<div style="text-align:center">'.$player['value'].'</div>
+				<div style="text-align:right;">'.$player['value'].'</div>
 			</td>';
 
 		if($skill == POT::SKILL__LEVEL)
-			echo '<td><div style="text-align:center">' . number_format($player['experience']) . '</div></td>';
+			echo '<td><div style="text-align:right">' . number_format($player['experience']) . '</div></td>';
 
 		echo '</tr>';
 	}
@@ -261,99 +342,30 @@ echo '
 
 if(!$i) {
 	$extra = ($config['highscores_outfit'] ? 1 : 0);
-	echo '<tr bgcolor="' . $config['darkborder'] . '"><td colspan="' . ($skill == POT::SKILL__LEVEL ? 5 + $extra : 4 + $extra) . '">No records yet.</td></tr>';
-}
-
 ?>
-</table>
-<table border="0" cellpadding="4" cellspacing="1" width="100%">
-<?php
+<tr bgcolor="<?php echo $config['darkborder'] ?>"><td colspan="<?php echo $skill == POT::SKILL__LEVEL ? 5 + $extra : 4 + $extra ?>">No records yet.</td></tr>
+<?php }
 //link to previous page if actual page is not first
-if($_page > 0)
-	echo '<TR><TD WIDTH=100% ALIGN=right VALIGN=bottom><A HREF="' . getLink('highscores') . '/' . $list . (isset($vocation) ? '/' . $vocation : '') . '/' . ($_page - 1) . '" CLASS="size_xxs">Previous Page</A></TD></TR>';
-
+if($_page > 0){
+?>
+<TR><TD WIDTH="100%" ALIGN="right" VALIGN="bottom"><A HREF="<?php echo getLink('highscores') . '/' . $list . (isset($vocation) ? '/' . $vocation : '') . '/' . ($_page - 1) ?>" CLASS="size_xxs">Previous Page</A></TD></TR>
+<?php
+}
 //link to next page if any result will be on next page
-if($show_link_to_next_page)
-	echo '<TR><TD WIDTH=100% ALIGN=right VALIGN=bottom><A HREF="' . getLink('highscores') . '/' . $list . (isset($vocation) ? '/' . $vocation : '') . '/' . ($_page + 1) . '" CLASS="size_xxs">Next Page</A></TD></TR>';
-
-//end of page
-echo '</TABLE>
-</TD>
-<TD WIDTH=5%>
-	<IMG SRC="'.$template_path.'/images/general/blank.gif" WIDTH=1 HEIGHT=1 BORDER=0></TD>
-	<TD WIDTH=15% VALIGN=top ALIGN=right>';
-/*
-if($config['highscores_country_box'])
-{
-	echo
-	'<TABLE BORDER=0 width="100%" CELLPADDING=4 CELLSPACING=1>
-		<TR BGCOLOR="' . $config['vdarkborder'] . '">
-			<TD CLASS=white><B>Choose a country</B></TD>
-		</TR>
-		<TR BGCOLOR="'.$config['lightborder'].'">
-			<TD>
-				<A HREF="?subtopic=highscores&list=' . $list . '" CLASS="size_xs">[ALL]</A><BR>';
-				for($i = 1; $i < count($config_vocations); $i++)
-					echo '<A HREF="?subtopic=highscores&list=' . $list . '&vocation=' . strtolower($config_vocations[$i]) . '" CLASS="size_xs">' . $config_vocations[$i] . '</A><BR>';
-		echo '
-			</TD>
-		</TR>
-	</TABLE>';
-}*/
-
-echo '
-<TABLE BORDER=0 width="100%" CELLPADDING=4 CELLSPACING=1>
-	<TR BGCOLOR="'.$config['vdarkborder'].'">
-		<TD CLASS=white><B>Choose a skill</B></TD>
-	</TR>
-	<TR BGCOLOR="'.$config['lightborder'].'">
-		<TD>';
-			$types = array(
-				'experience' => 'Experience',
-				'magic' => 'Magic',
-				'shield' => 'Shielding',
-				'distance' => 'Distance',
-				'club' => 'Club',
-				'sword' => 'Sword',
-				'axe' => 'Axe',
-				'fist' => 'Fist',
-				'fishing' => 'Fishing',
-			);
-
-			if($config['highscores_frags']) {
-				$types['frags'] = 'Frags';
-			}
-			if(isset($config['highscores_balance']) && $config['highscores_balance'])
-				$types['balance'] = 'Balance';
-
-			foreach($types as $link => $name) {
-				echo '<A HREF="' . getLink('highscores') . '/' . $link . (isset($vocation) ? '/' . $vocation : '') . '" CLASS="size_xs">' . $name . '</A><BR>';
-			}
-
-echo 	'</td>
-	</tr>
-</table><br>';
-
-if($config['highscores_vocation_box'])
-{
-	echo
-	'<table border="0" width="100%" cellpadding="4" cellspacing="1">
-		<tr bgcolor="' . $config['vdarkborder'] . '">
-			<td class="white"><b>Choose a vocation</b></td>
-		</tr>
-		<tr bgcolor="'.$config['lightborder'].'">
-			<td>
-				<a href="' . getLink('highscores') . '/' . $list . '" class="size_xs">[ALL]</A><BR>';
-				for($i = 1; $i <= $config['vocations_amount']; $i++) {
-					echo '<a href="' . getLink('highscores') . '/' . $list . '/' . strtolower($config_vocations[$i]) . '" class="size_xs">' . $config_vocations[$i] . '</a><br/>';
-				}
-		echo '
-			</td>
-		</tr>
-	</table>';
+if($show_link_to_next_page){
+?>
+<TR><TD WIDTH="100%" ALIGN="right" VALIGN="bottom"><A HREF="<?php echo getLink('highscores') . '/' . $list . (isset($vocation) ? '/' . $vocation : '') . '/' . ($_page + 1) ?>" CLASS="size_xxs">Next Page</A></TD></TR>';
+<?php
 }
 ?>
-		</td>
-		<td><img src="<?php echo $template_path; ?>/images/general/blank.gif" width="10" height="1" border="0"></td>
-	</tr>
-</table>
+                        </tbody>
+                      </table>
+                    </div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

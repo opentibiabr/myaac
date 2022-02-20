@@ -1,3 +1,5 @@
+
+
 <?php
 // few things we'll need
 require '../common.php';
@@ -68,3 +70,8 @@ ob_end_clean();
 $template_path = 'template/';
 require ADMIN . $template_path . 'template.php';
 ?>
+
+<?php if($config['pace_load'] == true){ ?>
+<script src="../admin/bootstrap/pace/pace.js"></script>
+<link href="../admin/bootstrap/pace/themes/white/pace-theme-flash.css" rel="stylesheet" />
+<?php } ?>

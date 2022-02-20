@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<events>
+	<event name="Otservbr example 01" startdate="02/18/2022" enddate="02/28/2022" script="example.lua" >
+		<ingame exprate="250" lootrate="200" spawnrate="100" skillrate="200" />
+		<description description="Otserver br example 1 description double exp and a half, double loot !chance!, regular spawn and double skill" />
+		<colors colordark="#235c00" colorlight="#2d7400" />
+		<details displaypriority="6" isseasonal="0" specialevent="0" />
+	</event>
+	<event name="Otservbr example 02" startdate="02/22/2022" enddate="02/25/2022" script="example.lua" >
+		<ingame exprate="50" lootrate="300" spawnrate="150" skillrate="100" />
+		<description description="Otserver br example 2 description 50% less exp, triple loot !chance!, 50% faster spawn and regular skill" />
+		<colors colordark="#735D10" colorlight="#8B6D05" />
+		<details displaypriority="6" isseasonal="0" specialevent="0" />
+	</event>
+	<event name="Otservbr 03" startdate="02/24/2022" enddate="02/28/2022" script="example.lua" >
+		<ingame exprate="50" lootrate="300" spawnrate="150" skillrate="100" />
+		<description description="Otserver br example 2 description 50% less exp, triple loot !chance!, 50% faster spawn and regular skill" />
+		<colors colordark="#7a1b34" colorlight="#8B6D05" />
+		<details displaypriority="6" isseasonal="0" specialevent="0" />
+	</event>
+</events>

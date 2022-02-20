@@ -328,34 +328,33 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 	if (isset($player) && $player->isLoaded()) {
 		$account = $player->getAccount();
 		?>
-
-		<form action="<?php echo $base . ((isset($id) && $id > 0) ? '&id=' . $id : ''); ?>" method="post"
-			  class="form-horizontal">
-			<div class="col-md-8">
+		<form action="<?php echo $base . ((isset($id) && $id > 0) ? '&id=' . $id : ''); ?>" method="post" class="form-horizontal col-8">
+			<div class="">
 				<div class="box box-primary">
 					<div class="box-body">
-						<div class="nav-tabs-custom">
-							<ul class="nav nav-tabs">
-								<li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Player</a>
-								</li>
-								<li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Stats</a></li>
-								<li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false">Skills</a></li>
-								<li class=""><a href="#tab_4" data-toggle="tab" aria-expanded="false">Pos/Look</a></li>
-								<li class=""><a href="#tab_5" data-toggle="tab" aria-expanded="false">Misc</a></li>
-								<li class="pull-right"><a
-											href="<?php echo ADMIN_URL; ?>?p=accounts&search_name=<?php echo $account->getId(); ?>"
-											class="text-muted"><i class="fa fa-gear" title="Edit Account"></i></a></li>
-							</ul>
-							<div class="tab-content">
-								<div class="tab-pane active" id="tab_1">
+						
+						
+							
+							<nav>
+								<div class="nav nav-tabs" id="nav-tab" role="tablist">
+									<button class="nav-link active" id="nav-player-tab" data-bs-toggle="tab" data-bs-target="#nav-player" type="button" role="tab" aria-controls="nav-player" aria-selected="true">Player</button>
+									<button class="nav-link" id="nav-stats-tab" data-bs-toggle="tab" data-bs-target="#nav-stats" type="button" role="tab" aria-controls="nav-stats" aria-selected="false">Stats</button>
+									<button class="nav-link" id="nav-skills-tab" data-bs-toggle="tab" data-bs-target="#nav-skills" type="button" role="tab" aria-controls="nav-skills" aria-selected="false">Skills</button>
+									<button class="nav-link" id="nav-poslook-tab" data-bs-toggle="tab" data-bs-target="#nav-poslook" type="button" role="tab" aria-controls="nav-poslook" aria-selected="false">Pos/Look</button>
+									<button class="nav-link" id="nav-misc-tab" data-bs-toggle="tab" data-bs-target="#nav-misc" type="button" role="tab" aria-controls="nav-misc" aria-selected="false">Misc</button>
+									
+								</div>
+							</nav>
+							<div class="tab-content" id="nav-tabContent">
+								<div class="tab-pane fade show active" id="nav-player" role="tabpanel" aria-labelledby="nav-player-tab">
 									<div class="row">
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="name" class="control-label">Name</label>
 											<input type="text" class="form-control" id="name" name="name"
 												   autocomplete="off" style="cursor: auto;"
 												   value="<?php echo $player->getName(); ?>"/>
 										</div>
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="account_id" class="control-label">Account id:</label>
 											<input type="text" class="form-control" id="account_id" name="account_id"
 												   autocomplete="off" style="cursor: auto;" size="8" maxlength="11"
@@ -363,7 +362,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-xs-6 ">
+										<div class="col-6">
 											<label for="group" class="control-label">Group:</label>
 											<select name="group" id="group" class="form-control">
 												<?php foreach ($groups->getGroups() as $id => $group): ?>
@@ -371,7 +370,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 												<?php endforeach; ?>
 											</select>
 										</div>
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="vocation" class="control-label">Vocation</label>
 											<select name="vocation" id="vocation" class="form-control">
 												<?php
@@ -384,7 +383,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 									</div>
 
 									<div class="row">
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="sex" class="control-label">Sex:</label>
 											<select name="sex" id="sex" class="form-control">>
 												<?php foreach ($config['genders'] as $id => $sex): ?>
@@ -392,7 +391,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 												<?php endforeach; ?>
 											</select>
 										</div>
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="town" class="control-label">Town:</label>
 											<select name="town" id="town" class="form-control">
 												<?php foreach ($config['towns'] as $id => $town): ?>
@@ -403,7 +402,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 									</div>
 
 									<div class="row">
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="skull" class="control-label">Skull:</label>
 											<select name="skull" id="skull" class="form-control">
 												<?php
@@ -414,7 +413,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 												?>
 											</select>
 										</div>
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="skull_time" class="control-label">Skull time:</label>
 											<input type="text" class="form-control" id="skull_time" name="skull_time"
 												   autocomplete="off" maxlength="11"
@@ -427,20 +426,20 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 											$bless = $player->checkBlessings($blesscount);
 											?>
 											<input type="hidden" name="blesscount" value="<?php echo $blesscount; ?>"/>
-											<div class="col-xs-6">
+											<div class="col-6">
 												<label for="blessings" class="control-label">Blessings:</label>
 												<div class="checkbox">
 													<?php
 													for ($i = 1; $i <= $blesscount; $i++) {
-														echo '<label><input style="margin-left: -16px;" type="checkbox" name="blessing' . $i . '" id="blessing' . $i . '"
-																  value="true" ' . (($bless[$i - 1] == 1) ? ' checked' : '') . '/>' . $i . '</label>';
+														echo '<label style="margin-left: 5px;"><input type="checkbox" name="blessing' . $i . '" id="blessing' . $i . '"
+																  value="true" ' . (($bless[$i - 1] == 1) ? ' checked' : '') . '/> ' . $i . '</label>';
 													}
 													?>
 												</div>
 											</div>
 										<?php endif; ?>
 										<?php if ($hasBlessingsColumn): ?>
-											<div class="col-xs-6">
+											<div class="col-6">
 												<label for="blessings" class="control-label">Blessings:</label>
 												<input type="text" class="form-control" id="blessings" name="blessings"
 													   autocomplete="off" maxlength="11"
@@ -448,7 +447,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 											</div>
 										<?php endif; ?>
 
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="balance" class="control-label">Bank Balance:</label>
 											<input type="text" class="form-control" id="balance" name="balance"
 												   autocomplete="off" maxlength="20"
@@ -456,12 +455,12 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="deleted" class="control-label">Deleted:</label>
 											<input type="checkbox" name="deleted" id="deleted"
 												   value="true" <?php echo($player->getCustomField($db->hasColumn('players', 'deletion') ? 'deletion' : 'deleted') == '1' ? ' checked' : ''); ?>/>
 										</div>
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="hidden" class="control-label">Hidden:</label>
 											<input type="checkbox" name="hidden" id="hidden"
 												   value="true" <?php echo($player->isHidden() ? ' checked' : ''); ?>/>
@@ -469,16 +468,16 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 
 									</div>
 								</div>
-								<div class="tab-pane" id="tab_2">
+								<div class="tab-pane fade" id="nav-stats" role="tabpanel" aria-labelledby="nav-stats-tab">
 									<div class="row">
-										<div class="col-xs-6 ">
+										<div class="col-6">
 											<label for="level" class="control-label">Level:</label>
 
 											<input type="text" class="form-control" id="level" name="level"
 												   autocomplete="off"
 												   style="cursor: auto;" value="<?php echo $player->getLevel(); ?>"/>
 										</div>
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="magic_level" class="control-label">Magic level:</label>
 											<input type="text" class="form-control" id="magic_level" name="magic_level"
 												   autocomplete="off" size="8" maxlength="11" style="cursor: auto;"
@@ -486,14 +485,14 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-xs-6 ">
+										<div class="col-6">
 											<label for="experience" class="control-label">Experience:</label>
 											<input type="text" class="form-control" id="experience" name="experience"
 												   autocomplete="off"
 												   style="cursor: auto;"
 												   value="<?php echo $player->getExperience(); ?>"/>
 										</div>
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="mana_spent" class="control-label">Mana spent:</label>
 											<input type="text" class="form-control" id="mana_spent" name="mana_spent"
 												   autocomplete="off"
@@ -502,14 +501,14 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-xs-6 ">
+										<div class="col-6">
 											<label for="health" class="control-label">Health:</label>
 											<input type="text" class="form-control" id="health" name="health"
 												   autocomplete="off"
 												   size="5" maxlength="11" style="cursor: auto;"
 												   value="<?php echo $player->getHealth(); ?>"/>
 										</div>
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="health_max" class="control-label">Health max:</label>
 											<input type="text" class="form-control" id="health_max" name="health_max"
 												   autocomplete="off"
@@ -518,14 +517,14 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-xs-6 ">
+										<div class="col-6">
 											<label for="mana" class="control-label">Mana:</label>
 											<input type="text" class="form-control" id="mana" name="mana"
 												   autocomplete="off" size="3"
 												   maxlength="11" style="cursor: auto;"
 												   value="<?php echo $player->getMana(); ?>"/>
 										</div>
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="mana_max" class="control-label">Mana max:</label>
 											<input type="text" class="form-control" id="mana_max" name="mana_max"
 												   autocomplete="off"
@@ -534,14 +533,14 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="capacity" class="control-label">Capacity:</label>
 											<input type="text" class="form-control" id="capacity" name="capacity"
 												   autocomplete="off"
 												   size="3" maxlength="11" style="cursor: auto;"
 												   value="<?php echo $player->getCap(); ?>"/>
 										</div>
-										<div class="col-xs-6 ">
+										<div class="col-6">
 											<label for="soul" class="control-label">Soul:</label>
 											<input type="text" class="form-control" id="soul" name="soul"
 												   autocomplete="off" size="3"
@@ -549,7 +548,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 												   value="<?php echo $player->getSoul(); ?>"/>
 										</div>
 										<?php if ($db->hasColumn('players', 'stamina')): ?>
-											<div class="col-xs-6">
+											<div class="col-6">
 												<label for="stamina" class="control-label">Stamina:</label>
 												<input type="text" class="form-control" id="stamina" name="stamina"
 													   autocomplete="off"
@@ -559,7 +558,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 											</div>
 										<?php endif; ?>
 										<?php if ($db->hasColumn('players', 'offlinetraining_time')): ?>
-											<div class="col-xs-6">
+											<div class="col-6">
 												<label for="offlinetraining" class="control-label">Offline Training
 													Time:</label>
 												<input type="text" class="form-control" id="offlinetraining"
@@ -570,30 +569,30 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 										<?php endif; ?>
 									</div>
 								</div>
-								<div class="tab-pane" id="tab_3">
+								<div class="tab-pane fade" id="nav-skills" role="tabpanel" aria-labelledby="nav-skills-tab">
 									<?php
 									$i = 0;
+				echo '<div class="row">';
 									foreach ($skills as $id => $info) {
 										if ($i == 0 || $i++ == 2) {
 											$i = 0;
 										}
 										echo '
-                <div class="row">
-                    <div class="col-xs-6 ">
+                    <div class="col-3">
                         <label for="skills[' . $id . ']" class="control-label">' . $info[0] . '</label>
                         <input type="text" class="form-control" id="skills[' . $id . ']" name="skills[' . $id . ']" maxlength="10" autocomplete="off" style="cursor: auto;" value="' . $player->getSkill($id) . '"/>
                     </div>
-                    <div class="col-xs-6">
+                    <div class="col-3">
                       <label for="skills_tries[' . $id . ']" class="control-label">' . $info[0] . ' tries</label>
                         <input type="text" class="form-control" id="skills_tries[' . $id . ']" name="skills_tries[' . $id . ']" maxlength="10" autocomplete="off" style="cursor: auto;" value="' . $player->getSkillTries($id) . '"/>
-                    </div>
-                </div>';
+                    </div>';
 										if ($i == 0)
 											echo '';
 									}
+				echo '</div>';
 									?>
 								</div>
-								<div class="tab-pane" id="tab_4">
+								<div class="tab-pane fade" id="nav-poslook" role="tabpanel" aria-labelledby="nav-poslook-tab">
 									<?php $outfit = $config['outfit_images_url'] . '?id=' . $player->getLookType() . ($hasLookAddons ? '&addons=' . $player->getLookAddons() : '') . '&head=' . $player->getLookHead() . '&body=' . $player->getLookBody() . '&legs=' . $player->getLookLegs() . '&feet=' . $player->getLookFeet(); ?>
 									<div id="imgchar"
 										 style="width:64px;height:64px;position:absolute; top:30px; right:30px"><img id="player_outfit"
@@ -603,20 +602,20 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 									<?php ?>
 									<td>Position:</td>
 									<div class="row">
-										<div class="col-xs-4">
+										<div class="col-4">
 											<label for="pos_x" class="control-label">X:</label>
 											<input type="text" class="form-control" id="pos_x" name="pos_x"
 												   autocomplete="off"
 												   maxlength="11" style="cursor: auto;"
 												   value="<?php echo $player->getPosX(); ?>"/>
 										</div>
-										<div class="col-xs-4">
+										<div class="col-4">
 											<label for="pos_y" class="control-label">Y:</label>
 											<input type="text" class="form-control" id="pos_y" name="pos_y"
 												   autocomplete="off"
 												   maxlength="11" value="<?php echo $player->getPosY(); ?>"/>
 										</div>
-										<div class="col-xs-4">
+										<div class="col-4">
 											<label for="pos_z" class="control-label">Z:</label>
 											<input type="text" class="form-control" id="pos_z" name="pos_z"
 												   autocomplete="off"
@@ -625,28 +624,28 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 									</div>
 									<td>Look:</td>
 									<div class="row">
-										<div class="col-xs-3">
+										<div class="col-3">
 											<label for="look_head" class="control-label">Head: <span
 														id="look_head_val"></span></label>
 											<input type="range" min="0" max="132"
 												   value="<?php echo $player->getLookHead(); ?>"
 												   class="slider form-control" id="look_head" name="look_head">
 										</div>
-										<div class="col-xs-3">
+										<div class="col-3">
 											<label for="look_body" class="control-label">Body: <span
 														id="look_body_val"></span></label>
 											<input type="range" min="0" max="132"
 												   value="<?php echo $player->getLookBody(); ?>"
 												   class="slider form-control" id="look_body" name="look_body">
 										</div>
-										<div class="col-xs-3">
+										<div class="col-3">
 											<label for="look_legs" class="control-label">Legs: <span
 														id="look_legs_val"></span></label>
 											<input type="range" min="0" max="132"
 												   value="<?php echo $player->getLookLegs(); ?>"
 												   class="slider form-control" id="look_legs" name="look_legs">
 										</div>
-										<div class="col-xs-3">
+										<div class="col-3">
 											<label for="look_feet" class="control-label">Feet: <span
 														id="look_feet_val"></span></label>
 											<input type="range" min="0" max="132"
@@ -655,7 +654,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="look_type" class="control-label">Type:</label>
 											<input type="text" class="form-control" id="look_type" name="look_type"
 												   autocomplete="off"
@@ -663,7 +662,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 												   value="<?php echo $player->getLookType(); ?>"/>
 										</div>
 										<?php if ($hasLookAddons): ?>
-											<div class="col-xs-6">
+											<div class="col-6">
 												<label for="look_addons" class="control-label">Addons:</label>
 												<input type="text" class="form-control" id="look_addons"
 													   name="look_addons" autocomplete="off"
@@ -672,28 +671,28 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 										<?php endif; ?>
 									</div>
 								</div>
-								<div class="tab-pane" id="tab_5">
+								<div class="tab-pane fade" id="nav-misc" role="tabpanel" aria-labelledby="nav-misc-tab">
 									<div class="row">
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="created" class="control-label">Created:</label>
 											<input type="text" class="form-control" id="created" name="created"
 												   autocomplete="off"
 												   maxlength="10"
 												   value="<?php echo $player->getCustomField('created'); ?>"/>
 										</div>
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="lastlogin" class="control-label">Last login:</label>
 											<input type="text" class="form-control" id="lastlogin" name="lastlogin"
 												   autocomplete="off"
 												   maxlength="20" value="<?php echo $player->getLastLogin(); ?>"/>
 										</div>
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="lastlogout" class="control-label">Last logout:</label>
 											<input type="text" class="form-control" id="lastlogout" name="lastlogout"
 												   autocomplete="off"
 												   maxlength="20" value="<?php echo $player->getLastLogout(); ?>"/>
 										</div>
-										<div class="col-xs-6">
+										<div class="col-6">
 											<label for="lastip" class="control-label">Last IP:</label>
 											<input type="text" class="form-control" id="lastip" name="lastip"
 												   autocomplete="off"
@@ -703,7 +702,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 									</div>
 									<?php if ($db->hasColumn('players', 'loss_experience')): ?>
 										<div class="row">
-											<div class="col-xs-6">
+											<div class="col-6">
 												<label for="loss_experience" class="control-label">Experience
 													Loss:</label>
 												<input type="text" class="form-control" id="loss_experience"
@@ -711,19 +710,19 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 													   maxlength="11"
 													   value="<?php echo $player->getLossExperience(); ?>"/>
 											</div>
-											<div class="col-xs-6">
+											<div class="col-6">
 												<label for="loss_mana" class="control-label">Mana Loss:</label>
 												<input type="text" class="form-control" id="loss_mana"
 													   name="loss_mana" autocomplete="off"
 													   maxlength="11" value="<?php echo $player->getLossMana(); ?>"/>
 											</div>
-											<div class="col-xs-6">
+											<div class="col-6">
 												<label for="loss_skills" class="control-label">Skills Loss:</label>
 												<input type="text" class="form-control" id="loss_skills"
 													   name="loss_skills" autocomplete="off"
 													   maxlength="11" value="<?php echo $player->getLossSkills(); ?>"/>
 											</div>
-											<div class="col-xs-6">
+											<div class="col-6">
 												<label for="loss_containers" class="control-label">Containers
 													Loss:</label>
 												<input type="text" class="form-control" id="loss_containers"
@@ -731,7 +730,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 													   maxlength="11"
 													   value="<?php echo $player->getLossContainers(); ?>"/>
 											</div>
-											<div class="col-xs-6">
+											<div class="col-6">
 												<label for="loss_items" class="control-label">Items Loss:</label>
 												<input type="text" class="form-control" id="loss_items"
 													   name="loss_items" autocomplete="off"
@@ -740,7 +739,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 										</div>
 									<?php endif; ?>
 									<div class="row">
-										<div class="col-xs-12">
+										<div class="col-12">
 											<label for="comment" class="control-label">Comment:</label>
 											<textarea class="form-control" name="comment" rows="10" cols="50"
 													  wrap="virtual"><?php echo $player->getCustomField("comment"); ?></textarea>
@@ -751,20 +750,19 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 									</div>
 								</div>
 							</div>
-						</div>
 					</div>
 					<input type="hidden" name="save" value="yes"/>
 					<div class="box-footer">
-						<a href="<?php echo ADMIN_URL; ?>?p=players"><span class="btn btn-danger">Cancel</span></a>
+						<a href="<?php echo ADMIN_URL; ?>?p=players"><span class="btn btn-danger"><i class="fa fa-remove"></i> Cancel</span></a>
 						<div class="pull-right">
-							<input type="submit" class="btn btn-primary" value="Update">
+							<input type="submit" class="btn btn-success" value="Update">
 						</div>
 					</div>
 				</div>
 			</div>
 		</form>
 	<?php } ?>
-	<div class="col-md-4">
+	<div class="col-4">
 		<div class="box box-primary">
 			<div class="box-header with-border">
 				<h3 class="box-title">Search Player:</h3>
@@ -780,7 +778,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 						<input type="text" class="form-control" name="search_name" value="<?php echo $search_name; ?>"
 							   maxlength="32" size="32">
 						<span class="input-group-btn">
-                          <button type="submit" type="button" class="btn btn-info btn-flat">Search</button>
+                          <button type="submit" type="button" class="btn btn-success"><i class="fa fa-search"></i> Search</button>
                         </span>
 					</div>
 				</form>

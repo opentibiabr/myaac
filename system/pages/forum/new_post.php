@@ -20,7 +20,7 @@ if(Forum::canPost($account_logged))
 	}
 
 	$thread = $db->query("SELECT `" . FORUM_TABLE_PREFIX . "forum`.`post_topic`, `" . FORUM_TABLE_PREFIX . "forum`.`id`, `" . FORUM_TABLE_PREFIX . "forum`.`section` FROM `" . FORUM_TABLE_PREFIX . "forum` WHERE `" . FORUM_TABLE_PREFIX . "forum`.`id` = ".(int) $thread_id." AND `" . FORUM_TABLE_PREFIX . "forum`.`first_post` = ".(int) $thread_id." LIMIT 1")->fetch();
-	echo '<a href="' . getLink('forum') . '">Boards</a> >> <a href="' . getForumBoardLink($thread['section']) . '">'.$sections[$thread['section']]['name'].'</a> >> <a href="' . getForumThreadLink($thread_id) . '">'.$thread['post_topic'].'</a> >> <b>Post new reply</b><br /><h3>'.$thread['post_topic'].'</h3>';
+	echo '<div class="ForumBreadCrumbs"><a href="' . getLink('forum') . '">Community Boards</a> | <a href="' . getForumBoardLink($thread['section']) . '">' . $sections[$thread['section']]['name'] . '</a> | <a href="' . getForumThreadLink($thread_id) . '">'.$thread['post_topic'].'</a> | <b>Post New Reply</b></div><br />';
 	if(isset($thread['id']) && Forum::hasAccess($thread['section']))
 	{
 		$quote = isset($_REQUEST['quote']) ? (int) $_REQUEST['quote'] : NULL;

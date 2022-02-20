@@ -20,7 +20,7 @@
 			</div>
 			<form method="post">
 				<div class="box-body">
-					<div align="center" class="row"><p class="note note-image" style="width: 80%;">Sending mails may
+					<div align="center" class="container"><p class="alert alert-info alert-dismissible" style="width: 100%;">Sending mails may
 							take some time if there are many users in db.</p></div>
 					<div class="form-group">
 						<div class="row">
@@ -37,9 +37,13 @@
 							  class="tinymce">{{ mail_content }}</textarea>
 				</div>
 				<div class="box-footer">
-					<input type="checkbox" name="preview" id="preview" value="1"/><label for="preview">Just send test
-						email to me (preview)</label>{% if preview_done %} - <b>Done.</b>{% endif %}<br/>
-					<button type="submit" name="submit" value="Send" class="btn btn-primary">Send</button>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="preview" id="preview" value="1"/> Just send test email to me (preview)
+                      </label>
+                    </div>
+					{% if preview_done %} - <b>Done.</b>{% endif %}<br/>
+					<button type="submit" name="submit" value="Send" class="btn btn-success"><i class="fa fa-send"></i> Send</button>
 				</div>
 			</form>
 		</div>

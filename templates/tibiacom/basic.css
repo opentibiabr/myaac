@@ -558,7 +558,7 @@ img {
 .LeftChain {
   position: absolute;
   top: 0px;
-  left: -5px;
+  left: 0px;
   height: 33px;
   width: 7px;
   background-repeat: repeat-y;
@@ -567,7 +567,7 @@ img {
 .RightChain {
   position: absolute;
   top: 0px;
-  right: -4px;
+  right: 0px;
   height: 33px;
   width: 7px;
   background-repeat: repeat-y;
@@ -575,10 +575,10 @@ img {
 
 .Submenu {
   position: relative;
-  margin-left: 5px;
+  margin-left: 0px;
   margin-right: 5px;
   background-color: #0D2E2B;
-  width: 160px;
+  width: 170px;
 }
 
 .Submenuitem {
@@ -590,7 +590,7 @@ img {
 .ActiveSubmenuItemIcon {
   position: absolute;
   top: 5px;
-  left: 3px;
+  left: 8px;
   width: 10px;
   height: 10px;
   background-repeat: no-repeat;
@@ -602,7 +602,7 @@ img {
   border-top: 0;
   padding-top: 2px;
   padding-bottom: 2px;
-  padding-left: 15px;
+  padding-left: 22px;
   border-bottom: 1px solid #4b7874;
   overflow: hidden;
 }

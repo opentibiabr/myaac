@@ -165,6 +165,7 @@ if(empty($action))
 
 	$twig->display('forum.boards.html.twig', array(
 		'boards' => $boards,
+		'currentTime' => date('H:i'),
 		'canEdit' => $canEdit,
 		'last' => count($sections)
 	));

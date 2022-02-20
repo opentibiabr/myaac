@@ -10,10 +10,11 @@
 	<link rel="shortcut icon" href="<?php echo BASE_URL; ?>images/favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="<?php echo BASE_URL; ?>images/favicon.ico" type="image/x-icon" />
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/bootstrap.min.css">
+	
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>admin/bootstrap/css/bootstrap.min.css"> <!-- BOOTSTRAP 5 -->
+	<!-- <link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/bootstrap.min.css"> -->
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/AdminLTE.min.css">
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/skins/skin-blue.min.css">
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/skins/skin-blue.min.css"> 
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/font-awesome.min.css">
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/ionicons.min.css">
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/jquery.dataTables.min.css">
@@ -52,15 +53,15 @@
 	<aside class="main-sidebar">
 		<section class="sidebar">
 			<ul class="sidebar-menu" data-widget="tree">
-				<li class="header">MyAAC</li>
+				<li class="header">MyAAC v0.9.0</li>
 
 				<?php
 				$icons_a = array(
-                    'dashboard','newspaper-o', 'envelope',
-                    'book', 'list',
+                    'dashboard', 'newspaper-o', 'envelope',
+                    'book', 'user', 'list',
                     'plug', 'user',
                     'edit', 'gavel',
-                    'wrench', 'edit', 'book', 'book',
+                    'wrench', 'edit', 'sign-out',
                 );
 
 				$menus = array(
@@ -68,6 +69,7 @@
 					'News' => 'news',
 					'Mailer' => 'mailer',
 					'Pages' => 'pages',
+					'CharBaazar' => 'charbazaar',
 					'Menus' => 'menus',
 					'Plugins' => 'plugins',
 					'Visitors' => 'visitors',
@@ -84,6 +86,7 @@
 						'Logs' => 'logs',
 						'Reports' => 'reports',
 					),
+					'Logout' => 'logout',
 				);
 
 				$i = 0;
@@ -140,7 +143,7 @@
 			<h1><?php echo(isset($title) ? $title : ''); ?>
 				<small> - Admin Panel</small>
 				<div class="pull-right">
-					<span class="label label-<?php echo(($status['online']) ? 'success' : 'danger'); ?>"><?php echo $config['lua']['serverName'] ?></span>
+					<span class="badge bg-<?php echo(($status['online']) ? 'green' : 'red'); ?>"><?php echo $config['lua']['serverName'] ?></span>
 				</div>
 			</h1>
 		</section>
@@ -161,7 +164,7 @@
 				<?php endif; ?>
 			</div>
 		</div>
-		<?php echo base64_decode('UG93ZXJlZCBieSA8YSBocmVmPSJodHRwOi8vbXktYWFjLm9yZyIgdGFyZ2V0PSJfYmxhbmsiPk15QUFDLjwvYT4='); ?>
+		Powered by MyAAC and edited by Lucas Giovanni.
 	</footer>
 
 	<aside class="control-sidebar control-sidebar-dark">
@@ -203,10 +206,10 @@
 
 					<div class="form-group">
 						<label class="control-sidebar-subheading">
-							<?php echo MYAAC_VERSION; ?> (<a href="?p=version">Check for updates</a>)<br/>
+							0.9.0 (<a href="?p=version">Check for updates</a>)<br/>
 						</label>
 						<label class="control-sidebar-subheading">
-							<p><a href="https://github.com/slawkens/myaac" target="_blank">Github</a></p>
+							<p><a href="https://github.com/lucaslking/myaac" target="_blank">Github</a></p>
 					</div>
 				</form>
 			</div>
@@ -221,7 +224,8 @@ if (!$logged && !admin()) {
 }
 ?>
 
-<script src="<?php echo BASE_URL; ?>tools/js/bootstrap.min.js"></script>
+<script src="<?php echo BASE_URL; ?>admin/bootstrap/js/bootstrap.min.js"></script> <!-- BOOTSTRAP 5 -->
+<!-- <script src="<?php echo BASE_URL; ?>tools/js/bootstrap.min.js"></script> -->
 <script src="<?php echo BASE_URL; ?>tools/js/jquery-ui.min.js"></script>
 <script src="<?php echo BASE_URL; ?>tools/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo BASE_URL; ?>tools/js/adminlte.min.js"></script>

@@ -42,3 +42,75 @@ tr.shown td.details-control {
 	text-align: center;
 	color: red;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.table{
+	--bs-table-striped-color: #B8C7D0;
+}
+a {
+	text-decoration: none;
+}
+.skin-blue .main-header .navbar{
+	padding-bottom: 0px;
+	padding-top: 0px;
+}
+tr {
+    color: #B8C7D0;
+}
+.nav-tabs .nav-link{
+	color: #fff;
+	border-bottom: 1px solid #fff;
+	background: #202634;
+	border-radius: 5px 5px 0px 0px;
+}
+ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
+	background: #202634;
+	padding: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

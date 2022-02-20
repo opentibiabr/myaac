@@ -66,7 +66,7 @@ if (isset($_REQUEST['template'])) {
 	echo 'Hint: You can drag menu items.<br/>
 	Hint: Add links to external sites using: <b>http://</b> or <b>https://</b> prefix.<br/>
 	Not all templates support blank and colorful links.<br/><br/>
-    <div class="row">';
+    <div>';
 	$menus = array();
 	$menus_db = $db->query('SELECT `name`, `link`, `blank`, `color`, `category`, `ordering` FROM `' . TABLE_PREFIX . 'menu` WHERE `enabled` = 1 AND `template` = ' . $db->quote($template) . ' ORDER BY `ordering` ASC;')->fetchAll();
 	foreach ($menus_db as $menu) {
@@ -74,13 +74,13 @@ if (isset($_REQUEST['template'])) {
 	}
 
 	$last_id = array();
-	echo '<form method="post" id="menus-form" action="?p=menus">';
+	echo '<form method="post" id="menus-form" class="row" action="?p=menus">';
 	echo '<input type="hidden" name="template" value="' . $template . '"/>';
 	foreach ($config['menu_categories'] as $id => $cat) {
-		echo '        <div class="col-md-12 col-lg-6">
+		echo '        <div class="col-6">
             <div class="box box-danger">
                 <div class="box-header with-border">
-                    <h3 class="box-title">' . $cat['name'] . ' <img class="add-button" id="add-button-' . $id . '" src="' . BASE_URL . 'images/plus.png" width="16" height="16"/></h3>
+                    <h3 class="box-title">' . $cat['name'] . ' <i class="fa fa-plus-circle btn btn-success add-button" title="New" id="add-button-' . $id . '"></i></h3>
                 </div>
                 <div class="box-body">';
 
@@ -89,14 +89,14 @@ if (isset($_REQUEST['template'])) {
 		if (isset($menus[$id])) {
 			$i = 0;
 			foreach ($menus[$id] as $menu) {
-				echo '<li class="ui-state-default" id="list-' . $id . '-' . $i . '"><label>Name:</label><input type="text" name="menu[' . $id . '][]" value="' . $menu['name'] . '"/>
-				<label>Link:</label><input type="text" name="menu_link[' . $id . '][]" value="' . $menu['link'] . '"/>
+				echo '<li class="ui-state-default" id="list-' . $id . '-' . $i . '"><label>Name: </label><input type="text" name="menu[' . $id . '][]" value="' . $menu['name'] . '"/>
+				<label>Link: </label><input type="text" name="menu_link[' . $id . '][]" value="' . $menu['link'] . '"/>
 				<input type="hidden" name="menu_blank[' . $id . '][]" value="0" />
-				<label><input class="blank-checkbox" type="checkbox" ' . ($menu['blank'] == 1 ? 'checked' : '') . '/><span title="Open in New Window">Open in New Window</span></label>
+				<label><input class="blank-checkbox" type="checkbox" ' . ($menu['blank'] == 1 ? 'checked' : '') . '/> <span title="Open in New Window">Open in New Window</span></label>
 				
 				<input class="color-picker" type="text" name="menu_color[' . $id . '][]" value="#' . $menu['color'] . '" />
 				
-				<a class="remove-button" id="remove-button-' . $id . '-' . $i . '"><img src="' . BASE_URL . 'images/del.png"/></a></li>';
+				<a class="btn btn-danger" id="remove-button-' . $id . '-' . $i . '"><i class="fa fa-trash-o text-white" title="Remove"></i></a></li>';
 
 				$i++;
 				$last_id[$id] = $i;
@@ -109,9 +109,9 @@ if (isset($_REQUEST['template'])) {
         </div>
 ';
 	}
-	echo ' </div><div class="row"><div class="col-md-6">';
-	echo '<input type="submit" class="btn btn-info" value="Save">';
-	echo '<input type="button" class="btn btn-default pull-right" value="Cancel" onclick="window.location = \'' . ADMIN_URL . '?p=menus&template=' . $template . '\';">';
+	echo ' </div><div class="row"><div class="col-md-3">';
+	echo '<input type="submit" class="btn btn-success" value="Save">';
+	echo '<input type="button" class="btn btn-info pull-right" value="Cancel" onclick="window.location = \'' . ADMIN_URL . '?p=menus&template=' . $template . '\';">';
 	echo '</div></div>';
 	echo '</form>';
 
