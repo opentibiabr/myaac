@@ -284,7 +284,7 @@ $config = array(
 	'collapse_status' => false,
 	
 	// events
-	'events_xml' => $config['template_path'] . "data/xml/events.xml",
+	'events_xml' => 'data/xml/events.xml',
 	
 	// slide
 	'carousel_status' => false,

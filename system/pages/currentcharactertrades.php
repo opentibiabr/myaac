@@ -1341,8 +1341,6 @@ $Insert_NewBid = $db->exec('INSERT INTO `myaac_charbazaar_bid` (`account_id`, `a
 	
 header('Location: ' . BASE_URL . '?subtopic=currentcharactertrades');
 
-}else{
-	header('Location: ' . BASE_URL . '?subtopic=currentcharactertrades');
 }
 ?>
 
