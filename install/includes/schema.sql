@@ -62,7 +62,7 @@ CREATE TABLE `myaac_charbazaar` (
   `bid_price` int(11) NOT NULL,
   `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
 CREATE TABLE `myaac_charbazaar_bid` (
   `id` int(11) NOT NULL,
