@@ -1,13 +1,3 @@
-<style>
-form {
-    display: block;
-    margin-top: 0em;
-	margin-block-end: 0em;
-
-}
-
-</style>
-
 <?php
 /**
  *
@@ -1285,7 +1275,6 @@ myModalFinishBid.addEventListener('shown.bs.modal', function () {
 })
 </script>
 <div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton_green.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div><input name="auction_confirm" class="BigButtonText" type="submit" value="Submit Bid" data-bs-toggle="modal" data-bs-target="#ModalOpenFinishBid"></div></div>
-
 <div class="modal fade" id="ModalOpenFinishBid" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ModalOpenFinishBidLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -1300,20 +1289,35 @@ myModalFinishBid.addEventListener('shown.bs.modal', function () {
       </div>
       <div class="modal-footer">
 		<!--<div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton_red.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_red_over.gif); visibility: hidden;"></div><input name="auction_confirm" class="BigButtonText" type="button" value="Close" data-bs-dismiss="modal"></div></div>-->
-		<form method="post" action=""><input type="hidden" name="bid_iden" value="<?php echo $getAuction['id'] ?>"><input type="hidden" name="bid_max" value="<?php echo $Auction_maxbid ?>"><div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton_green.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div><input name="bid_confirm" class="BigButtonText" type="submit" value="Exit"></div></div></form>
+<form method="post" action="?subtopic=currentcharactertrades&action=bidfinish">
+<input type="hidden" name="bid_iden" value="<?php echo $getAuction['id'] ?>">
+<input type="hidden" name="bid_max" value="<?php echo $Auction_maxbid ?>">
+		<div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton_green.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div><input name="bid_confirm" class="BigButtonText" type="submit" value="Exit"></div></div>
+</form>
       </div>
     </div>
   </div>
 </div>
+<?php } ?>
+<a href="?subtopic=currentcharactertrades"><div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton_red.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_red_over.gif); visibility: hidden;"></div><input class="BigButtonText" type="button" value="Cancel"></div></div></a>
+</div>
+
+<?php
+} }
+?>
+
+
+
 <!-- REGISTRO NA DB -->
 <?php
-if(isset($_POST['bid_confirm']) && $logged){
+if($getPageAction == 'bidfinish'){
+
+if(isset($_POST['bid_confirm']) && $_POST['bid_max'] && $logged){
 $bid_iden = $_POST['bid_iden'];
 $bid_max = $_POST['bid_max'];
 
 $getAuction = $db->query('SELECT `id`, `account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price` FROM `myaac_charbazaar`' . 'WHERE `id` = '.$bid_iden.'');
 $getAuction = $getAuction->fetch();
-
 
 $getAuctionBid = $db->query('SELECT `id`, `account_id`, `auction_id`, `bid`, `date` FROM `myaac_charbazaar_bid`' . 'WHERE `auction_id` = '.$bid_iden.' ORDER BY `bid` DESC LIMIT 1');
 $getAuctionBid = $getAuctionBid->fetch();
@@ -1337,64 +1341,12 @@ $UpdateAccountNewBid = $db->exec('UPDATE `accounts` SET `coins` = '.$TaxCoinsNew
 $Update_Auction = $db->exec('UPDATE `myaac_charbazaar` SET `price` = '.$bid_max.', `bid_account` = '.$account_logged.' WHERE `id` = '.$getAuction['id'].'');
 
 // INSERT NEW BID
-$Insert_NewBid = $db->exec('INSERT INTO `myaac_charbazaar_bid` (`account_id`, `auction_id`, `bid`) VALUES ('.$account_old.', '.$account_new.', '.$player_id.')');
-	
-header('Location: ' . BASE_URL . '?subtopic=currentcharactertrades');
+$Insert_NewBid = $db->exec('INSERT INTO `myaac_charbazaar_bid` (`account_id`, `auction_id`, `bid`) VALUES (' .$account_logged. ', ' .$getAuction['id']. ', ' .$bid_max. ')');
 
+header('Location: ' . BASE_URL . '?subtopic=currentcharactertrades');
+}
 }
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-<?php } ?>
-<a href="?subtopic=currentcharactertrades"><div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton_red.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_red_over.gif); visibility: hidden;"></div><input class="BigButtonText" type="button" value="Cancel"></div></div></a>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-<?php
-} }
-?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <?php
 
