@@ -328,6 +328,24 @@ CREATE TABLE `myaac_pages`
 	UNIQUE (`name`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
+CREATE TABLE `myaac_polls` (
+  `id` int(11) NOT NULL,
+  `question` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `end` int(11) NOT NULL,
+  `start` int(11) NOT NULL,
+  `answers` int(11) NOT NULL,
+  `votes_all` int(11) NOT NULL
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
+CREATE TABLE `myaac_polls_answers` (
+  `poll_id` int(11) NOT NULL,
+  `answer_id` int(11) NOT NULL,
+  `answer` varchar(255) NOT NULL,
+  `votes` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
 CREATE TABLE `myaac_gallery`
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
