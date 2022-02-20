@@ -208,7 +208,7 @@ if(isset($config['boxes']))
 		  //document.getElementById(sourceId+"_Submenu").style.visibility = "visible";
 		  //document.getElementById(sourceId+"_Submenu").style.display = "block";
 		  //document.getElementById(sourceId+"_Lights").style.visibility = "hidden";
-		  //document.getElementById(sourceId+"_Extend").style.backgroundImage = "url(" + IMAGES + "/general/minus.gif)";
+		  document.getElementById(sourceId+"_Extend").style.backgroundImage = "url(" + IMAGES + "/general/minus.gif)";
 		}
 		function CloseMenuItem(sourceId)
 		{
@@ -221,8 +221,7 @@ if(isset($config['boxes']))
 		  //document.getElementById(sourceId+"_Submenu").style.visibility = "hidden";
 		  //document.getElementById(sourceId+"_Submenu").style.display = "none";
 		  //document.getElementById(sourceId+"_Lights").style.visibility = "visible";
-		  //document.getElementById(sourceId+"_Extend").style.backgroundImage = "url(" + IMAGES + "/general/plus.gif)";
-		  
+		  document.getElementById(sourceId+"_Extend").style.backgroundImage = "url(" + IMAGES + "/general/plus.gif)";
 		}
 
 		// mouse-over effects of menubuttons and submenuitems
