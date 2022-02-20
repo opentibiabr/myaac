@@ -335,7 +335,7 @@ CREATE TABLE `myaac_polls` (
   `end` int(11) NOT NULL,
   `start` int(11) NOT NULL,
   `answers` int(11) NOT NULL,
-  `votes_all` int(11) NOT NULL
+  `votes_all` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
