@@ -50,6 +50,29 @@ CREATE TABLE `myaac_changelog`
 
 INSERT INTO `myaac_changelog` (`id`, `type`, `where`, `date`, `body`, `hidden`) VALUES (1, 3, 2, UNIX_TIMESTAMP(), 'MyAAC installed. (:', 0);
 
+CREATE TABLE `myaac_charbazaar` (
+  `id` int(11) NOT NULL,
+  `account_old` int(11) NOT NULL,
+  `account_new` int(11) NOT NULL,
+  `player_id` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `date_end` datetime NOT NULL,
+  `date_start` datetime NOT NULL,
+  `bid_account` int(11) NOT NULL,
+  `bid_price` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `myaac_charbazaar_bid` (
+  `id` int(11) NOT NULL,
+  `account_id` int(11) NOT NULL,
+  `auction_id` int(11) NOT NULL,
+  `bid` int(11) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
 CREATE TABLE `myaac_config`
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -130,7 +153,7 @@ CREATE TABLE `myaac_menu`
 /* MENU_CATEGORY_NEWS kathrine */
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('kathrine', 'Latest News', 'news', 1, 0);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('kathrine', 'News Archive', 'news/archive', 1, 1);
-INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('kathrine', 'Changelog', 'changelog', 1, 2);
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('kathrine', 'Event Schedule', 'eventcalendar', 1, 2);
 /* MENU_CATEGORY_ACCOUNT kathrine */
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('kathrine', 'Account Management', 'account/manage', 2, 0);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('kathrine', 'Create Account', 'account/create', 2, 1);
@@ -169,7 +192,7 @@ INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VA
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Create Account', 'account/create', 2, 1);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Lost Account?', 'account/lost', 2, 2);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Server Rules', 'rules', 2, 3);
-INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Downloads', 'downloads', 2, 4);
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Downloads', 'downloadclient', 2, 4);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Report Bug', 'bugtracker', 2, 5);
 /* MENU_CATEGORY_COMMUNITY tibiacom */
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Characters', 'characters', 3, 0);
@@ -191,6 +214,12 @@ INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VA
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Gallery', 'gallery', 5, 4);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Server Info', 'serverInfo', 5, 5);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Experience Table', 'experienceTable', 5, 6);
+/* MENU_CATEGORY_CHARBAZAAR tibiacom */
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Current Auctions', 'currentcharactertrades', 7, 0);
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Auction History', 'pastcharactertrades', 7, 1);
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'My Bids', 'ownbids', 7, 2);
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'My Auctions', 'owncharactertrades', 7, 3);
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Create Auction', 'createcharacterauction', 7, 4);
 /* MENU_CATEGORY_SHOP tibiacom */
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Buy Points', 'points', 6, 0);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Shop Offer', 'gifts', 6, 1);
