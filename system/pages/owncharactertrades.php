@@ -17,14 +17,12 @@
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'My Auctions';
 
+if($logged){
 $getAccountCoins = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $account_logged->getId() .'');
 $getAccountCoins = $getAccountCoins->fetch();
 ?>
-
-<?php if($logged){ ?>
 <div class="CharacterTradeTibiaCoinBalance"><?php echo $getAccountCoins['coins'] ?><img src="<?php echo $template_path; ?>/images//account/icon-tibiacoin.png" class="VSCCoinImages" title="Tibia Coins"> <?php echo $getAccountCoins['coins'] ?><img src="<?php echo $template_path; ?>/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins"></div>
 <?php } ?>
-
 <div class="SmallBox">
   <div class="MessageContainer">
     <div class="BoxFrameHorizontal" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-horizontal.gif);"></div>
@@ -79,17 +77,15 @@ $getAccountCoins = $getAccountCoins->fetch();
                             <td></td>
                           </tr>
 <?php
+if($logged){
 $getAuctionsbyAccount = $db->query('SELECT `id`, `account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price`' . 'FROM `myaac_charbazaar`' . 'WHERE `account_old` = ' . $account_logged->getId() .'');
-
-
+}
 $i_bg = 0;
 foreach($getAuctionsbyAccount as $Auction){
 $i_bg = $i_bg + 1;
 
-
 $getCharacterbyAccount = $db->query('SELECT `id`, `name`, `level`' . 'FROM `players`' . 'WHERE `id` = ' . $Auction['player_id'] .'');
 $getCharacterbyAccount = $getCharacterbyAccount->fetch();
-
 
 $Hoje = date('d-m-Y');
 $End = date('d-m-Y', strtotime($Auction['date_end']));

@@ -7,19 +7,16 @@
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Auction History';
 
+if($logged){
 $getAccountCoins = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $account_logged->getId() .'');
 $getAccountCoins = $getAccountCoins->fetch();
-
-if($logged){
 ?>
 <div class="CharacterTradeTibiaCoinBalance"><?php echo $getAccountCoins['coins'] ?><img src="<?php echo $template_path; ?>/images//account/icon-tibiacoin.png" class="VSCCoinImages" title="Tibia Coins"> <?php echo $getAccountCoins['coins'] ?><img src="<?php echo $template_path; ?>/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins"></div>
 <?php
 }
-
 $getPageAuctions = $_GET['subtopic'];
 $getPageDetails = $_GET['details'];
 $getPageAction = $_GET['action'];
-
 if(empty($getPageDetails) and empty($getPageAction)){
 ?>
 <?php
