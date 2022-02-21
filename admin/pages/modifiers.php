@@ -8,7 +8,7 @@
  * @link      https://my-aac.org
  */
 defined('MYAAC') or die('Direct access not allowed!');
-$title = 'Char Bazaar';
+$title = 'Global Modifiers';
 
 ?>
 <!--
