@@ -1087,11 +1087,6 @@ button, input, select, textarea {
     background: #fff
   }
 }
-.form-control {
-	color: #B8C7D0;
-	background-color: #202634;
-	border-color: #454a58;
-}
 .form-control:focus {
   border-color: #3c8dbc;
   box-shadow: none

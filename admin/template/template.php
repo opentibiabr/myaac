@@ -12,6 +12,7 @@
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>admin/bootstrap/css/bootstrap.min.css"> <!-- BOOTSTRAP 5 -->
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>admin/bootstrap/bootstrap-lucasg.css"> <!-- CUSTOM -->
 	<!-- <link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/bootstrap.min.css"> -->
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/AdminLTE.min.css">
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/skins/skin-blue.min.css"> 
