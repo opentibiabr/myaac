@@ -29,7 +29,7 @@ $config = array(
 	 * WARNING2: on 'dev' all PHP errors/warnings are displayed
 	 * Recommended: 'prod' cause of speed (page load time is better)
 	 */
-	'env' => 'dev', // 'prod' for production and 'dev' for development
+	'env' => 'prod', // 'prod' for production and 'dev' for development
 
 	'template' => 'tibiacom', // template used by website (kathrine, tibiacom)
 	'template_allow_change' => false, // allow users to choose their own template while browsing website?
@@ -86,8 +86,8 @@ $config = array(
 	),
 
 	// images
-	'outfit_images_url' => 'http://www.zedot.com.br/AnimatedOutfits/animoutfit.php', // set to animoutfit.php for animated outfit
-	'item_images_url' => 'http://www.zedot.com.br/layouts/tibiacom/images/shop/items/', // set to images/items if you host your own items in images folder
+	'outfit_images_url' => 'outfit/animoutfit.php', // set to animoutfit.php for animated outfit
+	'item_images_url' => 'images/items/', // set to images/items if you host your own items in images folder
 
 	// account
 	'account_management' => true, // disable if you're using other method to manage users (fe. tfs account manager)
@@ -274,6 +274,11 @@ $config = array(
 	'news_date_format' => 'j.n.Y', // check php manual date() function for more info about this
 	'news_author' => false, // show author of the news
 	
+	// banner home
+	'banner_status' => true,
+	'banner_image' => '500x660.png', // templates->tibiacom->images->carousel
+	'banner_link' => 'www.instagram.com',
+	
 	// status bar
 	'status_bar' => true,
 	'client_link' => 'https://www.lucasgiovanni.com', // link to download tibia client
@@ -281,13 +286,13 @@ $config = array(
 	'whatsapp_link' => '5511912345678', // wa.me/5511912345678
 	'instagram_link' => 'test', // www.instagram.com/PROFILE
 	'facebook_link' => 'test', // www.facebook.com/PAGE
-	'collapse_status' => false,
+	'collapse_status' => true,
 	
 	// events
 	'events_xml' => 'data/xml/events.xml',
 	
 	// slide
-	'carousel_status' => false,
+	'carousel_status' => true,
 	'carousel' => array(
 		'carousel_1' => 'runemaster_small.jpg',
 		'carousel_2' => 'merrygarb_small.jpg',

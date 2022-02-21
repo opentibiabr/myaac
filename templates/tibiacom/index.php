@@ -18,6 +18,9 @@ if(isset($config['boxes']))
 	
 	<link href="<?php echo $template_path; ?>/css/facebook.css" rel="stylesheet" type="text/css">
 	
+	<link rel="stylesheet" href="tools/fonts/fontawesome/all.css">
+	<script src="tools/fonts/fontawesome/all.js"></script>
+	
 	<script src="admin/bootstrap/jquery-3.6.0.min.js"></script>
 	<script src="admin/bootstrap/popper.min.js"></script>
 	<script src="admin/bootstrap/js/bootstrap.min.js"></script>

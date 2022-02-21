@@ -306,7 +306,9 @@
 
 
 
-
+.fade {
+    transition: opacity .15s linear;
+}
 .modal{
 	position:fixed;
 	top:0;left:0;
@@ -363,7 +365,8 @@
 	margin-top: 0;
 }
 .modal-body{
-	position:relative;flex:1 1 auto;padding:1rem
+	position:relative;
+	flex:1 1 auto;
 }
 .modal-footer{
 	display:flex;
