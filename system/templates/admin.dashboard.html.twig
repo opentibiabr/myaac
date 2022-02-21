@@ -3,7 +3,7 @@
 		<div class="box box-warning">
 			<div class="box-header with-border">
 				<h3 class="box-title">Maintenance</h3>
-				<div class="box-tools pull-right">
+				<div class="box-tools float-end">
 					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 					</button>
 				</div>
@@ -31,22 +31,38 @@
 						</div>
 					</div>
 					<div class="box-footer">
-						<a href="?p=dashboard&clear_cache" onclick="return confirm('Are you sure?');"><span
-									class="btn btn-primary">Clear cache</span></a>
-						<div class="pull-right">
-							<input type="submit" class="btn btn-success" value="Update"/>
+						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#clearcacheModal"><i class="fa-solid fa-trash-can"></i> Clear Cache</button>
+						<div class="float-end">
+							<button type="submit" class="btn btn-success"><i class="fa-solid fa-circle-check"></i> Update</button>
 						</div>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
+<div class="modal fade" id="clearcacheModal" tabindex="-1" aria-labelledby="clearcacheModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="clearcacheModalLabel">Clear Cache</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+		Are you sure?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-circle-x"></i> Close</button>
+        <a href="?p=dashboard&clear_cache"><span class="btn btn-success"><i class="fa-solid fa-circle-check"></i> Confirm</span></a>
+      </div>
+    </div>
+  </div>
+</div>
 	{% if points is iterable %}
 		<div class="col-md-3">
 			<div class="box">
 				<div class="box-header">
 					<h3 class="box-title">Top 10 - Most premium points</h3>
-					<div class="box-tools pull-right">
+					<div class="box-tools float-end">
 						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 						</button>
 					</div>
@@ -79,7 +95,7 @@
 			<div class="box">
 				<div class="box-header">
 					<h3 class="box-title">Top 10 - Most coins</h3>
-					<div class="box-tools pull-right">
+					<div class="box-tools float-end">
 					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
 					</button>
 				</div>

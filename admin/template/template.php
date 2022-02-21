@@ -16,7 +16,12 @@
 	<!-- <link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/bootstrap.min.css"> -->
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/AdminLTE.min.css">
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/skins/skin-blue.min.css"> 
-	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/font-awesome.min.css">
+	
+	<!-- <link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/font-awesome.min.css"> -->
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/fontawesome.min.css">
+	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/fonts/fontawesome/all.css">
+	<script src="<?php echo BASE_URL; ?>tools/fonts/fontawesome/all.js"></script>
+	
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/ionicons.min.css">
 	<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/jquery.dataTables.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo $template_path; ?>style.css"/>
@@ -54,15 +59,15 @@
 	<aside class="main-sidebar">
 		<section class="sidebar">
 			<ul class="sidebar-menu" data-widget="tree">
-				<li class="header">MyAAC v0.9.0</li>
+				<li class="header">MyAAC v0.8.6</li>
 
 				<?php
 				$icons_a = array(
-                    'dashboard', 'newspaper-o', 'envelope',
+                    'dashboard', 'newspaper', 'envelope',
                     'book', 'user', 'list',
                     'plug', 'user',
                     'edit', 'gavel',
-                    'wrench', 'edit', 'sign-out',
+                    'wrench', 'edit',
                 );
 
 				$menus = array(
@@ -70,7 +75,7 @@
 					'News' => 'news',
 					'Mailer' => 'mailer',
 					'Pages' => 'pages',
-					'CharBaazar' => 'charbazaar',
+					'Modifiers' => 'modifiers',
 					'Menus' => 'menus',
 					'Plugins' => 'plugins',
 					'Visitors' => 'visitors',
@@ -87,7 +92,6 @@
 						'Logs' => 'logs',
 						'Reports' => 'reports',
 					),
-					'Logout' => 'logout',
 				);
 
 				$i = 0;
@@ -115,7 +119,7 @@
 
 						echo '<li class="treeview' . (($used_menu) ? ' menu-open' : '') . '">
                                       <a href="#"><i class="fa fa-' . (isset($icons_a[$i]) ? $icons_a[$i] : 'link') . '"></i> <span>' . $_name . '</span>
-						              <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+						              <span class="float-end"><i class="fa fa-angle-left float-end"></i></span></a>
 						              <ul class="treeview-menu" style="' . (($used_menu) ? '  display: block' : ' display: none') . '">';
 						echo $nav_construct;
 						echo '</ul>
@@ -135,6 +139,9 @@
 					}
 				}
 				?>
+				<li class="bg-danger">
+					<a href="?action=logout"><i class="fa fa-sign-out"></i> <span>Logout</span></a>
+				</li>
 			</ul>
 		</section>
 	</aside>
@@ -143,8 +150,8 @@
 		<section class="content-header">
 			<h1><?php echo(isset($title) ? $title : ''); ?>
 				<small> - Admin Panel</small>
-				<div class="pull-right">
-					<span class="badge bg-<?php echo(($status['online']) ? 'green' : 'red'); ?>"><?php echo $config['lua']['serverName'] ?></span>
+				<div class="float-end">
+					<span class="badge bg-<?php echo(($status['online']) ? 'success' : 'danger'); ?>"><?php echo $config['lua']['serverName'] ?></span>
 				</div>
 			</h1>
 		</section>
@@ -156,12 +163,12 @@
 
 	<footer class="main-footer">
 
-		<div class="pull-right hidden-xs">
+		<div class="hidden-xs float-end">
 			<div id="status">
 				<?php if ($status['online']): ?>
-					<p class="success" style="width: 120px; text-align: center;">Server Online</p>
+					<p class="badge bg-success" style="width: 120px; text-align: center;">Server Online</p>
 				<?php else: ?>
-					<p class="error" style="width: 120px; text-align: center;">Server Offline</p>
+					<p class="badge bg-danger" style="width: 120px; text-align: center;">Server Offline</p>
 				<?php endif; ?>
 			</div>
 		</div>
@@ -207,7 +214,7 @@
 
 					<div class="form-group">
 						<label class="control-sidebar-subheading">
-							0.9.0 (<a href="?p=version">Check for updates</a>)<br/>
+							0.8.6 (<a href="?p=version">Check for updates</a>)<br/>
 						</label>
 						<label class="control-sidebar-subheading">
 							<p><a href="https://github.com/lucaslking/myaac" target="_blank">Github</a></p>
