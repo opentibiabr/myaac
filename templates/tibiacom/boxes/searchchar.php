@@ -37,8 +37,7 @@
 	margin-top: 4px;
     margin-left: 9px;
     width: 162px;
-    height: 110px;
-	padding-top: 15px;
+    height: 112px;
 }
 .btn_themebox_searchchar{
 	position: absolute;
@@ -52,7 +51,7 @@
 	<div class="bg_themebox_searchchar"></div>
 
 	<div class="content_themebox" style="background-image:url(<?php echo $template_path ?>/images/themeboxes/exemple/border.png); height: 130px;">
-		<div class="image_themebox_searchchar">
+		<div class="image_themebox_searchchar"><br>
 		<label style="font-weight: bold; font-family: 'Roboto';">Character Name:</label>
 		<input type="text" class="form-control" name="name" maxlength="29" autofocus>
 		</div>
