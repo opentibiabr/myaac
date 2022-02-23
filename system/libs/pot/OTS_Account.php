@@ -141,8 +141,7 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
 		if(isset($name)) {
 			$nameOrNumber = 'name';
 			$nameOrNumberValue = $name;
-		}
-		else {
+		}else{
 			if (USE_ACCOUNT_NUMBER) {
 				$nameOrNumber = 'number';
 				$nameOrNumberValue = $id;

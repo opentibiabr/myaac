@@ -38,6 +38,7 @@
 		}
 	}
 
+if($config['account_login_by_email'] != true){
 	function checkAccount()
 	{
 		if(eventId != 0)
@@ -85,6 +86,7 @@
 
 		lastSend = timeNow;
 	}
+}
 
 	function checkEmail()
 	{
