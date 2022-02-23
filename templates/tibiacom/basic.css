@@ -863,9 +863,57 @@ img {
 #Themeboxes #NewcomerBox .ThemeboxButton {
   bottom: 15px;
 }
-#Themeboxes #PremiumBox {
-  height: 164px;
+
+#PremiumBox {
+    position: relative;
+    height: 204px
 }
+#PremiumBoxDecor {
+    margin: 0;
+    position: absolute;
+    top: -28px;
+    left: 5px;
+    width: 64px;
+    height: 64px
+}
+#PremiumBoxBg {
+    margin: 0;
+    position: absolute;
+    top: 34px;
+    left: 10px;
+    width: 160px;
+    height: 126px
+}
+#PremiumBoxOverlay {
+    margin: 0;
+    position: absolute;
+    top: 34px;
+    left: 10px;
+    width: 163px;
+    height: 26px
+}
+#PremiumBoxOverlayText {
+    color: #fff;
+    font-family: Verdana, sans-serif;
+    margin-top: 3px;
+    text-align: center;
+    font-size: 11px
+}
+#PremiumBoxButtonDecor {
+    position: absolute;
+    width: 114px;
+    height: 26px;
+    left: 33px;
+    bottom: 34px;
+    z-index: 25
+}
+#PremiumBoxButton {
+    position: absolute;
+    bottom: 9px;
+    left: 18px;
+    text-align: center
+}
+
 #Themeboxes #JobBox {
   height: 164px;
 }
