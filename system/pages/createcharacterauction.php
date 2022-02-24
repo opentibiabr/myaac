@@ -1679,18 +1679,19 @@ $getAccount = $getAccount->fetch();
 
 if($auction_days > 28){
 	$auction_inputdays = $auction_days;
-	$auction_end = date('Ymd H:s:i', strtotime('+' . $auction_inputdays . ' days'));
+	$auction_end = date('Ymd', strtotime('+' . $auction_inputdays . ' days'));
 }else{
 	$auction_inputdays = $auction_days;
-	$auction_end = date('Ymd H:s:i', strtotime('+' . $auction_inputdays . ' days'));
+	$auction_end = date('Ymd', strtotime('+' . $auction_inputdays . ' days'));
 }
 
 $account_old = $getCharacter['account_id'];
 $account_new = $config['bazaar_accountid'];
 $player_id = $auction_character;
 $price = $auction_price;
-$date_end = $auction_end;
-$date_start = date('Ymd H:s:i');
+
+$date_start = date('YmdHis');
+$date_end = $auction_end.date('His');
 
 $getCoinsAccountLogged = $db->query('SELECT `id`, `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $account_logged->getId() .'');
 $getCoinsAccountLogged = $getCoinsAccountLogged->fetch();
@@ -1703,7 +1704,7 @@ if($getCoinsAccountLogged['coins'] > $charbazaar_create){
 
 $update_accountcoins = $db->exec('UPDATE `accounts` SET `coins` = '.$charbazaar_mycoins_calc.' WHERE `id` = '.$getAccount['id'].'');
 
-$insert_auction = $db->exec('INSERT INTO `myaac_charbazaar` (`account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`) VALUES (' . $account_old .', ' . $account_new .', ' . $player_id .', ' . $price .', ' . $date_end .', ' . $date_start .')');
+$insert_auction = $db->exec('INSERT INTO `myaac_charbazaar` (`account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`) VALUES ('.$account_old.', '.$account_new .', '.$player_id.', '.$price.', '.$date_end.', '.$date_start.')');
 
 $update_character = $db->exec('UPDATE `players` SET `account_id` = '.$account_new.' WHERE `id` = '.$getCharacter['id'].'');
 
@@ -1749,154 +1750,9 @@ $update_character = $db->exec('UPDATE `players` SET `account_id` = '.$account_ne
 /* CADASTRAR AUCTION END */
 }
 
-
-
-
-
-
-
-
-
 if($getAuctionStep > 4){
 	echo 'Nenhum step encontrado';
 }
 
 
-if($action == 'test'){
-
-/* PLAYERS */
-$players = array();
-$account_players = $account_logged->getPlayersList();
-$account_players->orderBy('id');
-/* PLAYERS END */
-	
-
-/* GET LEVEL PLAYERS */
-foreach($account_players as $players){
-	$getlevel_players = $players->getLevel();
-
-	if($getlevel_players >= 8){
-		$verif_level = 'sim tem level maior que 8';
-	}else{
-		$verif_level = $getlevel_players;
-	}
-}
-/* GET LEVEL PLAYERS END */
-
-
-/* GET FRAGS PLAYERS */
-$frags_enabled = $db->hasTable('player_killers') && $config['characters']['frags'];
-$frags_count = 0;
-if($frags_enabled) {
-	$query = $db->query(
-		'SELECT COUNT(`player_id`) as `frags`' .
-		'FROM `player_killers`' .
-		'WHERE `player_id` = ' .$player->getId() . ' ' .
-		'GROUP BY `player_id`' .
-		'ORDER BY COUNT(`player_id`) DESC');
-
-	if($query->rowCount() > 0)
-	{
-		$query = $query->fetch();
-		$frags_count = $query['frags'];
-	}
-}
-foreach($account_players as $players){
-	if($frags_count == 0){
-		$verif_frags = '<img src="' . $template_path . '/images/premiumfeatures/icon_yes.png">';
-	}else{
-		$verif_frags = '<img src="' . $template_path . '/images/premiumfeatures/icon_no.png">';
-	}
-}
-/* GET FRAGS PLAYERS END */
-
-
-/* GET COINS */
-$getCoins = $db->query('SELECT `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $account_logged->getId() .'');
-$getCoins = $getCoins->fetch();
-
-if($getCoins >= 50) {
-	$verif_coins = $getCoins['coins'];
-}
-/* GET COINS END */
-
-
-/* GET HOUSE */
-$getHouse = $db->query('SELECT `owner`' . 'FROM `houses`' . 'WHERE `owner` = ' . $account_logged->getId() .'');
-$getHouse = $getHouse->fetch();
-
-if($getHouse == 0) {
-	$verif_house = 'nenhuma house';
-}else{
-	$verif_house = 'tem house';
-}
-/* GET HOUSE END */
-	
-
-/* GET GUILD */
-$getGuildOwner = $db->query('SELECT `ownerid`' . 'FROM `guilds`' . 'WHERE `ownerid` = ' . $account_logged->getPlayersList() .'');
-$getGuildOwner = $getGuildOwner->fetch();
-
-$getGuildInvited = $db->query('SELECT `player_id`' . 'FROM `guild_invites`' . 'WHERE `player_id` = ' . $account_logged->getPlayersList() .'');
-$getGuildInvited = $getGuildInvited->fetch();
-
-$getGuildMember = $db->query('SELECT `player_id`' . 'FROM `guild_membership`' . 'WHERE `player_id` = ' . $account_logged->getPlayersList() .'');
-$getGuildMember = $getGuildMember->fetch();
-
-if($getGuildOwner == 0 and $getGuildInvited == 0 and $getGuildMember == 0) {
-	$verif_guild = 'nenhuma guild';
-}else{
-	$verif_guild = 'tem guild';
-}
-/* GET GUILD END */
-
-
-/* GET MARKET */
-$getMarket = $db->query('SELECT `player_id`' . 'FROM `market_offers`' . 'WHERE `player_id` = ' . $account_logged->getPlayersList() .'');
-$getMarket = $getMarket->fetch();
-
-if($getMarket == 0){
-	$verif_market = 'nenhum offer no market';
-}else{
-	$verif_market = 'tem offer no market';
-}
-/* GET MARKET END */
-
-
-/* GET REGISTER ACCOUNT */
-$recovery_key = $account_logged->getCustomField('key');
-if(empty($recovery_key)) {
-	$verif_registered = 'nao registrado';
-} else {
-	$verif_registered = 'registrado';
-}
-/* GET REGISTER ACCOUNT END */
-
-
-
-
-
-
-	$twig->display('charactertrade.createauction.html.twig', array(
-		'verif_level' => $verif_level,
-		'verif_frags' => $verif_frags,
-		'verif_coins' => $verif_coins,
-		'verif_house' => $verif_house,
-		'verif_guild' => $verif_guild,
-		'player_sex' => $player_sex,
-		'verif_registered' => $verif_registered,
-		'verif_market' => $verif_market,
-		'players' => $account_players
-	));
-} /* else {
-	if(!ctype_alnum(str_replace(array('-', '_'), '', $action))) {
-		error('Error: Action contains illegal characters.');
-	}
-	else if(file_exists(PAGES . 'chartrade/' . $action . '.php')) {
-		require PAGES . 'chartrade/' . $action . '.php';
-	}
-	else {
-		error('This page does not exists.');
-	}
-} */
 ?>
