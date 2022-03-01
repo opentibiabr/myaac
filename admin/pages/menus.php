@@ -96,7 +96,7 @@ if (isset($_REQUEST['template'])) {
 				
 				<input class="color-picker" type="text" name="menu_color[' . $id . '][]" value="#' . $menu['color'] . '" />
 				
-				<a class="btn btn-danger" id="remove-button-' . $id . '-' . $i . '"><i class="fa fa-trash-o text-white" title="Remove"></i></a></li>';
+				<a class="btn btn-danger" id="remove-button-' . $id . '-' . $i . '"><i class="fas fa-trash-alt text-white" title="Remove"></i></a></li>';
 
 				$i++;
 				$last_id[$id] = $i;
