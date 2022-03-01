@@ -1,59 +1,3 @@
-<div style="text-align:center"><h2>Welcome to guild manager!</h2></div>
-Here you can change names of ranks, delete and add ranks, pass leadership to other guild member and delete guild.
-<br/><br/>
-<table style="clear:both" border="0" cellpadding="0" cellspacing="0" width="100%">
-	<tr bgcolor="{{ config.darkborder }}">
-		<td width="170">
-			<span style="color: red"><b>Option</b></span>
-		</td>
-		<td>
-			<span style="color: red"><b>Description</b></span>
-		</td>
-	</tr>
-	<tr bgcolor="{{ config.lightborder }}">
-		<td width="170">
-			<b><a href="?subtopic=guilds&guild={{ guild.getName() }}&action=pass_leadership">Pass Leadership</a></b>
-		</td>
-		<td>
-			<b>Pass leadership of guild to other guild member.</b>
-		</td>
-	</tr>
-	<tr bgcolor="{{ config.darkborder }}">
-		<td width="170">
-			<b><a href="?subtopic=guilds&guild={{ guild.getName() }}&action=delete_guild">Delete Guild</a></b>
-		</td>
-		<td>
-			<b>Delete guild, kick all members.</b>
-		</td>
-	</tr>
-	<tr bgcolor="{{ config.lightborder }}">
-		<td width="170">
-			<b><a href="?subtopic=guilds&guild={{ guild.getName() }}&action=change_description">Change Description</a></b>
-		</td>
-		<td>
-			<b>Change description of guild.</b>
-		</td>
-	</tr>
-	{% if constant('MOTD_EXISTS') %}
-	<tr bgcolor="{{ config.darkborder }}">
-		<td width="170">
-			<b><a href="?subtopic=guilds&guild={{ guild.getName() }}&action=change_motd">Change MOTD</a></b>
-		</td>
-		<td>
-			<b>Change MOTD of guild.</b>
-		</td>
-	</tr>
-	{% endif %}
-	<tr bgcolor="{{ config.lightborder }}">
-		<td width="170">
-			<b><a href="?subtopic=guilds&guild={{ guild.getName() }}&action=change_logo">Change guild logo</a></b>
-		</td>
-		<td>
-			<b>Upload new guild logo.</b>
-		</td>
-	</tr>
-</table>
-<br/>
 <div class="TableContainer">
 	<table class="Table1" cellpadding="0" cellspacing="0">
 		<div class="CaptionContainer">
@@ -73,13 +17,16 @@ Here you can change names of ranks, delete and add ranks, pass leadership to oth
 				<div class="InnerTableContainer">
 					<table style="width:100%;">
 						<tr>
-							<td width="120" valign="top">New rank name:</td>
+							<td width="150" valign="top"><b>New rank name:</b></td>
+							<form action="?subtopic=guilds&guild={{ guild.getName() }}&action=add_rank" method="post">
 							<td>
-								<form action="?subtopic=guilds&guild={{ guild.getName() }}&action=add_rank" method="post">
-									<input type="text" name="rank_name" size="20"/>
-									<input type="submit" value="Add"/>
-								</form>
+								<input type="text" name="rank_name" size="20"/>
 							</td>
+							<td>
+								{% set button_name = 'Create' %}
+								{% include('buttons.base_green.html.twig') %}
+							</td>
+							</form>
 						</tr>
 					</table>
 				</div>
@@ -139,7 +86,8 @@ Here you can change names of ranks, delete and add ranks, pass leadership to oth
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td colspan="3" align="center">
-				<input type="submit" value="Save All"/>
+				{% set button_name = 'Save All' %}
+				{% include('buttons.base_green.html.twig') %}
 			</td>
 		</tr>
 	</table>
@@ -161,8 +109,8 @@ Here you can change names of ranks, delete and add ranks, pass leadership to oth
 <b>3. Member</b> - it's lowest rank in guild. Player with this rank can:
 <li>Be a member of guild
 <br/>
-<div style="text-align:center">
-	<form action="?subtopic=guilds&action=show&guild={{ guild.getName() }}" method="post">
+<div style="display: flex; justify-content: center;">
+	<form action="?guilds/{{ guild.getName() }}" method="post">
 		{{ include('buttons.back.html.twig') }}
 	</form>
 </div>

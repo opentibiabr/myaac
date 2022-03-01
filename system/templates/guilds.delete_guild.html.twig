@@ -18,12 +18,16 @@
 				<div class="InnerTableContainer">
 					<table style="width:100%;" >
 						<tr>
-							<td>Are you sure you want delete guild <b>{{ guild.getName() }}</b>?<br/>
-								<form action="?subtopic=guilds&guild={{ guild.getName() }}&action=delete_guild" method="post">
-									<input type="hidden" name="todo" value="save"/>
-									<input type="submit" value="Yes, delete"/>
-								</form>
+							<form action="?subtopic=guilds&guild={{ guild.getName() }}&action=delete_guild" method="post">
+							<td>
+							<b>Are you sure you want delete guild <b>{{ guild.getName() }}</b>?
 							</td>
+							<td>
+								<input type="hidden" name="todo" value="save"/>
+								{% set button_name = 'Yes, delete.' %}
+								{% include('buttons.base_green.html.twig') %}
+							</td>
+							</form>
 						</tr>
 					</table>
 				</div>
@@ -32,8 +36,8 @@
 	</table>
 </div>
 <br/>
-<div style="text-align:center">
-	<form action="?subtopic=guilds&guild={{ guild.getName() }}&action=manager" method="post">
+<div style="display: flex; justify-content: center;">
+	<form action="?guilds/{{ guild.getName() }}" method="post">
 		{{ include('buttons.back.html.twig') }}
 	</form>
 </div>

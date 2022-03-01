@@ -1,3 +1,7 @@
+Please select the game world of your choice to see the list of all existing guilds on it. Click on any view button to get more information about a guild. See the manual for a detailed description about guilds and their benefits.
+<br>
+<br>
+<br>
 <div class="TableContainer">
     <div class="CaptionContainer">
         <div class="CaptionInnerContainer">
@@ -44,7 +48,7 @@
 
                                                                 <td>
                                                                     <span{% if guild.description is not empty %} valign="top"{% endif %}>
-                                                                        <b>{{ guild.name }}</b>{% if isAdmin %}<a href="?subtopic=guilds&action=delete_by_admin&guild={{ guild.name }}"> - Delete this guild (for ADMIN only!)</a>{% endif %}
+                                                                        <b>{{ guild.name }}</b>{% if isAdmin %}<a href="?subtopic=guilds&action=delete_by_admin&guild={{ guild.name }}"> [DELETE]</a>{% endif %}
                                                                     </span>
 
                                                                     {% if guild.description is not empty %}

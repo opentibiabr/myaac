@@ -1,3 +1,20 @@
+<style>
+.btn_nick{
+	border-radius: 0 0.3em 0.3em 0;
+    border: 1px solid #5f4d41;
+	color: #5f4d41;
+    background-color: #fff2db;
+}
+.btn_nick:hover{
+    border: 1px solid #fff2db;
+	color: #fff2db;
+    background-color: #5f4d41;
+}
+.input_nick{
+	border-radius: 0.3em 0px 0px 0.3em;
+	border: 1px solid #5f4d41;
+}
+</style>
 <?php
 /**
  * Show guild
@@ -90,6 +107,20 @@ $guild_owner = $guild->getOwner();
 if($guild_owner->isLoaded())
     $guild_owner_name = $guild_owner->getName();
 
+// GUILD BANK
+$guild_balance = $guild->getCustomField('balance');
+
+// RESIDENCE
+$guild_residence = $guild->getCustomField('residence');
+$select_guildhouse = $db->query('SELECT `house_id`, `listid`, `list` FROM `house_lists` WHERE `house_id` = '.$guild_residence.'');
+$get_guildhouse = $select_guildhouse->fetch();
+$count_guildhouse = $select_guildhouse->rowCount();
+if($count_guildhouse > 0){
+	$get_house = $db->query('SELECT `id`, `owner`, `paid`, `name`, `town_id` FROM `houses` WHERE `id` = '.$get_guildhouse['house_id'].'')->fetch();
+	$house_name = $get_house['name'];
+}
+
+
 $guild_members = array();
 foreach($rank_list as $rank)
 {
@@ -147,6 +178,8 @@ $twig->display('guilds.view.html.twig', array(
     'logo' => $guild_logo,
     'guild_name' => $guild_name,
     'description' => $description,
+	'guild_balance' => $guild_balance,
+	'guild_house' => $house_name,
     'guild_owner' => $guild_owner->isLoaded() ? $guild_owner : null,
     'guild_creation_date' => $guild->getCreationData(),
     'guild_members' => $guild_members,
