@@ -582,6 +582,17 @@ if($getAuctionStep == 2){
 $getCharacter = $db->query('SELECT `id`, `account_id`, `name`, `level`, `vocation`' . 'FROM `players`' . 'WHERE `id` = ' . $selected_character .'');
 $getCharacter = $getCharacter->fetch();
 /* PLAYERS END */
+
+
+/* VERIFICA CONTA */	
+$idLogged = $account_logged->getCustomField('id');
+
+if($idLogged == $getCharacter['account_id']){
+    $next_truecount++;
+}else{
+    header('Location: index.php?news');
+}
+/* VERIFICA CONTA */
 	
 
 /* GET LEVEL PLAYERS */
@@ -831,7 +842,7 @@ if($getOnline == 0){
 		  </a>
 		  </div></td>
       <td><div style="float: left;">
-<?php if($next_truecount == 8){ ?>
+<?php if($next_truecount == 9){ ?>
 	<div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton_green.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div><input name="auction_submit" class="BigButtonText" type="submit" value="Next"></div></div>
 <?php }else{ ?>
 	<div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton_red.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_red_over.gif); visibility: hidden;"></div><input name="auction_submit" class="BigButtonText" type="button" value="Erro"></div></div>
