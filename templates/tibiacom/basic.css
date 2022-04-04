@@ -1782,6 +1782,10 @@ img {
     z-index: 20;
     text-shadow: -1px -1px 0 #000, 0 -1px 0 #000, 1px -1px 0 #000, 1px 0 0 #000, 1px 1px 0 #000, 0 1px 0 #000, -1px 1px 0 #000, -1px 0 0 #000;
 }
+.BigButtonText:hover{
+	top:1px;
+	left:1px;
+}
 .TopButtonContainer {
   position: relative;
   right: 4px;
