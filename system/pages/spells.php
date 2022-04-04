@@ -1,95 +1,113 @@
 <?php
-/**
- * Spells
- *
- * @package   MyAAC
- * @author    Gesior <jerzyskalski@wp.pl>
- * @author    Slawkens <slawkens@gmail.com>
- * @copyright 2019 MyAAC
- * @link      https://my-aac.org
- */
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Spells';
 
 $canEdit = hasFlag(FLAG_CONTENT_SPELLS) || admin();
-if(isset($_POST['reload_spells']) && $canEdit)
-{
+if (isset($_POST['reload_spells']) && $canEdit) {
 	require LIBS . 'spells.php';
-	if(!Spells::loadFromXML(true)) {
+	if (!Spells::loadFromXML(true)) {
 		error(Spells::getLastError());
 	}
 }
 
-if(isset($_REQUEST['vocation_id'])) {
-	$vocation_id = $_REQUEST['vocation_id'];
-	if($vocation_id == 'all') {
-		$vocation = 'all';
-	}
-	else {
-		$vocation = $config['vocations'][$vocation_id];
-	}
-}
-else {
-	$vocation = (isset($_REQUEST['vocation']) ? urldecode($_REQUEST['vocation']) : 'all');
+$spellsJson = BASE . "tools/spells.json";
+$getJson = json_decode(file_get_contents($spellsJson), true);
 
-	if($vocation == 'all') {
-		$vocation_id = 'all';
-	}
-	else {
-		$vocation_ids = array_flip($config['vocations']);
-		$vocation_id = $vocation_ids[$vocation];
+$array = [];
+foreach ($getJson as $tipos) {
+	foreach ($tipos as $data) {
+		$array[] = $data;
 	}
 }
 
-$order = 'name';
-$spells = array();
-$spells_db = $db->query('SELECT * FROM `' . TABLE_PREFIX . 'spells` WHERE `hidden` != 1 AND `type` < 4 ORDER BY ' . $order . '');
+$get = filter_input(INPUT_GET, 'spell');
 
-if((string)$vocation_id != 'all') {
-	foreach($spells_db->fetchAll() as $spell) {
-		$spell_vocations = json_decode($spell['vocations'], true);
-		if(in_array($vocation_id, $spell_vocations) || count($spell_vocations) == 0) {
-			$spell['vocations'] = null;
-			$spells[] = $spell;
+/**
+ * PÁGINA DA MAGIA:
+ */
+if (!empty($get)) {
+	$replaces = [];
+	$replaces['title'] = $get;
+
+	$key = null;
+	foreach ($array as $index => $spell) {
+		if ($spell['name'] == $get) {
+			$key = $index;
+			break;
+		}
+	}
+
+	$dados = $array[$key] ?? null;
+	$dados['vocation'] = implode(', ', $dados['vocation']);
+	$dados['type'] = $dados['type'] == "Spell" ? "Instant" : "Rune";
+	$dados['cooldown'] = $dados['cooldown'] / 1000;
+	$dados['groupCooldown'] = $dados['groupCooldown'] / 1000;
+
+	$replaces['dados'] = $dados;
+	$replaces['imageName'] = str_replace(' ', '_', $get) . ".png";
+
+	$twig->display('spell.html.twig', $replaces);
+	return;
+}
+
+/**
+ *
+ *
+ * LISTA DE MAGIAS ABAIXO
+ *
+ *
+ */
+
+$post = filter_input_array(INPUT_POST);
+
+$sortName = $post['sort'] ?? 'name';
+
+usort($array, function ($a, $b) use ($sortName) {
+	if (in_array($sortName, ['level', 'mana', 'price'])) {
+		return $a[$sortName] < $b[$sortName];
+	}
+
+	if ($sortName == "premium") {
+		$sortName = "isPremium";
+	}
+
+	return strcmp($a[$sortName], $b[$sortName]);
+});
+
+if (!empty($post)) {
+	foreach ($array as $index => $spell) {
+		if (!empty($post['premium']) && isset($spell['isPremium'])) {
+			$premium = $post['premium'] == 'yes' ? "true" : "false";
+			if ($spell['isPremium'] != $premium) {
+				unset($array[$index]);
+			}
+		}
+
+		if (!empty($post['type']) && isset($spell['type'])) {
+			$type = $post['type'] == 'Instant' ? "Spell" : "";
+			if ($spell['type'] != $type) {
+				unset($array[$index]);
+			}
+		}
+
+		if (!empty($post['group']) && !empty($spell['group'])) {
+			if (!strContains(strtolower($post['group']), $spell['group'])) {
+				unset($array[$index]);
+			}
+		}
+
+		if (!empty($spell['vocation']) && !empty($post['vocation'])) {
+			if (!in_array($post['vocation'], $spell['vocation'])) {
+				unset($array[$index]);
+			}
 		}
 	}
 }
-else {
-	foreach($spells_db->fetchAll() as $spell) {
-		$vocations = json_decode($spell['vocations'], true);
 
-		foreach($vocations as &$tmp_vocation) {
-			if(isset($config['vocations'][$tmp_vocation]))
-				$tmp_vocation = $config['vocations'][$tmp_vocation];
-			else
-				$tmp_vocation = 'Unknown';
-		}
-
-		$spell['vocations'] = implode('<br/>', $vocations);
-		$spells[] = $spell;
-	}
-}
-
-?>
-<link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/jquery.dataTables.min.css">
-<?php
 $twig->display('spells.html.twig', array(
-	'canEdit' => $canEdit,
-	'post_vocation_id' => $vocation_id,
-	'post_vocation' => $vocation,
-	'spells' => $spells,
+	'BASE_URL'  => BASE_URL,
+	'canEdit'   => $canEdit,
+	'spells'    => $array,
+	'post'      => $post,
 	'item_path' => $config['item_images_url'],
 ));
-?>
-
-<script>
-	$(document).ready( function () {
-
-		$("#tb_instantSpells").DataTable();
-		$("#tb_conjureSpells").DataTable();
-		$("#tb_runeSpells").DataTable();
-	} );
-
-</script>
-
-<script src="<?php echo BASE_URL; ?>tools/js/jquery.dataTables.min.js"></script>
