@@ -84,8 +84,6 @@ if($save){
 		else {
 			$account_id = $_POST['account'];
 		}
-	}else{
-		$account_name = rand(99999,9999999999);
 	}
 
 	$email = $_POST['email'];
