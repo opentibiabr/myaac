@@ -1,113 +1,246 @@
-<table border="0" cellspacing="1" cellpadding="4" width="100%">
-	<tr bgcolor="{{ config.vdarkborder }}">
-		<td class="white"><b>Server Status</b></td>
-	</tr>
-{% if players|length == 0 %}
-	<tr bgcolor="{{ config.darkborder }}"><td>Currently no one is playing on {{ config.lua.serverName }}.</td></tr></table>
-{% else %}
-	<tr bgcolor="{{ config.darkborder }}">
-		<td>
-			{% if not status.online %}
-			Server is offline.<br/>
-			{% else %}
-				{% if config.online_afk %}
-					{% set players_count = players|length %}
-					{% set afk = players_count - status.players %}
-					{% if afk < 0 %}
-						{% set players_count = players_count + afk|abs %}
-						{% set afk = 0 %}
-					{% endif %}
-					Currently there are <b>{{ status.players }}</b> active and <b>{{ afk }}</b> AFK players.<br/>
-					Total number of players: <b>{{ players_count }}</b>.<br/>
-				{% else %}
-					Currently {{ players|length }} players are online.<br/>
-				{% endif %}
-			{% endif %}
-		</td>
-	</tr>
-</table>
-<br/>
-	{# vocation statistics #}
-	{% if config.online_vocations %}
-<br/>
-		{% if config.online_vocations_images %}
-	<table width="200" cellspacing="1" cellpadding="0" border="0" align="center">
-		<tr bgcolor="{{ config.darkborder }}">
-			<td><img src="images/sorcerer.png" /></td>
-			<td><img src="images/druid.png" /></td>
-			<td><img src="images/paladin.png" /></td>
-			<td><img src="images/knight.png" /></td>
-		</tr>
-		<tr bgcolor="{{ config.vdarkborder }}">
-			<td class="white" style="text-align: center;"><strong>Sorcerers</strong></td>
-			<td class="white" style="text-align: center;"><strong>Druids</strong></td>
-			<td class="white" style="text-align: center;"><strong>Paladins</strong></td>
-			<td class="white" style="text-align: center;"><strong>Knights</strong></td>
-		</tr>
-		<tr bgcolor="{{ config.lightborder }}">
-			<td style="text-align: center;">{{ vocs[1] }}</td>
-			<td style="text-align: center;">{{ vocs[2] }}</td>
-			<td style="text-align: center;">{{ vocs[3] }}</td>
-			<td style="text-align: center;">{{ vocs[4] }}</td>
-		</tr>
-	</table>
-	<div style="text-align: center;">&nbsp;</div>
-		{% else %}
-	<table border="0" cellspacing="1" cellpadding="4" width="100%">
-		<tr bgcolor="{{ config.vdarkborder }}">
-			<td class="white" colspan="2"><b>Vocation statistics</b></td>
-		</tr>
-
-		{% for i in 1..config.vocations_amount %}
-		<tr bgcolor="{{ getStyle(i) }}">
-			<td width="25%">{{ config.vocations[i] }}</td>
-			<td width="75%">{{ vocs[i] }}</td>
-		</tr>
-		{% endfor %}
-	</table>
-<br/>
-		{% endif %}
-	{% endif %}
-
-	{# show skulls #}
-	{% if config.online_skulls %}
-<table width="100%" cellspacing="1">
+<table border="0" width="100%">
+	<tbody>
 	<tr>
-		<td style="background: {{ config.darkborder }};" align="center">
-			<img src="images/white_skull.gif"/> - 1 - 6 Frags<br/>
-			<img src="images/red_skull.gif"/> - 6+ Frags or Red Skull<br/>
-			<img src="images/black_skull.gif"/> - 10+ Frags or Black Skull
+		<td width="50%" style="padding: 0px 5px 10px 0px;">
+			<div class="TableContainer">
+				<div class="CaptionContainer">
+					<div class="CaptionInnerContainer">
+						<span class="CaptionEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+						<span class="CaptionEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+						<span class="CaptionBorderTop" style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+						<span class="CaptionVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+						<div class="Text">World Information</div>
+						<span class="CaptionVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+						<span class="CaptionBorderBottom" style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+						<span class="CaptionEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+						<span class="CaptionEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+					</div></div>
+				<table class="Table1" cellpadding="0" cellspacing="0">
+					<tbody><tr>
+						<td>
+							<div class="InnerTableContainer">
+								<table style="width: 100%">
+									<tbody>
+									{% if not status.online %}
+										<tr style="text-align: center">
+											<td>{{ config.lua.serverName }} Server is offline.</td>
+										</tr>
+									{% else %}
+										<tr>
+											<td width="25%" class="LabelV150">Status: </td>
+											<td>Online</td>
+										</tr>
+										<tr>
+											<td width="25%" class="LabelV150">Players Online:</td>
+											<td>{{ players|length }} Players Online</td>
+										</tr>
+										<tr>
+											<td class="LabelV150">Online Record:</td>
+											<td>{{ record|raw }}</td>
+										</tr>
+										<tr>
+											<td class="LabelV150">Location Datacenter:</td>
+											<td>Brasil<br><small>(Server Date: UTC - {{ current_date }})</small></td>
+										</tr>
+									{% endif %}
+									</tbody>
+								</table>
+							</div>
+						</td>
+					</tr></tbody>
+				</table>
+			</div>
+		</td>
+		<td width="50%" style="padding: 0px 0px 10px 5px;">
+			<div class="TableContainer">
+				<div class="CaptionContainer">
+					<div class="CaptionInnerContainer">
+						<span class="CaptionEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+						<span class="CaptionEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+						<span class="CaptionBorderTop" style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+						<span class="CaptionVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+						<div class="Text">Frags</div>
+						<span class="CaptionVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+						<span class="CaptionBorderBottom" style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+						<span class="CaptionEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+						<span class="CaptionEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+					</div></div>
+				<table class="Table1" cellpadding="0" cellspacing="0">
+					<tbody><tr>
+						<td>
+							<div class="InnerTableContainer">
+								<table style="width: 100%; text-align: center">
+									<tbody>
+									<tr><td><img src="images/white_skull.gif"/> - 1 - 6 Frags</td></tr>
+									<tr><td><img src="images/red_skull.gif"/> - 6+ Frags or Red Skull</td></tr>
+									<tr><td><img src="images/black_skull.gif"/> - 10+ Frags or Black Skull</td></tr>
+									</tbody>
+								</table>
+							</div>
+						</td>
+					</tr></tbody>
+				</table>
+			</div>
 		</td>
 	</tr>
+	</tbody>
 </table>
-	{% endif %}
 
-<table border="0" cellspacing="1" cellpadding="4" width="100%">
-	<tr bgcolor="{{ config.vdarkborder }}">
-		{% if config.account_country %}
-		<td width="11px"><a href="?subtopic=online&order=country" class="white">#</A></td>
-		{% endif %}
-		{% if config.online_outfit %}
-		<td class="white"><b>Outfit</b></td>
-		{% endif %}
-		<td width="60%"><a href="?subtopic=online&order=name" class="white">Name</A></td>
-		<td width="20%"><a href="?subtopic=online&order=level" class="white">Level</A></td>
-		<td width="20%"><a href="?subtopic=online&order=vocation" class="white">Vocation</td>
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+		<td>
+			<div class="TableContainer">
+				<div class="CaptionContainer">
+					<div class="CaptionInnerContainer">
+						<span class="CaptionEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+						<span class="CaptionEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+						<span class="CaptionBorderTop" style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+						<span class="CaptionVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+						<div class="Text">Vocations Status</div>
+						<span class="CaptionVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+						<span class="CaptionBorderBottom" style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+						<span class="CaptionEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+						<span class="CaptionEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+					</div></div>
+				<table class="Table5" cellpadding="0" cellspacing="0">
+					<tbody><tr>
+						<td>
+							<div class="InnerTableContainer">
+								<table style="width:100%;"><tbody><tr>
+									<td>
+										<div class="TableContentContainer">
+											<table class="TableContent" width="100%">
+												<tbody>
+													<tr style="text-align: center">
+														<td class="LabelV150">Sorcerers</td>
+													</tr>
+													<tr style="text-align: center">
+														<td>{{ vocs[1] }}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</td>
+										<td>
+											<div class="TableContentContainer">
+												<table class="TableContent" width="100%">
+													<tbody>
+													<tr style="text-align: center">
+														<td class="LabelV150">Druids</td>
+													</tr>
+													<tr style="text-align: center">
+														<td>{{ vocs[2] }}</td>
+													</tr>
+													</tbody>
+												</table>
+											</div>
+										</td>
+										<td>
+											<div class="TableContentContainer">
+												<table class="TableContent" width="100%">
+													<tbody>
+													<tr style="text-align: center">
+														<td class="LabelV150">Paladins</td>
+													</tr>
+													<tr style="text-align: center">
+														<td>{{ vocs[3] }}</td>
+													</tr>
+													</tbody>
+												</table>
+											</div>
+										</td>
+										<td>
+											<div class="TableContentContainer">
+												<table class="TableContent" width="100%">
+													<tbody>
+													<tr style="text-align: center">
+														<td class="LabelV150">Knights</td>
+													</tr>
+													<tr style="text-align: center">
+														<td>{{ vocs[4] }}</td>
+													</tr>
+													</tbody>
+												</table>
+											</div>
+										</td>
+								</tr></tbody></table>
+							</div>
+						</td>
+					</tr></tbody>
+				</table>
+			</div>
+		</td>
 	</tr>
-	{% set i = 0 %}
-	{% for player in players %}
-		{% set i = i + 1 %}
-		<tr bgcolor="{{ getStyle(i) }}">
-		{% if config.account_country %}
-			<td>{{ player.country_image|raw }}</td>
-		{% endif %}
-		{% if config.online_outfit %}
-			<td width="5%"><img style="position:absolute;margin-top:{% if player.player.looktype in [75, 266, 302] %}-20px;margin-left:-0px;{% else %}-45px;margin-left:-25px;{%  endif %}" src="{{ player.outfit }}" alt="player outfit"/></td>
-		{% endif %}
-			<td>{{ player.name|raw }}{{ player.skull }}</td>
-			<td>{{ player.level }}</td>
-			<td>{{ player.vocation }}</td>
-		</tr>
-	{% endfor %}
+	</tbody>
 </table>
-{% endif %}
+<br>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+		<td>
+			<div class="TableContainer">
+				<div class="CaptionContainer">
+					<div class="CaptionInnerContainer">
+						<span class="CaptionEdgeLeftTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+						<span class="CaptionEdgeRightTop" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+						<span class="CaptionBorderTop" style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+						<span class="CaptionVerticalLeft" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+						<div class="Text">Server Status</div>
+						<span class="CaptionVerticalRight" style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+						<span class="CaptionBorderBottom" style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+						<span class="CaptionEdgeLeftBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+						<span class="CaptionEdgeRightBottom" style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+					</div></div>
+				<table class="Table3" cellpadding="0" cellspacing="0">
+					<tbody><tr>
+						<td>
+							<div class="InnerTableContainer">
+								<table style="width:100%;"><tbody><tr><td>
+											<div class="TableContentContainer">
+												<table class="TableContent" width="100%">
+													<tbody>
+													{% if players|length == 0 %}
+													<tr style="text-align: center">
+														<td>Currently no one is playing on {{ config.lua.serverName }}.</td>
+													</tr>
+													{% else %}
+													<tr bgcolor="#D4C0A1">
+														{% if config.account_country %}
+															<td class="LabelV150">#</td>
+														{% endif %}
+														{% if config.online_outfit %}
+															<td class="LabelV150">Outfit</td>
+														{% endif %}
+														<td class="LabelV150">Name</td>
+														<td class="LabelV150">Level</td>
+														<td class="LabelV150">Vocation</td>
+													</tr>
+													{% set i = 0 %}
+													{% for player in players %}
+														{% set i = i + 1 %}
+														<tr bgcolor="{{ getStyle(i) }}" style="height: 44px;">
+															{% if config.account_country %}
+																<td width="4%">{{ player.country_image|raw }}</td>
+															{% endif %}
+															{% if config.online_outfit %}
+																<td width="10%"><img style="position:absolute;margin-top:{% if player.player.looktype in [75, 266, 302] %}-20px;margin-left:-0px;{% else %}-45px;margin-left:-25px;{%  endif %}" src="{{ player.outfit }}" alt="player outfit"/></td>
+															{% endif %}
+															<td width="50%">{{ player.name|raw }}{{ player.skull }}</td>
+															<td>{{ player.level }}</td>
+															<td>{{ player.vocation }}</td>
+														</tr>
+													{% endfor %}
+													{% endif %}
+													</tbody>
+												</table>
+											</div>
+										</td></tr></tbody>
+								</table>
+							</div>
+						</td>
+					</tr></tbody>
+				</table>
+			</div>
+		</td>
+	</tr>
+	</tbody>
+</table>
+<br>
