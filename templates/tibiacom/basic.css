@@ -1362,6 +1362,13 @@ img {
 .TableContainer .Even {
   background-color: #d5c0a1;
 }
+.Text {
+	margin-top: 3px;
+	margin-left: 4px;
+	margin-bottom: 2px;
+	padding: 3px;
+	padding-top: 3px;
+}
 
 /* TABLEHEADER DECORATION */
 .TableContainer .CaptionContainer {
