@@ -44,36 +44,10 @@ if($success) {
 }
 
 require LIBS . 'items.php';
-if(Items::loadFromXML())
-	success($locale['step_database_loaded_items']);
-else
-	error(Items::getError());
-
-require LIBS . 'weapons.php';
-if(Weapons::loadFromXML())
-	success($locale['step_database_loaded_weapons']);
-else
-	error(Weapons::getError());
-
-require LIBS . 'creatures.php';
-if(Creatures::loadFromXML()) {
-	success($locale['step_database_loaded_monsters']);
-
-	if(Creatures::getMonstersList()->hasErrors()) {
-		$locale['step_database_error_monsters'] = str_replace('$LOG$', 'system/logs/error.log', $locale['step_database_error_monsters']);
-		warning($locale['step_database_error_monsters']);
-	}
-}
-else {
-	error(Creatures::getLastError());
-}
-
-require LIBS . 'spells.php';
-if(Spells::loadFromXML()) {
-	success($locale['step_database_loaded_spells']);
-}
-else {
-	error(Spells::getLastError());
+if (Items::loadFromXML()) {
+    success($locale['step_database_loaded_items']);
+} else {
+    error(Items::getError());
 }
 
 // update config.highscores_ids_hidden
