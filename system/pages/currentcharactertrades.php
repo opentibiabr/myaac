@@ -138,7 +138,7 @@ if(empty($getAuctionBid['account_id'])){
 	$My_Bid = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
 }
 /* GET MY BID END */
-	
+
 /* RIBBON NEW AUCTION */
 $ribbon_date = date('d-m-Y');
 $ribbon_auctiondate = date('d-m-Y', strtotime($Auction['date_start']));
@@ -164,10 +164,10 @@ if(strtotime($End) > strtotime($Hoje)){
                                 <div class="AuctionHeader">
                                   <div class="AuctionLinks"><a href="?subtopic=currentcharactertrades&details=<?php echo $Auction['id'] ?>"><img title="show auction details" src="<?php echo $template_path; ?>/images/global/content/button-details-idle.png"></a></div>
                                   <div class="AuctionCharacterName"><a href="?subtopic=currentcharactertrades&details=<?php echo $Auction['id'] ?>"><?php echo $getCharacter['name'] ?></a></div>
-                                  Level: <?php echo $getCharacter['level'] ?> | Vocation: <?php echo $character_voc ?> | <?php echo $character_sex ?><br>
+                                  Level: <?php echo $getCharacter['level'] ?> | Vocation: <?php echo $character_voc ?> | <?php echo $character_sex ?> | World: <?php echo $config['lua']['serverName'] ?><br>
                                 </div>
                                 <div class="AuctionBody">
-								
+
                                   <div class="AuctionBodyBlock AuctionDisplay AuctionOutfit"><?php echo $ribbon_status ?><img class="AuctionOutfitImage" src="<?php echo $outfit_url ?>"></div>
                                   <div class="AuctionBodyBlock AuctionDisplay AuctionItemsViewBox">
                                     <div class="CVIcon CVIconObject" ><?php echo $equipment[2]; ?></div>
@@ -182,9 +182,33 @@ if(strtotime($End) > strtotime($Hoje)){
                                   </div>
                                   <div class="AuctionBodyBlock ShortAuctionData">
                                     <div class="ShortAuctionDataLabel">Auction Start:</div>
-                                    <div class="ShortAuctionDataValue"><?php echo date('d M Y, H:s:i', strtotime($Auction['date_start'])) ?></div>
+                                    <div class="ShortAuctionDataValue"><?php echo date('M d Y, H:s:i', strtotime($Auction['date_start'])) ?></div>
                                     <div class="ShortAuctionDataLabel">Auction End:</div>
-                                    <div class="ShortAuctionDataValue"><?php echo date('d M Y, H:s:i', strtotime($Auction['date_end'])) ?>
+									  <?php
+									  $dateTimer = date('Y-m-d', strtotime($Auction['date_end']));
+									  if (date('Y-m-d', strtotime($dateTimer . ' - 1 days')) == date('Y-m-d')){ ?>
+										  <script>
+											  var countDownDate<?= $Auction['id'] ?> = new Date("<?php echo date('M d, Y, H:s:i', strtotime($Auction['date_end'])) ?>").getTime();
+											  var x = setInterval(function() {
+												  var now = new Date().getTime();
+												  var distance = countDownDate<?= $Auction['id'] ?> - now;
+
+												  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+												  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+												  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+												  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+												  document.getElementById("timeAuction_<?= $Auction['id'] ?>").innerHTML = "in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+												  document.getElementById("timeAuction_<?= $Auction['id'] ?>").style.color = 'red';
+
+												  if (distance < 0) {
+													  clearInterval(x);
+													  document.getElementById("timeAuction_<?= $Auction['id'] ?>").innerHTML = "Finished";
+												  }
+											  }, 1000);
+										  </script>
+									  <?php } ?>
+                                    <div id="timeAuction_<?= $Auction['id'] ?>" class="ShortAuctionDataValue"><?php echo date('M d Y, H:s:i', strtotime($Auction['date_end'])) ?>
 									</div>
 									<!--<div class="ShortAuctionDataBidRow">
                                       <div class="ShortAuctionDataLabel">Minimum Bid:</div>
@@ -421,7 +445,7 @@ $End = date('d-m-Y', strtotime($getAuction['date_end']));
                                 </div>
                                 <div class="AuctionBody">
                                   <div class="AuctionBodyBlock AuctionDisplay AuctionOutfit" style="font-size: 10px; text-align: center;">
-									  Current outfit: 
+									  Current outfit:
 									  <img class="AuctionOutfitImage" src="<?php echo $outfit_url ?>">
 								  </div>
                                   <div class="AuctionBodyBlock AuctionDisplay AuctionItemsViewBox">
@@ -440,9 +464,33 @@ $End = date('d-m-Y', strtotime($getAuction['date_end']));
                                   </div>
                                   <div class="AuctionBodyBlock ShortAuctionData">
                                     <div class="ShortAuctionDataLabel">Auction Start:</div>
-                                    <div class="ShortAuctionDataValue"><?php echo date('d M Y', strtotime($getAuction['date_start'])) ?></div>
+                                    <div class="ShortAuctionDataValue"><?php echo date('M d Y, H:s:i', strtotime($getAuction['date_start'])) ?></div>
                                     <div class="ShortAuctionDataLabel">Auction End:</div>
-                                    <div class="ShortAuctionDataValue"><?php echo date('d M Y', strtotime($getAuction['date_end'])) ?></div>
+									  <?php
+									  $dateTimer = date('Y-m-d', strtotime($getAuction['date_end']));
+									  if (date('Y-m-d', strtotime($dateTimer . ' - 1 days')) == date('Y-m-d')){ ?>
+										  <script>
+											  var countDownDate = new Date("<?php echo date('M d, Y, H:s:i', strtotime($getAuction['date_end'])) ?>").getTime();
+											  var x = setInterval(function() {
+												  var now = new Date().getTime();
+												  var distance = countDownDate - now;
+
+												  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+												  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+												  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+												  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+												  document.getElementById("timeAuction").innerHTML = "in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+												  document.getElementById("timeAuction").style.color = 'red';
+
+												  if (distance < 0) {
+													  clearInterval(x);
+													  document.getElementById("timeAuction").innerHTML = "Finished";
+												  }
+											  }, 1000);
+										  </script>
+									  <?php } ?>
+                                    <div id="timeAuction" class="ShortAuctionDataValue"><?php echo date('M d Y, H:s:i', strtotime($getAuction['date_end'])) ?></div>
 									<div class="ShortAuctionDataBidRow">
                                       <div class="ShortAuctionDataLabel">Current Bid:</div>
                                       <div class="ShortAuctionDataValue"><b><?php echo number_format($getAuction['price'], 0, ',', ',')  ?></b> <img src="<?php echo $template_path; ?>/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins"></div>
@@ -535,7 +583,7 @@ $End = date('d-m-Y', strtotime($getAuction['date_end']));
                                     <div class="Entry">
 										<img class="CharacterFeatureCategory" src="<?php echo $template_path; ?>/images/charactertrade/usp-category-0.png">10 Shielding (Loyalty bonus not included)
                                     </div>
-                                    
+
                                   </div>
                                 </div>
                               </div></td>
@@ -553,7 +601,7 @@ $End = date('d-m-Y', strtotime($getAuction['date_end']));
 </div>
 <br>
 <center>
-	<a href="?subtopic=currentcharactertrades" target="_blank">
+	<a href="?subtopic=currentcharactertrades">
 		<div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div><input name="auction_confirm" class="BigButtonText" type="button" value="Back"></div></div>
 	</a>
 </center>
@@ -762,7 +810,7 @@ $End = date('d-m-Y', strtotime($getAuction['date_end']));
                         <tbody>
                           <tr class="Even tmp-container-ItemSummary">
                             <td><div id="ajax-target-type-0" class="paged-container page-object-container">
-                                
+
                                 <div class="BlockPage BlockPageObject">
 <?php foreach($getDepotItems as $DepotItem){ ?>
 <div class="CVIcon CVIconObject">
@@ -992,7 +1040,7 @@ if($getCharm['rune_void'] > 1){
                   </tr>
                 </tbody>
               </table>
-			  
+
             </div></td>
         </tr>
       </tbody>
@@ -1178,10 +1226,10 @@ if($Verif_Price == 'true' and $Verif_CoinsAcc == 'true'){
                   </tr>
                 </tbody>
               </table>
-					
+
 					</td>
                   </tr>
-				  
+
 				  <tr>
                     <td><br>If you confirm this bid, a <b>deposit</b> of <b>50</b> <img src="<?php echo $template_path; ?>/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins"> transferable Tibia Coins will be subtracted from your account's Tibia Coins balance.<br>If someone is submiting a <b>higher bid</b>, the <b>deposit will be returned</b> to your account.</td>
                   </tr>
@@ -1211,7 +1259,7 @@ if($Verif_Price == 'false'){
 				<span class="CaptionEdgeRightBottom" style="background-image:url(<?php echo $template_path; ?>/images/content/box-frame-edge.gif);"></span>
 			</div>
 		</div><table class="Table1" cellspacing="0" cellpadding="0">
-		
+
 		<tbody><tr>
 			<td>
 				<div class="InnerTableContainer">
@@ -1244,7 +1292,7 @@ if($Verif_CoinsAcc == 'false'){
 				<span class="CaptionEdgeRightBottom" style="background-image:url(<?php echo $template_path; ?>/images/content/box-frame-edge.gif);"></span>
 			</div>
 		</div><table class="Table1" cellspacing="0" cellpadding="0">
-		
+
 		<tbody><tr>
 			<td>
 				<div class="InnerTableContainer">
@@ -1362,7 +1410,7 @@ $getAuction = $getAuction->fetch();
 $getBid = $db->query('SELECT `id`, `account_id`, `auction_id`, `bid`, `date` FROM `myaac_charbazaar_bid`' . 'WHERE `auction_id` = ' . $getAuction['id'] .', `account_id` = ' . $account_logged .'');
 $getBid = $getBid->fetch();
 /* GET INFO BID END */
-	
+
 /* GET COINS VENDEDOR */
 $getCoinsVendedor = $db->query('SELECT `id`, `coins` FROM `accounts`' . 'WHERE `id` = ' . $getAuction['account_old'] .'');
 $getCoinsVendedor = $getCoinsVendedor->fetch();
@@ -1372,7 +1420,7 @@ $getCoinsVendedor = $getCoinsVendedor->fetch();
 $getCoinsComprador = $db->query('SELECT `id`, `coins` FROM `accounts`' . 'WHERE `id` = ' . $getBid['account_id'] .'');
 $getCoinsComprador = $getCoinsComprador->fetch();
 /* GET COINS COMPRADOR END */
-	
+
 $auction_taxacoins = $getBid['bid'] / 100;
 $auction_taxacoins = $auction_taxacoins * $config['bazaar_tax'];
 $auction_finalcoins = $getBid['bid'] - $auction_taxacoins;

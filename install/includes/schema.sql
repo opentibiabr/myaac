@@ -51,7 +51,7 @@ CREATE TABLE `myaac_changelog`
 INSERT INTO `myaac_changelog` (`id`, `type`, `where`, `date`, `body`, `hidden`) VALUES (1, 3, 2, UNIX_TIMESTAMP(), 'MyAAC installed. (:', 0);
 
 CREATE TABLE `myaac_charbazaar` (
-  `id` int(11) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `account_old` int(11) NOT NULL,
   `account_new` int(11) NOT NULL,
   `player_id` int(11) NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE `myaac_charbazaar` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
 CREATE TABLE `myaac_charbazaar_bid` (
-  `id` int(11) NOT NULL,
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) NOT NULL,
   `auction_id` int(11) NOT NULL,
   `bid` int(11) NOT NULL,
