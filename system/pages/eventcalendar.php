@@ -47,8 +47,8 @@
     white-space: nowrap;
     margin-right: 5px;
 }
-	
-	
+
+
 td#dia_comum {
 	color: #5f4d41;
 	 background-color:#E7D1AF;
@@ -66,32 +66,6 @@ td#dia_branco{
 <?php
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Event Schedule';
-
-/*
-$events_xml = "http://127.0.0.1/CharBaazar/events.xml";
-$xml = simplexml_load_file($events_xml);
-
-foreach($xml->event as $event){
-	echo $event['name'];
-	echo $event['startdate'];
-	echo '<br>';
-	echo $event['enddate'];
-	echo '<br>';
-	echo $event->ingame['exprate'];
-	echo '<br>';
-	echo $event->ingame['lootrate'];
-	echo '<br>';
-	echo $event->ingame['spawnrate'];
-	echo '<br>';
-	echo $event->ingame['skillrate'];
-	echo '<br>';
-	echo $event->description['description'];
-	echo '<br>';
-	echo $event->colors['colordark'];
-	echo '<br>';
-	echo $event->colors['colorlight'];
-}
-*/
 ?>
 <div class="BoxContent" style="background-image:url(https://static.tibia.com/images/global/content/scroll.gif);">
   <div id="eventscheduletablecontainer">
@@ -117,13 +91,13 @@ foreach($xml->event as $event){
 <?php
 function MostreSemanas(){
 	$semanas = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
- 
+
 	for($i = 0; $i < 7; $i++)
 	 echo "<td>".$semanas{$i}."</td>";
 }
- 
+
 function GetNumeroDias($mes){
-	$numero_dias = array( 
+	$numero_dias = array(
 			'01' => 31, '02' => 28, '03' => 31, '04' =>30, '05' => 31, '06' => 30,
 			'07' => 31, '08' =>31, '09' => 30, '10' => 31, '11' => 30, '12' => 31
 	);
@@ -141,22 +115,18 @@ function GetNomeMes($mes){
                      );
       if( $mes >= 01 && $mes <= 12)
         return $meses[$mes];
- 
+
         return "Mês deconhecido";
 }
 
 function MostreCalendario($mes){
- 
+
 	$numero_dias = GetNumeroDias( $mes );	// retorna o número de dias que tem o mês desejado
 	$nome_mes = GetNomeMes($mes);
-	$diacorrente = 0;	
- 
+	$diacorrente = 0;
+
 	$diasemana = jddayofweek( cal_to_jd(CAL_GREGORIAN, $mes,"01",date('Y')) , 0 );	// função que descobre o dia da semana
- 
-	/*echo "";
-	 echo "<tr>";
-         echo "<th style='text-align:center; width:120px; background-color:#5f4d41;' colspan='7'><b>".$nome_mes."</b></th>";
-	 echo "</tr>";*/
+
 	 echo "<tr style='text-align:center; width:120px; background-color:#5f4d41;'>";
 	   MostreSemanas();	// função que mostra as semanas aqui
 	 echo "</tr>";
@@ -164,7 +134,7 @@ function MostreCalendario($mes){
 	   echo "<tr>";
 	   for( $coluna = 0; $coluna < 7; $coluna++ ){
 		echo "<td style='height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top;' ";
- 
+
 		  if( ($diacorrente == ( date('d') - 1) && date('m') == $mes) ){
 			   echo " id = 'dia_atual' ";
 		  }else{
@@ -179,23 +149,20 @@ function MostreCalendario($mes){
 			     }
 		  }
 		echo ">";
- 
- 
-		   /* TRECHO IMPORTANTE: A PARTIR DESTE TRECHO É MOSTRADO UM DIA DO CALENDÁRIO (MUITA ATENÇÃO NA HORA DA MANUTENÇÃO) */
 		      if( $diacorrente + 1 <= $numero_dias ){
 			 if( $coluna < $diasemana && $linha == 0){
 			  	 echo " ";
 			 }else{
-			  	// echo "<input type = 'button' id = 'dia_comum' name = 'dia".($diacorrente+1)."'  value = '".++$diacorrente."' onclick = "acao(this.value)">";
-				 // <a href = ".$_SERVER["PHP_SELF"]."?mes=$mes&dia=".($diacorrente+1).">
 				   echo "<div style='font-weight: bold; margin-left: 3px; margin-bottom: 2px;'><span style='vertical-align: text-bottom;'>".++$diacorrente . " <img style='border:0px;' src='https://static.tibia.com/images/global/content/icon-seasonal.png'></span></div>";
 
-$events_xml = "events.xml";
-$xml = simplexml_load_file($events_xml);
 
-if($diacorrente < 10){
-	$diacorrente = '0'.$diacorrente.'';
-}
+	global $config;
+	$events_xml = $config['data_path'] . 'XML/events.xml';
+	$xml = simplexml_load_file($events_xml);
+
+	if($diacorrente < 10){
+		$diacorrente = '0'.$diacorrente.'';
+	}
 
 $verif_date = ''.$mes.'/'.$diacorrente.'/'.date('Y').'';
 
@@ -226,10 +193,10 @@ function MostreCalendarioCompleto(){
 	    for( $j = 0; $j < 4; $j++ ){
 		  echo "<tr>";
 		for( $i = 0; $i < 3; $i++ ){
-		 
+
 		  echo "<td>";
-			MostreCalendario( ($cont < 10 ) ? "0".$cont : $cont );  
- 
+			MostreCalendario( ($cont < 10 ) ? "0".$cont : $cont );
+
 		        $cont++;
 		  echo "</td>";
 	 	}
