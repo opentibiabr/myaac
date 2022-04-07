@@ -74,11 +74,18 @@ else if(isset($config['lua']['black_skull_duration'])) {
     $blackSkull = true;
 }
 
+$server_save = $config['server_save'];
+$explodeServerSave = explode(':', $server_save);
+$hours_ServerSave = $explodeServerSave[0];
+$minutes_ServerSave = $explodeServerSave[1];
+$seconds_ServerSave = $explodeServerSave[2];
+
 $clientVersion = NULL;
 if(isset($status['online']))
     $clientVersion = isset($status['clientVersion']) ? $status['clientVersion'] : null;
 
 $twig->display('serverinfo.html.twig', array(
+	'server_save' => $explodeServerSave,
     'experienceStages' => isset($config['lua']['experienceStages']) && getBoolean($config['lua']['experienceStages']) ? $config['lua']['experienceStages'] : null,
     'serverIp' => str_replace('/', '', str_replace('http://', '', $config['lua']['url'])),
     'clientVersion' => $clientVersion,
