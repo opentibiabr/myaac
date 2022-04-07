@@ -34,7 +34,7 @@ $bazaar_accountid = $config['bazaar_accountid'];
 
 <!-- FIRST PAGE - SHOW AUCTIONS -->
 <?php
-if(empty($getPageDetails) && empty($getPageAction)){
+if(empty($getPageDetails) && !isset($getPageDetails)){
 	if(!$logged){
 ?>
 <div class="SmallBox">
