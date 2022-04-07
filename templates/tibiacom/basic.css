@@ -790,6 +790,15 @@ img {
   z-index: 50;
 }
 
+.SecretAchievementIcon {
+	position: absolute;
+	width: 44px;
+	height: 20px;
+	margin-left: 12px;
+	margin-top: -2px;
+	right: 5px
+}
+
 /* Borders */
 
 .Content .Border_1 {

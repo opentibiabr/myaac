@@ -120,8 +120,10 @@ if($player->isLoaded() && !$player->isDeleted())
 		$outfit = $config['outfit_images_url'] . '?id=' . $player->getLookType() . ($db->hasColumn('players', 'lookaddons') ? '&addons=' . $player->getLookAddons() : '') . '&head=' . $player->getLookHead() . '&body=' . $player->getLookBody() . '&legs=' . $player->getLookLegs() . '&feet=' . $player->getLookFeet();
 
 	$flag = '';
-	if($config['account_country'])
+	if($config['account_country']){
 		$flag = getFlagImage($account->getCountry());
+		$country = strtoupper($account->getCountry());
+	}
 
 	$player_sex = 'Unknown';
 	if(isset($config['genders'][$player->getSex()]))
@@ -136,8 +138,8 @@ if($player->isLoaded() && !$player->isDeleted())
 			$marital_status = 'married to ' . getPlayerLink($marriage->getName());
 		}
 	}
-	
-	
+
+
 	$player_health = $player->getHealth();
 	$player_mana = $player->getMana();
 	$player_cap = $player->getCap();
@@ -221,8 +223,7 @@ if($player->isLoaded() && !$player->isDeleted())
 	}
 
 	$quests_enabled = $config['characters']['quests'] && !empty($config['quests']);
-	if($quests_enabled)
-	{
+	if($quests_enabled)	{
 		$quests = $config['quests'];
 		$sql_query_in = '';
 		$i = 0;
@@ -246,8 +247,7 @@ if($player->isLoaded() && !$player->isDeleted())
 		unset($storage);
 	}
 
-	if($config['characters']['equipment'])
-	{
+	if($config['characters']['equipment']){
 		global $db;
 		$eq_sql = $db->query('SELECT `pid`, `itemtype` FROM player_items WHERE player_id = '.$player->getId().' AND (`pid` >= 1 and `pid` <= 10)');
 		$equipment = array();
@@ -331,8 +331,7 @@ WHERE killers.death_id = '".$death['id']."' ORDER BY killers.final_hit DESC, kil
 				$deaths[] = array('time' => $death['date'], 'description' => $description . '.');
 			}
 		}
-	}
-	else {
+	}else {
 		$mostdamage = '';
 		if($db->hasColumn('player_deaths', 'mostdamage_by'))
 			$mostdamage = ', `mostdamage_by`, `mostdamage_is_player`, `unjustified`, `mostdamage_unjustified`';
@@ -341,8 +340,7 @@ WHERE killers.death_id = '".$death['id']."' ORDER BY killers.final_hit DESC, kil
 				FROM `player_deaths`
 				WHERE `player_id` = ' . $player->getId() . ' ORDER BY `time` DESC LIMIT 10;')->fetchAll();
 
-		if(count($deaths_db))
-		{
+		if(count($deaths_db)){
 			$number_of_rows = 0;
 			foreach($deaths_db as $death)
 			{
@@ -373,14 +371,12 @@ WHERE killers.death_id = '".$death['id']."' ORDER BY killers.final_hit DESC, kil
 
 	$frags = array();
 	$frag_add_content = '';
-	if($config['characters']['frags'] && $db->hasTable('killers'))
-	{
+	if($config['characters']['frags'] && $db->hasTable('killers')){
 		//frags list by Xampy
 		$i = 0;
 		$frags_limit = 10; // frags limit to show? // default: 10
 		$player_frags = $db->query('SELECT `player_deaths`.*, `players`.`name`, `killers`.`unjustified` FROM `player_deaths` LEFT JOIN `killers` ON `killers`.`death_id` = `player_deaths`.`id` LEFT JOIN `player_killers` ON `player_killers`.`kill_id` = `killers`.`id` LEFT JOIN `players` ON `players`.`id` = `player_deaths`.`player_id` WHERE `player_killers`.`player_id` = '.$player->getId().' ORDER BY `date` DESC LIMIT 0,'.$frags_limit.';')->fetchAll();
-		if(count($player_frags))
-		{
+		if(count($player_frags)){
 			$row_count = 0;
 			foreach($player_frags as $frag)
 			{
@@ -424,29 +420,53 @@ WHERE killers.death_id = '".$death['id']."' ORDER BY killers.final_hit DESC, kil
 		}
 	}
 
-// Percent experience
-class Functions {
-	public static function getExpForLevel($lv) {
-			$lv--;
-			$lv = (string) $lv;
-			return bcdiv(bcadd(bcsub(bcmul(bcmul(bcmul("50", $lv), $lv), $lv),  bcmul(bcmul("150", $lv), $lv)), bcmul("400", $lv)), "3", 0);
+	// Percent experience
+	class Functions {
+		public static function getExpForLevel($lv) {
+				$lv--;
+				$lv = (string) $lv;
+				return bcdiv(bcadd(bcsub(bcmul(bcmul(bcmul("50", $lv), $lv), $lv),  bcmul(bcmul("150", $lv), $lv)), bcmul("400", $lv)), "3", 0);
+		}
 	}
-}
 
-$expCurrent = Functions::getExpForLevel($player->getLevel());
-$expNext = Functions::getExpForLevel($player->getLevel() + 1);
-$expLeft = bcsub($expNext, $player->getExperience(), 0);
-$expLeftPercent = max(0, min(100, ($player->getExperience() - $expCurrent) / ($expNext - $expCurrent) * 100));
+	$expCurrent = Functions::getExpForLevel($player->getLevel());
+	$expNext = Functions::getExpForLevel($player->getLevel() + 1);
+	$expLeft = bcsub($expNext, $player->getExperience(), 0);
+	$expLeftPercent = max(0, min(100, ($player->getExperience() - $expCurrent) / ($expNext - $expCurrent) * 100));
+
+	$achievementPoints = 0;
+	$listAchievement = [];
+	require_once BASE . '/tools/achievements.php';
+	foreach ($achievements as $achievement => $value){
+		$achievementStorage = $config['achievements_base'] + $achievement;
+		$searchAchievementsbyStorage = $db->query('SELECT `key`, `value` FROM `player_storage` WHERE `key` = ' . $achievementStorage . ' AND `player_id` = ' . $player->getId() . '');
+		$achievementsPlayer = $searchAchievementsbyStorage->fetch();
+		if($achievementsPlayer['key'] == $achievementStorage){
+			$achievementPoints = $achievementPoints + $value['points'];
+
+			$insertAchievement = [
+					'BASE_URL'  => BASE_URL,
+					'PATH_URL' => $template_path,
+					'name' => $value['name'],
+					'grade' => $value['grade'],
+					'secret' => $value['secret'],
+			];
+		}
+	}
+	array_push($listAchievement, $insertAchievement);
 
 	$twig->display('characters.html.twig', array(
 		'outfit' => isset($outfit) ? $outfit : null,
 		'player' => $player,
+		'achievementPoints' => $achievementPoints,
+		'achievements' => $listAchievement,
 		'account' => $account,
 		'expCurrent' => $expCurrent,
 		'expNext' => $expNext,
 		'expLeft' => $expLeft,
 		'expLeftPercent' => $expLeftPercent,
 		'flag' => $flag,
+		'country' => $country,
 		'oldName' => $oldName,
 		'sex' => $player_sex,
 		'health' => $player_health,
@@ -487,37 +507,33 @@ $expLeftPercent = max(0, min(100, ($player->getExperience() - $expCurrent) / ($e
 		'search_form' => generate_search_form(),
 		'canEdit' => hasFlag(FLAG_CONTENT_PLAYERS) || superAdmin()
 	));
-}
-else
-{
-	$search_errors[] = 'Character <b>' . $name . '</b> does not exist or has been deleted.';
-	$twig->display('error_box.html.twig', array('errors' => $search_errors));
-	$search_errors = array();
+	}else{
+		$search_errors[] = 'Character <b>' . $name . '</b> does not exist or has been deleted.';
+		$twig->display('error_box.html.twig', array('errors' => $search_errors));
+		$search_errors = array();
 
-	$promotion = '';
-	if($db->hasColumn('players', 'promotion'))
-		$promotion = ', `promotion`';
+		$promotion = '';
+		if($db->hasColumn('players', 'promotion'))
+			$promotion = ', `promotion`';
 
-	$deleted = 'deleted';
-	if($db->hasColumn('players', 'deletion'))
-		$deleted = 'deletion';
+		$deleted = 'deleted';
+		if($db->hasColumn('players', 'deletion'))
+			$deleted = 'deletion';
 
-	$query = $db->query('SELECT `name`, `level`, `vocation`' . $promotion . ' FROM `players` WHERE `name` LIKE  ' . $db->quote('%' . $name . '%') . ' AND ' . $deleted . ' != 1 LIMIT ' . (int)config('characters_search_limit') . ';');
-	if($query->rowCount() > 0)
-	{
-		echo 'Did you mean:<ul>';
-		foreach($query as $player) {
-			if(isset($player['promotion'])) {
-				if((int)$player['promotion'] > 0)
-					$player['vocation'] += ($player['promotion'] * $config['vocations_amount']);
+		$query = $db->query('SELECT `name`, `level`, `vocation`' . $promotion . ' FROM `players` WHERE `name` LIKE  ' . $db->quote('%' . $name . '%') . ' AND ' . $deleted . ' != 1 LIMIT ' . (int)config('characters_search_limit') . ';');
+		if($query->rowCount() > 0){
+			echo 'Did you mean:<ul>';
+			foreach($query as $player) {
+				if(isset($player['promotion'])) {
+					if((int)$player['promotion'] > 0)
+						$player['vocation'] += ($player['promotion'] * $config['vocations_amount']);
+				}
+				echo '<li>' . getPlayerLink($player['name']) . ' (<small><strong>level ' . $player['level'] . ', ' . $config['vocations'][$player['vocation']] . '</strong></small>)</li>';
 			}
-			echo '<li>' . getPlayerLink($player['name']) . ' (<small><strong>level ' . $player['level'] . ', ' . $config['vocations'][$player['vocation']] . '</strong></small>)</li>';
+			echo '</ul>';
 		}
-		echo '</ul>';
+		echo generate_search_form(true);
 	}
 
-	echo generate_search_form(true);
-}
-
-if(!empty($search_errors))
-	$twig->display('error_box.html.twig', array('errors' => $search_errors));
+	if(!empty($search_errors))
+		$twig->display('error_box.html.twig', array('errors' => $search_errors));

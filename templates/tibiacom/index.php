@@ -10,27 +10,40 @@ if(isset($config['boxes']))
 	<link rel="shortcut icon" href="<?php echo $template_path; ?>/images/favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="<?php echo $template_path; ?>/images/favicon.ico" type="image/x-icon" />
 	<link href="<?php echo $template_path; ?>/basic.css" rel="stylesheet" type="text/css" />
-	
+
 	<script type="text/javascript" src="tools/basic.js"></script>
 	<script type="text/javascript" src="<?php echo $template_path; ?>/ticker.js"></script>
 	<script id="twitter-wjs" src="<?php echo $template_path; ?>/js/twitter.js"></script>
 	<script id="facebook-jssdk" async src="https://connect.facebook.net/en_US/all.js"></script>
-	
+
 	<link href="<?php echo $template_path; ?>/css/facebook.css" rel="stylesheet" type="text/css">
-	
+
 	<link rel="stylesheet" href="tools/fonts/fontawesome/all.css">
 	<script src="tools/fonts/fontawesome/all.js"></script>
-	
+
 	<script src="admin/bootstrap/jquery-3.6.0.min.js"></script>
 	<script src="admin/bootstrap/popper.min.js"></script>
 	<script src="admin/bootstrap/js/bootstrap.min.js"></script>
 	<link href="admin/bootstrap/bootstrap-lucasg.css" rel="stylesheet" type="text/css">
-		
+
 <?php if($config['pace_load'] == true){ ?>
 	<script src="admin/bootstrap/pace/pace.js"></script>
 	<link href="admin/bootstrap/pace/themes/<?php echo $config['pace_color'] ?>/pace-theme-<?php echo $config['pace_theme'] ?>.css" rel="stylesheet" />
 <?php } ?>
 
+	<script>
+		function CollapseTable(a_ID)
+		{
+			$('#' + a_ID).slideToggle('slow');
+			if ($('#Indicator_' + a_ID).hasClass('CircleSymbolPlus')) {
+				$('#Indicator_' + a_ID).attr('class', 'CircleSymbolMinus');
+				$('#Indicator_' + a_ID).css('background-image', 'url(' + IMAGES + '/global/content/circle-symbol-plus.gif)');
+			} else {
+				$('#Indicator_' + a_ID).css('background-image', 'url(' + IMAGES + '/global/content/circle-symbol-minus.gif)');
+				$('#Indicator_' + a_ID).attr('class', 'CircleSymbolPlus');
+			}
+		}
+	</script>
 
 	<script type="text/javascript">
 		var menus = '';
@@ -176,7 +189,7 @@ if(isset($config['boxes']))
 			}
 		  }
 		}
-		
+
 
 		function SaveMenuArray()
 		{
@@ -318,7 +331,7 @@ function MouseOutSubmenuItem(source) {
     <div id="LoginTop" style="background-image:url(<?php echo $template_path; ?>/images/general/box-top.gif)" ></div>
     <div id="BorderLeft" class="LoginBorder" style="background-image:url(<?php echo $template_path; ?>/images/general/chain.gif)" ></div>
 
-   
+
 
     <div id="LoginButtonContainer" style="background-image:url(<?php echo $template_path; ?>/images/loginbox/loginbox-textfield-background.gif)" >
       <div id="LoginButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/mediumbutton.gif)" >
@@ -341,7 +354,7 @@ function MouseOutSubmenuItem(source) {
     <div id="BorderRight" class="LoginBorder" style="background-image:url(<?php echo $template_path; ?>/images/general/chain.gif)" ></div>
     <div id="LoginBottom" class="Loginstatus" style="background-image:url(<?php echo $template_path; ?>/images/general/box-bottom.gif)" ></div>
   </div>
-			
+
 	<div class="SmallMenuBox" id="DownloadBox">
 		<div class="SmallBoxTop" style="background-image:url(<?php echo $template_path; ?>/images/global/general/box-top.gif)"></div>
 		<div class="SmallBoxBorder" style="background-image:url(<?php echo $template_path; ?>/images/global/general/chain.gif);"></div>
@@ -416,16 +429,16 @@ foreach($config['menu_categories'] as $id => $cat) {
             InitializePage();
         </script>
         </div>
-		
 
-		
+
+
         <div id="ContentColumn">
-			
 
-			
+
+
           <div class="Content">
-			  
-<?php if($config['status_bar'] == true){ ?>		 
+
+<?php if($config['status_bar'] == true){ ?>
 <div class="Box">
 	<div class="Corner-tl" style="background-image:url(<?php echo $template_path; ?>/images/global/content/corner-tl.gif);"></div>
 	<div class="Corner-tr" style="background-image:url(<?php echo $template_path; ?>/images/global/content/corner-tr.gif);"></div>
