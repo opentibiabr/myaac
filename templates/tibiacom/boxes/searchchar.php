@@ -1,64 +1,70 @@
 <style>
-.header_themebox{
-	height: 31px;
-	background: url(<?php echo $template_path ?>/images/themeboxes/exemple/header-bg.png);
-	z-index: 2;
-	width: 100%;
-	position: absolute;
-}
-.content_themebox{
-    width: 100%;
-    height: 154px;
-    position: absolute;
-    margin-top: 31px;
-}
-.title_themebox_searchchar{
-	font-family: 'Martel';
-	font-size: 20px;
-	display: flex;
-	justify-content: center;
-	padding-top: 7px;
-}
-.yellow_themebox_searchchar{
-	color: #ffeab4;
-	text-shadow: 1px 0 0 #000, -1px 0 0 #000, 0 1px 0 #000, 0 -1px 0 #000, 1px 1px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
-}
-.bg_themebox_searchchar {
-    background-color: #0d2e2b;
-    height: 22px;
-    width: 170px;
-    margin-left: 5px;
-	margin-top: 7px;
-    position: absolute;
-    top: 0;
-}
-.image_themebox_searchchar{
-	background: #edbfab;
-	margin-top: 4px;
-    margin-left: 9px;
-    width: 162px;
-    height: 112px;
-}
-.btn_themebox_searchchar{
-	position: absolute;
-    margin-top: 135px;
-    margin-left: 19px;
-}
+    .searchchar{
+        width: 180px;
+        height: 145px;
+    }
+    .searchchar_header{
+        height: 45px;
+        width: 180px;
+        background-image: url('templates/tibiacom/images/themeboxes/box_top.png');
+        font-family: Verdana;
+        font-weight: bold;
+        color: #d5c3af;
+        line-height: 65px;
+    }
+    .searchchar_bottom{
+        height: 30px;
+        width: 180px;
+        margin-top: -20px;
+        background-image: url('templates/tibiacom/images/themeboxes/box_bottom.png');
+    }
+    .searchchar_content{
+        padding: 0px 10px;
+        width: 160px;
+        height: 80px;
+        background-image: url('templates/tibiacom/images/themeboxes/box_bg.png');
+    }
+    .searchchar_text{
+        margin-left: 45px;
+        font-family: Verdana;
+        color: #d5c3af;
+        text-align: left;
+    }
+    .searchchar_button{
+        height: 30px;
+        width: 148px;
+        border: 0;
+        background: url('templates/tibiacom/images/themeboxes/button.png');
+        font-family: Verdana;
+        font-weight: 100;
+        color: #d5c3af;
+        font-size: 12px;
+        cursor: pointer;
+        margin-top: 5px;
+    }
+    .searchchar_button:hover{
+        background: url('templates/tibiacom/images/themeboxes/button_over.png');
+        color: #fff;
+    }
+    .searchchar_input{
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+        font-size: 0.8rem;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: center;
+        border: 0;
+    }
 </style>
-<form method="post" action="?characters">
-<div class="Themebox" style="height: 170px;">
-	<div class="header_themebox"><span class="title_themebox_searchchar yellow_themebox_searchchar">Search Char</span></div>
-	<div class="bg_themebox_searchchar"></div>
-
-	<div class="content_themebox" style="background-image:url(<?php echo $template_path ?>/images/themeboxes/exemple/border.png); height: 130px;">
-		<div class="image_themebox_searchchar"><br>
-		<label style="font-weight: bold; font-family: 'Roboto';">Character Name:</label>
-		<input type="text" class="form-control" name="name" maxlength="29">
-		</div>
-	</div>
-	<div class="btn_themebox_searchchar">
-		<div class="BigButton" style="background-image:url(<?php echo $template_path ?>/images/global/buttons/button_green.png); width: 142px; height: 34px;"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path ?>/images/global/buttons/button_green_hover.png); visibility: hidden;"></div><input class="BigButtonText" style="width: 142px; height: 34px;" type="submit" value="Search"></div></div>
-	</div>
-</form>
-	<div class="Bottom" style="background-image:url(templates/tibiacom/images/general/box-bottom.gif); top: 147px;"></div>
+<form method="post" action="<?php echo BASE_URL ?>?characters" style="margin-bottom: 0;">
+<div class="searchchar">
+    <div class="searchchar_header">Search Char</div>
+    <div class="searchchar_content">
+        <input type="text" class="searchchar_input" name="name" maxlength="29" placeholder="Character name">
+        <button type="submit" class="searchchar_button">Search</button>       
+    </div>
+    <div class="searchchar_bottom"></div>
 </div>
+</form>

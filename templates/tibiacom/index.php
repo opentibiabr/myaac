@@ -609,7 +609,7 @@ $monsteraddons = $monsterquery["lookaddons"];
 $monstermount= $monsterquery["lookmount"];
 ?>
           <div id="RightArtwork">
-			<img id="Monster" src="<?php $config['outfit_images_url'] ?>/AnimatedOutfits/animoutfit.php?id=<?php echo $monstertype; ?>&addons=<?php echo $monsteraddons; ?>&head=<?php echo $monsterhead; ?>&body=<?php echo $monsterbody; ?>&legs=<?php echo $monsterlegs; ?>&feet=<?php echo $monsterfeet; ?>&mount=<?php echo $monstermount; ?>" alt="Monster of the Day" title="Today's boosted creature: <?PHP echo ucwords(strtolower(trim($monstername))); ?>">
+			<img id="Monster" src="<?php echo $config['outfit_images_url'] ?>?id=<?php echo $monstertype; ?>&addons=<?php echo $monsteraddons; ?>&head=<?php echo $monsterhead; ?>&body=<?php echo $monsterbody; ?>&legs=<?php echo $monsterlegs; ?>&feet=<?php echo $monsterfeet; ?>&mount=<?php echo $monstermount; ?>" alt="Monster of the Day" title="Today's boosted creature: <?PHP echo ucwords(strtolower(trim($monstername))); ?>">
             <img id="PedestalAndOnline" src="<?php echo $template_path; ?>/images/header/pedestal.gif" alt="Monster Pedestal and Players Online Box"/>
         </div>
 
