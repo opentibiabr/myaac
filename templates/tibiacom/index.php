@@ -145,7 +145,7 @@ if(isset($config['boxes']))
 		  document.getElementById("ActiveSubmenuItemIcon_"+activeSubmenuItem).style.visibility = "visible";
 		  menus = localStorage.getItem('menus');
 		  if(menus.lastIndexOf("&") === -1) {
-			  menus = "news=1&account=0&community=0&library=0&forum=0<?php if($config['gifts_system']) echo '&shops=0'; ?>&";
+			  menus = "news=1&account=0&community=0&library=0&forum=0<?php if($config['gifts_system']) echo '&shops=0'; ?>&charactertrade=0&";
 		  }
 		  FillMenuArray();
 		  InitializeMenu();
