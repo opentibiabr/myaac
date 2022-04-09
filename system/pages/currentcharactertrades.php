@@ -1368,8 +1368,11 @@ $getAuction = $db->query('SELECT `id`, `account_old`, `account_new`, `player_id`
 $getAuction = $getAuction->fetch();
 
 $getAuctionBid = $db->query('SELECT `id`, `account_id`, `auction_id`, `bid`, `date` FROM `myaac_charbazaar_bid`' . 'WHERE `auction_id` = '.$bid_iden.' ORDER BY `bid` DESC LIMIT 1');
+$countAuctionBidTwo = count($getAuctionBid);
+$countAuctionBid = $getAuctionBid->rowCount();
 $getAuctionBid = $getAuctionBid->fetch();
 
+if($countAuctionBid > 0){
 // OLD BID ACCOUNT RETURN COINS
 $getAccountOldBid = $db->query('SELECT `id`, `coins` FROM `accounts`' . 'WHERE `id` = '.$getAuctionBid['account_id'].'');
 $getAccountOldBid = $getAccountOldBid->fetch();
@@ -1386,10 +1389,28 @@ $UpdateAccountNewBid = $db->exec('UPDATE `accounts` SET `coins` = '.$TaxCoinsNew
 // NEW BID ACCOUNT REMOVE COINS
 
 // UPDATE AUCTION NEW BID
-$Update_Auction = $db->exec('UPDATE `myaac_charbazaar` SET `price` = '.$bid_max.', `bid_account` = '.$account_logged.' WHERE `id` = '.$getAuction['id'].'');
+$Update_Auction = $db->exec('UPDATE `myaac_charbazaar` SET `price` = '.$bid_max.', `bid_account` = '.$account_logged.', `bid_price` = '.$bid_max.' WHERE `id` = '.$getAuction['id'].'');
+
+// INSERT NEW BID
+$Insert_NewBid = $db->exec('UPDATE `myaac_charbazaar_bid` SET `account_id` = '.$account_logged.', `auction_id` = '.$getAuction['id'].', `bid` = '.$bid_max.'');
+
+}else{
+
+// NEW BID ACCOUNT REMOVE COINS
+$getAccountNewBid = $db->query('SELECT `id`, `coins` FROM `accounts`' . 'WHERE `id` = '.$account_logged.'');
+$getAccountNewBid = $getAccountNewBid->fetch();
+$SubCoinsNewBid = $getAccountNewBid['coins'] - $bid_max;
+$TaxCoinsNewBid = $SubCoinsNewBid - $config['bazaar_bid']; // TAX TO CREATE BID
+$UpdateAccountNewBid = $db->exec('UPDATE `accounts` SET `coins` = '.$TaxCoinsNewBid.' WHERE `id` = '.$account_logged.'');
+// NEW BID ACCOUNT REMOVE COINS
+
+// UPDATE AUCTION NEW BID
+$Update_Auction = $db->exec('UPDATE `myaac_charbazaar` SET `price` = '.$bid_max.', `bid_account` = '.$account_logged.', `bid_price` = '.$bid_max.' WHERE `id` = '.$getAuction['id'].'');
 
 // INSERT NEW BID
 $Insert_NewBid = $db->exec('INSERT INTO `myaac_charbazaar_bid` (`account_id`, `auction_id`, `bid`) VALUES (' .$account_logged. ', ' .$getAuction['id']. ', ' .$bid_max. ')');
+
+}
 
 header('Location: ' . BASE_URL . '?subtopic=currentcharactertrades');
 }
@@ -1421,6 +1442,8 @@ $getCoinsComprador = $db->query('SELECT `id`, `coins` FROM `accounts`' . 'WHERE 
 $getCoinsComprador = $getCoinsComprador->fetch();
 /* GET COINS COMPRADOR END */
 
+$finalCoinsComprador = $getCoinsComprador - $getBid['bid'];
+
 $auction_taxacoins = $getBid['bid'] / 100;
 $auction_taxacoins = $auction_taxacoins * $config['bazaar_tax'];
 $auction_finalcoins = $getBid['bid'] - $auction_taxacoins;
@@ -1428,7 +1451,10 @@ $account_coins = $getCoinsVendedor['coins'] + $auction_finalcoins;
 $account_new = $getBid['account_id'];
 
 if($account_logged == $getAuction['account_old'] && isset($getBid['bid']) && !empty($getBid['bid'])){ // vendendor
+
 $auction_coins = $db->exec('UPDATE `accounts` SET `coins` = '.$account_coins.' WHERE `id` = '.$account_logged.''); // adicionar os coins
+//$bid_coins = $db->exec('UPDATE `accounts` SET `coins` = '.$finalCoinsComprador.' WHERE `id` = '.$getAuction['bid_account'].''); // remove os coins
+
 $update_character = $db->exec('UPDATE `players` SET `account_id` = '.$account_new.' WHERE `id` = '.$getAuction['player_id'].''); // muda o player de conta
 $update_auction = $db->exec('UPDATE `myaac_charbazaar` SET `status` = `1`, `account_new` = '.$account_new.' WHERE `id` = '.$getAuction['id'].''); // muda status auction
 }else{
@@ -1436,7 +1462,9 @@ $update_auction = $db->exec('UPDATE `myaac_charbazaar` SET `status` = `1`, `acco
 }
 
 if($account_logged == $getBid['account_id'] && isset($getBid['bid']) && !empty($getBid['bid'])){ // comprador
-// $bid_coins = $db->exec('UPDATE `accounts` SET `coins` = '.$getBid['bid'].' WHERE `id` = '.$account_logged.''); // remove os coins
+$auction_coins = $db->exec('UPDATE `accounts` SET `coins` = '.$account_coins.' WHERE `id` = '.$account_logged.''); // adicionar os coins
+//$bid_coins = $db->exec('UPDATE `accounts` SET `coins` = '.$finalCoinsComprador.' WHERE `id` = '.$getAuction['bid_account'].''); // remove os coins
+
 $update_character = $db->exec('UPDATE `players` SET `account_id` = '.$account_new.' WHERE `id` = '.$getAuction['player_id'].''); // muda o player de conta
 $update_auction = $db->exec('UPDATE `myaac_charbazaar` SET `status` = `1`, `account_new` = '.$account_new.' WHERE `id` = '.$getAuction['id'].''); // muda status auction
 }else{
