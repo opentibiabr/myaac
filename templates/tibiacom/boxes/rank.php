@@ -1,7 +1,7 @@
 <style>
     .rank{
         width: 180px;
-        height: 360px;
+        max-height: 360px;
     }
     .rank_header{
         height: 45px;
@@ -21,7 +21,7 @@
     .rank_content{
         padding: 0px 10px;
         width: 160px;
-        height: 290px;
+        max-height: 290px;
         background-image: url('templates/tibiacom/images/themeboxes/box_bg.png');
     }
     .rank_player{
