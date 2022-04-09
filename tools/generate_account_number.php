@@ -14,10 +14,6 @@ require '../common.php';
 require SYSTEM . 'functions.php';
 require SYSTEM . 'init.php';
 
-if(USE_ACCOUNT_NAME) {
-	return;
-}
-
 $hasNumberColumn = $db->hasColumn('accounts', 'number');
 do {
 	$length = 10;

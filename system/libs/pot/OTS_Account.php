@@ -141,34 +141,33 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
 		if(isset($name)) {
 			$nameOrNumber = 'name';
 			$nameOrNumberValue = $name;
-		}else{
+		}else {
 			if (USE_ACCOUNT_NUMBER) {
 				$nameOrNumber = 'number';
 				$nameOrNumberValue = $id;
 				$id = null;
-			}
-			else {
+			}else {
 				$nameOrNumber = null;
 			}
 		}
-		
+
         // saves blank account info
-		$this->db->exec('INSERT INTO `accounts` (' . (isset($id) ? '`id`,' : '') . (isset($nameOrNumber) ? '`' . $nameOrNumber . '`,' : '') . '`password`, `email`, `created`) VALUES (' . (isset($id) ? $id . ',' : '') . (isset($nameOrNumber) ? $this->db->quote($nameOrNumberValue) . ',' : '') . ' \'\', \'\',' . time() . ')');
+        $this->db->exec('INSERT INTO `accounts` (' . (isset($id) ? '`id`,' : '') . (isset($nameOrNumber) ? '`' . $nameOrNumber . '`,' : '') . '`password`, `email`, `created`) VALUES (' . (isset($id) ? $id . ',' : '') . (isset($nameOrNumber) ? $this->db->quote($nameOrNumberValue) . ',' : '') . ' \'\', \'\',' . time() . ')');
+
 		if(isset($name)) {
 			$this->data['name'] = $name;
-		} else {
+		}else {
 			if (USE_ACCOUNT_NUMBER) {
 				$this->data['number'] = $name;
 			}
 		}
+
 		$lastInsertId = $this->db->lastInsertId();
 		if($lastInsertId != 0) {
 			$this->data['id'] = $lastInsertId;
-		}
-		elseif (isset($id)) {
+		}elseif (isset($id)) {
 			$this->data['id'] = $id;
-		}
-		else {
+		}else {
 			throw new Exception(__CLASS__ . ':' . __METHOD__ . ' unexpected error. Please report to MyAAC Developers.');
 		}
 
@@ -202,7 +201,7 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
 			$this->data = self::$cache[$id];
 			return;
 		}
-		
+
 		$numberColumn = 'id';
 		$nameOrNumber = '';
 		if (!$searchOnlyById) {
@@ -295,29 +294,21 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
             throw new E_OTS_NotLoaded();
         }
 
-	$field = 'lastday';
-	if($this->db->hasColumn('accounts', 'premend')) { // othire
-    		$field = 'premend';
-		if(!isset($this->data['premend'])) {
-			$this->data['premend'] = 0;
-		}
-	}
-	else if($this->db->hasColumn('accounts', 'premium_ends_at')) {
-		$field = 'premium_ends_at';
-		if(!isset($this->data['premium_ends_at'])) {
-			$this->data['premium_ends_at'] = 0;
-		}
-	}
-    
-	$account_login_by_email = true;
-	if($account_login_by_email == true) {
-		$this->db->exec('UPDATE `accounts` SET ' . ($this->db->hasColumn('accounts', 'email') ? '`email` = ' . $this->db->quote($this->data['email']) . ',' : '') . '`password` = ' . $this->db->quote($this->data['password']) . ', `email` = ' . $this->db->quote($this->data['email']) . ', `blocked` = ' . (int) $this->data['blocked'] . ', `rlname` = ' . $this->db->quote($this->data['rlname']) . ', `location` = ' . $this->db->quote($this->data['location']) . ', `country` = ' . $this->db->quote($this->data['country']) . ', `web_flags` = ' . (int) $this->data['web_flags'] . ', ' . ($this->db->hasColumn('accounts', 'premdays') ? '`premdays` = ' . (int) $this->data['premdays'] . ',' : '') . '`' . $field . '` = ' . (int) $this->data[$field] . ' WHERE `id` = ' . $this->data['id']);
-	}else{
-		$this->db->exec('UPDATE `accounts` SET ' . ($this->db->hasColumn('accounts', 'name') ? '`name` = ' . $this->db->quote($this->data['name']) . ',' : '') . '`password` = ' . $this->db->quote($this->data['password']) . ', `email` = ' . $this->db->quote($this->data['email']) . ', `blocked` = ' . (int) $this->data['blocked'] . ', `rlname` = ' . $this->db->quote($this->data['rlname']) . ', `location` = ' . $this->db->quote($this->data['location']) . ', `country` = ' . $this->db->quote($this->data['country']) . ', `web_flags` = ' . (int) $this->data['web_flags'] . ', ' . ($this->db->hasColumn('accounts', 'premdays') ? '`premdays` = ' . (int) $this->data['premdays'] . ',' : '') . '`' . $field . '` = ' . (int) $this->data[$field] . ' WHERE `id` = ' . $this->data['id']);
-	}
+        $field = 'lastday';
+        if($this->db->hasColumn('accounts', 'premend')) { // othire
+                $field = 'premend';
+            if(!isset($this->data['premend'])) {
+                $this->data['premend'] = 0;
+            }
+        }else if($this->db->hasColumn('accounts', 'premium_ends_at')) {
+            $field = 'premium_ends_at';
+            if(!isset($this->data['premium_ends_at'])) {
+                $this->data['premium_ends_at'] = 0;
+            }
+        }
 
         // UPDATE query on database
-        //$this->db->exec('UPDATE `accounts` SET ' . ($this->db->hasColumn('accounts', 'name') ? '`name` = ' . $this->db->quote($this->data['name']) . ',' : '') . '`password` = ' . $this->db->quote($this->data['password']) . ', `email` = ' . $this->db->quote($this->data['email']) . ', `blocked` = ' . (int) $this->data['blocked'] . ', `rlname` = ' . $this->db->quote($this->data['rlname']) . ', `location` = ' . $this->db->quote($this->data['location']) . ', `country` = ' . $this->db->quote($this->data['country']) . ', `web_flags` = ' . (int) $this->data['web_flags'] . ', ' . ($this->db->hasColumn('accounts', 'premdays') ? '`premdays` = ' . (int) $this->data['premdays'] . ',' : '') . '`' . $field . '` = ' . (int) $this->data[$field] . ' WHERE `id` = ' . $this->data['id']);
+        $this->db->exec('UPDATE `accounts` SET ' . ($this->db->hasColumn('accounts', 'name') ? '`name` = ' . $this->db->quote($this->data['name']) . ',' : '') . '`password` = ' . $this->db->quote($this->data['password']) . ', `email` = ' . $this->db->quote($this->data['email']) . ', `blocked` = ' . (int) $this->data['blocked'] . ', `rlname` = ' . $this->db->quote($this->data['rlname']) . ', `location` = ' . $this->db->quote($this->data['location']) . ', `country` = ' . $this->db->quote($this->data['country']) . ', `web_flags` = ' . (int) $this->data['web_flags'] . ', ' . ($this->db->hasColumn('accounts', 'premdays') ? '`premdays` = ' . (int) $this->data['premdays'] . ',' : '') . '`' . $field . '` = ' . (int) $this->data[$field] . ' WHERE `id` = ' . $this->data['id']);
     }
 
 /**

@@ -14,83 +14,73 @@ $title = 'Create Account';
 if($config['account_country'])
 	require SYSTEM . 'countries.conf.php';
 
-if($logged)
-{
-?>
-<div class="TableContainer">
-<div class="CaptionContainer">
-<div class="CaptionInnerContainer">
-	<span class="CaptionEdgeLeftTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
-	<span class="CaptionEdgeRightTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
-	<span class="CaptionBorderTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
-	<span class="CaptionVerticalLeft" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
-	<div class="Text">Please logout before attempting to create a new account.</div>
-	<span class="CaptionVerticalRight" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
-	<span class="CaptionBorderBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
-	<span class="CaptionEdgeLeftBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
-	<span class="CaptionEdgeRightBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
-</div></div>
-<table class="Table3" cellpadding="0" cellspacing="0">
-<tbody><tr>
-<td>
-<div class="InnerTableContainer">
-<table style="width:100%;"><tbody><tr><td>
-<div class="TableContentContainer">
-<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-<tbody>
-
-
-<tr bgcolor="#F1E0C6">
-	<td>Please logout before attempting to create a new account.</td>
-</tr>
-	
-</tbody></table>
-</div></td></tr>
-</tbody></table>
-</div>
-</td>
-</tr>
-</tbody></table></div>
-<br>
-<div style="width: 135px; margin: 0 auto;">
-<div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton.gif)"><a href="?account/manage"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div><input class="BigButtonText" type="button" value="Login"></div></a></div>
-</div>
-<?php
-	return;
-}
+	if($logged)
+	{
+	?>
+	<div class="TableContainer">
+	<div class="CaptionContainer">
+	<div class="CaptionInnerContainer">
+		<span class="CaptionEdgeLeftTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+		<span class="CaptionEdgeRightTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+		<span class="CaptionBorderTop" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+		<span class="CaptionVerticalLeft" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+		<div class="Text">Please logout before attempting to create a new account.</div>
+		<span class="CaptionVerticalRight" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+		<span class="CaptionBorderBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+		<span class="CaptionEdgeLeftBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+		<span class="CaptionEdgeRightBottom" style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+	</div></div>
+	<table class="Table3" cellpadding="0" cellspacing="0">
+	<tbody><tr>
+	<td>
+	<div class="InnerTableContainer">
+	<table style="width:100%;"><tbody><tr><td>
+	<div class="TableContentContainer">
+	<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
+	<tbody>
+	<tr bgcolor="#F1E0C6">
+		<td>Please logout before attempting to create a new account.</td>
+	</tr>
+	</tbody></table>
+	</div></td></tr>
+	</tbody></table>
+	</div>
+	</td>
+	</tr>
+	</tbody></table></div>
+	<br>
+	<div style="width: 135px; margin: 0 auto;">
+	<div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton.gif)"><a href="?account/manage"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div><input class="BigButtonText" type="button" value="Login"></div></a></div>
+	</div>
+	<?php
+		return;
+	}
 
 if(config('account_create_character_create')) {
 	require_once LIBS . 'CreateCharacter.php';
 	$createCharacter = new CreateCharacter();
 }
 
-if($config['account_login_by_email'] != true){
 $account_type = 'number';
 if(USE_ACCOUNT_NAME) {
 	$account_type = 'name';
 }
-}else{
-	$account_type = 'email';
-}
 
 $errors = array();
 $save = isset($_POST['save']) && $_POST['save'] == 1;
-if($save){
-	
-	if($config['account_login_by_email'] != true){
-		if(USE_ACCOUNT_NAME) {
-			$account_name = $_POST['account'];
-		}
-		else {
-			$account_id = $_POST['account'];
-		}
+if($save)
+{
+	if(USE_ACCOUNT_NAME) {
+		$account_name = $_POST['account'];
+	}
+	else {
+		$account_id = $_POST['account'];
 	}
 
 	$email = $_POST['email'];
 	$password = $_POST['password'];
 	$password2 = $_POST['password2'];
-	
-if($config['account_login_by_email'] != true){
+
 	// account
 	if(isset($account_id)) {
 		if(!Validator::accountId($account_id))
@@ -98,8 +88,7 @@ if($config['account_login_by_email'] != true){
 	}
 	else if(!Validator::accountName($account_name))
 		$errors['account'] = Validator::getLastError();
-}
-	
+
 	// email
 	if(!Validator::email($email))
 		$errors['email'] = Validator::getLastError();
@@ -139,12 +128,10 @@ if($config['account_login_by_email'] != true){
 		$errors['password'] = Validator::getLastError();
 	}
 
-if($config['account_login_by_email'] != true){
 	// check if account name is not equal to password
 	if(USE_ACCOUNT_NAME && strtoupper($account_name) == strtoupper($password)) {
 		$errors['password'] = 'Password may not be the same as account name.';
 	}
-}
 
 	if($config['account_mail_unique'])
 	{
@@ -154,7 +141,6 @@ if($config['account_login_by_email'] != true){
 			$errors['email'] = 'Account with this e-mail address already exist.';
 	}
 
-if($config['account_login_by_email'] != true){
 	$account_db = new OTS_Account();
 	if(USE_ACCOUNT_NAME)
 		$account_db->find($account_name);
@@ -167,7 +153,6 @@ if($config['account_login_by_email'] != true){
 		else
 			$errors['account'] = 'Account with this id already exist.';
 	}
-}
 
 	if(!isset($_POST['accept_rules']) || $_POST['accept_rules'] !== 'true')
 		$errors['accept_rules'] = 'You have to agree to the ' . $config['lua']['serverName'] . ' Rules in order to create an account!';
@@ -181,14 +166,12 @@ if($config['account_login_by_email'] != true){
 		'accept_rules' => isset($_POST['accept_rules']) ? $_POST['accept_rules'] === 'true' : false,
 	);
 
-if($config['account_login_by_email'] != true){
 	if(USE_ACCOUNT_NAME) {
 		$params['account_name'] = $_POST['account'];
 	}
 	else {
 		$params['account_id'] = $_POST['account'];
 	}
-}
 
 	$hooks->trigger(HOOK_ACCOUNT_CREATE_AFTER_SUBMIT, $params);
 
@@ -244,13 +227,8 @@ if($config['account_login_by_email'] != true){
 		if($config['account_premium_points']) {
 			$new_account->setCustomField('premium_points', $config['account_premium_points']);
 		}
-		
-		if($config['account_login_by_email'] != true){
-			$tmp_account = (USE_ACCOUNT_NAME ? $account_name : $account_id);
-		}else{
-			$tmp_account = $email;
-		}
-		
+
+		$tmp_account = (USE_ACCOUNT_NAME ? $account_name : $account_id);
 		if($config['mail_enabled'] && $config['account_mail_verify'])
 		{
 			$hash = md5(generateRandomString(16, true, true) . $email);
@@ -289,7 +267,6 @@ if($config['account_login_by_email'] != true){
 				}
 			}
 
-		if($config['account_login_by_email'] != true){
 			if($config['account_create_auto_login']) {
 				$_POST['account_login'] = USE_ACCOUNT_NAME ? $account_name : $account_id;
 				$_POST['password_login'] = $password2;
@@ -297,17 +274,8 @@ if($config['account_login_by_email'] != true){
 				require SYSTEM . 'login.php';
 				header('Location: ' . getLink('account/manage'));
 			}
-		}else{
-			if($config['account_create_auto_login']) {
-				$_POST['account_login'] = $email;
-				$_POST['password_login'] = $password2;
 
-				require SYSTEM . 'login.php';
-				header('Location: ' . getLink('account/manage'));
-			}
-		}
-
-			/*echo 'Your account';
+			echo 'Your account';
 			if(config('account_create_character_create')) {
 				echo ' and character have';
 			}
@@ -320,26 +288,14 @@ if($config['account_login_by_email'] != true){
 				echo ' Now you can login and create your first character.';
 			}
 
-			echo ' See you in Tibia!<br/><br/>';*/
-			
-		if($config['account_login_by_email'] == true){
-			$twig->display('success.html.twig', array(
-				'title' => 'Account Created',
-				'description' => 'Your account is <b>' . $tmp_account . '</b><br/>You will need the ' . $account_type . ' and your password to play on ' . configLua('serverName') . '.
-						<br>Please keep your ' . $account_type . ' and password in a safe place and
-						never give your ' . $account_type . ' or password to anybody.',
-				'custom_buttons' => config('account_create_character_create') ? '' : null
-			));
-		}else{
+			echo ' See you in Tibia!<br/><br/>';
 			$twig->display('success.html.twig', array(
 				'title' => 'Account Created',
 				'description' => 'Your account ' . $account_type . ' is <b>' . $tmp_account . '</b><br/>You will need the account ' . $account_type . ' and your password to play on ' . configLua('serverName') . '.
-						<br>Please keep your account ' . $account_type . ' and password in a safe place and
+						Please keep your account ' . $account_type . ' and password in a safe place and
 						never give your account ' . $account_type . ' or password to anybody.',
 				'custom_buttons' => config('account_create_character_create') ? '' : null
 			));
-		}
-			
 
 			if($config['mail_enabled'] && $config['account_welcome_mail'])
 			{

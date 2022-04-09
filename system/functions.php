@@ -1253,11 +1253,9 @@ function getAccountLoginByLabel()
 			$ret .= ' or ';
 		}
 	}
-
 	if (!config('account_login_by_email') || config('account_login_by_email_fallback')) {
 		$ret .= 'Account ' . (USE_ACCOUNT_NAME ? 'Name' : 'Number');
 	}
-
 	return $ret;
 }
 

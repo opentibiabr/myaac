@@ -30,17 +30,17 @@
 
 												{{ hook('HOOK_ACCOUNT_CREATE_BEFORE_ACCOUNT') }}
 												
-												{% if not config.account_login_by_email %}
+												{% if config.account_login_by_email %}
 												<tr>
 													<td class="LabelV" style="width: 150px">
 														<span{% if errors.account is defined %} class="red"{% endif %}>Account {% if constant('USE_ACCOUNT_NAME') %}Name{% else %}Number{% endif %}:</span>
-														{% if not constant('USE_ACCOUNT_NAME') %}
-														<div id="SuggestAccountNumber">[<a href="#">suggest number</a>]</div>
-														{% endif %}
 													</td>
 													<td>
-														<input type="text" name="account" id="account_input" size="30" maxlength="{% if constant('USE_ACCOUNT_NAME') %}30{% else %}10{% endif %}" value="{{ account }}" autofocus/>
+														<input type="text" name="account" id="account_input" size="30" maxlength="{% if constant('USE_ACCOUNT_NAME') %}30{% else %}10{% endif %}" />
 														<img id="account_indicator" src="images/global/general/{% if not save or errors.account is defined %}n{% endif %}ok.gif" style="display: none;" />
+														{% if constant('USE_ACCOUNT_NAME') %}
+															<div id="SuggestAccountNumber">[<a href="#">suggest number</a>]</div>
+														{% endif %}
 													</td>
 												</tr>
 												{% endif %}
@@ -154,8 +154,7 @@
 													</td>
 													<td>
 														<input id="character_name" name="name" size="{{ config.character_name_max_length }}" maxlength="{{ config.character_name_max_length }}" value="{{ name }}"/>
-														<img id="character_indicator" src="images/global/general/{% if not save or errors.name is defined %}n{% endif %}ok.gif" style="display: none;" />
-														<br>
+														<img id="character_indicator" src="images/global/general/{% if not save or errors.name is defined %}n{% endif %}ok.gif" style="display: none;" />														<br>
 													</td>
 												</tr>
 												<tr>
@@ -341,6 +340,9 @@
 <script type="text/javascript" src="tools/check_name.js"></script>
 <style>
 	#SuggestAccountNumber {
+		font-size: 7pt;
+	}
+	#SuggestCharacterName {
 		font-size: 7pt;
 	}
 </style>

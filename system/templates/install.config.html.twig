@@ -3,61 +3,53 @@
 	<table>
 		{% for value in ['server_path', 'mail_admin', 'mail_address'] %}
 		<tr>
-			<td>
+			<td class="pb-3">
 				<label for="vars_{{ value }}">
-					<span>{{ locale['step_config_' ~ value]  }}</span>
+					<span class="fw-bold">{{ locale['step_config_' ~ value]  }}</span>
 				</label>
 				<br>
-				<input type="text" name="vars[{{ value }}]" id="vars_{{ value }}"{% if session['var_' ~ value] is not null %} value="{{ session['var_' ~ value] }}"{% endif %}/>
-			</td>
-			<td>
-				<em>{{ locale['step_config_' ~ value ~ '_desc'] }}</em>
+				<input type="text" class="form-control" name="vars[{{ value }}]" id="vars_{{ value }}"{% if session['var_' ~ value] is not null %} value="{{ session['var_' ~ value] }}"{% endif %}/>
+				<label class="small">{{ locale['step_config_' ~ value ~ '_desc'] }}</label>
 			</td>
 		</tr>
 		{% endfor %}
 		<tr>
-			<td>
+			<td class="pb-3">
 				<label for="vars_date_timezone">
-					<span>{{ locale.step_config_timezone }}</span>
+					<span class="fw-bold">{{ locale.step_config_timezone }}</span>
 				</label>
 				<br/>
-				<select name="vars[date_timezone]" id="vars_date_timezone">
+				<select class="form-select select_timezone" name="vars[date_timezone]" id="vars_date_timezone">
 					{% for timezone in timezones %}
 					<option value="{{ timezone }}"{% if (session['var_date_timezone'] is not null and session['var_date_timezone'] == timezone) or (session['var_date_timezone'] is null and timezone == 'Europe/Berlin') %} selected{% endif %}>{{ timezone }}</option>
 					{% endfor %}
 				</select>
-			</td>
-			<td>
-				<em>{{ locale.step_config_timezone_desc }}</em>
+				<label class="small">{{ locale.step_config_timezone_desc }}</label>
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<td class="pb-3">
 				<label for="vars_client">
-					<span>{{ locale.step_config_client }}</span>
+					<span class="fw-bold">{{ locale.step_config_client }}</span>
 				</label>
 				<br/>
-				<select name="vars[client]" id="vars_client">
+				<select class="form-select" name="vars[client]" id="vars_client">
 					{% for id, version in clients %}
 					<option value="{{ id }}"{% if session['var_client'] is not null and session['var_client'] == id %} selected{% endif %}>{{ version }}</option>
 					{% endfor %}
 				</select>
-			</td>
-			<td>
-				<em>{{ locale.step_config_client_desc }}</em>
+				<label class="small">{{ locale.step_config_client_desc }}</label>
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<td class="pb-3">
 				<label for="vars_usage">
-					<span>{{ locale.step_config_usage }}</span>
+					<span class="fw-bold">{{ locale.step_config_usage }}</span>
 				</label>
 				<br/>
 				<input type="hidden" value="0" name="vars[usage]">
-				<input type="checkbox" name="vars[usage]" id="vars_usage" value="1"{% if session['var_usage'] is null or session['var_usage'] == 1 %} checked{% endif %}/>
-			</td>
-			<td>
-				<em>{{ locale.step_config_usage_desc }}</em>
+				<input class="form-check-input" type="checkbox" name="vars[usage]" id="vars_usage" value="1"{% if session['var_usage'] is null or session['var_usage'] == 1 %} checked{% endif %}/>
+				<label class="small">{{ locale.step_config_usage_desc }}</label>
 			</td>
 		</tr>
 	</table>

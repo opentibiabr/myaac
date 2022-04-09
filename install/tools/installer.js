@@ -23,7 +23,7 @@ function performInstall(url) {
 					lastResponseLength = response.length;
 				}
 
-				$('<div id="success-' + (lastId + 1) + '">' + progressResponse + '</div>').insertAfter("#success-" + lastId);
+				$('<div class="alert p-1 alert-success" id="success-' + (lastId + 1) + '">' + progressResponse + '</div>').insertAfter("#success-" + lastId);
 				lastId = lastId + 1;
 			}
 		}

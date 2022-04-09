@@ -14,7 +14,7 @@ $extensions_required = [
 function version_check($name, $ok, $info = '', $warning = false)
 {
 	global $failed;
-	echo '<p class="' . ($ok ? 'success' : ($warning ? 'warning' : 'error')) . '">' . $name;
+	echo '<p class="alert p-1 alert-' . ($ok ? 'success' : ($warning ? 'warning' : 'danger')) . '">' . $name;
 	if(!empty($info))
 		echo ': <b>' . $info . '</b>';
 

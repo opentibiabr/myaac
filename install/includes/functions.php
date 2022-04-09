@@ -55,16 +55,11 @@ function next_buttons($previous = true, $next = true)
 		$i++;
 	}
 
-	$ret = '<div class="input">';
-/*	if($previous)
-		$ret .= '<input class="button" type="submit" onclick="document.getElementById(\'step\').value=\'' . $steps[$i - 1] . '\';" value="' . $locale['previous'] . '" />';
-	if($next)
-		$ret .= '<input class="button" type="submit" onclick="document.getElementById(\'step\').value=\'' . $steps[$i + 1] . '\';" value="' . $locale['next'] . '" />';
-*/
+	$ret = '<div class="my-3">';
 	if($previous)
-		$ret .= '<input type="button" class="button" onclick="document.getElementById(\'step\').value=\'' . $steps[$i - 1] . '\'; this.form.submit();" value="&laquo; ' . $locale['previous'] . '" />';
+		$ret .= '<input type="button" class="btn btn-primary mx-2" onclick="document.getElementById(\'step\').value=\'' . $steps[$i - 1] . '\'; this.form.submit();" value="&laquo; ' . $locale['previous'] . '" />';
 	if($next)
-		$ret .= '<input type="button" class="button" onclick="document.getElementById(\'step\').value=\'' . $steps[$i + 1] . '\'; this.form.submit(); " value="' . $locale['next'] . ' &raquo;" />';
+		$ret .= '<input type="button" class="btn btn-success mx-2" onclick="document.getElementById(\'step\').value=\'' . $steps[$i + 1] . '\'; this.form.submit(); " value="' . $locale['next'] . ' &raquo;" />';
 
 	$ret .= '</div>';
 	return $ret;

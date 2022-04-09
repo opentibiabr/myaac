@@ -12,8 +12,7 @@ if(!isset($db)) {
 				'<li>' . $locale['step_database_error_mysql_connect_3'] . '</li>' .
 				'<li>' . $locale['step_database_error_mysql_connect_4'] . '</li>' .
 			'</ul>' . '<br/>' . $error;
-}
-else {
+}else {
 	if($db->hasTable('accounts'))
 		define('USE_ACCOUNT_NAME', $db->hasColumn('accounts', 'name'));
 }

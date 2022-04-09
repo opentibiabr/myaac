@@ -99,7 +99,7 @@ $config = array(
 	'account_mail_unique' => true, // email addresses cannot be duplicated? (one account = one email)
 	'account_premium_days' => 0, // default premium days on new account
 	'account_premium_points' => 0, // default premium points on new account
-	'account_welcome_mail' => true, // send welcome email when user registers
+	'account_welcome_mail' => false, // send welcome email when user registers
 	'account_mail_change' => 2, // how many days user need to change email to account - block hackers
 	'account_country' => true, // user will be able to set country of origin when registering account, this information will be viewable in others places aswell
 	'account_country_recognize' => true, // should country of user be automatically recognized by his IP? This makes an external API call to http://ipinfo.io
