@@ -36,7 +36,28 @@
 .bg-success {
 	background-color: #28a745!important;
 }
+.btn_clipboard {
+	border: 0;
+    padding: 7px 5px;
+    font-size: 10px;
+    position: absolute;
+    right: 22px;
+    margin-top: -12px;
+    background-color: #5f4d41;
+    color: #fff;
+    cursor: pointer;
+}
+.btn_clipboard:hover{
+	background-color: #fff;
+	color: #007bff;
+}
+.input_clipboard{
+	border-radius: 0.3rem;
+	border: 0;
+	padding: 5px;
+}
 </style>
+
 <?php
 /**
  * Characters
@@ -140,8 +161,16 @@ if($player->isLoaded() && !$player->isDeleted())
 	}
 
 
-	$player_health = $player->getHealth();
-	$player_mana = $player->getMana();
+	$player_HealthCurrent = $player->getHealth();
+	$player_HealthMax = $player->getHealthMax();
+	$percent_Health = ($player_HealthCurrent / $player_HealthMax) * 100;
+	$percent_Health = number_format($percent_Health, 0, '.', '');
+
+	$player_ManaMax = $player->getManaMax();
+	$player_ManaCurrent = $player->getMana();
+	$percent_Mana = ($player_ManaCurrent / $player_ManaMax) * 100;
+	$percent_Mana = number_format($percent_Mana, 0, '.', '');
+
 	$player_cap = $player->getCap();
 	$player_soul = $player->getSoul();
 	$player_exp = $player->getExperience();
@@ -433,6 +462,7 @@ WHERE killers.death_id = '".$death['id']."' ORDER BY killers.final_hit DESC, kil
 	$expNext = Functions::getExpForLevel($player->getLevel() + 1);
 	$expLeft = bcsub($expNext, $player->getExperience(), 0);
 	$expLeftPercent = max(0, min(100, ($player->getExperience() - $expCurrent) / ($expNext - $expCurrent) * 100));
+	$expLeftPercent = number_format($expLeftPercent, '2', '.', '');
 
 	$achievementPoints = 0;
 	$listAchievement = [];
@@ -469,8 +499,12 @@ WHERE killers.death_id = '".$death['id']."' ORDER BY killers.final_hit DESC, kil
 		'country' => $country,
 		'oldName' => $oldName,
 		'sex' => $player_sex,
-		'health' => $player_health,
-		'mana' => $player_mana,
+		'health_max' => $player_HealthMax,
+		'health_current' => $player_HealthCurrent,
+		'health_percent' => $percent_Health,
+		'mana_max' => $player_ManaMax,
+		'mana_current' => $player_ManaCurrent,
+		'mana_percent' => $percent_Mana,
 		'soul' => $player_soul,
 		'cap' => $player_cap,
 		'experience' => $player_exp,
