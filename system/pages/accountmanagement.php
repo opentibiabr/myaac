@@ -73,7 +73,7 @@ $errors = array();
 			$account_premdays = $account_logged->getPremDays();
 		}
 		
-		$account_coins = $account_logged->getPremDays();
+		$account_coins = $account_logged->getCustomField('coins');
 		
 		if(!$account_logged->isPremium()) {
 			$account_status = '<b><span style="color: red;">Free Account</span></b>';
