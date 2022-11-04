@@ -19,7 +19,7 @@ if (empty($race)) {
 	$replaces['boosted_monster_uri'] = str_replace(' ', '', strtolower($monsterquery['boostname']));
 	$replaces['boosted_monster_image'] = "{$config['outfit_images_url']}?id={$monstertype}&addons={$monsteraddons}&head={$monsterhead}&body={$monsterbody}&legs={$monsterlegs}&feet={$monsterfeet}&mount={$monstermount}";
 
-	echo $twig->render('creatures/creatures.html.twig', $replaces);
+	echo $twig->render('library/library.html.twig', $replaces);
 
 	return;
 }
@@ -29,7 +29,7 @@ if (!ctype_alnum($race)) {
 	return;
 }
 
-$file = 'creatures/' . $race . '.html.twig';
+$file = 'library/' . $race . '.html.twig';
 if (file_exists(SYSTEM . 'templates/' . $file)) {
 	echo $twig->render($file);
 }
