@@ -301,28 +301,38 @@ img {
   z-index: 90;
 }
 
-#RightArtwork #Monster {
+#RightArtwork #Creature {
   position: absolute;
   height: 64px;
   width: 64px;
-  top: -132px;
-  left: 24px;
+  top: -136px;
+  left: -15px;
+  z-index: 15;
+  cursor: pointer;
+}
+
+#RightArtwork #Boss {
+  position: absolute;
+  height: 64px;
+  width: 64px;
+  top: -136px;
+  left: 40px;
   z-index: 15;
   cursor: pointer;
 }
 
 #PedestalAndOnline {
   position: absolute;
-  left: 20px;
+  left: -15px;
   top: -121px;
-  width: 104px;
+  width: 161px;
   height: 85px;
 }
 #Pedestal {
     position: absolute;
-    left: 20px;
+    left: -15px;
     top: -121px;
-    width: 104px;
+    width: 161px;
     height: 85px;
 }
 

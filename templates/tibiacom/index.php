@@ -598,18 +598,31 @@ $count++;
 
         <div id="ThemeboxesColumn">
 <?PHP
-$monsterquery = $SQL->query("SELECT `boostname`, `looktype`, `lookfeet` , `looklegs` , `lookhead` , `lookbody` , `lookaddons` , `lookmount`   FROM `boosted_creature`")->fetch();
-$monstername = $monsterquery["boostname"];
-$monstertype = $monsterquery["looktype"];
-$monsterfeet = $monsterquery["lookfeet"];
-$monsterlegs = $monsterquery["looklegs"];
-$monsterhead = $monsterquery["lookhead"];
-$monsterbody = $monsterquery["lookbody"];
-$monsteraddons = $monsterquery["lookaddons"];
-$monstermount= $monsterquery["lookmount"];
+$creaturequery = $SQL->query("SELECT `boostname`, `looktype`, `lookfeet` , `looklegs` , `lookhead` , `lookbody` , `lookaddons` , `lookmount`   FROM `boosted_creature`")->fetch();
+$creaturename = $creaturequery["boostname"];
+$creaturetype = $creaturequery["looktype"];
+$creaturefeet = $creaturequery["lookfeet"];
+$creaturelegs = $creaturequery["looklegs"];
+$creaturehead = $creaturequery["lookhead"];
+$creaturebody = $creaturequery["lookbody"];
+$creatureaddons = $creaturequery["lookaddons"];
+$creaturemount= $creaturequery["lookmount"];
+?>
+
+<?PHP
+$bossquery = $SQL->query("SELECT `boostname`, `looktype`, `lookfeet` , `looklegs` , `lookhead` , `lookbody` , `lookaddons` , `lookmount`   FROM `boosted_boss`")->fetch();
+$bossname = $bossquery["boostname"];
+$bosstype = $bossquery["looktype"];
+$bossfeet = $bossquery["lookfeet"];
+$bosslegs = $bossquery["looklegs"];
+$bosshead = $bossquery["lookhead"];
+$bossbody = $bossquery["lookbody"];
+$bossaddons = $bossquery["lookaddons"];
+$bossmount= $bossquery["lookmount"];
 ?>
           <div id="RightArtwork">
-			<img id="Monster" src="<?php echo $config['outfit_images_url'] ?>?id=<?php echo $monstertype; ?>&addons=<?php echo $monsteraddons; ?>&head=<?php echo $monsterhead; ?>&body=<?php echo $monsterbody; ?>&legs=<?php echo $monsterlegs; ?>&feet=<?php echo $monsterfeet; ?>&mount=<?php echo $monstermount; ?>" alt="Monster of the Day" title="Today's boosted creature: <?PHP echo ucwords(strtolower(trim($monstername))); ?>">
+            <img id="Creature" src="<?php echo $config['outfit_images_url'] ?>?id=<?php echo $creaturetype; ?>&addons=<?php echo $creatureaddons; ?>&head=<?php echo $creaturehead; ?>&body=<?php echo $creaturebody; ?>&legs=<?php echo $creaturelegs; ?>&feet=<?php echo $creaturefeet; ?>&mount=<?php echo $creaturemount; ?>" alt="Creature of the Day" title="Today's boosted creature: <?PHP echo ucwords(strtolower(trim($creaturename))); ?>">
+            <img id="Boss" src="<?php echo $config['outfit_images_url'] ?>?id=<?php echo $bosstype; ?>&addons=<?php echo $bossaddons; ?>&head=<?php echo $bosshead; ?>&body=<?php echo $bossbody; ?>&legs=<?php echo $bosslegs; ?>&feet=<?php echo $bossfeet; ?>&mount=<?php echo $bossmount; ?>" alt="Boss of the Day" title="Today's boosted boss: <?PHP echo ucwords(strtolower(trim($bossname))); ?>">
             <img id="PedestalAndOnline" src="<?php echo $template_path; ?>/images/header/pedestal.gif" alt="Monster Pedestal and Players Online Box"/>
         </div>
 
