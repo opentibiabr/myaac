@@ -136,6 +136,7 @@ if($player->isLoaded() && !$player->isDeleted())
 	$title = $player->getName() . ' - ' . $title;
 	$account = $player->getAccount();
 	$rows = 0;
+    $hidden = $player->isHidden();
 
 	if($config['characters']['outfit'])
 		$outfit = $config['outfit_images_url'] . '?id=' . $player->getLookType() . ($db->hasColumn('players', 'lookaddons') ? '&addons=' . $player->getLookAddons() : '') . '&head=' . $player->getLookHead() . '&body=' . $player->getLookBody() . '&legs=' . $player->getLookLegs() . '&feet=' . $player->getLookFeet();
@@ -276,36 +277,41 @@ if($player->isLoaded() && !$player->isDeleted())
 		unset($storage);
 	}
 
-	if($config['characters']['equipment']){
-		global $db;
-		$eq_sql = $db->query('SELECT `pid`, `itemtype` FROM player_items WHERE player_id = '.$player->getId().' AND (`pid` >= 1 and `pid` <= 10)');
-		$equipment = array();
-		foreach($eq_sql as $eq)
-			$equipment[$eq['pid']] = $eq['itemtype'];
+    $hidden = true;
+    if ($config['characters']['equipment']) {
+        $equipment = [];
+        $empty_slots = array("", "no_helmet", "no_necklace", "no_backpack", "no_armor", "no_handleft", "no_handright", "no_legs", "no_boots", "no_ring", "no_ammo");
+        if ($hidden) {
+            for ($i = 1; $i <= 10; $i++) {
+                $equipment[$i] = '<img src="images/items/' . $empty_slots[$i] . '.gif" width="40" height="40" border="0" alt="hidden" />';
+            }
+        } else {
+            global $db;
+            $eq_sql = $db->query('SELECT `pid`, `itemtype` FROM player_items WHERE player_id = ' . $player->getId() . ' AND (`pid` >= 1 and `pid` <= 10)');
+            foreach ($eq_sql as $eq)
+                $equipment[$eq['pid']] = $eq['itemtype'];
 
-		$empty_slots = array("", "no_helmet", "no_necklace", "no_backpack", "no_armor", "no_handleft", "no_handright", "no_legs", "no_boots", "no_ring", "no_ammo");
-		for($i = 0; $i <= 10; $i++)
-		{
-			if(!isset($equipment[$i]) || $equipment[$i] == 0)
-				$equipment[$i] = $empty_slots[$i];
-		}
+            for ($i = 0; $i <= 10; $i++) {
+                if (!isset($equipment[$i]) || $equipment[$i] == 0)
+                    $equipment[$i] = $empty_slots[$i];
+            }
 
-		for($i = 1; $i < 11; $i++)
-		{
-			if(Validator::number($equipment[$i]))
-				$equipment[$i] = getItemImage($equipment[$i]);
-			else
-				$equipment[$i] = '<img src="images/items/' . $equipment[$i] . '.gif" width="32" height="32" border="0" alt=" ' . $equipment[$i] . '" />';
-		}
+            for ($i = 1; $i < 11; $i++) {
+                if (Validator::number($equipment[$i]))
+                    $equipment[$i] = getItemImage($equipment[$i]);
+                else
+                    $equipment[$i] = '<img src="images/items/' . $equipment[$i] . '.gif" width="40" height="40" border="0" alt=" ' . $equipment[$i] . '" />';
+            }
 
-		$skulls = array(
-			1 => 'yellow_skull',
-			2 => 'green_skull',
-			3 => 'white_skull',
-			4 => 'red_skull',
-			5 => 'black_skull'
-		);
-	}
+            $skulls = array(
+                1 => 'yellow_skull',
+                2 => 'green_skull',
+                3 => 'white_skull',
+                4 => 'red_skull',
+                5 => 'black_skull'
+            );
+        }
+    }
 
 	$dead_add_content = '';
 	$deaths = array();
@@ -420,7 +426,6 @@ WHERE killers.death_id = '".$death['id']."' ORDER BY killers.final_hit DESC, kil
 		$signature_url = BASE_URL . ($config['friendly_urls'] ? '' : '?') . urlencode($player->getName()) . '.png';
 	}
 
-	$hidden = $player->isHidden();
 	if(!$hidden) {
 		// check if account has been banned
 		$bannedUntil = '';
@@ -471,7 +476,7 @@ WHERE killers.death_id = '".$death['id']."' ORDER BY killers.final_hit DESC, kil
 		$achievementStorage = $config['achievements_base'] + $achievement;
 		$searchAchievementsbyStorage = $db->query('SELECT `key`, `value` FROM `player_storage` WHERE `key` = ' . $achievementStorage . ' AND `player_id` = ' . $player->getId() . '');
 		$achievementsPlayer = $searchAchievementsbyStorage->fetch();
-		if($achievementsPlayer['key'] == $achievementStorage){
+		if($achievementsPlayer && $achievementsPlayer['key'] == $achievementStorage){
 			$achievementPoints = $achievementPoints + $value['points'];
 
 			$insertAchievement = [
@@ -483,7 +488,7 @@ WHERE killers.death_id = '".$death['id']."' ORDER BY killers.final_hit DESC, kil
 			];
 		}
 	}
-	array_push($listAchievement, $insertAchievement);
+    array_push($listAchievement, $insertAchievement ?? []);
 
 	$twig->display('characters.html.twig', array(
 		'outfit' => isset($outfit) ? $outfit : null,

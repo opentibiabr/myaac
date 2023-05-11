@@ -453,7 +453,7 @@ margin: auto 5x;
 											</tr>
 											<tr style="background-color: {{ config.lightborder }};">
 												<td class="LabelV" >Tournament Coins:</td>
-												<td>0 <img src="{{ template_path }}/images/account/icon-tournamentcoin.png" class="VSCCoinImages"></td>
+												<td>{{ tournament_coins }} <img src="{{ template_path }}/images/account/icon-tournamentcoin.png" class="VSCCoinImages"></td>
 											</tr>
 											<tr style="background-color: {{ config.darkborder }};">
 												<td class="LabelV" >Registered:</td>
@@ -630,19 +630,19 @@ margin: auto 5x;
 										<table class="TableContent" width="100%">
 											<tr class="LabelH">
 												<td style="width:60%">Action</td>
-												<td style="width:25%">Date</td>
-												<td style="width:15%">IP</td>
+												<td style="width:30%">Date</td>
+												<td style="width:10%">IP</td>
 											</tr>
 											{% autoescape false %}
-											{% set i = 0 %}
-											{% for action in actions %}
-												{% set i = i + 1 %}
-											<tr style="background-color: {{ getStyle(i) }}">
-												<td>{{ action.action }}</td>
-												<td>{{ action.date|date("d M Y, H:i:s") }}</td>
-												<td>{{ action.ip }}</td>
-											</tr>
-											{% endfor %}
+												{% set i = 0 %}
+												{% for action in actions %}
+													{% set i = i + 1 %}
+													<tr style="background-color: {{ getStyle(i) }}">
+														<td>{{ action.action }}</td>
+														<td>{{ action.date|date("d M Y, H:i:s") }}</td>
+														<td>{{ action.ip }}</td>
+													</tr>
+												{% endfor %}
 											{% endautoescape %}
 										</table>
 									</div>
@@ -655,31 +655,3 @@ margin: auto 5x;
 		</tr>
 	</table>
 </div>
-<br/>
-
-{% if config.account_change_character_name %}
-<td>
-	<table border="0" cellspacing="0" cellpadding="0" >
-		<form action="{{ getLink('account/character/name') }}" method="post" >
-			<tr>
-				<td style="border:0px;" >
-					{{ include('buttons.change_name.html.twig') }}
-				</td>
-			</tr>
-		</form>
-	</table>
-</td>
-{% endif %}
-{% if config.account_change_character_sex %}
-<td>
-	<table border="0" cellspacing="0" cellpadding="0" >
-		<form action="{{ getLink('account/character/sex') }}" method="post" >
-			<tr>
-				<td style="border:0px;" >
-					{{ include('buttons.change_sex.html.twig') }}
-				</td>
-			</tr>
-		</form>
-	</table>
-</td>
-{% endif %}
