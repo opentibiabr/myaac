@@ -299,41 +299,24 @@ margin: auto 5x;
 <table class="InnerTableButtonRow" cellpadding="0" cellspacing="0">
 <tbody>
 <tr>
-<td align="right">
-<div class="DivWithButton">
-
-
-	<tr>
-<form action="{{ getLink('account/character/create') }}" method="post" >
-	<td style="border:0px;" align="right">
-	{{ include('buttons.create_character.html.twig') }}
+	<td>
+		<div style="display: inline-flex; justify-content: center; align-content: space-between; margin: 2px 7px;">
+			<form action="{{ getLink('account/character/create') }}" method="post">
+				{{ include('buttons.create_character.html.twig') }}
+			</form>
+			{% if config.account_change_character_name %}
+				<form action="{{ getLink('account/character/name') }}" method="post" style="margin-left: 6px">
+					{{ include('buttons.change_name.html.twig') }}
+				</form>
+			{% endif %}
+			{% if config.account_change_character_sex %}
+				<form action="{{ getLink('account/character/sex') }}" method="post" style="margin-left: 6px">
+					{{ include('buttons.change_sex.html.twig') }}
+				</form>
+			{% endif %}
+		</div>
 	</td>
-</form>
-
-{% if config.account_change_character_name %}
-<td>
-	<form action="{{ getLink('account/character/name') }}" method="post" >
-		<tr>
-			<td style="border:0px;" align="right">
-				{{ include('buttons.change_name.html.twig') }}
-			</td>
-		</tr>
-	</form>
-</td>
-{% endif %}
-
-{% if config.account_change_character_sex %}
-<td>
-	<form action="{{ getLink('account/character/sex') }}" method="post" >
-		<tr>
-			<td style="border:0px;" align="right">
-				{{ include('buttons.change_sex.html.twig') }}
-			</td>
-		</tr>
-	</form>
-</td>
-{% endif %}
-	</tr>
+</tr>
 
 </div>
 </td>
