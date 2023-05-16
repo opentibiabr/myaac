@@ -1,0 +1,34 @@
+Thumbs.db
+.DS_Store
+.idea
+# git rm --cached -r .idea
+
+# npm
+node_modules
+
+_config.local.php
+config.local.php
+logs/
+
+# guild images
+images/guilds/*
+!images/guilds/default.gif
+
+# cache
+system/cache/*
+!system/cache/index.html
+!system/cache/twig/index.html
+!system/cache/signatures/index.html
+!system/cache/plugins/index.html
+
+# php sessions
+system/php_sessions/*
+!system/php_sessions/index.html
+
+# logs
+system/logs/*
+!system/logs/index.html
+
+# data
+system/data/*
+!system/data/index.html

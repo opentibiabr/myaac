@@ -99,8 +99,12 @@
 	{% if config.characters.balance %}
 	{% set rows = rows + 1 %}
 	<tr bgcolor="{{ getStyle(rows) }}">
-	<td class="LabelV175">Balance:</td>
-	<td>{{ player.getBalance() }} Gold Coins.</td>
+		<td class="LabelV175">Balance:</td>
+		<td>
+		<strong style="color: green">$</strong>
+		{% if not player.isHidden() %} {{ player.getBalance() }} Gold Coins.
+		{% else %} <strike>Hidden</strike> {% endif %}
+		</td>
 	</tr>
 	{% endif %}
 

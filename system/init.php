@@ -184,26 +184,27 @@ else {
 
 $tmp = '';
 $towns = [];
-if($cache->enabled() && $cache->fetch('towns', $tmp)) {
-	$towns = unserialize($tmp);
-}
-else {
-	if($db->hasTable('towns')) {
-		$query = $db->query('SELECT `id`, `name` FROM `towns`;')->fetchAll(PDO::FETCH_ASSOC);
+if ($cache->enabled() && $cache->fetch('towns', $tmp)) {
+    $towns = unserialize($tmp);
+} else {
+    if ($db->hasTable('towns')) {
+        $query = $db
+            ->query('SELECT `towns`.`id`, `towns`.`name` FROM `towns` INNER JOIN `houses` 
+    ON `towns`.`id` = `houses`.`town_id` GROUP BY `towns`.`id` ORDER BY `towns`.`name`;')
+            ->fetchAll(PDO::FETCH_ASSOC);
 
-		foreach($query as $town) {
-			$towns[$town['id']] = $town['name'];
-		}
+        foreach ($query as $town) {
+            $towns[$town['id']] = $town['name'];
+        }
 
-		unset($query);
-	}
-	else {
-		$towns = config('towns');
-	}
+        unset($query);
+    } else {
+        $towns = config('towns');
+    }
 
-	if($cache->enabled()) {
-		$cache->set('towns', serialize($towns), 600);
-	}
+    if ($cache->enabled()) {
+        $cache->set('towns', serialize($towns), 600);
+    }
 }
 
 config(['towns', $towns]);

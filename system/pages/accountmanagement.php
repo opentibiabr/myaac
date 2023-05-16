@@ -74,7 +74,8 @@ $errors = array();
 		}
 		
 		$account_coins = $account_logged->getCustomField('coins');
-		
+		$tournament_coins = $account_logged->getCustomField('tournament_coins');
+
 		if(!$account_logged->isPremium()) {
 			$account_status = '<b><span style="color: red;">Free Account</span></b>';
 		} else{
@@ -137,6 +138,7 @@ $errors = array();
 			'account' => USE_ACCOUNT_NAME ? $account_logged->getName() : $account_logged->getNumber(),
 			'account_premdays' => $account_premdays,
 			'account_coins' => $account_coins,
+			'tournament_coins'=> $tournament_coins,
 			'account_email' => $account_email,
 			'account_created' => $account_created,
 			'account_status' => $account_status,
