@@ -549,10 +549,19 @@ class OTS_Player extends OTS_Row_DAO
     }
 
     /**
-     * @return bool|mixed
+     * @return bool
+     * @throws E_OTS_NotLoaded
      */
     public function isMain()
     {
+        if (!$this->db->hasColumn('players', 'ismain')) {
+            return false;
+        }
+
+        if (!isset($this->data['ismain'])) {
+            throw new E_OTS_NotLoaded();
+        }
+
         return $this->data['ismain'] == 1;
     }
 
