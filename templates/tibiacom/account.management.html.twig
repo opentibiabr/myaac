@@ -328,11 +328,14 @@
                         <td style="font-weight: bold;">{{ i }}.</td>
                         <td>
                           <span style="white-space: nowrap; vertical-align: middle; line-height: 12px;">
-                            <span id="CharacterNameOf_0"
-                                  style="font-size:13pt; font-weight: bold;">{{ player.getName() }}{% if player.isDeleted() %}
-                                <span style="color: red"><b> [ DELETED ] </b></span>{% endif %} <img
-                                src="{{ template_path }}/images//account/maincharacter.png" alt="(Main Character)"
-                                title="Main Character">
+                            <span id="CharacterNameOf_0" style="font-size:13pt; font-weight: bold;">{{ player.getName() }}
+                              {% if player.isDeleted() %}
+                                <span style="color: red"><b> [ DELETED ] </b></span>
+                              {% endif %}
+                              {% if player.isMain() %}
+                                <img src="{{ template_path }}/images//account/maincharacter.png"
+                                     alt="(Main Character)" title="Main Character">
+                              {% endif %}
 										        </span>
 										        <br>
                             <small>
@@ -396,6 +399,11 @@
                 <form action="{{ getLink('account/character/create') }}" method="post">
                   {{ include('buttons.create_character.html.twig') }}
                 </form>
+                {% if players | length >= 1 %}
+                  <form action="{{ getLink('account/character/main') }}" method="post" style="margin-left: 6px">
+                    {{ include('buttons.change_main.html.twig') }}
+                  </form>
+                {% endif %}
                 {% if config.account_change_character_name %}
                   <form action="{{ getLink('account/character/name') }}" method="post" style="margin-left: 6px">
                     {{ include('buttons.change_name.html.twig') }}

@@ -178,6 +178,9 @@ class CreateCharacter
 			$player->setLossItems($char_to_copy->getLossItems());
 			$player->setLossContainers($char_to_copy->getLossContainers());
 		}
+        if ($db->hasColumn('players', 'ismain')) {
+            $player->setMain(0);
+        }
 
 		$player->save();
 		$player->setCustomField('created', time());
