@@ -579,7 +579,7 @@ if($getAuctionStep == 2){
 		$next_truecount = 0;
 
 /* PLAYERS */
-$getCharacter = $db->query('SELECT `id`, `account_id`, `name`, `level`, `vocation`' . 'FROM `players`' . 'WHERE `id` = ' . $selected_character .'');
+$getCharacter = $db->query('SELECT `id`, `account_id`, `name`, `level`, `vocation`' . 'FROM `players`' . 'WHERE `id` = ' . $db->quote($selected_character) .'');
 $getCharacter = $getCharacter->fetch();
 /* PLAYERS END */
 
@@ -863,7 +863,7 @@ if($getAuctionStep == 3){
 	$selectCharacter = $_POST['auction_character'];
 		
 /* PLAYERS */
-$getCharacter = $db->query('SELECT `id`, `account_id`, `name`, `level`, `vocation`, `sex`, `health`, `healthmax`, `mana`, `manamax`, `maglevel`, `manaspent`, `balance`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `skill_shielding`, `skill_shielding_tries`, `cap`, `experience`, `created`, `soul`' . 'FROM `players`' . 'WHERE `id` = ' . $selectCharacter .'');
+$getCharacter = $db->query('SELECT `id`, `account_id`, `name`, `level`, `vocation`, `sex`, `health`, `healthmax`, `mana`, `manamax`, `maglevel`, `manaspent`, `balance`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `skill_shielding`, `skill_shielding_tries`, `cap`, `experience`, `created`, `soul`' . 'FROM `players`' . 'WHERE `id` = ' . $db->quote($selectCharacter) .'');
 $getCharacter = $getCharacter->fetch();
 /* PLAYERS END */
 
@@ -1245,7 +1245,7 @@ if($getAuctionStep == 4){
 
 
 /* PLAYERS */
-$getCharacter = $db->query('SELECT `id`, `account_id`, `name`, `level`, `vocation`, `sex`, `health`, `healthmax`, `mana`, `manamax`, `maglevel`, `manaspent`, `balance`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `skill_shielding`, `skill_shielding_tries`, `cap`, `experience`, `created`, `soul`' . 'FROM `players`' . 'WHERE `id` = ' . $selectCharacter .'');
+$getCharacter = $db->query('SELECT `id`, `account_id`, `name`, `level`, `vocation`, `sex`, `health`, `healthmax`, `mana`, `manamax`, `maglevel`, `manaspent`, `balance`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `skill_shielding`, `skill_shielding_tries`, `cap`, `experience`, `created`, `soul`' . 'FROM `players`' . 'WHERE `id` = ' . $db->quote($selectCharacter) .'');
 $getCharacter = $getCharacter->fetch();
 /* PLAYERS END */
 
@@ -1682,10 +1682,10 @@ $update_character = $update_character->fetch();*/
 /* UPDATE CHARACTER TO NEW ACCOUNT END */
 
 /* REGISTER AUCTION */
-$getCharacter = $db->query('SELECT `id`, `account_id`' . 'FROM `players`' . 'WHERE `id` = ' . $auction_character .'');
+$getCharacter = $db->query('SELECT `id`, `account_id`' . 'FROM `players`' . 'WHERE `id` = ' . $db->quote($auction_character) .'');
 $getCharacter = $getCharacter->fetch();
 
-$getAccount = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $getCharacter['account_id'] .'');
+$getAccount = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $db->quote($getCharacter['account_id']) .'');
 $getAccount = $getAccount->fetch();
 
 if($auction_days > 28){
@@ -1715,7 +1715,7 @@ if($getCoinsAccountLogged['coins'] > $charbazaar_create){
 
 $update_accountcoins = $db->exec('UPDATE `accounts` SET `coins` = '.$charbazaar_mycoins_calc.' WHERE `id` = '.$getAccount['id'].'');
 
-$insert_auction = $db->exec('INSERT INTO `myaac_charbazaar` (`account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`) VALUES ('.$account_old.', '.$account_new .', '.$player_id.', '.$price.', '.$date_end.', '.$date_start.')');
+$insert_auction = $db->exec('INSERT INTO `myaac_charbazaar` (`account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`) VALUES ('.$db->quote($account_old).', '.$db->quote($account_new ).', '.$db->quote($player_id).', '.$db->quote($price).', '.$db->quote($date_end).', '.$db->quote($date_start).')');
 
 $update_character = $db->exec('UPDATE `players` SET `account_id` = '.$account_new.' WHERE `id` = '.$getCharacter['id'].'');
 
