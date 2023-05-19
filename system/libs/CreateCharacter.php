@@ -179,7 +179,7 @@ class CreateCharacter
 			$player->setLossContainers($char_to_copy->getLossContainers());
 		}
         if ($db->hasColumn('players', 'ismain')) {
-            $player->setMain(0);
+            $player->setMain($number_of_players_on_account == 0);
         }
 
 		$player->save();

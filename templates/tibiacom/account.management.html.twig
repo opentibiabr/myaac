@@ -399,7 +399,7 @@
                 <form action="{{ getLink('account/character/create') }}" method="post">
                   {{ include('buttons.create_character.html.twig') }}
                 </form>
-                {% if players | length >= 1 %}
+                {% if config.account_change_character_main and players | length >= 1 %}
                   <form action="{{ getLink('account/character/main') }}" method="post" style="margin-left: 6px">
                     {{ include('buttons.change_main.html.twig') }}
                   </form>

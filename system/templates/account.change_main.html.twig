@@ -1,5 +1,5 @@
-Select a main character and submit.
-<br/><br/>
+Select a main character and submit.<br/>
+<span style="color: {{ color }}">Change main character cost {{ config.account_change_character_main_coins }} coins. You have {{ coins }} coins.</span><br/><br/>
 <form action="{{ getLink('account/character/main') }}" method="post">
   <input type="hidden" name="changemainsave" value="1"/>
   <div class="TableContainer">
@@ -14,7 +14,7 @@ Select a main character and submit.
                 style="background-image:url({{ template_path }}/images/content/table-headline-border.gif);"></span>
           <span class="CaptionVerticalLeft"
                 style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></span>
-          <div class="Text">Change Main</div>
+          <div class="Text">Change Main Character</div>
           <span class="CaptionVerticalRight"
                 style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></span>
           <span class="CaptionBorderBottom"
@@ -34,7 +34,9 @@ Select a main character and submit.
                 <td style="width:80%">
                   <select name="player_id" style="width: 100%;">
                     {% for player in players %}
-                      <option value="{{ player.getId() }}">{{ player.getName() }}</option>
+                      {% if not player.isMain() %}
+                        <option value="{{ player.getId() }}">{{ player.getName() }}</option>
+                      {% endif %}
                     {% endfor %}
                   </select>
                 </td>

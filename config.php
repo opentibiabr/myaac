@@ -107,6 +107,8 @@ $config = array(
 	'account_change_character_name_points' => 30, // cost of name change
 	'account_change_character_sex' => false, // can user change their character sex for premium points?
 	'account_change_character_sex_points' => 30, // cost of sex change
+    'account_change_character_main' => true, // can user change their main character for coins?
+    'account_change_character_main_coins' => 250, // cost of main change
 	'characters_per_account' => 10,	// max. number of characters per account
 
 	// mail
@@ -143,7 +145,7 @@ $config = array(
 		0 => 'Female',
 		1 => 'Male'
 	),
-	
+
 	// vocations
 	'vocations' => array(
 		0 => 'None',
@@ -263,11 +265,11 @@ $config = array(
 		//'Some Quest' => 123,
 		//'Some Quest Two' => 456,
 	), // quests list (displayed in character view), name => storage
-	
+
 	'achievements_base' => 300000,
-	
+
 	'server_save' => '05:00:00',
-	
+
 	'signature_enabled' => false,
 	'signature_type' => 'tibian', // signature engine to use: tibian, mango, gesior
 	'signature_cache_time' => 5, // how long to store cached file (in minutes), default 5 minutes
@@ -278,12 +280,12 @@ $config = array(
 	'news_ticker_limit' => 5, // limit of news in tickers (mini news) (0 to disable)
 	'news_date_format' => 'j.n.Y', // check php manual date() function for more info about this
 	'news_author' => false, // show author of the news
-	
+
 	// banner home
 	'banner_status' => true,
 	'banner_image' => '500x660.png', // templates->tibiacom->images->carousel
 	'banner_link' => 'www.instagram.com',
-	
+
 	// status bar
 	'status_bar' => true,
 	'client_link' => 'https://www.lucasgiovanni.com', // link to download tibia client
@@ -292,10 +294,10 @@ $config = array(
 	'instagram_link' => 'test', // www.instagram.com/PROFILE
 	'facebook_link' => 'test', // www.facebook.com/PAGE
 	'collapse_status' => true,
-	
+
 	// events
 	'events_xml' => 'data/xml/events.xml',
-	
+
 	// slide
 	'carousel_status' => true,
 	'carousel' => array(
@@ -303,18 +305,18 @@ $config = array(
 		'carousel_2' => 'merrygarb_small.jpg',
 		'carousel_3' => 'mothcape_small.jpg',
 	),
-	
+
 	// load page
 	'pace_load' => true, // load page top bar
 	'pace_theme' => 'flat-top', // big-counter, bounce, center-atom, center-circle, center-radar, center-simple, corner-indicator, fill-left, flash, flat-top, loading-bar, max-osx, material, minimal
 	'pace_color' => 'white', // black, blue, green, orange, pink, purple, red, silver, white, yellow
-	
+
 	// char bazaar
 	'bazaar_create' => 50, // price to create auction
 	'bazaar_tax' => 12, // tax to bid
 	'bazaar_bid' => 50, // price to bid
 	'bazaar_accountid' => 1, // account id to move auction character
-	
+
 	// gifts/shop system
 	'gifts_system' => true,
 

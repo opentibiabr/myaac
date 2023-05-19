@@ -6,7 +6,6 @@ Thumbs.db
 # npm
 node_modules
 
-_config.local.php
 config.local.php
 logs/
 
