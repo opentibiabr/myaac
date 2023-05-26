@@ -99,6 +99,7 @@ else {
 			'/^account\/character\/create\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'create_character'),
 			'/^account\/character\/name\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_name'),
 			'/^account\/character\/sex\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_sex'),
+            '/^account\/character\/main\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_main'),
 			'/^account\/character\/delete\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'delete_character'),
 			'/^account\/character\/comment\/[A-Za-z0-9-_%+\']+\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_comment', 'name' => '$3'),
 			'/^account\/character\/comment\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_comment'),

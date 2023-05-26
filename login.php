@@ -121,7 +121,7 @@ switch ($action) {
         }
 
         // common columns
-        $columns    = 'name, level, sex, vocation, looktype, lookhead, lookbody, looklegs, lookfeet, lookaddons, lastlogin, isreward, istutorial, hidden';
+        $columns    = 'name, level, sex, vocation, looktype, lookhead, lookbody, looklegs, lookfeet, lookaddons, lastlogin, isreward, istutorial, ismain, hidden';
         $players    = $db->query("select {$columns} from players where account_id = {$account->getId()} AND deletion = 0");
         $characters = [];
         if ($players && $players->rowCount() > 0) {
@@ -186,7 +186,7 @@ function createChar($config, $player)
         'addonsflags'                      => intval($player['lookaddons']),
         'ishidden'                         => (bool)$player['hidden'],
         'istournamentparticipant'          => false,
-        'ismaincharacter'                  => true, //(bool)($player['ismain']),
+        'ismaincharacter'                  => (bool)($player['ismain']),
         'dailyrewardstate'                 => intval($player['isreward']),
         'remainingdailytournamentplaytime' => 0
     ];

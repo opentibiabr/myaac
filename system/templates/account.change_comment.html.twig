@@ -32,15 +32,20 @@ If you do not want to specify a certain field, just leave it blank.<br/><br/>
 													<td class="LabelV">Name:</td>
 													<td style="width:80%;" >{{ player.getName() }}</td>
 												</tr>
-												<tr>
-													<td class="LabelV" >Hide Account:</td>
-													<td>
-														<input type="hidden" value="0" name="accountvisible">
-														<input type="checkbox" name="accountvisible" id="accountvisible" value="1" {% if player.isHidden() %}checked="checked"{% endif %}>
-														<label for="accountvisible"> check to hide your account information</label>
-														{% if player.getCustomField('group_id') > 1 %} (you will be also hidden on the Team page!){% endif %}
-													</td>
-												</tr>
+                        <tr>
+                          <td class="LabelV">Hide Account:</td>
+                          <td>
+                            {% if not player.isMain() %}
+                              <input type="hidden" value="0" name="accountvisible">
+                              <input type="checkbox" name="accountvisible" id="accountvisible" value="1"
+                                     {% if player.isHidden() %}checked="checked"{% endif %}>
+                              <label for="accountvisible"> check to hide your account information</label>
+                              {% if player.getCustomField('group_id') > 1 %} (you will be also hidden on the Team page!){% endif %}
+                            {% else %}
+                              <label for="accountvisible">Main character can not be hide</label>
+                            {% endif %}
+                          </td>
+                        </tr>
 											</table>
 										</div>
 									</div>
