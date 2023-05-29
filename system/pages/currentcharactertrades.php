@@ -12,9 +12,9 @@ $getAccountCoins = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accoun
 $getAccountCoins = $getAccountCoins->fetch();
 }
 // GET PAGES
-$getPageAuctions = isset($_GET['subtopic']) ? $_GET['subtopic'] : null;
-$getPageDetails = isset($_GET['details']) ? $_GET['details'] : null;
-$getPageAction = isset($_GET['action']) ? $_GET['action'] : null;
+$getPageAuctions = $_GET['subtopic'] ?? null;
+$getPageDetails = $_GET['details'] ?? null;
+$getPageAction = $_GET['action'] ?? null;
 // GET PAGES
 
 // CHAR BAZAAR CONFIGS
