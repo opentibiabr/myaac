@@ -200,7 +200,7 @@ if(strtotime($Hoje) > strtotime($End)){
                                     </div>
 <?php
 if($logged){
-	if ($logged && isset($getAuctionBid) && is_array($getAuctionBid) && $account_logged == $getAuctionBid['account_id']) {
+	if($account_logged == $getAuctionBid['account_id']){
 ?>
 									<div class="ShortAuctionDataBidRow" style="background-color: #d4c0a1; padding: 5px; border: 1px solid #f0e8da; box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 50%);">
                                       <div class="ShortAuctionDataLabel">My Bid:</div>
