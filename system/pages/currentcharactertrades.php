@@ -12,9 +12,9 @@ $getAccountCoins = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accoun
 $getAccountCoins = $getAccountCoins->fetch();
 }
 // GET PAGES
-$getPageAuctions = $_GET['subtopic'];
-$getPageDetails = $_GET['details'];
-$getPageAction = $_GET['action'];
+$getPageAuctions = isset($_GET['subtopic']) ? $_GET['subtopic'] : null;
+$getPageDetails = isset($_GET['details']) ? $_GET['details'] : null;
+$getPageAction = isset($_GET['action']) ? $_GET['action'] : null;
 // GET PAGES
 
 // CHAR BAZAAR CONFIGS
@@ -129,13 +129,13 @@ $getAuctionBid = $getAuctionBid->fetch();
 /* GET BID END */
 
 /* GET MY BID */
-if($account_logged == $getAuctionBid['account_id']){
-	$My_Bid = '<b>'.number_format($getAuctionBid['bid'], 0, ',', ',').'</b> <img src="'.$template_path.'/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins">';
-}else{
-	$My_Bid = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+if (isset($account_logged) && is_array($getAuctionBid) && $account_logged == $getAuctionBid['account_id']) {
+  $My_Bid = '<b>' . number_format($getAuctionBid['bid'], 0, ',', ',') . '</b> <img src="' . $template_path . '/images/account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins">';
+} else {
+  $My_Bid = '<img src="' . $template_path . '/images/premiumfeatures/icon_no.png">';
 }
-if(empty($getAuctionBid['account_id'])){
-	$My_Bid = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
+if (empty($getAuctionBid['account_id'])) {
+  $My_Bid = '<img src="' . $template_path . '/images/premiumfeatures/icon_no.png">';
 }
 /* GET MY BID END */
 
@@ -219,7 +219,7 @@ if(strtotime($End) > strtotime($Hoje)){
                                       <div class="ShortAuctionDataValue"><b><?php echo number_format($Auction['price'], 0, ',', ',')  ?></b> <img src="<?php echo $template_path; ?>/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins"></div>
                                     </div>
 <?php
-	if($logged && $account_logged == $getAuctionBid['account_id']){
+	if ($logged && isset($getAuctionBid) && is_array($getAuctionBid) && $account_logged == $getAuctionBid['account_id']) {
 ?>
 									<div class="ShortAuctionDataBidRow" style="background-color: #d4c0a1; padding: 5px; border: 1px solid #f0e8da; box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 50%);">
                                       <div class="ShortAuctionDataLabel">My Bid:</div>

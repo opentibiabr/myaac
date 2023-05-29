@@ -77,37 +77,38 @@ $getAccountCoins = $getAccountCoins->fetch();
                             <td></td>
                           </tr>
 <?php
-if($logged){
-$getAuctionsbyAccount = $db->query('SELECT `id`, `account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price`' . 'FROM `myaac_charbazaar`' . 'WHERE `account_old` = ' . $account_logged->getId() .'');
-}
-$i_bg = 0;
-foreach($getAuctionsbyAccount as $Auction){
-$i_bg = $i_bg + 1;
-
-$getCharacterbyAccount = $db->query('SELECT `id`, `name`, `level`' . 'FROM `players`' . 'WHERE `id` = ' . $Auction['player_id'] .'');
-$getCharacterbyAccount = $getCharacterbyAccount->fetch();
-
-$Hoje = date('d-m-Y');
-$End = date('d-m-Y', strtotime($Auction['date_end']));
-
-if(strtotime($End) > strtotime($Hoje)){
-	$bg_DateEnd = '';
-}else{
-	$bg_DateEnd = 'red';
-}
-?>
-                          <tr bgcolor="<?php echo getStyle($i_bg); ?>">
-                            <td style="color: <?php echo $bg_DateEnd ?>;"><?php echo $getCharacterbyAccount['name'] ?></td>
-                            <td style="color: <?php echo $bg_DateEnd ?>;"><?php echo date('d M Y', strtotime($Auction['date_start'])); ?></td>
-                            <td style="color: <?php echo $bg_DateEnd ?>;"><?php echo date('d M Y', strtotime($Auction['date_end'])); ?></td>
-                            <td style="color: <?php echo $bg_DateEnd ?>;"><?php echo number_format($Auction['bid_price'], 0, ',', ','); ?> <img src="<?php echo $template_path; ?>/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins"></td>
-<?php if(strtotime($End) > strtotime($Hoje)){ ?>
-                            <td><a href="?subtopic=currentcharactertrades&details=<?php echo $Auction['id'] ?>"><div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton_green.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div><input name="auction_confirm" class="BigButtonText" type="button" value="Access"></div></div></a></td>
-<?php }else{ ?>
-                            <td><a href="?subtopic=pastcharactertrades&details=<?php echo $Auction['id'] ?>"><div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton_red.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_red_over.gif); visibility: hidden;"></div><input name="auction_confirm" class="BigButtonText" type="button" value="Finished"></div></div></a></td>
-<?php } ?>
-                          </tr>
-<?php 
+if ($logged) {
+  $getAuctionsbyAccount = $db->query('SELECT `id`, `account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price` FROM `myaac_charbazaar` WHERE `account_old` = ' . $account_logged->getId());
+  $i_bg = 0;
+  
+  foreach ($getAuctionsbyAccount as $Auction) {
+      $i_bg = $i_bg + 1;
+      
+      $getCharacterbyAccount = $db->query('SELECT `id`, `name`, `level` FROM `players` WHERE `id` = ' . $Auction['player_id']);
+      $getCharacterbyAccount = $getCharacterbyAccount->fetch();
+      
+      $Hoje = date('d-m-Y');
+      $End = date('d-m-Y', strtotime($Auction['date_end']));
+      
+      if (strtotime($End) > strtotime($Hoje)) {
+          $bg_DateEnd = '';
+      } else {
+          $bg_DateEnd = 'red';
+      }
+      ?>
+      <tr bgcolor="<?php echo getStyle($i_bg); ?>">
+          <td style="color: <?php echo $bg_DateEnd ?>;"><?php echo $getCharacterbyAccount['name'] ?></td>
+          <td style="color: <?php echo $bg_DateEnd ?>;"><?php echo date('d M Y', strtotime($Auction['date_start'])); ?></td>
+          <td style="color: <?php echo $bg_DateEnd ?>;"><?php echo date('d M Y', strtotime($Auction['date_end'])); ?></td>
+          <td style="color: <?php echo $bg_DateEnd ?>;"><?php echo number_format($Auction['bid_price'], 0, ',', ','); ?> <img src="<?php echo $template_path; ?>/images/account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins"></td>
+          <?php if(strtotime($End) > strtotime($Hoje)) { ?>
+              <td><a href="?subtopic=currentcharactertrades&details=<?php echo $Auction['id'] ?>"><div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton_green.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div><input name="auction_confirm" class="BigButtonText" type="button" value="Access"></div></div></a></td>
+          <?php } else { ?>
+              <td><a href="?subtopic=pastcharactertrades&details=<?php echo $Auction['id'] ?>"><div class="BigButton" style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton_red.gif)"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_red_over.gif); visibility: hidden;"></div><input name="auction_confirm" class="BigButtonText" type="button" value="Finished"></div></div></a></td>
+          <?php } ?>
+      </tr>
+      <?php 
+  }
 }
 ?>
                         </tbody>
