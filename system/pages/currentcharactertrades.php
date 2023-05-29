@@ -219,7 +219,7 @@ if(strtotime($End) > strtotime($Hoje)){
                                       <div class="ShortAuctionDataValue"><b><?php echo number_format($Auction['price'], 0, ',', ',')  ?></b> <img src="<?php echo $template_path; ?>/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins"></div>
                                     </div>
 <?php
-	if($account_logged == $getAuctionBid['account_id']){
+	if ($account_logged == $getAuctionBid['account_id']) {
 ?>
 									<div class="ShortAuctionDataBidRow" style="background-color: #d4c0a1; padding: 5px; border: 1px solid #f0e8da; box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 50%);">
                                       <div class="ShortAuctionDataLabel">My Bid:</div>
