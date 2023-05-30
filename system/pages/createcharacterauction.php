@@ -91,7 +91,7 @@ form {
     padding-right: 10px;
     padding-bottom: 7px;
 }
-	
+
 .TableContentContainer {
     border: 1px solid #5f4d41;
     position: relative;
@@ -411,12 +411,8 @@ form {
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Create Auction';
 
-if($logged){
-$getAccountCoins = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $account_logged->getId() .'');
-$getAccountCoins = $getAccountCoins->fetch();
-?>
-<div class="CharacterTradeTibiaCoinBalance"><?php echo $getAccountCoins['coins'] ?><img src="<?php echo $template_path; ?>/images//account/icon-tibiacoin.png" class="VSCCoinImages" title="Tibia Coins"> <?php echo $getAccountCoins['coins'] ?><img src="<?php echo $template_path; ?>/images//account/icon-tibiacointrusted.png" class="VSCCoinImages" title="Transferable Tibia Coins"></div>
-<?php
+if ($logged) {
+    require SYSTEM . 'pages/char_bazaar/coins_balance.php';
 }
 
 $groups = new OTS_Groups_List();
@@ -436,15 +432,11 @@ if(!$logged){
 }
 
 /* CHAR BAZAAR CONFIG */
-
-$bazaar_tax = 20;
-$bazaar_enter = 50;
-$bazaar_level = 8;
-$bazaar_prem = true;
-
+$charbazaar_create = $config['bazaar_create'];
+$charbazaar_tax = $config['bazaar_tax'];
+$charbazaar_bid = $config['bazaar_bid'];
+$charbazaar_newacc = $config['bazaar_accountid'];
 /* CHAR BAZAAR CONFIG END */
-
-
 
 $getAuctionStep = $_GET['step'];
 
@@ -584,7 +576,7 @@ $getCharacter = $getCharacter->fetch();
 /* PLAYERS END */
 
 
-/* VERIFICA CONTA */	
+/* VERIFICA CONTA */
 $idLogged = $account_logged->getCustomField('id');
 
 if($idLogged == $getCharacter['account_id']){
@@ -593,7 +585,7 @@ if($idLogged == $getCharacter['account_id']){
     header('Location: index.php?news');
 }
 /* VERIFICA CONTA */
-	
+
 
 /* GET LEVEL PLAYERS */
 if($getCharacter['level'] >= 8){
@@ -651,7 +643,7 @@ if($getHouse == 0) {
 	$verif_house = '<img src="' . $template_path . '/images/premiumfeatures/icon_no.png">';
 }
 /* GET HOUSE END */
-	
+
 
 /* GET GUILD */
 $getGuildOwner = $db->query('SELECT `ownerid`' . 'FROM `guilds`' . 'WHERE `ownerid` = ' . $getCharacter['id'] .'');
@@ -861,7 +853,7 @@ if($getOnline == 0){
 if($getAuctionStep == 3){
 	if(isset($_POST['auction_submit']) and isset($_POST['auction_character'])){
 	$selectCharacter = $_POST['auction_character'];
-		
+
 /* PLAYERS */
 $getCharacter = $db->query('SELECT `id`, `account_id`, `name`, `level`, `vocation`, `sex`, `health`, `healthmax`, `mana`, `manamax`, `maglevel`, `manaspent`, `balance`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `skill_shielding`, `skill_shielding_tries`, `cap`, `experience`, `created`, `soul`' . 'FROM `players`' . 'WHERE `id` = ' . $db->quote($selectCharacter) .'');
 $getCharacter = $getCharacter->fetch();
@@ -916,12 +908,6 @@ if($getAccountLogged['premdays'] > 0){
 }else{
 	$character_prem = '<b>Free Account</b>';
 }
-
-
-$charbazaar_create = $config['bazaar_create'];
-$charbazaar_tax = $config['bazaar_tax'];
-$charbazaar_bid = $config['bazaar_bid'];
-$charbazaar_newacc = $config['bazaar_accountid'];
 
 ?>
 <div id="ProgressBar">
@@ -1020,7 +1006,7 @@ $charbazaar_newacc = $config['bazaar_accountid'];
                       </table>
                     </div></td>
                 </tr>
-				
+
 <tr>
   <td><table style="width: 100%;" cellspacing="0" cellpadding="0">
       <tbody>
@@ -1145,7 +1131,7 @@ $charbazaar_newacc = $config['bazaar_accountid'];
         <tbody>
           <tr class="Even">
             <td><span class="LabelV">Creation Date:</span>
-              <div style="float:right; text-align: right;"><?php echo date('M d Y, G:i:s', $getCharacter['created']) ?></div></td>
+              <div style="float:right; text-align: right;"><?php echo date('M d Y, H:i:s', $getCharacter['created']) ?></div></td>
           </tr>
           <tr class="Odd">
             <td><span class="LabelV">Experience:</span>
@@ -1310,14 +1296,6 @@ if(isset($_POST['auction_price'])){
 	$auction_finalprice = $_POST['auction_price'] - $auction_pricetaxtwo;
 	$auction_finalprice = number_format($auction_finalprice, 0, ',', ',');
 }
-
-
-$charbazaar_create = $config['bazaar_create'];
-$charbazaar_tax = $config['bazaar_tax'];
-$charbazaar_bid = $config['bazaar_bid'];
-$charbazaar_newacc = $config['bazaar_accountid'];
-
-
 ?>
 
 
@@ -1427,7 +1405,7 @@ $charbazaar_newacc = $config['bazaar_accountid'];
               </tbody>
             </table>
           </div></td>
-		  
+
 		  <td><div class="InnerTableContainer">
             <table style="width:100%;">
               <tbody>
@@ -1488,7 +1466,7 @@ $charbazaar_newacc = $config['bazaar_accountid'];
                       </table>
                     </div></td>
                 </tr>
-				
+
 <tr>
   <td><table style="width: 100%;" cellspacing="0" cellpadding="0">
       <tbody>
@@ -1611,7 +1589,7 @@ $charbazaar_newacc = $config['bazaar_accountid'];
         <tbody>
           <tr class="Even">
             <td><span class="LabelV">Creation Date:</span>
-              <div style="float:right; text-align: right;"><?php echo date('M d Y, G:i:s', $getCharacter['created']) ?></div></td>
+              <div style="float:right; text-align: right;"><?php echo date('M d Y, H:i:s', $getCharacter['created']) ?></div></td>
           </tr>
           <tr class="Odd">
             <td><span class="LabelV">Experience:</span>
@@ -1652,16 +1630,16 @@ $charbazaar_newacc = $config['bazaar_accountid'];
 
     </tr>
   </tbody>
-</table>	
+</table>
 </form>
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
 <?php
 	}else{
 		header('Location: ' . BASE_URL . '?subtopic=createcharacterauction&step=1');

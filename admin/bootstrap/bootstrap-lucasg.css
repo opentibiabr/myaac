@@ -720,10 +720,13 @@
   width: 80px !important;
   white-space: nowrap;
 }
+
 .CharacterTradeTibiaCoinBalance {
+    display: flex;
     position: absolute;
-    top: 8px;
+    top: 13px;
     color: #fff;
     right: 5px;
     font-size: 7pt;
+    margin-right: 5px;
 }
