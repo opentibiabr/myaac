@@ -465,7 +465,10 @@ if($account_logged == $getAuctionBid['account_id']){
 }else{
 	$My_Bid = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
 }
-if(empty($getAuctionBid['account_id'])){
+if ($getAuctionBid && is_array($getAuctionBid)) {
+  if ($logged && isset($getAuctionBid) && is_array($getAuctionBid) && $account_logged == $getAuctionBid['account_id']) {
+}else{
+}  
 	$My_Bid = '<img src="'.$template_path.'/images/premiumfeatures/icon_no.png">';
 }
 /* GET MY BID END */
