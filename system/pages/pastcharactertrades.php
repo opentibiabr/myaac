@@ -16,7 +16,7 @@ $getAccountCoins = $getAccountCoins->fetch();
 }
 $getPageAuctions = isset($_GET['subtopic']) ? $_GET['subtopic'] : null;
 $getPageDetails = isset($_GET['details']) ? $_GET['details'] : null;
-$getPageAction = isset($_GET['action']) ? $_GET['action'] : null;
+$var= $_GET['var'] ?? null;
 if(empty($getPageDetails) and empty($getPageAction)){
 ?>
 <?php
