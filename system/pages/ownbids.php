@@ -97,8 +97,8 @@ if ($logged) {
                                                 $getCharacterbyAccount = $db->query("SELECT `id`, `name`, `level` FROM `players` WHERE `id` = {$getAuctionbyBid['player_id']}");
                                                 $getCharacterbyAccount = $getCharacterbyAccount->fetch();
 
-                                                $Hoje = date('Y-m-d');
-                                                $End = date('Y-m-d', strtotime($getAuctionbyBid['date_end']));
+                                                $Hoje = date('Y-m-d H:i:s');
+                                                $End = date('Y-m-d H:i:s', strtotime($getAuctionbyBid['date_end']));
                                                 $bg_DateEnd = (strtotime($End) > strtotime($Hoje)) ? '' : 'red';
                                                 ?>
                                                 <tr bgcolor="<?= getStyle($i_bg); ?>">

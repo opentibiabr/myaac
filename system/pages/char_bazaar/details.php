@@ -1,10 +1,14 @@
 <?php
 
+global $config, $db, $template_path;
 $auction_iddetails = $getPageDetails;
 
 /* GET INFO AUCTION */
 $getAuction = $db->query("SELECT `id`, `account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price`, `status` FROM `myaac_charbazaar` WHERE `id` = {$db->quote($auction_iddetails)}");
-$getAuction = $getAuction->fetch();
+if (!$getAuction = $getAuction->fetch()) {
+    echo "We can not find auction with this id!";
+    return;
+}
 /* GET INFO AUCTION END */
 
 /* GET INFO CHARACTER */
@@ -34,8 +38,8 @@ $getCharm = $getCharm->fetch();
 $Charm_Points = $getCharm['charm_points'] ?? '0';
 $Charm_UsedPoints = $getCharm['UsedRunesBit'] ?? '0';
 $Charm_Expansion = isset($getCharm['charm_expansion']) && $getCharm['charm_expansion'] == 1
-    ? '<img src="' . $template_path . '/images/premiumfeatures/icon_yes.png"> yes'
-    : '<img src="' . $template_path . '/images/premiumfeatures/icon_no.png"> no';
+    ? "<img src='{$template_path}/images/premiumfeatures/icon_yes.png'> yes"
+    : "<img src='{$template_path}/images/premiumfeatures/icon_no.png'> no";
 /* GET CHARM CHARACTER END */
 
 /* OUTFIT CHARACTER */
@@ -45,11 +49,11 @@ $outfit_url = "{$config['outfit_images_url']}?id={$character['looktype']}" . (!e
 /* EQUIPAMENT CHARACTER */
 global $db;
 $eq_sql = $db->query("SELECT `pid`, `itemtype` FROM player_items WHERE player_id = {$getAuction['player_id']} AND (`pid` >= 1 and `pid` <= 10)");
-$equipment = array();
+$equipment = [];
 foreach ($eq_sql as $eq)
     $equipment[$eq['pid']] = $eq['itemtype'];
 
-$empty_slots = array("", "no_helmet", "no_necklace", "no_backpack", "no_armor", "no_handleft", "no_handright", "no_legs", "no_boots", "no_ring", "no_ammo");
+$empty_slots = ["", "no_helmet", "no_necklace", "no_backpack", "no_armor", "no_handleft", "no_handright", "no_legs", "no_boots", "no_ring", "no_ammo"];
 for ($i = 0; $i <= 10; $i++) {
     if (!isset($equipment[$i]) || $equipment[$i] == 0)
         $equipment[$i] = $empty_slots[$i];
@@ -120,7 +124,7 @@ foreach ($quests as $quest_name => $quest_storage) {
     $i++;
 }
 $storage_sql = $db->query("SELECT `key`, `value` FROM `player_storage` WHERE `player_id` = {$getAuction['player_id']} AND `key` IN ({$sql_query_in})");
-$player_storage = array();
+$player_storage = [];
 foreach ($storage_sql as $storage)
     $player_storage[$storage['key']] = $storage['value'];
 
@@ -141,15 +145,16 @@ if ($logged && isset($getAuctionBid['account_id']) && $account_logged == $getAuc
 /* GET MY BID END */
 
 /* VERIFY DATE */
-$Hoje = date('Y-m-d');
-$End = date('Y-m-d', strtotime($getAuction['date_end']));
+$Hoje = date('Y-m-d H:i:s');
+$End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
 /* VERIFY DATE END */
 ?>
 
 <div class="TableContainer">
     <div class="CaptionContainer">
-        <div class="CaptionInnerContainer"><span class="CaptionEdgeLeftTop"
-                                                 style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+        <div class="CaptionInnerContainer">
+            <span class="CaptionEdgeLeftTop"
+                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
             <span class="CaptionEdgeRightTop"
                   style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
             <span class="CaptionBorderTop"
@@ -195,59 +200,41 @@ $End = date('Y-m-d', strtotime($getAuction['date_end']));
                                                         <div class="AuctionBodyBlock AuctionDisplay AuctionOutfit"
                                                              style="font-size: 10px; text-align: center;">
                                                             Current outfit:
-                                                            <img class="AuctionOutfitImage"
-                                                                 src="<?= $outfit_url ?>">
+                                                            <img class="AuctionOutfitImage" src="<?= $outfit_url ?>">
                                                         </div>
                                                         <div
                                                             class="AuctionBodyBlock AuctionDisplay AuctionItemsViewBox">
-                                                            <div class="CVIcon CVIconObject"
-                                                                 title="amulet"><?= $equipment[2]; ?></div>
-                                                            <div class="CVIcon CVIconObject"
-                                                                 title="helmet"><?= $equipment[1]; ?></div>
-                                                            <div class="CVIcon CVIconObject"
-                                                                 title="backpack"><?= $equipment[3]; ?></div>
-                                                            <div class="CVIcon CVIconObject"
-                                                                 title="hand"><?= $equipment[6]; ?></div>
-                                                            <div class="CVIcon CVIconObject"
-                                                                 title="armor"><?= $equipment[4]; ?></div>
-                                                            <div class="CVIcon CVIconObject"
-                                                                 title="hand"><?= $equipment[5]; ?></div>
-                                                            <div class="CVIcon CVIconObject"
-                                                                 title="ring"><?= $equipment[9]; ?></div>
-                                                            <div class="CVIcon CVIconObject"
-                                                                 title="legs"><?= $equipment[7]; ?></div>
-                                                            <div class="CVIcon CVIconObject"
-                                                                 title="extra"><?= $equipment[10]; ?></div>
-                                                            <div class="CVIcon CVIconObject"
-                                                                 style="font-size: 10px; text-align: center;"
-                                                                 title="soul">
-                                                                Soul<br><?= $character['soul'] ?></div>
+                                                            <?php foreach ([2, 1, 3, 6, 4, 5, 9, 7, 10] as $i) { ?>
+                                                                <div class="CVIcon CVIconObject">
+                                                                    <?= $equipment[$i]; ?></div>
+                                                            <?php } ?>
+                                                            <div class="CVIcon CVIconObject NoEquipment" title="soul">
+                                                                <p>Soul<br><?= $character['soul'] ?></p></div>
                                                             <div class="CVIcon CVIconObject"
                                                                  title="boots"><?= $equipment[8]; ?></div>
-                                                            <div class="CVIcon CVIconObject"
-                                                                 style="font-size: 10px; text-align: center;"
-                                                                 title="cap">
-                                                                Cap<br><?= $character['cap'] ?></div>
+                                                            <div class="CVIcon CVIconObject NoEquipment" title="cap">
+                                                                <p>Cap<br><?= $character['cap'] ?></p></div>
                                                         </div>
-                                                        <?php if ($subtopic == 'currentcharactertrades') { ?>
-                                                            <div class="AuctionBodyBlock ShortAuctionData">
-                                                                <div class="ShortAuctionDataLabel">Auction Start:</div>
-                                                                <div
-                                                                    class="ShortAuctionDataValue"><?= date('M d Y, H:i:s', strtotime($getAuction['date_start'])) ?></div>
-                                                                <div class="ShortAuctionDataLabel">Auction End:</div>
-                                                                <?php
+                                                        <div class="AuctionBodyBlock ShortAuctionData">
+                                                            <?php $dateFormat = $subtopic == 'currentcharactertrades' ? 'M d Y, H:i:s' : 'd M Y' ?>
+                                                            <div class="ShortAuctionDataLabel">Auction Start:</div>
+                                                            <div
+                                                                class="ShortAuctionDataValue"><?= date($dateFormat, strtotime($getAuction['date_start'])) ?></div>
+                                                            <div class="ShortAuctionDataLabel">Auction End:</div>
+                                                            <?php
+                                                            if ($subtopic == 'currentcharactertrades') {
                                                                 $dateTimer = date('Y-m-d', strtotime($getAuction['date_end']));
                                                                 if (date('Y-m-d', strtotime($dateTimer . ' - 1 days')) == date('Y-m-d')) { ?>
                                                                     <script>
-                                                                        var countDownDate = new Date("<?= date('M d, Y, H:i:s', strtotime($getAuction['date_end'])) ?>").getTime();
-                                                                        var x = setInterval(function () {
-                                                                            var now = new Date().getTime();
-                                                                            var distance = countDownDate - now;
+                                                                        const countDownDate = new Date("<?= date($dateFormat, strtotime($getAuction['date_end'])) ?>").getTime();
+                                                                        const x = setInterval(function () {
+                                                                            const now = new Date().getTime();
+                                                                            const distance = countDownDate - now;
 
-                                                                            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                                                                            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                                                                            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                                                                            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                                                                            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                                                            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                                                            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                                                            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
                                                                             document.getElementById("timeAuction").innerHTML = "in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
                                                                             document.getElementById("timeAuction").style.color = 'red';
@@ -259,40 +246,95 @@ $End = date('Y-m-d', strtotime($getAuction['date_end']));
                                                                         }, 1000);
                                                                     </script>
                                                                 <?php } ?>
-                                                                <div id="timeAuction"
-                                                                     class="ShortAuctionDataValue"><?= date('M d Y, H:i:s', strtotime($getAuction['date_end'])) ?></div>
+                                                                <div id="timeAuction" class="ShortAuctionDataValue">
+                                                                    <?= date($dateFormat, strtotime($getAuction['date_end'])) ?>
+                                                                </div>
                                                                 <div class="ShortAuctionDataBidRow">
                                                                     <div class="ShortAuctionDataLabel">Current Bid:
                                                                     </div>
                                                                     <div class="ShortAuctionDataValue">
                                                                         <b><?= number_format($getAuction['price'], 0, ',', ',') ?></b>
                                                                         <img
-                                                                            src="<?= $template_path; ?>/images//account/icon-tibiacointrusted.png"
+                                                                            src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png"
+                                                                            class="VSCCoinImages"
+                                                                            title="Transferable Tibia Coins">
+                                                                    </div>
+                                                                </div>
+                                                            <?php } else { ?>
+                                                                <div class="ShortAuctionDataValue">
+                                                                    <?= date($dateFormat, strtotime($getAuction['date_end'])) ?></div>
+                                                                <div class="ShortAuctionDataBidRow">
+                                                                    <div class="ShortAuctionDataLabel">Winning Bid:
+                                                                    </div>
+                                                                    <div class="ShortAuctionDataValue">
+                                                                        <b><?= number_format($getAuction['bid_price'], 0, ',', ',') ?></b>
+                                                                        <img
+                                                                            src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png"
                                                                             class="VSCCoinImages"
                                                                             title="Transferable Tibia Coins"></div>
                                                                 </div>
-                                                                <?php if ($logged && isset($getAuctionBid['account_id']) && $account_logged == $getAuctionBid['account_id']) { ?>
-                                                                    <div class="ShortAuctionDataBidRow"
-                                                                         style="background-color: #d4c0a1; padding: 5px; border: 1px solid #f0e8da; box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 50%);">
-                                                                        <div class="ShortAuctionDataLabel">My Bid:</div>
-                                                                        <div
-                                                                            class="ShortAuctionDataValue"><?= $My_Bid ?></div>
-                                                                    </div>
-                                                                <?php } ?>
-                                                            </div>
-                                                            <?php if ($logged && $getAuction['status'] == 0) { ?>
-                                                                <?php if (strtotime($End) > strtotime($Hoje) && $account_logged != $getAuction['account_old']) { ?>
-                                                                    <div class="AuctionBodyBlock CurrentBid">
-                                                                        <div class="Container">
-                                                                            <div class="MyMaxBidLabel">My Bid Limit
+                                                            <?php } ?>
+                                                            <?php if ($logged && isset($getAuctionBid['account_id']) && $account_logged == $getAuctionBid['account_id']) { ?>
+                                                                <div class="ShortAuctionDataBidRow"
+                                                                     style="background-color: #d4c0a1; padding: 5px; border: 1px solid #f0e8da; box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 50%);">
+                                                                    <div class="ShortAuctionDataLabel">My Bid:</div>
+                                                                    <div
+                                                                        class="ShortAuctionDataValue"><?= $My_Bid ?></div>
+                                                                </div>
+                                                            <?php } ?>
+                                                        </div>
+                                                        <?php if ($logged && $getAuction['status'] == 0) { ?>
+                                                            <?php if (strtotime($End) > strtotime($Hoje) && $account_logged != $getAuction['account_old']) { ?>
+                                                                <div class="AuctionBodyBlock CurrentBid">
+                                                                    <div class="Container">
+                                                                        <div class="MyMaxBidLabel">My Bid Limit
+                                                                        </div>
+                                                                        <form
+                                                                            action="?subtopic=currentcharactertrades&action=bid"
+                                                                            method="POST">
+                                                                            <input type="hidden" name="auction_iden"
+                                                                                   value="<?= $getAuction['id'] ?>">
+                                                                            <input class="MyMaxBidInput" type="text"
+                                                                                   name="maxbid">
+                                                                            <div class="BigButton"
+                                                                                 style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_green.gif)">
+                                                                                <div
+                                                                                    onmouseover="MouseOverBigButton(this);"
+                                                                                    onmouseout="MouseOutBigButton(this);">
+                                                                                    <div class="BigButtonOver"
+                                                                                         style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
+                                                                                    <input name="auction_confirm"
+                                                                                           class="BigButtonText"
+                                                                                           type="submit"
+                                                                                           value="Bid On Auction">
+                                                                                </div>
                                                                             </div>
-                                                                            <form
-                                                                                action="?subtopic=currentcharactertrades&action=bid"
-                                                                                method="POST">
-                                                                                <input type="hidden" name="auction_iden"
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            <?php } ?>
+                                                            <?php if (strtotime($End) > strtotime($Hoje) && $account_logged == $getAuction['account_old']) { ?>
+                                                                <div class="AuctionBodyBlock CurrentBid">
+                                                                    <div class="Container">
+                                                                        <div class="MyMaxBidLabel"
+                                                                             style="font-weight: normal;">My auction.
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <?php } ?>
+                                                            <?php if (strtotime($End) < strtotime($Hoje) && (
+                                                                    ($account_logged == $getAuction['account_old'] && $account_logged != $getAuction['bid_account']) ||
+                                                                    ($account_logged != $getAuction['account_old'] && $account_logged == $getAuction['bid_account'])
+                                                                )) { ?>
+                                                                <div class="AuctionBodyBlock CurrentBid">
+                                                                    <div class="Container">
+                                                                        <div class="MyMaxBidLabel"
+                                                                             style="font-weight: bold; color: green;">
+                                                                            <form method="post"
+                                                                                  action="?subtopic=currentcharactertrades&action=finish">
+                                                                                <input type="hidden"
+                                                                                       name="auction_iden"
                                                                                        value="<?= $getAuction['id'] ?>">
-                                                                                <input class="MyMaxBidInput" type="text"
-                                                                                       name="maxbid">
                                                                                 <div class="BigButton"
                                                                                      style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_green.gif)">
                                                                                     <div
@@ -300,147 +342,44 @@ $End = date('Y-m-d', strtotime($getAuction['date_end']));
                                                                                         onmouseout="MouseOutBigButton(this);">
                                                                                         <div class="BigButtonOver"
                                                                                              style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
-                                                                                        <input name="auction_confirm"
+                                                                                        <input name="auction_finish"
                                                                                                class="BigButtonText"
                                                                                                type="submit"
-                                                                                               value="Bid On Auction">
+                                                                                               value="Finish Auction">
                                                                                     </div>
                                                                                 </div>
                                                                             </form>
                                                                         </div>
                                                                     </div>
-                                                                <?php } ?>
-                                                                <?php if (strtotime($End) > strtotime($Hoje) && $account_logged == $getAuction['account_old']) { ?>
-                                                                    <div class="AuctionBodyBlock CurrentBid">
-                                                                        <div class="Container">
-                                                                            <div class="MyMaxBidLabel"
-                                                                                 style="font-weight: normal;">My
-                                                                                auction.
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                <?php } ?>
-                                                                <?php if (strtotime($End) < strtotime($Hoje) && $account_logged == $getAuction['account_old'] && $account_logged != $getAuction['bid_account']) { ?>
-                                                                    <div class="AuctionBodyBlock CurrentBid">
-                                                                        <div class="Container">
-                                                                            <div class="MyMaxBidLabel"
-                                                                                 style="font-weight: bold; color: green;">
-                                                                                <form method="post"
-                                                                                      action="?subtopic=currentcharactertrades&action=finish">
-                                                                                    <input type="hidden"
-                                                                                           name="auction_iden"
-                                                                                           value="<?= $getAuction['id'] ?>">
-                                                                                    <div class="BigButton"
-                                                                                         style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_green.gif)">
-                                                                                        <div
-                                                                                            onmouseover="MouseOverBigButton(this);"
-                                                                                            onmouseout="MouseOutBigButton(this);">
-                                                                                            <div class="BigButtonOver"
-                                                                                                 style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
-                                                                                            <input name="auction_finish"
-                                                                                                   class="BigButtonText"
-                                                                                                   type="button"
-                                                                                                   value="Finish Auction">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                <?php } ?>
-                                                                <?php if (strtotime($End) < strtotime($Hoje) && $account_logged == $getAuction['bid_account'] && $account_logged != $getAuction['account_old']) { ?>
-                                                                    <div class="AuctionBodyBlock CurrentBid">
-                                                                        <div class="Container">
-                                                                            <div class="MyMaxBidLabel"
-                                                                                 style="font-weight: bold; color: green;">
-                                                                                <form method="post"
-                                                                                      action="?subtopic=currentcharactertrades&action=finish">
-                                                                                    <input type="hidden"
-                                                                                           name="auction_iden"
-                                                                                           value="<?= $getAuction['id'] ?>">
-                                                                                    <div class="BigButton"
-                                                                                         style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_green.gif)">
-                                                                                        <div
-                                                                                            onmouseover="MouseOverBigButton(this);"
-                                                                                            onmouseout="MouseOutBigButton(this);">
-                                                                                            <div class="BigButtonOver"
-                                                                                                 style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
-                                                                                            <input name="auction_finish"
-                                                                                                   class="BigButtonText"
-                                                                                                   type="button"
-                                                                                                   value="Finish Auction">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </form>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                <?php } ?>
-                                                                <?php if (strtotime($End) < strtotime($Hoje) && $account_logged != $getAuction['account_old'] && $account_logged != $getAuction['bid_account']) { ?>
-                                                                    <div class="AuctionBodyBlock CurrentBid">
-                                                                        <div class="Container">
-                                                                            <div class="MyMaxBidLabel"
-                                                                                 style="font-weight: bold; color: green;">
-                                                                                finished
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                <?php } ?>
-                                                            <?php } ?>
-                                                            <?php if (!$logged) { ?>
-                                                                <?php if ($getAuction['status'] == 0) { ?>
-                                                                    <div class="AuctionBodyBlock CurrentBid">
-                                                                        <div class="Container">
-                                                                            <div class="MyMaxBidLabel"
-                                                                                 style="font-weight: normal;">Please
-                                                                                first login.
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                <?php } ?>
-                                                                <?php if ($getAuction['status'] == 1) { ?>
-                                                                    <div class="AuctionBodyBlock CurrentBid">
-                                                                        <div class="Container">
-                                                                            <div class="MyMaxBidLabel"
-                                                                                 style="font-weight: normal;">finished
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                <?php } ?>
-                                                            <?php } ?>
-                                                        <?php } else { ?>
-                                                            <div class="AuctionBodyBlock ShortAuctionData">
-                                                                <div class="ShortAuctionDataLabel">Auction Start:</div>
-                                                                <div
-                                                                    class="ShortAuctionDataValue"><?= date('d M Y', strtotime($getAuction['date_start'])) ?></div>
-                                                                <div class="ShortAuctionDataLabel">Auction End:</div>
-                                                                <div
-                                                                    class="ShortAuctionDataValue"><?= date('d M Y', strtotime($getAuction['date_end'])) ?></div>
-                                                                <div class="ShortAuctionDataBidRow">
-                                                                    <div class="ShortAuctionDataLabel">Winning Bid:
-                                                                    </div>
-                                                                    <div class="ShortAuctionDataValue">
-                                                                        <b><?= number_format($getAuction['bid_price'], 0, ',', ',') ?></b>
-                                                                        <img
-                                                                            src="<?= $template_path; ?>/images//account/icon-tibiacointrusted.png"
-                                                                            class="VSCCoinImages"
-                                                                            title="Transferable Tibia Coins"></div>
                                                                 </div>
-                                                                <?php if (isset($getAuctionBid['account_id']) && $account_logged == $getAuctionBid['account_id']) { ?>
-                                                                    <div class="ShortAuctionDataBidRow"
-                                                                         style="background-color: #d4c0a1; padding: 5px; border: 1px solid #f0e8da;">
-                                                                        <div class="ShortAuctionDataLabel">My Bid:</div>
-                                                                        <div
-                                                                            class="ShortAuctionDataValue"><?= $My_Bid ?></div>
-                                                                    </div>
-                                                                <?php } ?>
-                                                            </div>
-                                                            <?php if (strtotime($Hoje) > strtotime($End)) { ?>
+                                                            <?php } ?>
+                                                            <?php if (strtotime($End) < strtotime($Hoje) && $account_logged != $getAuction['account_old'] && $account_logged != $getAuction['bid_account']) { ?>
                                                                 <div class="AuctionBodyBlock CurrentBid">
                                                                     <div class="Container">
                                                                         <div class="MyMaxBidLabel"
                                                                              style="font-weight: bold; color: green;">
                                                                             finished
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <?php } ?>
+                                                        <?php } ?>
+                                                        <?php if (!$logged) { ?>
+                                                            <?php if ($getAuction['status'] == 0) { ?>
+                                                                <div class="AuctionBodyBlock CurrentBid">
+                                                                    <div class="Container">
+                                                                        <div class="MyMaxBidLabel"
+                                                                             style="font-weight: normal;">Please
+                                                                            first login.
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <?php } ?>
+                                                            <?php if ($getAuction['status'] == 1) { ?>
+                                                                <div class="AuctionBodyBlock CurrentBid">
+                                                                    <div class="Container">
+                                                                        <div class="MyMaxBidLabel"
+                                                                             style="font-weight: normal;">finished
                                                                         </div>
                                                                     </div>
                                                                 </div>

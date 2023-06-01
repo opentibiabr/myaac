@@ -5,7 +5,7 @@ if (!$auctions || !isset($auctions)) {
 
 foreach ($auctions as $auction) { /* LOOP AUCTIONS */
     /* GET INFO CHARACTER */
-    $getCharacter = $db->query("SELECT `name`, `vocation`, `level`, `sex`, `looktype`, `lookaddons`, `lookhead`, `lookbody`, `looklegs`, `lookfeet` FROM `players` WHERE `id` = {$auction['player_id']}");
+    $getCharacter = $db->query("SELECT `name`, `vocation`, `level`, `sex`, `looktype`, `lookaddons`, `lookhead`, `lookbody`, `looklegs`, `lookfeet`, `cap`, `soul` FROM `players` WHERE `id` = {$auction['player_id']}");
     $character = $getCharacter->fetch();
     /* GET INFO CHARACTER END */
 
@@ -102,8 +102,8 @@ foreach ($auctions as $auction) { /* LOOP AUCTIONS */
     /* RIBBON NEW AUCTION END */
 
     /* VERIFY DATE */
-    $Hoje = date('Y-m-d');
-    $End = date('Y-m-d', strtotime($auction['date_end']));
+    $Hoje = date('Y-m-d H:i:s');
+    $End = date('Y-m-d H:i:s', strtotime($auction['date_end']));
 
     ?>
     <tr>
@@ -136,6 +136,12 @@ foreach ($auctions as $auction) { /* LOOP AUCTIONS */
                                         <?php foreach ([2, 1, 3, 6, 4, 5, 9, 7, 10] as $i) { ?>
                                             <div class="CVIcon CVIconObject"><?= $equipment[$i]; ?></div>
                                         <?php } ?>
+                                        <div class="CVIcon CVIconObject NoEquipment" title="soul">
+                                            <p>Soul<br><?= $character['soul'] ?></p></div>
+                                        <div class="CVIcon CVIconObject"
+                                             title="boots"><?= $equipment[8]; ?></div>
+                                        <div class="CVIcon CVIconObject NoEquipment" title="cap">
+                                            <p>Cap<br><?= $character['cap'] ?></p></div>
                                     </div>
                                     <div class="AuctionBodyBlock ShortAuctionData">
                                         <?php $dateFormat = $subtopic == 'currentcharactertrades' ? 'M d Y, H:i:s' : 'd M Y' ?>
@@ -148,28 +154,28 @@ foreach ($auctions as $auction) { /* LOOP AUCTIONS */
                                         <?php
                                         if ($subtopic == 'currentcharactertrades') {
                                             $dateTimer = date('Y-m-d', strtotime($auction['date_end']));
-                                        if (date('Y-m-d', strtotime($dateTimer . ' - 1 days')) == date('Y-m-d')) { ?>
-                                            <script>
-                                                var countDownDate<?= $auction['id'] ?> = new Date("<?= date('M d, Y, H:i:s', strtotime($auction['date_end'])) ?>").getTime();
-                                                var x = setInterval(function () {
-                                                    var now = new Date().getTime();
-                                                    var distance = countDownDate<?= $auction['id'] ?> - now;
+                                            if (date('Y-m-d', strtotime($dateTimer . ' - 1 days')) == date('Y-m-d')) { ?>
+                                                <script>
+                                                    const countDownDate<?= $auction['id'] ?> = new Date("<?= date($dateFormat, strtotime($auction['date_end'])) ?>").getTime();
+                                                    const x = setInterval(function () {
+                                                        const now = new Date().getTime();
+                                                        const distance = countDownDate<?= $auction['id'] ?> - now;
 
-                                                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                                                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                                                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                                                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                                                        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                                        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                                        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                                        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                                                    document.getElementById("timeAuction_<?= $auction['id'] ?>").innerHTML = "in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-                                                    document.getElementById("timeAuction_<?= $auction['id'] ?>").style.color = 'red';
+                                                        document.getElementById("timeAuction_<?= $auction['id'] ?>").innerHTML = "in " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+                                                        document.getElementById("timeAuction_<?= $auction['id'] ?>").style.color = 'red';
 
-                                                    if (distance < 0) {
-                                                        clearInterval(x);
-                                                        document.getElementById("timeAuction_<?= $auction['id'] ?>").innerHTML = "Finished";
-                                                    }
-                                                }, 1000);
-                                            </script>
-                                        <?php } ?>
+                                                        if (distance < 0) {
+                                                            clearInterval(x);
+                                                            document.getElementById("timeAuction_<?= $auction['id'] ?>").innerHTML = "Finished";
+                                                        }
+                                                    }, 1000);
+                                                </script>
+                                            <?php } ?>
                                             <div id="timeAuction_<?= $auction['id'] ?>"
                                                  class="ShortAuctionDataValue"><?= date($dateFormat, strtotime($auction['date_end'])) ?>
                                             </div>
