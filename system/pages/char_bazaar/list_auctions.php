@@ -154,7 +154,7 @@ foreach ($auctions as $auction) { /* LOOP AUCTIONS */
                                         <?php
                                         if ($subtopic == 'currentcharactertrades') {
                                             $dateTimer = date('Y-m-d', strtotime($auction['date_end']));
-                                            if (date('Y-m-d', strtotime($dateTimer . ' - 1 days')) == date('Y-m-d')) { ?>
+                                            if ($showCounter ?? (date('Y-m-d', strtotime($dateTimer . ' - 1 days')) == date('Y-m-d'))) { ?>
                                                 <script>
                                                     const countDownDate<?= $auction['id'] ?> = new Date("<?= date($dateFormat, strtotime($auction['date_end'])) ?>").getTime();
                                                     const x = setInterval(function () {
@@ -175,9 +175,9 @@ foreach ($auctions as $auction) { /* LOOP AUCTIONS */
                                                         }
                                                     }, 1000);
                                                 </script>
-                                            <?php } ?>
-                                            <div id="timeAuction_<?= $auction['id'] ?>"
-                                                 class="ShortAuctionDataValue"><?= date($dateFormat, strtotime($auction['date_end'])) ?>
+                                        <?php } ?>
+                                            <div id="timeAuction_<?= $auction['id'] ?>" class="ShortAuctionDataValue">
+                                                <?= date($dateFormat, strtotime($auction['date_end'])) ?>
                                             </div>
                                             <!--<div class="ShortAuctionDataBidRow">
                                                   <div class="ShortAuctionDataLabel">Minimum Bid:</div>

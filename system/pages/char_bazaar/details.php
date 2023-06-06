@@ -224,7 +224,7 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                             <?php
                                                             if ($subtopic == 'currentcharactertrades') {
                                                                 $dateTimer = date('Y-m-d', strtotime($getAuction['date_end']));
-                                                                if (date('Y-m-d', strtotime($dateTimer . ' - 1 days')) == date('Y-m-d')) { ?>
+                                                                if ($showCounter ?? (date('Y-m-d', strtotime($dateTimer . ' - 1 days')) == date('Y-m-d'))) { ?>
                                                                     <script>
                                                                         const countDownDate = new Date("<?= date($dateFormat, strtotime($getAuction['date_end'])) ?>").getTime();
                                                                         const x = setInterval(function () {
@@ -245,7 +245,7 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                                             }
                                                                         }, 1000);
                                                                     </script>
-                                                                <?php } ?>
+                                                            <?php } ?>
                                                                 <div id="timeAuction" class="ShortAuctionDataValue">
                                                                     <?= date($dateFormat, strtotime($getAuction['date_end'])) ?>
                                                                 </div>
