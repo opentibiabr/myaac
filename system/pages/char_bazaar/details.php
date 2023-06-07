@@ -614,11 +614,14 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                         <td class="LevelColumn"><?= $character['maglevel'] ?></td>
                                                         <td class="PercentageColumn">
                                                             <div id="SkillBar" class="PercentageBar"
-                                                                 style="width: 0%">
+                                                                 style="width: <?= OTS_Player::getMagicLevelPercent($character) ?>%">
                                                                 <div class="PercentageBarSpacer"></div>
                                                             </div>
-                                                            <div class="PercentageStringContainer"><span
-                                                                    class="PercentageString">0 %</span></div>
+                                                            <div class="PercentageStringContainer">
+                                                                <span class="PercentageString">
+                                                                    <?= OTS_Player::getMagicLevelPercent($character) ?> %
+                                                                </span>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                     <tr class="Even">

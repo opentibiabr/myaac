@@ -367,11 +367,13 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
                                                             <td class="LevelColumn"><?= $getCharacter['maglevel'] ?></td>
                                                             <td class="PercentageColumn">
                                                                 <div id="SkillBar" class="PercentageBar"
-                                                                     style="width: <?= $getCharacter['maglevel'] ?>%">
+                                                                     style="width: <?= OTS_Player::getMagicLevelPercent($getCharacter) ?>%">
                                                                     <div class="PercentageBarSpacer"></div>
                                                                 </div>
-                                                                <div class="PercentageStringContainer"><span
-                                                                        class="PercentageString"><?= $getCharacter['manaspent'] ?> %</span>
+                                                                <div class="PercentageStringContainer">
+                                                                    <span class="PercentageString">
+                                                                        <?= OTS_Player::getMagicLevelPercent($getCharacter) ?> %
+                                                                    </span>
                                                                 </div>
                                                             </td>
                                                         </tr>

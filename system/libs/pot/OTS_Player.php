@@ -3250,13 +3250,29 @@ class OTS_Player extends OTS_Row_DAO
         $this->db->query('DELETE FROM ' . $this->db->tableName('player_spells') . ' WHERE ' . $this->db->fieldName('player_id') . ' = ' . $this->data['id'] . ' AND ' . $this->db->fieldName('name') . ' = ' . $this->db->quote( $spell->getName() ) );
     }
 
-	public static function getPercentLevel($count, $nextLevelCount)
-	{
-		if($nextLevelCount > 0)
-			return min(100, max(0, $count * 100 / $nextLevelCount));
+    /**
+     * @param float $count
+     * @param $nextLevelCount
+     * @return float|int
+     */
+	public static function getPercentLevel(float $count, $nextLevelCount)
+    {
+        return ($nextLevelCount > 0)
+            ? round((($count * 100.0) / $nextLevelCount) * 100.0) / 100.0
+            : 0;
+    }
 
-		return 0;
-	}
+    /**
+     * @param array $character
+     * @return int|mixed
+     */
+    public static function getMagicLevelPercent(array $character)
+    {
+        return self::getPercentLevel(
+            $character['manaspent'],
+            OTS_Toolbox::getManaReqForMagicLevel($character['vocation'], $character['maglevel'])
+        );
+    }
 
 /**
  * Magic PHP5 method.

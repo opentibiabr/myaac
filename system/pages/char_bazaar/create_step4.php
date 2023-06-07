@@ -479,11 +479,13 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
                                                             <td class="LevelColumn"><?= $getCharacter['maglevel'] ?></td>
                                                             <td class="PercentageColumn">
                                                                 <div id="SkillBar" class="PercentageBar"
-                                                                     style="width: <?= $getCharacter['maglevel'] ?>%">
+                                                                     style="width: <?= OTS_Player::getMagicLevelPercent($getCharacter) ?>%">
                                                                     <div class="PercentageBarSpacer"></div>
                                                                 </div>
-                                                                <div class="PercentageStringContainer"><span
-                                                                        class="PercentageString"><?= $getCharacter['manaspent'] ?> %</span>
+                                                                <div class="PercentageStringContainer">
+                                                                    <span class="PercentageString">
+                                                                        <?= OTS_Player::getMagicLevelPercent($getCharacter) ?> %
+                                                                    </span>
                                                                 </div>
                                                             </td>
                                                         </tr>
