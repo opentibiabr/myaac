@@ -709,6 +709,7 @@ class OTS_Guild extends OTS_Row_DAO implements Countable
  * @throws PDOException On PDO operation error.
  * @return Iterator List of ranks.
  */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return $this->getGuildRanksList();

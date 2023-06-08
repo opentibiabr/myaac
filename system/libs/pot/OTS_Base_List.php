@@ -190,6 +190,7 @@ abstract class OTS_Base_List implements IOTS_DAO, Countable
  * @version 0.1.3
  * @return OTS_Base_DAO Current row.
  */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         $id = current($this->rows);
@@ -221,6 +222,7 @@ abstract class OTS_Base_List implements IOTS_DAO, Countable
  *
  * @return mixed Array key.
  */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return key($this->rows);

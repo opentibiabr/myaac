@@ -196,6 +196,7 @@ class OTS_Groups_List implements Countable
  * @since 0.1.5
  * @return AppendIterator Iterator for all groups.
  */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         $iterator = new AppendIterator();
