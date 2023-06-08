@@ -33,26 +33,23 @@ if($current_session !== false)
 	}
 }
 
-if(ACTION === 'logout' && !isset($_REQUEST['account_login'])) {
-	if(isset($account_logged) && $account_logged->isLoaded()) {
-		if($hooks->trigger(HOOK_LOGOUT, array('account' => $account_logged, 'password' => getSession('password')))) {
-			unsetSession('account');
-			unsetSession('password');
-			unsetSession('remember_me');
+if (ACTION === 'logout' && !isset($_REQUEST['account_login'])) {
+    if (isset($account_logged) && $account_logged->isLoaded()) {
+        if ($hooks->trigger(HOOK_LOGOUT, ['account_id' => $account_logged->getId()])) {
+            unsetSession('account');
+            unsetSession('password');
+            unsetSession('remember_me');
 
-			$logged = false;
-			unset($account_logged);
+            $logged = false;
+            unset($account_logged);
 
-			if(isset($_REQUEST['redirect']))
-			{
-				header('Location: ' . urldecode($_REQUEST['redirect']));
-				exit;
-			}
-		}
+            if (isset($_REQUEST['redirect'])) {
+                header('Location: ' . urldecode($_REQUEST['redirect']));
+                exit;
+            }
+        }
 	}
-}
-else
-{
+} else {
 	// new login with data from form
 	if(!$logged && isset($_POST['account_login'], $_POST['password_login']))
 	{
@@ -127,7 +124,7 @@ else
 			else
 			{
 				$hooks->trigger(HOOK_LOGIN_ATTEMPT, array('account' => $login_account, 'password' => $login_password, 'remember_me' => $remember_me));
-				
+
 				$errorMessage = getAccountLoginByLabel() . ' or password is not correct.';
 
 				// temporary solution for blocking failed login attempts
