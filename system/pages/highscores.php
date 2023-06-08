@@ -18,8 +18,8 @@ $list = $_GET['list'] ?? '';
 $_page = $_GET['page'] ?? 0;
 $vocation = $_GET['vocation'] ?? null;
 
-if (!is_numeric($_page) || $_page < 1 || $_page > PHP_INT_MAX) {
-    $_page = 1;
+if (!is_numeric($_page) || $_page < 0 || $_page > PHP_INT_MAX) {
+    $_page = 0;
 }
 
 $add_sql = '';
