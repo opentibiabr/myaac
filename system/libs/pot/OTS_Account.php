@@ -30,7 +30,7 @@
  * @property-read int $access Access level.
  * @tutorial POT/Accounts.pkg
  */
-class OTS_Account extends OTS_Row_DAO implements Countable
+class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
 {
     /**
      * Account data.
