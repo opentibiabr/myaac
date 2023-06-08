@@ -112,18 +112,13 @@ if($step == 'database') {
 	if(!empty($errors)) {
 		$step = 'config';
 	}
-}
-else if($step == 'admin') {
-	$config_failed = true;
-	if(file_exists(BASE . 'config.local.php') && isset($config['installed']) && $config['installed'] && isset($_SESSION['saved'])) {
-		$config_failed = false;
-	}
-
-	if($config_failed) {
-		$step = 'database';
-	}
-}
-else if($step == 'finish') {
+} else if ($step == 'admin') {
+    if (!file_exists(BASE . 'config.local.php') || !isset($config['installed']) || !$config['installed']) {
+        $step = 'database';
+    } else {
+        $_SESSION['saved'] = true;
+    }
+} else if ($step == 'finish') {
 	$email = $_SESSION['var_email'];
 	$password = $_SESSION['var_password'];
 	$player_name = $_SESSION['var_player_name'];
