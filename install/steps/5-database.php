@@ -81,19 +81,19 @@ if(!$error) {
 					$saved = file_put_contents(BASE . 'config.local.php', $content);
 				}
 
-				if($saved) {
-					if(!$error) {
-						$_SESSION['saved'] = true;
-					}
-				}
-				else {
-					$_SESSION['config_content'] = $content;
-					unset($_SESSION['saved']);
+                if ($saved) {
+                    success($locale['step_database_config_saved']);
+                    if (!$error) {
+                        $_SESSION['saved'] = true;
+                    }
+                } else {
+                    $_SESSION['config_content'] = $content;
+                    unset($_SESSION['saved']);
 
-					$locale['step_database_error_file'] = str_replace('$FILE$', '<b>' . BASE . 'config.local.php</b>', $locale['step_database_error_file']);
-					warning($locale['step_database_error_file'] . '<br/>
+                    $locale['step_database_error_file'] = str_replace('$FILE$', '<b>' . BASE . 'config.local.php</b>', $locale['step_database_error_file']);
+                    warning($locale['step_database_error_file'] . '<br/>
 						<textarea cols="70" rows="10">' . $content . '</textarea>');
-				}
+                }
 			}
 		}
 	}

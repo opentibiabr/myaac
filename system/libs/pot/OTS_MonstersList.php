@@ -38,44 +38,43 @@ class OTS_MonstersList implements Iterator, Countable, ArrayAccess
 
 	private $lastMonsterFile = '';
 	private $hasErrors = false;
-/**
- * Loads monsters mapping file.
- *
- * <p>
- * Note: You pass directory path, not monsters.xml file name itself.
- * </p>
- *
- * @param string $path Monsters directory.
- * @throws DOMException On DOM operation error.
- */
+
+    /**
+     * Loads monsters mapping file.
+     *
+     * <p>
+     * Note: You pass directory path, not monsters.xml file name itself.
+     * </p>
+     *
+     * @param string $path Monsters directory.
+     * @throws DOMException On DOM operation error.
+     */
     public function __construct($path)
     {
         $this->monstersPath = $path;
 
         // makes sure it has directory separator at the end
         $last = substr($this->monstersPath, -1);
-        if($last != '/' && $last != '\\')
-        {
+        if ($last != '/' && $last != '\\') {
             $this->monstersPath .= '/';
         }
 
-		// check if monsters.xml exist
-		if(!@file_exists($this->monstersPath . 'monsters.xml')) {
-			log_append('error.log', '[OTS_MonstersList.php] Fatal error: Cannot load monsters.xml. File does not exist. (' . $this->monstersPath . 'monsters.xml' . '). Error: ' . print_r(error_get_last(), true));
-			throw new Exception('Error: Cannot load monsters.xml. File not found. More info in system/logs/error.log file.');
-		}
+        // check if monsters.xml exist
+        if (!@file_exists($this->monstersPath . 'monsters.xml')) {
+            log_append('error.log', '[OTS_MonstersList.php] Fatal error: Cannot load monsters.xml. File does not exist. (' . $this->monstersPath . 'monsters.xml' . ').');
+            throw new Exception('Error: Cannot load monsters.xml. File not found.');
+        }
 
         // loads monsters mapping file
         $monsters = new DOMDocument();
-        if(!@$monsters->load($this->monstersPath . 'monsters.xml')) {
-			log_append('error.log', '[OTS_MonstersList.php] Fatal error: Cannot load monsters.xml (' . $this->monstersPath . 'monsters.xml' . '). Error: ' . print_r(error_get_last(), true));
-			throw new Exception('Error: Cannot load monsters.xml. File is invalid. More info in system/logs/error.log file.');
-		}
+        if (!@$monsters->load($this->monstersPath . 'monsters.xml')) {
+            log_append('error.log', '[OTS_MonstersList.php] Fatal error: Cannot load monsters.xml (' . $this->monstersPath . 'monsters.xml' . '). Error: ' . print_r(error_get_last(), true));
+            throw new Exception('Error: Cannot load monsters.xml. File is invalid. More info in system/logs/error.log file.');
+        }
 
-        foreach( $monsters->getElementsByTagName('monster') as $monster)
-        {
-            $this->monsters[ $monster->getAttribute('name') ] = $monster->getAttribute('file');
-			//echo $this->monsters[ $monster->getAttribute('name')];
+        foreach ($monsters->getElementsByTagName('monster') as $monster) {
+            $this->monsters[$monster->getAttribute('name')] = $monster->getAttribute('file');
+            //echo $this->monsters[ $monster->getAttribute('name')];
         }
     }
 

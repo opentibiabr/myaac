@@ -85,43 +85,40 @@ class OTS_SpellsList implements IteratorAggregate, Countable
         return $object;
     }
 
-/**
- * Loads spells list.
- *
- * @param string $file Spells file name.
- * @throws DOMException On DOM operation error.
- */
+    /**
+     * Loads spells list.
+     *
+     * @param string $file Spells file name.
+     * @throws DOMException On DOM operation error.
+     */
     public function __construct($file)
     {
-		// check if spells.xml exist
-		if(!@file_exists($file)) {
-			log_append('error.log', '[OTS_SpellsList.php] Fatal error: Cannot load spells.xml. File does not exist. (' . $file . '). Error: ' . print_r(error_get_last(), true));
-			throw new Exception('Error: Cannot load spells.xml. File not found. More info in system/logs/error.log file.');
-		}
+        // check if spells.xml exist
+        if (!@file_exists($file)) {
+            log_append('error.log', '[OTS_SpellsList.php] Fatal error: Cannot load spells.xml. File does not exist. (' . $file . ').');
+            throw new Exception('Error: Cannot load spells.xml. File not found.');
+        }
 
         // loads monsters mapping file
         $spells = new DOMDocument();
-        if(!@$spells->load($file)) {
-			log_append('error.log', '[OTS_SpellsList.php] Fatal error: Cannot load spells.xml (' . $file . '). Error: ' . print_r(error_get_last(), true));
-			throw new Exception('Error: Cannot load spells.xml. File is invalid. More info in system/logs/error.log file.');
-		}
+        if (!@$spells->load($file)) {
+            log_append('error.log', '[OTS_SpellsList.php] Fatal error: Cannot load spells.xml (' . $file . '). Error: ' . print_r(error_get_last(), true));
+            throw new Exception('Error: Cannot load spells.xml. File is invalid. More info in system/logs/error.log file.');
+        }
 
         // loads runes
-        foreach( $spells->getElementsByTagName('rune') as $rune)
-        {
-            $this->runes[ $rune->getAttribute('name') ] = new OTS_Spell(self::SPELL_RUNE, $rune);
+        foreach ($spells->getElementsByTagName('rune') as $rune) {
+            $this->runes[$rune->getAttribute('name')] = new OTS_Spell(self::SPELL_RUNE, $rune);
         }
 
         // loads instants
-        foreach( $spells->getElementsByTagName('instant') as $instant)
-        {
-            $this->instants[ $instant->getAttribute('name') ] = new OTS_Spell(self::SPELL_INSTANT, $instant);
+        foreach ($spells->getElementsByTagName('instant') as $instant) {
+            $this->instants[$instant->getAttribute('name')] = new OTS_Spell(self::SPELL_INSTANT, $instant);
         }
 
         // loads conjures
-        foreach( $spells->getElementsByTagName('conjure') as $conjure)
-        {
-            $this->conjures[ $conjure->getAttribute('name') ] = new OTS_Spell(self::SPELL_CONJURE, $conjure);
+        foreach ($spells->getElementsByTagName('conjure') as $conjure) {
+            $this->conjures[$conjure->getAttribute('name')] = new OTS_Spell(self::SPELL_CONJURE, $conjure);
         }
     }
 
