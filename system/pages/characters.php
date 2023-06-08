@@ -365,7 +365,7 @@ WHERE killers.death_id = '".$death['id']."' ORDER BY killers.final_hit DESC, kil
 				$deaths[] = array('time' => $death['date'], 'description' => $description . '.');
 			}
 		}
-	}else {
+    } else if ($db->hasTableAndColumns('player_deaths', ['time', 'level', 'killed_by', 'is_player'])) {
 		$mostdamage = '';
 		if($db->hasColumn('player_deaths', 'mostdamage_by'))
 			$mostdamage = ', `mostdamage_by`, `mostdamage_is_player`, `unjustified`, `mostdamage_unjustified`';
