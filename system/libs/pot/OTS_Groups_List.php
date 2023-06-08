@@ -14,7 +14,7 @@
  * @package POT
  * @version 0.1.3
  */
-class OTS_Groups_List implements Countable
+class OTS_Groups_List implements IteratorAggregate, Countable
 {
 /**
  * Groups.

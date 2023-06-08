@@ -26,7 +26,7 @@
  * @property-read int $id Row ID.
  * @property-read OTS_Players_List $playersList List of members of this group.
  */
-class OTS_Group extends OTS_Row_DAO implements Countable
+class OTS_Group extends OTS_Row_DAO implements IteratorAggregate, Countable
 {
 /**
  * Group data.
