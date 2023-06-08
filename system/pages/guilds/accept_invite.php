@@ -34,20 +34,17 @@ if(isset($_REQUEST['todo']) && $_REQUEST['todo'] == 'save') {
 		$errors[] = 'Invalid name format.';
 	}
 
-	if(empty($errors)) {
-		$player = new OTS_Player();
-		$player->find($name);
-		if(!$player->isLoaded()) {
-			$errors[] = 'Player with name <b>'.$name.'</b> doesn\'t exist.';
-		}
-		else
-		{
-			$rank_of_player = $player->getRank();
-			if($rank_of_player->isLoaded()) {
-				$errors[] = 'Character with name <b>'.$name.'</b> is already in guild. You must leave guild before you join other guild.';
-			}
-		}
-	}
+    if (empty($errors)) {
+        $player = new OTS_Player();
+        $player->find($name);
+        if (!$player->isLoaded()) {
+            $errors[] = "Player with name <b>{$name}</b> doesn\'t exist.";
+        } else if ($player->getAccountID() != $account_logged->getId()) {
+            $errors[] = "Character with name <b>{$name}</b> is not in your account.";
+        } else if ($player->getRank()->isLoaded()) {
+            $errors[] = "Character with name <b>{$name}</b> is already in guild. You must leave guild before you join other guild.";
+        }
+    }
 }
 
 if(isset($_REQUEST['todo']) && $_REQUEST['todo'] == 'save') {
@@ -64,9 +61,9 @@ if(isset($_REQUEST['todo']) && $_REQUEST['todo'] == 'save') {
 			}
 		}
 
-		if(!$is_invited) {
-			$errors[] = 'Character '.$player->getName.' isn\'t invited to guild <b>'.$guild->getName().'</b>.';
-		}
+        if (!$is_invited) {
+            $errors[] = "Character {$player->getName()} isn\'t invited to guild <b>{$guild->getName()}</b>.";
+        }
 	}
 }
 else
