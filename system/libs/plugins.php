@@ -66,10 +66,10 @@ class Plugins {
 				continue;
 			}
 
-			if(isset($plugin['enabled']) && $plugin['enabled'] === 0) {
-				self::$warnings[] = 'Skipping ' . $filename . '... The plugin is disabled.';
-				continue;
-			}
+            if (isset($plugin['enabled']) && !getBoolean($plugin['enabled'])) {
+                self::$warnings[] = 'Skipping ' . $filename . '... The plugin is disabled.';
+                continue;
+            }
 
 			if (isset($plugin['hooks'])) {
 				foreach ($plugin['hooks'] as $_name => $info) {
