@@ -13,67 +13,97 @@ class CreateCharacter
 {
 	/**
 	 * @param string $name
-	 * @param int $sex
-	 * @param int $vocation
-	 * @param int $town
 	 * @param array $errors
 	 * @return bool
 	 */
-	public function check($name, $sex, &$vocation, &$town, &$errors) {
-		$minLength = config('character_name_min_length');
-		$maxLength = config('character_name_max_length');
+    public function checkName($name, &$errors)
+    {
+        $minLength = config('character_name_min_length');
+        $maxLength = config('character_name_max_length');
 
-		if(empty($name))
-			$errors['name'] = 'Please enter a name for your character!';
-		else if(strlen($name) > $maxLength)
-			$errors['name'] = 'Name is too long. Max. length <b>'.$maxLength.'</b> letters.';
-		else if(strlen($name) < $minLength)
-			$errors['name'] = 'Name is too short. Min. length <b>'.$minLength.'</b> letters.';
-		else {
-			if(!admin() && !Validator::newCharacterName($name)) {
-				$errors['name'] = Validator::getLastError();
-			}
-		}
+        if (empty($name)) {
+            $errors['name'] = 'Please enter a name for your character!';
+            return false;
+        }
 
-		if(empty($sex) && $sex != "0")
-			$errors['sex'] = 'Please select the sex for your character!';
+        $name_length = strlen($name);
 
-		if(count(config('character_samples')) > 1)
-		{
-			if(!isset($vocation))
-				$errors['vocation'] = 'Please select a vocation for your character.';
-		}
-		else
-			$vocation = config('character_samples')[0];
+        if ($name_length > $maxLength) {
+            $errors['name'] = 'Name is too long. Max. length <b>' . $maxLength . '</b> letters.';
+            return false;
+        }
 
-		if(count(config('character_towns')) > 1) {
-			if(!isset($town))
-				$errors['town'] = 'Please select a town for your character.';
-		}
-		else {
-			$town = config('character_towns')[0];
-		}
+        if ($name_length < $minLength) {
+            $errors['name'] = 'Name is too short. Min. length <b>' . $minLength . '</b> letters.';
+            return false;
+        }
 
-		if(empty($errors)) {
-			if(!isset(config('genders')[$sex]))
-				$errors['sex'] = 'Sex is invalid.';
-			if(!in_array($town, config('character_towns'), false))
-				$errors['town'] = 'Please select valid town.';
-			if(count(config('character_samples')) > 1)
-			{
-				$newchar_vocation_check = false;
-				foreach((array)config('character_samples') as $char_vocation_key => $sample_char)
-					if($vocation === $char_vocation_key)
-						$newchar_vocation_check = true;
-				if(!$newchar_vocation_check)
-					$errors['vocation'] = 'Unknown vocation. Please fill in form again.';
-			}
-			else
-				$vocation = 0;
-		}
+        if (strspn($name, "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM- '") != $name_length) {
+            $errors['name'] = 'This name contains invalid letters, words or format. Please use only a-Z, - , \' and space.';
+            return false;
+        }
+
+        if(!preg_match("/[A-z ']/", $name)) {
+            $errors['name'] = 'Your name contains illegal characters.';
+            return false;
+        }
+
+        if(!admin() && !Validator::newCharacterName($name)) {
+            $errors['name'] = Validator::getLastError();
+            return false;
+        }
 
 		return empty($errors);
 	}
+
+    /**
+     * @param string $name
+     * @param int $sex
+     * @param int $vocation
+     * @param int $town
+     * @param array $errors
+     * @return bool
+     */
+    public function check($name, $sex, &$vocation, &$town, &$errors)
+    {
+        $this->checkName($name, $errors);
+
+        if(empty($sex) && $sex != "0") {
+            $errors['sex'] = 'Please select the sex for your character!';
+        }
+
+        if (count(config('character_samples')) > 1) {
+            if (!isset($vocation))
+                $errors['vocation'] = 'Please select a vocation for your character.';
+        } else
+            $vocation = config('character_samples')[0];
+
+        if (count(config('character_towns')) > 1) {
+            if (!isset($town)) {
+                $errors['town'] = 'Please select a town for your character.';
+            }
+        } else {
+            $town = config('character_towns')[0];
+        }
+
+        if (empty($errors)) {
+            if (!isset(config('genders')[$sex]))
+                $errors['sex'] = 'Sex is invalid.';
+            if (!in_array($town, config('character_towns'), false))
+                $errors['town'] = 'Please select valid town.';
+            if (count(config('character_samples')) > 1) {
+                $newchar_vocation_check = false;
+                foreach ((array)config('character_samples') as $char_vocation_key => $sample_char)
+                    if ($vocation === $char_vocation_key)
+                        $newchar_vocation_check = true;
+                if (!$newchar_vocation_check)
+                    $errors['vocation'] = 'Unknown vocation. Please fill in form again.';
+            } else
+                $vocation = 0;
+        }
+
+        return empty($errors);
+    }
 
 	/**
 	 * @param string $name
