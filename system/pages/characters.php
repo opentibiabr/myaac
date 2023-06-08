@@ -277,7 +277,7 @@ if($player->isLoaded() && !$player->isDeleted())
 		unset($storage);
 	}
 
-    if ($config['characters']['equipment']) {
+    if ($config['characters']['equipment'] && $db->hasTableAndColumns('player_items', ['pid', 'sid', 'itemtype'])) {
         $equipment = [];
         $empty_slots = array("", "no_helmet", "no_necklace", "no_backpack", "no_armor", "no_handleft", "no_handright", "no_legs", "no_boots", "no_ring", "no_ammo");
         if ($hidden) {
