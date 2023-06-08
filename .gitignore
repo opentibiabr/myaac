@@ -64,6 +64,8 @@ plugins/*
 !plugins/account-create-hint
 !plugins/email-confirmed-reward.json
 !plugins/email-confirmed-reward
+!plugins/email-confirmed-reward.json
+!plugins/email-confirmed-reward
 landing
 
 # others/rest
