@@ -25,7 +25,7 @@
  * @property-read int $id Row ID.
  * @property-read OTS_Players_List $playersList List of members with this rank.
  */
-class OTS_GuildRank extends OTS_Row_DAO implements IteratorAggregate, Countable
+class OTS_GuildRank extends OTS_Row_DAO implements Countable
 {
 /**
  * Rank data.

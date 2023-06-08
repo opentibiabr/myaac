@@ -36,7 +36,7 @@
  * @property-write int $offset Sets OFFSET clause.
  * @property-write OTS_SQLFilter $filter Sets filter for list SQL query.
  */
-abstract class OTS_Base_List implements IOTS_DAO, Iterator, Countable
+abstract class OTS_Base_List implements IOTS_DAO, Countable
 {
 /**
  * Database connection.
