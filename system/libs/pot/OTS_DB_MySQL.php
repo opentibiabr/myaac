@@ -215,6 +215,24 @@ class OTS_DB_MySQL extends OTS_Base_DB
 		return $this->hasColumnInternal($table, $column);
 	}
 
+    /**
+     * Check if table exists and after check all columns passed of table
+     *
+     * @param $table
+     * @param array $columns
+     * @return bool
+     */
+    public function hasTableAndColumns($table, array $columns = [])
+    {
+        if (!$this->hasTable($table)) return false;
+        foreach ($columns as $column) {
+            if (!$this->hasColumn($table, $column)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 	private function hasColumnInternal($table, $column) {
 		return $this->hasTable($table) && ($this->has_column_cache[$table . '.' . $column] = count($this->query('SHOW COLUMNS FROM `' . $table . "` LIKE '" . $column . "'")->fetchAll()) > 0);
 	}
