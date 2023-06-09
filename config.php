@@ -38,10 +38,10 @@ $config = array(
 
 	// what client version are you using on this OT?
 	// used for the Downloads page and some templates aswell
-	'client' => 1098, // 954 = client 9.54
+	'client' => 1316, // 954 = client 9.54
 
 	'session_prefix' => 'myaac_', // must be unique for every site on your server
-	'friendly_urls' => false, // mod_rewrite is required for this, it makes links looks more elegant to eye, and also are SEO friendly (example: https://my-aac.org/guilds/Testing instead of https://my-aac.org/?subtopic=guilds&name=Testing). Remember to rename .htaccess.dist to .htaccess
+	'friendly_urls' => false, // mod_rewrite is required for this, it makes links looks more elegant to eye, and also are SEO friendly (example: https://localhost/guilds/Testing instead of https://localhost/?subtopic=guilds&name=Testing). Remember to rename .htaccess.dist to .htaccess
 	'gzip_output' => false, // gzip page content before sending it to the browser, uses less bandwidth but more cpu cycles
 
 	// gesior backward support (templates & pages)
@@ -141,13 +141,13 @@ $config = array(
 	'recaptcha_secret_key' => '',
 	'recaptcha_theme' => 'light', // light, dark
 
-	//
+	// recovery key
 	'generate_new_reckey' => true,				// let player generate new recovery key, he will receive e-mail with new rec key (not display on page, hacker can't generate rec key)
 	'generate_new_reckey_price' => 20,			// price for new recovery key
 	'send_mail_when_change_password' => true,	// send e-mail with new password when change password to account
 	'send_mail_when_generate_reckey' => true,	// send e-mail with rec key (key is displayed on page anyway when generate)
 
-	// genders (aka sex)
+	// genders
 	'genders' => array(
 		0 => 'Female',
 		1 => 'Male'
@@ -279,6 +279,7 @@ $config = array(
 
 	'server_save' => '05:00:00',
 
+    // signature
 	'signature_enabled' => false,
 	'signature_type' => 'tibian', // signature engine to use: tibian, mango, gesior
 	'signature_cache_time' => 5, // how long to store cached file (in minutes), default 5 minutes
@@ -293,12 +294,12 @@ $config = array(
 	// banner home
 	'banner_status' => true,
 	'banner_image' => '500x660.png', // templates->tibiacom->images->carousel
-	'banner_link' => 'www.instagram.com',
+	'banner_link' => 'https://docs.opentibiabr.com/projects/myaac',
 
 	// status bar
 	'status_bar' => true,
-	'client_link' => 'https://www.lucasgiovanni.com', // link to download tibia client
-	'discord_link' => 'https://www.lucasgiovanni.com', // link to join discord channel
+	'client_link' => 'https://docs.opentibiabr.com/projects/myaac', // link to download tibia client
+	'discord_link' => 'https://docs.opentibiabr.com/projects/myaac', // link to join discord channel
 	'whatsapp_link' => '5511912345678', // wa.me/5511912345678
 	'instagram_link' => 'test', // www.instagram.com/PROFILE
 	'facebook_link' => 'test', // www.facebook.com/PAGE
@@ -315,7 +316,7 @@ $config = array(
 		'carousel_3' => 'mothcape_small.jpg',
 	),
 
-	// load page
+	// page loader
 	'pace_load' => true, // load page top bar
 	'pace_theme' => 'flat-top', // big-counter, bounce, center-atom, center-circle, center-radar, center-simple, corner-indicator, fill-left, flash, flat-top, loading-bar, max-osx, material, minimal
 	'pace_color' => 'white', // black, blue, green, orange, pink, purple, red, silver, white, yellow

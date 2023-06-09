@@ -52,22 +52,13 @@ if (!$error) {
         if (isset($database_error)) { // we failed connect to the database
             error($database_error);
         } else {
-            if (!$db->hasTable('accounts')) {
-                $tmp = str_replace('$TABLE$', 'accounts', $locale['step_database_error_table']);
-                error($tmp);
-                $error = true;
-            }
-
-            if (!$db->hasTable('players')) {
-                $tmp = str_replace('$TABLE$', 'players', $locale['step_database_error_table']);
-                error($tmp);
-                $error = true;
-            }
-
-            if (!$db->hasTable('guilds')) {
-                $tmp = str_replace('$TABLE$', 'guilds', $locale['step_database_error_table']);
-                error($tmp);
-                $error = true;
+            foreach (['accounts', 'players', 'guilds'] as $table) {
+                if (!$db->hasTable($table)) {
+                    $tmp = str_replace('$TABLE$', $table, $locale['step_database_error_table']);
+                    error($tmp);
+                    $error = true;
+                    break;
+                }
             }
 
             if (!$error) {

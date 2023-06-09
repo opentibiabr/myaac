@@ -456,8 +456,8 @@ a:hover, a:active, a:focus {
   margin-top: 3px
 }
 .sidebar-menu li.header {
-  padding: 10px 25px 10px 15px;
-  font-size: 12px
+  padding: 11px 25px;
+  font-size: 17px;
 }
 .sidebar-menu li > a > .fa-angle-left, .sidebar-menu li > a > .pull-right-container > .fa-angle-left {
   width: auto;
