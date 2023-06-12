@@ -1,0 +1,22 @@
+---
+"Area: Admin":
+  - any: ['admin/**/*']
+
+"Area: Assets":
+  - any: ['images/**/*']
+
+"Area: Install":
+  - any: ['install/**/*']
+
+"Area: Plugins":
+  - any: ['plugins/**/*']
+
+"Area: System":
+  - any: ['system/**/*']
+
+"Area: Templates":
+  - any: ['templates/**/*']
+
+"Area: Tools":
+  - any: ['tools/**/*']
+
