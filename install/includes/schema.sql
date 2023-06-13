@@ -1,4 +1,4 @@
-SET @myaac_database_version = 32;
+SET @myaac_database_version = 33;
 
 CREATE TABLE `myaac_account_actions`
 (
@@ -369,3 +369,5 @@ CREATE TABLE `myaac_weapons`
 ALTER TABLE `server_config` ADD `timestamp` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `value`;
 
 ALTER TABLE `accounts` CHANGE `name` `name` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
+
+ALTER TABLE `players` ADD `ismain` TINYINT(1) NOT NULL DEFAULT 0 AFTER `istutorial`;
