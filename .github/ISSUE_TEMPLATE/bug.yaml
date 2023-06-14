@@ -20,29 +20,20 @@ body:
     validations:
       required: true
 
-  - type: checkboxes
+  - type: dropdown
     id: area
     attributes:
       label: Area
+      multiple: true
       description: Where is the problem?
       options:
-        - label: Admin
-        - label: Assets
-        - label: Install
-        - label: Plugins
-        - label: System
-        - label: Templates
-        - label: Tools
-    validations:
-      required: true
-
-  - type: textarea
-    id: what-happened
-    attributes:
-      label: What happened?
-      description: Describe your problem/bug and add screenshots, logs or anything that can help verifying the bug
-      placeholder: Tell us what you see!
-      value: "A bug happened!"
+        - Admin
+        - Assets
+        - Install
+        - Plugins
+        - System
+        - Templates
+        - Tools
     validations:
       required: true
 
@@ -58,10 +49,11 @@ body:
     validations:
       required: true
 
-  - type: checkboxes
+  - type: dropdown
     id: browser
     attributes:
       label: Browser
+      multiple: true
       description: What browser are you seeing the problem on?
       options:
         - Chrome
@@ -70,6 +62,16 @@ body:
         - Opera
         - Safari
         - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe your problem/bug and add screenshots, logs or anything that can help verifying the bug
+      placeholder: Tell us what you see!
+      value: "A bug happened!"
     validations:
       required: true
 

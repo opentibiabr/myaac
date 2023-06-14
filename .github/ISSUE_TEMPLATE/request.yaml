@@ -14,22 +14,24 @@ body:
       options:
         - Missing Content
         - Enhancement
+        - Suggestion
     validations:
       required: true
 
-  - type: checkboxes
+  - type: dropdown
     id: area
     attributes:
       label: Area
+      multiple: true
       description: Where is the problem?
       options:
-        - label: Admin
-        - label: Assets
-        - label: Install
-        - label: Plugins
-        - label: System
-        - label: Templates
-        - label: Tools
+        - Admin
+        - Assets
+        - Install
+        - Plugins
+        - System
+        - Templates
+        - Tools
     validations:
       required: true
 
@@ -38,21 +40,6 @@ body:
     attributes:
       label: What is missing?
       description: Page, action, function, validation, button, image, etc. Attach screenshots, logs, etc, anything that can helps us
-    validations:
-      required: true
-
-  - type: checkboxes
-    id: browser
-    attributes:
-      label: Browser
-      description: What browser are you seeing the problem on?
-      options:
-        - Chrome
-        - Firefox
-        - Edge
-        - Opera
-        - Safari
-        - Other
     validations:
       required: true
 
