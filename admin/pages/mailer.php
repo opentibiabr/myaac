@@ -60,7 +60,7 @@ foreach ($query as $email) {
 	else {
 		$failed++;
 		echo '<br />';
-		error('An error occorred while sending email to <b>' . $email['email'] . '</b>. For Admin: More info can be found in system/logs/mailer-error.log');
+		error('An error occurred while sending email to <b>' . $email['email'] . '</b>. For Admin: More info can be found in system/logs/mailer-error.log');
 	}
 }
 

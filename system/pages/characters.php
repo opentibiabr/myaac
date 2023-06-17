@@ -277,7 +277,7 @@ if($player->isLoaded() && !$player->isDeleted())
 		unset($storage);
 	}
 
-    if ($config['characters']['equipment']) {
+    if ($config['characters']['equipment'] && $db->hasTableAndColumns('player_items', ['pid', 'sid', 'itemtype'])) {
         $equipment = [];
         $empty_slots = array("", "no_helmet", "no_necklace", "no_backpack", "no_armor", "no_handleft", "no_handright", "no_legs", "no_boots", "no_ring", "no_ammo");
         if ($hidden) {
@@ -365,7 +365,7 @@ WHERE killers.death_id = '".$death['id']."' ORDER BY killers.final_hit DESC, kil
 				$deaths[] = array('time' => $death['date'], 'description' => $description . '.');
 			}
 		}
-	}else {
+    } else if ($db->hasTableAndColumns('player_deaths', ['time', 'level', 'killed_by', 'is_player'])) {
 		$mostdamage = '';
 		if($db->hasColumn('player_deaths', 'mostdamage_by'))
 			$mostdamage = ', `mostdamage_by`, `mostdamage_is_player`, `unjustified`, `mostdamage_unjustified`';

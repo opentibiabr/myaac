@@ -96,6 +96,13 @@ $config = array(
 	'account_create_auto_login' => false, // auto login after creating account?
 	'account_create_character_create' => true, // allow directly to create character on create account page?
 	'account_mail_verify' => false, // force users to confirm their email addresses when registering account
+    'account_mail_confirmed_reward' => [ // reward users for confirming their E-Mails
+        // account_mail_verify needs to be enabled too
+        'premium_days' => 0,
+        'premium_points' => 0,
+        'coins' => 0,
+        'message' => 'You received %d %s for confirming your E-Mail address.' // example: You received 20 coins for confirming your E-Mail address.
+    ],
 	'account_mail_unique' => true, // email addresses cannot be duplicated? (one account = one email)
 	'account_premium_days' => 0, // default premium days on new account
 	'account_premium_points' => 0, // default premium points on new account
@@ -167,6 +174,8 @@ $config = array(
 		3 => 'Paladin Sample',
 		4 => 'Knight Sample'
 	),
+
+    'use_character_sample_skills' => false,
 
 	// it must show limited number of players after using search in character page
 	'characters_search_limit' => 15,
@@ -336,6 +345,7 @@ $config = array(
 	'last_kills_limit' => 50, // max. number of deaths shown on the last kills page
 
 	// status, took automatically from config file if empty
+    'status_enabled' => true, // you can disable status checking by settings this to "false"
 	'status_ip' => '',
 	'status_port' => '',
 	'status_timeout' => 2, // how long to wait for the initial response from the server (default: 2 seconds)
@@ -357,5 +367,12 @@ $config = array(
 	'date_timezone' => 'Europe/Berlin', // more info at http://php.net/manual/en/timezones.php
 	'footer_show_load_time' => true, // display load time of the page in the footer
 
-	'npc' => array()
+	'npc' => [],
+
+    // character name blocked
+    'character_name_blocked' => [
+        'prefix' => [],
+        'names' => [],
+        'words' => [],
+    ],
 );

@@ -313,8 +313,10 @@ if($load_it)
 	if(SITE_CLOSED && admin())
 		$content .= '<p class="note">Site is under maintenance (closed mode). Only privileged users can see it.</p>';
 
-	if($config['backward_support'])
-		require SYSTEM . 'compat_pages.php';
+    if ($config['backward_support']) {
+        require SYSTEM . 'compat/pages.php';
+        require SYSTEM . 'compat/classes.php';
+    }
 
 	$ignore = false;
 
@@ -323,24 +325,26 @@ if($load_it)
 		$logged_access = $account_logged->getAccess();
 	}
 
-	$success = false;
-	$tmp_content = getCustomPage($page, $success);
-	if($success) {
-		$content .= $tmp_content;
-		if(hasFlag(FLAG_CONTENT_PAGES) || superAdmin()) {
-			$pageInfo = getCustomPageInfo($page);
-			$content = $twig->render('admin.pages.links.html.twig', array(
-					'page' => array('id' => $pageInfo !== null ? $pageInfo['id'] : 0, 'hidden' => $pageInfo !== null ? $pageInfo['hidden'] : '0')
-				)) . $content;
-		}
-	} else {
-		$file = SYSTEM . 'pages/' . $page . '.php';
-		if(!@file_exists($file) || preg_match('/[^A-z0-9_\-]/', $page))
-		{
-			$page = '404';
-			$file = SYSTEM . 'pages/404.php';
-		}
-	}
+    $success = false;
+    $tmp_content = getCustomPage($page, $success);
+    if ($success) {
+        $content .= $tmp_content;
+        if (hasFlag(FLAG_CONTENT_PAGES) || superAdmin()) {
+            $pageInfo = getCustomPageInfo($page);
+            $content = $twig->render('admin.pages.links.html.twig', array(
+                    'page' => array('id' => $pageInfo !== null ? $pageInfo['id'] : 0, 'hidden' => $pageInfo !== null ? $pageInfo['hidden'] : '0')
+                )) . $content;
+        }
+    } else {
+        $file = TEMPLATES . "$template_name/pages/$page.php";
+        if (!@file_exists($file) || preg_match('/[^A-z0-9_\-]/', $page)) {
+            $file = SYSTEM . "pages/$page.php";
+            if (!@file_exists($file) || preg_match('/[^A-z0-9_\-]/', $page)) {
+                $page = '404';
+                $file = SYSTEM . 'pages/404.php';
+            }
+        }
+    }
 
 	ob_start();
 	if($hooks->trigger(HOOK_BEFORE_PAGE)) {

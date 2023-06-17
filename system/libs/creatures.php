@@ -36,11 +36,23 @@ class Creatures {
 			return false;
 		}
 
-		$items = array();
-		Items::load();
-		foreach((array)Items::$items as $id => $item) {
-			$items[$item['name']] = $id;
-		}
+        $items = [];
+        Items::load();
+        if (empty(Items::$items)) {
+            if (Items::loadFromXML()) {
+                success('Successfully loaded items.');
+                // load again
+                Items::load();
+            }
+        }
+
+        if (empty(Items::$items)) {
+            error('Fatal error. Please report to https://github.com/opentibiabr/myaac/issues');
+            return false;
+        }
+        foreach ((array)Items::$items as $id => $item) {
+            $items[$item['name']] = $id;
+        }
 
 		//$names_added must be an array
 		$names_added[] = '';

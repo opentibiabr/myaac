@@ -217,9 +217,10 @@ class Validator
 	{
 		global $db, $config;
 
-		$name_lower = strtolower($name);
+        $name_lower = strtolower($name);
+        $custom_first_words_blocked = $config['character_name_blocked']['prefix'] ?? [];
 
-		$first_words_blocked = array('admin ', 'administrator ', 'gm ', 'cm ', 'god ','tutor ', "'", '-');
+        $first_words_blocked = array_merge($custom_first_words_blocked, ['admin ', 'administrator ', 'gm ', 'cm ', 'god ', 'tutor ', "'", '-']);
 		foreach($first_words_blocked as $word)
 		{
 			if($word == substr($name_lower, 0, strlen($word))) {
@@ -254,7 +255,8 @@ class Validator
 			return false;
 		}
 
-		$names_blocked = array('admin', 'administrator', 'gm', 'cm', 'god', 'tutor');
+        $custom_names_blocked = $config['character_name_blocked']['names'] ?? [];
+        $names_blocked = array_merge($custom_names_blocked, ['admin', 'administrator', 'gm', 'cm', 'god', 'tutor']);
 		foreach($names_blocked as $word)
 		{
 			if($word == $name_lower) {
@@ -263,7 +265,8 @@ class Validator
 			}
 		}
 
-		$words_blocked = array('admin', 'administrator', 'gamemaster', 'game master', 'game-master', "game'master", '--', "''","' ", " '", '- ', ' -', "-'", "'-", 'fuck', 'sux', 'suck', 'noob', 'tutor');
+        $custom_words_blocked = $config['character_name_blocked']['words'] ?? [];
+        $words_blocked = array_merge($custom_words_blocked, array('admin', 'administrator', 'gamemaster', 'game master', 'game-master', "game'master", '--', "''", "' ", " '", '- ', ' -', "-'", "'-", 'fuck', 'sux', 'suck', 'noob', 'tutor'));
 		foreach($words_blocked as $word)
 		{
 			if(!(strpos($name_lower, $word) === false)) {
@@ -321,16 +324,6 @@ class Validator
 				self::$lastError = 'Your name cannot contains NPC name.';
 				return false;
 			}
-		}
-
-		if(strspn($name, "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM- '") != $name_length) {
-			self::$lastError = 'This name contains invalid letters, words or format. Please use only a-Z, - , \' and space.';
-			return false;
-		}
-
-		if(!preg_match("/[A-z ']/", $name)) {
-			self::$lastError = 'Your name containst illegal characters.';
-			return false;
 		}
 
 		return true;

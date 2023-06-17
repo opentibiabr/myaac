@@ -1,4 +1,4 @@
-SET @myaac_database_version = 33;
+SET @myaac_database_version = 34;
 
 CREATE TABLE `myaac_account_actions`
 (
@@ -351,7 +351,7 @@ CREATE TABLE `myaac_spells`
 
 CREATE TABLE `myaac_visitors`
 (
-	`ip` VARCHAR(16) NOT NULL,
+	`ip` VARCHAR(45) NOT NULL,
 	`lastvisit` INT(11) NOT NULL DEFAULT 0,
 	`page` VARCHAR(2048) NOT NULL,
 	UNIQUE (`ip`)

@@ -20,7 +20,7 @@ $locale['not_loaded'] = 'Nicht geladen';
 $locale['loading_spinner'] = 'Bitte warten, installieren...';
 $locale['importing_spinner'] = 'Bitte warte, Daten werden importiert...';
 $locale['please_fill_all'] = 'Bitte füllen Sie alle Felder aus!';
-$locale['already_installed'] = 'MyAAC wurde bereits installiert. Bitte löschen <b>install/<b/> Verzeichnis. Wenn Sie MyAAC neu installieren möchten, löschen Sie die Datei <strong>config.local.php</strong> aus dem Hauptverzeichnis und aktualisieren Sie die Seite.';
+$locale['already_installed'] = 'MyAAC wurde bereits installiert. Bitte löschen <b>install/</b> Verzeichnis. Wenn Sie MyAAC neu installieren möchten, löschen Sie die Datei <strong>config.local.php</strong> aus dem Hauptverzeichnis und aktualisieren Sie die Seite.';
 
 // welcome
 $locale['step_welcome'] = 'Willkommen';
@@ -63,6 +63,7 @@ $locale['step_config_usage_desc'] = 'MyAAC erlauben, anonyme Nutzungsstatistiken
 $locale['step_database'] = 'Schema importieren';
 $locale['step_database_title'] = 'MySQL schema importieren';
 $locale['step_database_importing'] = 'Ihre Datenbank ist MySQL. Datenbankname ist: "$DATABASE_NAME$". Schema wird jetzt importiert...';
+$locale['step_database_config_saved'] = 'Die lokale Konfiguration wurde in einer Datei gespeichert: config.local.php';
 $locale['step_database_error_path'] = 'Bitte geben Sie den Serverpfad an.';
 $locale['step_database_error_config'] = 'Datei config.lua kann nicht gefunden werden. Ist der Serverpfad korrekt? Gehen Sie zurück und überprüfen Sie noch einmal.';
 $locale['step_database_error_database_empty'] = 'Der Datenbanktyp kann nicht aus config.lua ermittelt werden. Ihr OTS wird von diesem AAC nicht unterstützt.';

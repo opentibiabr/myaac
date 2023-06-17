@@ -201,7 +201,6 @@ if($save)
 
 		$new_account->setPassword(encrypt($password));
 		$new_account->setEMail($email);
-		$new_account->unblock();
 		$new_account->save();
 
 		if($config_salt_enabled)
@@ -253,7 +252,7 @@ if($save)
 			}
 			else
 			{
-				error('An error occorred while sending email! Account not created. Try again. For Admin: More info can be found in system/logs/mailer-error.log');
+				error('An error occurred while sending email! Account not created. Try again. For Admin: More info can be found in system/logs/mailer-error.log');
 				$new_account->delete();
 			}
 		}
@@ -264,6 +263,7 @@ if($save)
 				$character_created = $createCharacter->doCreate($character_name, $character_sex, $character_vocation, $character_town, $new_account, $errors);
 				if (!$character_created) {
 					error('There was an error creating your character. Please create your character later in account management page.');
+                    error(implode(' ', $errors));
 				}
 			}
 

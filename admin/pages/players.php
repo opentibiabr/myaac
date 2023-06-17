@@ -332,9 +332,9 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 			<div class="">
 				<div class="box box-primary">
 					<div class="box-body">
-						
-						
-							
+
+
+
 							<nav>
 								<div class="nav nav-tabs" id="nav-tab" role="tablist">
 									<button class="nav-link active" id="nav-player-tab" data-bs-toggle="tab" data-bs-target="#nav-player" type="button" role="tab" aria-controls="nav-player" aria-selected="true">Player</button>
@@ -342,7 +342,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 									<button class="nav-link" id="nav-skills-tab" data-bs-toggle="tab" data-bs-target="#nav-skills" type="button" role="tab" aria-controls="nav-skills" aria-selected="false">Skills</button>
 									<button class="nav-link" id="nav-poslook-tab" data-bs-toggle="tab" data-bs-target="#nav-poslook" type="button" role="tab" aria-controls="nav-poslook" aria-selected="false">Pos/Look</button>
 									<button class="nav-link" id="nav-misc-tab" data-bs-toggle="tab" data-bs-target="#nav-misc" type="button" role="tab" aria-controls="nav-misc" aria-selected="false">Misc</button>
-									
+
 								</div>
 							</nav>
 							<div class="tab-content" id="nav-tabContent">
@@ -694,11 +694,12 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 										</div>
 										<div class="col-6">
 											<label for="lastip" class="control-label">Last IP:</label>
-											<input type="text" class="form-control" id="lastip" name="lastip"
-												   autocomplete="off"
-												   maxlength="10" value="<?php echo longToIp($player->getLastIP()); ?>"
-												   readonly/>
-										</div>
+                                            <input type="text" class="form-control" id="lastip" name="lastip"
+                                                   autocomplete="off"
+                                                   maxlength="10"
+                                                   value="<?= (strlen($player->getLastIP()) > 11) ? inet_ntop($player->getLastIP()) : longToIp($player->getLastIP()); ?>"
+                                                   readonly/>
+                                        </div>
 									</div>
 									<?php if ($db->hasColumn('players', 'loss_experience')): ?>
 										<div class="row">
