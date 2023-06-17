@@ -3,7 +3,7 @@ Please choose a name{% if config.character_samples|length > 1 %}, vocation{% end
 <br>
 <br>
 In any case the name must not violate the naming conventions stated in the <a href="?subtopic=rules" target="_blank">{{ config.lua.serverName }} Rules</a>, or your character might get deleted or name locked.
-{% if account_logged.getPlayersList()|length >= config.characters_per_account %}
+{% if account_logged.getPlayersList(false)|length >= config.characters_per_account %}
 <b><span style="color: red"> You have maximum number of characters per account on your account. Delete one before you make new.</span></b>
 {% endif %}
 <br>
@@ -162,8 +162,8 @@ In any case the name must not violate the naming conventions stated in the <a hr
                                     <tr>
 									{% if config.lua.worldType == 'retro' %}
                                       <td width="33%" align="center" valign="top" style="border:0px;"></td>
-									  
-                                      <td width="33%" align="center" valign="top" style="border:0px;"><b> 
+
+                                      <td width="33%" align="center" valign="top" style="border:0px;"><b>
                                         <div class="OptionContainer">
                                           <label for="option_server_pvp_type_retro" id="option_server_pvp_type_retro_label"><img class="ServerInformationIcon" src="{{ template_path }}/images/global/content/option_server_pvp_type_retro.gif" alt="Server PVP Type" value="retro"><br>
                                             <input type="radio" name="server_pvp_type" id="option_server_pvp_type_retro" onclick="UpdateServerList(this)" value="retro">
@@ -226,7 +226,7 @@ In any case the name must not violate the naming conventions stated in the <a hr
                     </div></td>
                 </tr>
 				{% endif %}
-				
+
 				{% if config.character_towns|length > 1 %}
 				<tr>
                   <td><div class="TableContentContainer">
@@ -249,7 +249,7 @@ In any case the name must not violate the naming conventions stated in the <a hr
                     </div></td>
                 </tr>
 				{% endif %}
-				
+
               </tbody>
             </table>
           </div></td>

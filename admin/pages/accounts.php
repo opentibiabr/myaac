@@ -272,11 +272,15 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
 						</div>
 					</div>
 					<div class="row">
-						<?php
-						$acc_group = $account->getAccGroupId();
-						if ($hasTypeColumn) {
-							$acc_type = array("Normal", "Tutor", "Senior Tutor", "Gamemaster", "God"); ?>
-							<div class="col-6">
+                        <?php
+                        $acc_group = $account->getAccGroupId();
+                        if ($hasTypeColumn) {
+                            $groups = new OTS_Groups_List();
+                            $acc_type = ($groups->getHighestId() == 6)
+                                ? ["Normal", "Tutor", "Senior Tutor", "Gamemaster", "Community Manager", "God"]
+                                : ["Normal", "Tutor", "Senior Tutor", "Gamemaster", "God"];
+                            ?>
+                            <div class="col-6">
 								<label for="group" class="control-label">Account Type:</label>
 								<select name="group" id="group" class="form-control">
 									<?php foreach ($acc_type as $id => $a_type): ?>

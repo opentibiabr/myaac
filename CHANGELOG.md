@@ -1,5 +1,90 @@
 # Changelog
 
+## [0.8.10 - 18.05.2023]
+
+### Changed
+* PHP 7.2.5 is now required, cause of Twig 2.x
+* allow pages to be placed in templates folder, under pages/ subfolder
+
+### Fixed
+* Twig error with global variable on create account
+* links/redirects from facebook, etc. like ?fbclid=x
+* do not allow to continue install when there is no server database imported
+* cannot go forward when config.local.php cannot be saved
+* when server uses another items serializer
+* small bug on install
+
+## [0.8.9 - 16.03.2023]
+
+### Added
+* You can now disable server status checking for testing purposes, useful for local testing when there is no server running
+    * with this, the page won't need 2 seconds to load
+    * set status_enabled to false in config.php
+* new buttons code for tibiacom template, can create button with any text
+* patched some small changes from develop branch
+
+### Changed
+* add .git to denied folders in nginx-sample.conf
+* plugins folder is now accessible from outside
+* add plugins folder to twig search paths
+
+### Fixed
+* player save with new ipv6
+* more php 8.x compatibility
+* rel path for exception message, causing message to be not in red background
+
+## [0.8.8 - 18.02.2023]
+
+### Added
+* mail confirmed reward
+* support for latest group changes in TFS
+* new function: escapeHtml
+
+### Updated
+* TinyMCE to v4.9.1 (latest release in 4.x series)
+* Twig to v2.15.4
+
+### Changed
+* you can now place custom pages in your template directory under pages/ folder
+* HOOK_LOGOUT parameters, now only account_id is passed
+
+### Fixed
+* ipv6 introduced in latest TFS
+* config.account_premium_days
+* better compatibility with GesiorAAC
+* PHP 8.1 compatibility
+* myaac_ db table detection failure
+* reload creatures error, when items cache has been cleared
+
+### Removed
+* accounts.blocked column, which is not used by AAC
+
+## [0.8.7 - 31.08.2022]
+### Added
+* login.php for client 12.x is now part of official repo
+* browsehappy code
+* config use character sample skill (#201, @gpedro)
+* custom words blocked (#190, @gpedro)
+
+### Changed
+* save php sessions in myaac dir
+* don't count deleted players when creating new character
+
+### Fixed
+* patch vulnerability in change_rank.php (#194, @gesior, @thatmichaelguy)
+* fix guild invite page (#196, @worthdavi)
+* players not showing on highscores page (#195)
+* highscores page bug with high pages
+* $player->getStorage() does not work at all (#169, @gesior)
+* copying sample character when it have items with quotes (#200, @gpedro)
+* IPv6 issue when env is set to dev (#171)
+* admin page changed feet to match body colour (#174, @silic0nalph4)
+* exception being thrown when creating duplicated character name (#191)
+* rules page formatting (#177, @silic0nalph4)
+* account character create if auto_login is enabled
+* undefined variable notice on database_log enabled
+* removed VERSION file
+
 ## [0.8.6 - 10.07.2021]
 This update contains very important security fix.
 

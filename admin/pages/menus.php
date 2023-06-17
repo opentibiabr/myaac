@@ -89,13 +89,13 @@ if (isset($_REQUEST['template'])) {
 		if (isset($menus[$id])) {
 			$i = 0;
 			foreach ($menus[$id] as $menu) {
-				echo '<li class="ui-state-default" id="list-' . $id . '-' . $i . '"><label>Name: </label><input type="text" name="menu[' . $id . '][]" value="' . $menu['name'] . '"/>
+				echo '<li class="ui-state-default" id="list-' . $id . '-' . $i . '"><label>Name: </label><input type="text" name="menu[' . $id . '][]" value="' . escapeHtml($menu['name']) . '"/>
 				<label>Link: </label><input type="text" name="menu_link[' . $id . '][]" value="' . $menu['link'] . '"/>
 				<input type="hidden" name="menu_blank[' . $id . '][]" value="0" />
 				<label><input class="blank-checkbox" type="checkbox" ' . ($menu['blank'] == 1 ? 'checked' : '') . '/> <span title="Open in New Window">Open in New Window</span></label>
-				
+
 				<input class="color-picker" type="text" name="menu_color[' . $id . '][]" value="#' . $menu['color'] . '" />
-				
+
 				<a class="btn btn-danger" id="remove-button-' . $id . '-' . $i . '"><i class="fas fa-trash-alt text-white" title="Remove"></i></a></li>';
 
 				$i++;

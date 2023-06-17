@@ -14,9 +14,13 @@ $title = 'Highscores';
 if($config['account_country'] && $config['highscores_country_box'])
 	require SYSTEM . 'countries.conf.php';
 
-$list = isset($_GET['list']) ? $_GET['list'] : '';
-$_page = isset($_GET['page']) ? $_GET['page'] : 0;
-$vocation = isset($_GET['vocation']) ? $_GET['vocation'] : NULL;
+$list = $_GET['list'] ?? '';
+$_page = $_GET['page'] ?? 0;
+$vocation = $_GET['vocation'] ?? null;
+
+if (!is_numeric($_page) || $_page < 0 || $_page > PHP_INT_MAX) {
+    $_page = 0;
+}
 
 $add_sql = '';
 $config_vocations = $config['vocations'];
@@ -322,7 +326,7 @@ echo '
 					if(isset($config['vocations'][$player['vocation']])) {
 						$tmp = $config['vocations'][$player['vocation']];
 					}
-					
+
 				}
 echo '
 			</td>
