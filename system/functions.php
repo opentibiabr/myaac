@@ -8,9 +8,9 @@
  * @link      https://my-aac.org
  */
 
-use Twig\Loader\ArrayLoader as Twig_ArrayLoader;
-
 defined('MYAAC') or die('Direct access not allowed!');
+
+use Twig\Loader\ArrayLoader as Twig_ArrayLoader;
 
 function message($message, $type, $return)
 {
@@ -833,7 +833,7 @@ function get_plugins()
     $ret = array();
 
     $path = PLUGINS;
-    foreach (scandir($path, 0) as $file) {
+    foreach (scandir($path, SCANDIR_SORT_ASCENDING) as $file) {
         $file_ext = pathinfo($file, PATHINFO_EXTENSION);
         $file_name = pathinfo($file, PATHINFO_FILENAME);
         if ($file === '.' || $file === '..' || $file === 'disabled' || $file === 'example.json' || $file_ext !== 'json' || is_dir($path . $file))
