@@ -95,29 +95,29 @@ if (!IS_CLI) {
 $basedir = '';
 $tmp = explode('/', $_SERVER['SCRIPT_NAME']);
 $size = count($tmp) - 1;
-for($i = 1; $i < $size; $i++)
-	$basedir .= '/' . $tmp[$i];
+for ($i = 1; $i < $size; $i++)
+    $basedir .= '/' . $tmp[$i];
 
-$basedir = str_replace(array('/admin', '/install'), '', $basedir);
+$basedir = str_replace(array('/admin', '/install', '/tools'), '', $basedir);
 define('BASE_DIR', $basedir);
 
-if(!IS_CLI) {
-	if (isset($_SERVER['HTTP_HOST'][0])) {
-		$baseHost = $_SERVER['HTTP_HOST'];
-	} else {
-		if (isset($_SERVER['SERVER_NAME'][0])) {
-			$baseHost = $_SERVER['SERVER_NAME'];
-		} else {
-			$baseHost = $_SERVER['SERVER_ADDR'];
-		}
-	}
+if (!IS_CLI) {
+    if (isset($_SERVER['HTTP_HOST'][0])) {
+        $baseHost = $_SERVER['HTTP_HOST'];
+    } else {
+        if (isset($_SERVER['SERVER_NAME'][0])) {
+            $baseHost = $_SERVER['SERVER_NAME'];
+        } else {
+            $baseHost = $_SERVER['SERVER_ADDR'];
+        }
+    }
 
-	define('SERVER_URL', 'http' . (isset($_SERVER['HTTPS'][0]) && strtolower($_SERVER['HTTPS']) === 'on' ? 's' : '') . '://' . $baseHost);
-	define('BASE_URL', SERVER_URL . BASE_DIR . '/');
-	define('ADMIN_URL', SERVER_URL . BASE_DIR . '/admin/');
+    define('SERVER_URL', 'http' . (isset($_SERVER['HTTPS'][0]) && strtolower($_SERVER['HTTPS']) === 'on' ? 's' : '') . '://' . $baseHost);
+    define('BASE_URL', SERVER_URL . BASE_DIR . '/');
+    define('ADMIN_URL', SERVER_URL . BASE_DIR . '/admin/');
 
-	//define('CURRENT_URL', BASE_URL . $_SERVER['REQUEST_URI']);
+    //define('CURRENT_URL', BASE_URL . $_SERVER['REQUEST_URI']);
 
-	require SYSTEM . 'exception.php';
+    require SYSTEM . 'exception.php';
 }
 require SYSTEM . 'autoload.php';
