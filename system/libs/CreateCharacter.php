@@ -11,11 +11,11 @@
 
 class CreateCharacter
 {
-	/**
-	 * @param string $name
-	 * @param array $errors
-	 * @return bool
-	 */
+    /**
+     * @param string $name
+     * @param array $errors
+     * @return bool
+     */
     public function checkName($name, &$errors)
     {
         $minLength = config('character_name_min_length');
@@ -43,18 +43,18 @@ class CreateCharacter
             return false;
         }
 
-        if(!preg_match("/[A-z ']/", $name)) {
+        if (!preg_match("/[A-z ']/", $name)) {
             $errors['name'] = 'Your name contains illegal characters.';
             return false;
         }
 
-        if(!admin() && !Validator::newCharacterName($name)) {
+        if (!admin() && !Validator::newCharacterName($name)) {
             $errors['name'] = Validator::getLastError();
             return false;
         }
 
-		return empty($errors);
-	}
+        return empty($errors);
+    }
 
     /**
      * @param string $name
@@ -68,7 +68,7 @@ class CreateCharacter
     {
         $this->checkName($name, $errors);
 
-        if(empty($sex) && $sex != "0") {
+        if (empty($sex) && $sex != "0") {
             $errors['sex'] = 'Please select the sex for your character!';
         }
 
@@ -105,125 +105,123 @@ class CreateCharacter
         return empty($errors);
     }
 
-	/**
-	 * @param string $name
-	 * @param int $sex
-	 * @param int $vocation
-	 * @param int $town
-	 * @param OTS_Account $account
-	 * @param array $errors
-	 * @return bool
-	 * @throws E_OTS_NotLoaded
-	 * @throws Twig_Error_Loader
-	 * @throws Twig_Error_Runtime
-	 * @throws Twig_Error_Syntax
-	 */
-	public function doCreate($name, $sex, $vocation, $town, $account, &$errors)
-	{
-		if(!$this->check($name, $sex, $vocation, $town, $errors)) {
-			return false;
-		}
+    /**
+     * @param string $name
+     * @param int $sex
+     * @param int $vocation
+     * @param int $town
+     * @param OTS_Account $account
+     * @param array $errors
+     * @return bool
+     * @throws E_OTS_NotLoaded
+     * @throws Twig_Error_Loader
+     * @throws Twig_Error_Runtime
+     * @throws Twig_Error_Syntax
+     */
+    public function doCreate($name, $sex, $vocation, $town, $account, &$errors)
+    {
+        if (!$this->check($name, $sex, $vocation, $town, $errors)) {
+            return false;
+        }
 
-		if(empty($errors))
-		{
-			$number_of_players_on_account = $account->getPlayersList(false)->count();
-			if($number_of_players_on_account >= config('characters_per_account'))
-				$errors[] = 'You have too many characters on your account <b>('.$number_of_players_on_account.'/'.config('characters_per_account').')</b>!';
-		}
+        if (empty($errors)) {
+            $number_of_players_on_account = $account->getPlayersList()->count();
+            if ($number_of_players_on_account >= config('characters_per_account'))
+                $errors[] = 'You have too many characters on your account <b>(' . $number_of_players_on_account . '/' . config('characters_per_account') . ')</b>!';
+        }
 
-		if(empty($errors))
-		{
-			$char_to_copy_name = config('character_samples')[$vocation];
-			$char_to_copy = new OTS_Player();
-			$char_to_copy->find($char_to_copy_name);
-			if(!$char_to_copy->isLoaded())
-				$errors[] = 'Wrong characters configuration. Try again or contact with admin. ADMIN: Edit file config.php and set valid characters to copy names. Character to copy: <b>'.$char_to_copy_name.'</b> doesn\'t exist.';
-		}
+        if (empty($errors)) {
+            $char_to_copy_name = config('character_samples')[$vocation];
+            $char_to_copy = new OTS_Player();
+            $char_to_copy->find($char_to_copy_name);
+            if (!$char_to_copy->isLoaded())
+                $errors[] = 'Wrong characters configuration. Try again or contact with admin. ADMIN: Edit file config.php and set valid characters to copy names. Character to copy: <b>' . $char_to_copy_name . '</b> doesn\'t exist.';
+        }
 
-		if(!empty($errors)) {
-			return false;
-		}
+        if (!empty($errors)) {
+            return false;
+        }
 
-		global $db;
+        global $db;
 
-		if($sex == "0")
-			$char_to_copy->setLookType(136);
+        if ($sex == "0")
+            $char_to_copy->setLookType(136);
 
-		$player = new OTS_Player();
-		$player->setName($name);
-		$player->setAccount($account);
-		$player->setGroupId(1);
-		$player->setSex($sex);
-		$player->setVocation($char_to_copy->getVocation());
-		if($db->hasColumn('players', 'promotion'))
-			$player->setPromotion($char_to_copy->getPromotion());
+        $player = new OTS_Player();
+        $player->setName($name);
+        $player->setAccount($account);
+        $player->setGroupId(1);
+        $player->setSex($sex);
+        $player->setVocation($char_to_copy->getVocation());
+        if ($db->hasColumn('players', 'promotion'))
+            $player->setPromotion($char_to_copy->getPromotion());
 
-		if($db->hasColumn('players', 'direction'))
-			$player->setDirection($char_to_copy->getDirection());
+        if ($db->hasColumn('players', 'direction'))
+            $player->setDirection($char_to_copy->getDirection());
 
-		$player->setConditions($char_to_copy->getConditions());
-		$rank = $char_to_copy->getRank();
-		if($rank->isLoaded()) {
-			$player->setRank($char_to_copy->getRank());
-		}
+        $player->setConditions($char_to_copy->getConditions());
+        $rank = $char_to_copy->getRank();
+        if ($rank->isLoaded()) {
+            $player->setRank($char_to_copy->getRank());
+        }
 
-		if($db->hasColumn('players', 'lookaddons'))
-			$player->setLookAddons($char_to_copy->getLookAddons());
+        if ($db->hasColumn('players', 'lookaddons'))
+            $player->setLookAddons($char_to_copy->getLookAddons());
 
-		$player->setTownId($town);
-		$player->setExperience($char_to_copy->getExperience());
-		$player->setLevel($char_to_copy->getLevel());
-		$player->setMagLevel($char_to_copy->getMagLevel());
-		$player->setHealth($char_to_copy->getHealth());
-		$player->setHealthMax($char_to_copy->getHealthMax());
-		$player->setMana($char_to_copy->getMana());
-		$player->setManaMax($char_to_copy->getManaMax());
-		$player->setManaSpent($char_to_copy->getManaSpent());
-		$player->setSoul($char_to_copy->getSoul());
+        $player->setTownId($town);
+        $player->setExperience($char_to_copy->getExperience());
+        $player->setLevel($char_to_copy->getLevel());
+        $player->setMagLevel($char_to_copy->getMagLevel());
+        $player->setHealth($char_to_copy->getHealth());
+        $player->setHealthMax($char_to_copy->getHealthMax());
+        $player->setMana($char_to_copy->getMana());
+        $player->setManaMax($char_to_copy->getManaMax());
+        $player->setManaSpent($char_to_copy->getManaSpent());
+        $player->setSoul($char_to_copy->getSoul());
 
         for ($skill = POT::SKILL_FIRST; $skill <= POT::SKILL_LAST; $skill++) {
             $player->setSkill($skill,
                 config('use_character_sample_skills') ? $char_to_copy->getSkill($skill) : 10);
         }
 
-		$player->setLookBody($char_to_copy->getLookBody());
-		$player->setLookFeet($char_to_copy->getLookFeet());
-		$player->setLookHead($char_to_copy->getLookHead());
-		$player->setLookLegs($char_to_copy->getLookLegs());
-		$player->setLookType($char_to_copy->getLookType());
-		$player->setCap($char_to_copy->getCap());
-		$player->setBalance(0);
-		$player->setPosX(0);
-		$player->setPosY(0);
-		$player->setPosZ(0);
+        $player->setLookBody($char_to_copy->getLookBody());
+        $player->setLookFeet($char_to_copy->getLookFeet());
+        $player->setLookHead($char_to_copy->getLookHead());
+        $player->setLookLegs($char_to_copy->getLookLegs());
+        $player->setLookType($char_to_copy->getLookType());
+        $player->setCap($char_to_copy->getCap());
+        $player->setBalance(0);
+        $player->setPosX(0);
+        $player->setPosY(0);
+        $player->setPosZ(0);
 
-		if($db->hasColumn('players', 'stamina')) {
-			$player->setStamina($char_to_copy->getStamina());
-		}
+        if ($db->hasColumn('players', 'stamina')) {
+            $player->setStamina($char_to_copy->getStamina());
+        }
 
-		if($db->hasColumn('players', 'loss_experience')) {
-			$player->setLossExperience($char_to_copy->getLossExperience());
-			$player->setLossMana($char_to_copy->getLossMana());
-			$player->setLossSkills($char_to_copy->getLossSkills());
-		}
-		if($db->hasColumn('players', 'loss_items')) {
-			$player->setLossItems($char_to_copy->getLossItems());
-			$player->setLossContainers($char_to_copy->getLossContainers());
-		}
+        if ($db->hasColumn('players', 'loss_experience')) {
+            $player->setLossExperience($char_to_copy->getLossExperience());
+            $player->setLossMana($char_to_copy->getLossMana());
+            $player->setLossSkills($char_to_copy->getLossSkills());
+        }
+        if ($db->hasColumn('players', 'loss_items')) {
+            $player->setLossItems($char_to_copy->getLossItems());
+            $player->setLossContainers($char_to_copy->getLossContainers());
+        }
         if ($db->hasColumn('players', 'ismain')) {
             $player->setMain($number_of_players_on_account == 0);
         }
 
-		$player->save();
-		$player->setCustomField('created', time());
+        $player->save();
+        $player->setCustomField('created', time());
 
-		$player = new OTS_Player();
-		$player->find($name);
+        $player = new OTS_Player();
+        $player->find($name);
 
-		if(!$player->isLoaded()) {
-			error("Error. Can't create character. Probably problem with database. Please try again later or contact with admin.");
-			return false;
-		}
+        if (!$player->isLoaded()) {
+            error("Error. Can't create character. Probably problem with database. Please try again later or contact with admin.");
+            return false;
+        }
 
         if ($db->hasTable('player_skills')) {
             for ($i = 0; $i < 7; $i++) {
@@ -242,15 +240,15 @@ class CreateCharacter
             }
         }
 
-		global $twig;
-		$twig->display('success.html.twig', array(
-			'title' => 'Character Created',
-			'description' => 'The character <b>' . $name . '</b> has been created.<br/>
+        global $twig;
+        $twig->display('success.html.twig', array(
+            'title' => 'Character Created',
+            'description' => 'The character <b>' . $name . '</b> has been created.<br/>
 					Please select the outfit when you log in for the first time.<br/><br/>
 					<b>See you on ' . configLua('serverName') . '!</b>'
-		));
+        ));
 
-		$account->logAction('Created character <b>' . $name . '</b>.');
-		return true;
-	}
+        $account->logAction('Created character <b>' . $name . '</b>.');
+        return true;
+    }
 }

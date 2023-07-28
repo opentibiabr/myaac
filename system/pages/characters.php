@@ -395,7 +395,7 @@ WHERE killers.death_id = '".$death['id']."' ORDER BY killers.final_hit DESC, kil
 					}
 				}
 				else {
-					$description .=  " <b>(soloed)</b>";
+					$description .=  " <b>(soled)</b>";
 				}
 
 				$deaths[] = array('time' => $death['time'], 'description' => $description);

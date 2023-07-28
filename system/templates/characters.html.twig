@@ -315,6 +315,8 @@
           <!-- OUTFIT END -->
         {% endif %}
 
+        {{ hook(constant('HOOK_CHARACTERS_AFTER_QUESTS')) }}
+
         {% if config.characters.equipment %}
           <!-- EQUIPMENT -->
           <div class="InnerTableContainer">
@@ -396,6 +398,8 @@
           </div>
           <!-- EQUIPMENT_END -->
         {% endif %}
+
+        {{ hook(constant('HOOK_CHARACTERS_AFTER_EQUIPMENT')) }}
       </td>
 
       <!-- LIFE MANA -->
@@ -474,6 +478,8 @@
         </div>
         <!-- EXPERIENCE END -->
 
+        {{ hook(constant('HOOK_CHARACTERS_BEFORE_SKILLS')) }}
+
         {% if config.characters.skills %}
           <!-- SKILLS -->
           <div class="InnerTableContainer">
@@ -542,6 +548,8 @@
           </div>
           <!-- SKILLS END -->
         {% endif %}
+
+        {{ hook(constant('HOOK_CHARACTERS_AFTER_SKILLS')) }}
       </td>
     </tr>
     </tbody>
@@ -720,6 +728,8 @@
   </table>
 </div>
 <br>
+
+{{ hook(constant('HOOK_CHARACTERS_BEFORE_DEATHS')) }}
 
 {% if deaths|length > 0 %}
   <!-- DEATHS -->

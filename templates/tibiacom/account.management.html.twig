@@ -328,7 +328,8 @@
                         <td style="font-weight: bold;">{{ i }}.</td>
                         <td>
                           <span style="white-space: nowrap; vertical-align: middle; line-height: 12px;">
-                            <span id="CharacterNameOf_0" style="font-size:13pt; font-weight: bold;">{{ player.getName() }}
+                            <span id="CharacterNameOf_0"
+                                  style="font-size:13pt; font-weight: bold;">{{ player.getName() }}
                               {% if player.isDeleted() %}
                                 <span style="color: red"><b> [ DELETED ] </b></span>
                               {% endif %}
@@ -370,8 +371,8 @@
                         </td>
                         <td align="center">
                           <span id="CharacterOptionsOf_0">
-                            <span style="font-weight:normal;">[<a
-                                href="{{ getLink('account/character/comment/' ~ player.getName|urlencode) }}">Edit</a>]</span>
+                            <span style="font-weight:normal;">{% if not player.isDeleted() %}[<a
+                                href="{{ getLink('account/character/comment/' ~ player.getName|urlencode) }}">Edit</a>]{% endif %}</span>
                             <br>
                             <span style="font-weight:normal;">[<a href="{{ getLink('account/character/delete') }}">Delete</a>]</span>
                           </span>
