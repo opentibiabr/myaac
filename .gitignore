@@ -3,6 +3,9 @@ Thumbs.db
 .idea
 # git rm --cached -r .idea
 
+#
+/.htaccess
+
 # composer
 composer.lock
 vendor

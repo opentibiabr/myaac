@@ -954,8 +954,8 @@ function load_config_lua($filename)
 
     $config_file = $filename;
     if (!@file_exists($config_file)) {
-        log_append('error.log', '[load_config_file] Fatal error: Cannot load config.lua (' . $filename . '). Error: ' . print_r(error_get_last(), true));
-        throw new RuntimeException('ERROR: Cannot find ' . $filename . ' file. More info in system/logs/error.log');
+        log_append('error.log', "[load_config_file] Fatal error: Cannot load config.lua ($filename).");
+        throw new RuntimeException("ERROR: Cannot find $filename file.");
     }
 
     $result = array();
@@ -1308,6 +1308,26 @@ function displayErrorBoxWithBackButton($errors, $action = null)
     ]);
 }
 
+function getDatabasePages($withHidden = false): array
+{
+    global $db, $logged_access;
+
+    if (!isset($logged_access)) {
+        $logged_access = 1;
+    }
+
+    $pages = $db->query('SELECT `name` FROM ' . TABLE_PREFIX . 'pages WHERE ' . ($withHidden ? '' : '`hidden` != 1 AND ') . '`access` <= ' . $db->quote($logged_access));
+    if ($pages->rowCount() < 1) {
+        return [];
+    }
+
+    $ret = [];
+    foreach ($pages->fetchAll() as $page) {
+        $ret[] = $page['name'];
+    }
+
+    return $ret;
+}
 
 // validator functions
 require_once LIBS . 'validator.php';
