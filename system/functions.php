@@ -1308,6 +1308,26 @@ function displayErrorBoxWithBackButton($errors, $action = null)
     ]);
 }
 
+function getDatabasePages($withHidden = false): array
+{
+    global $db, $logged_access;
+
+    if (!isset($logged_access)) {
+        $logged_access = 1;
+    }
+
+    $pages = $db->query('SELECT `name` FROM ' . TABLE_PREFIX . 'pages WHERE ' . ($withHidden ? '' : '`hidden` != 1 AND ') . '`access` <= ' . $db->quote($logged_access));
+    if ($pages->rowCount() < 1) {
+        return [];
+    }
+
+    $ret = [];
+    foreach ($pages->fetchAll() as $page) {
+        $ret[] = $page['name'];
+    }
+
+    return $ret;
+}
 
 // validator functions
 require_once LIBS . 'validator.php';
