@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.8.12 - 07.08.2023]
+I've moved the repository back to my personal account. (Just so you know!)
+
+I will also try to add git commits pointed to each change, lets see if you like it or not - you can comment in discussion, that will be created just after releasing this version :)
+
+### Added
+* forum: better error messages (Suggested by @anyeor)
+* more support for GesiorAAC classes, so some of them will work with MyAAC
+* word-break on forum thread & reply (Suggested by @anyeor)
+
+### Fixed
+* not working pages/links from database, introduced in 0.8.10 (Thanks to OtLand user - https://otland.net/members/0lo.99657/ for report)
+* it was possible to create topic in board that was closed, ommiting the error check (Thanks to @anyeor for report)
+* PHP 8.2 compatibility - removed deprecated functions utf8_encode & utf8_decode
+* guild description not being correctly shown (Reported by @anyeor)
+
+### Removed
+* Some old code for verifying messages length (Reported by @anyeor)
+* some info about config failed to load, was never working
+
 ## [0.8.11 - 30.06.2023]
 
 ### Added
@@ -164,7 +184,7 @@ Please update your MyAAC instances to this version.
 * Guild Invite not working on otservbr-global
 * two boxes being show on email_change_cancel
 * when adding poll = template tibiacom broken
-* houses: Unknown column 'guild' in 'where clause (https://github.com/slawkens/myaac/issues/131)
+* houses: Unknown column 'guild' in 'where clause
 * account create when account_mail_verify is enabled
 * CloudFlare IP detection
 * network_twitter link in tibiacom template
@@ -221,7 +241,7 @@ Please update your MyAAC instances to this version.
 
 ### Fixed
 * Reloading of creatures/monsters throwing an exception
-* Loading custom pages with old Gesior variables [#108](https://github.com/slawkens/myaac/issues/107)
+* Loading custom pages with old Gesior variables
 * Some weird behaviour with installation of plugins
 * CHANGELOG.md loading in Admin Panel
 * spells displaying when level = 0

@@ -61,6 +61,12 @@ Char Bazaar with configurable rates in config.php
 
 Changed login by email
 
+## Project supported by JetBrains
+
+We extend our heartfelt gratitude to Jetbrains for generously granting us licenses to collaborate on this and various other open-source initiatives.
+
+[![JetBrains](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)](https://jb.gg/OpenSourceSupport/?from=https://github.com/opentibiabr/myaac)
+
 ### License
 
 This program and all associated files are released under the GNU Public License.  
