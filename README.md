@@ -2,6 +2,8 @@
 
 MyAAC is a free and open-source Automatic Account Creator (AAC) written in PHP. It supports only MySQL databases.
 
+[![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/opentibiabr/myaac/cypress.yml)](https://github.com/opentibiabr/myaac/actions)
+
 ### Requirements
 
 	- PHP 7.4 or later
