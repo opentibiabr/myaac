@@ -1,6 +1,22 @@
 To change a name of character select player and choose a new name.<br/>
 <span style="color: {{ color }}">Change name cost {{ config.account_change_character_name_coins }} {{ coin_type }}. You have {{ coins }} {{ coin_type }}.</span>
 <br/><br/>
+<span>Change name cost: {{ config.account_change_character_name_points }} coins.</span><br>
+<span>
+  Coins Balance:
+  {% if points > 0 %}
+    <span style="color: green; font-weight: bold">{{ points }} coins
+         {% if points < config.account_change_character_name_points %}
+           <span style="color: red; font-weight: normal"> (you do not have coins enough,
+                 <a href="?points" target="_blank">donate</a> now)</span>
+         {% endif %}
+      </span>
+  {% else %}
+    <span style="color: red; font-weight: bold">You do not have coins,
+  <a href="?points" target="_blank">donate</a> now</span>
+  {% endif %}
+</span>
+<br><br>
 <form action="{{ getLink('account/character/name') }}" method="post">
   <input type="hidden" name="changenamesave" value="1">
   <div class="TableContainer">

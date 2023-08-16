@@ -16,12 +16,19 @@ node_modules
 # cypress
 cypress.env.json
 cypress/e2e/2-advanced-examples
+cypress/e2e/advanced-examples/*
 
 # created by release.sh
 releases
 tmp
 
 config.local.php
+cache/serverstatus.txt
+cache/usercounter.tx
+downloads/*
+logs/
+logs
+!logs/index.html
 
 # all custom templates
 templates/*
@@ -62,8 +69,6 @@ plugins/*
 !plugins/example.json
 !plugins/account-create-hint.json
 !plugins/account-create-hint
-!plugins/email-confirmed-reward.json
-!plugins/email-confirmed-reward
 !plugins/email-confirmed-reward.json
 !plugins/email-confirmed-reward
 landing

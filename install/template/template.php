@@ -36,7 +36,7 @@
             <div class="break"></div>
         </div>
         <div class="pt-3">
-            <p style="text-align: center;">Powered by <a href="https://github.com/lucasgiovannibr/myaac" target="_blank">MyAAC</a> and edited by Lucas Giovanni.</p>
+            <p style="text-align: center;">Powered by <a href="https://github.com/opentibiabr/myaac" target="_blank">MyAAC</a> and edited by MyAAC contributors.</p>
         </div>
     </main>
 </body>
