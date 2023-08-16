@@ -543,7 +543,8 @@ WHERE killers.death_id = '".$death['id']."' ORDER BY killers.final_hit DESC, kil
 		'characters_link' => getLink('characters'),
 		'account_players' => isset($account_players) ? $account_players : null,
 		'search_form' => generate_search_form(),
-		'canEdit' => hasFlag(FLAG_CONTENT_PLAYERS) || superAdmin()
+		'canEdit' => hasFlag(FLAG_CONTENT_PLAYERS) || superAdmin(),
+        'vip_enabled' => isVipSystemEnabled()
 	));
 	}else{
 		$search_errors[] = 'Character <b>' . $name . '</b> does not exist or has been deleted.';

@@ -162,8 +162,23 @@
                           {% set rows = rows + 1 %}
                           <tr bgcolor="{{ getStyle(rows) }}">
                             <td class="LabelV175">Account Status:</td>
-                            <td>{% if account.isPremium() %}<font color="green"><b>Premium Account</b></font>{% else %}
-                                <font color="red">Free Account</font>{% endif %}</td>
+                            <td>
+                              {% if vip_enabled %}
+                                VIP
+                                {% if account.isPremium() %}
+                                  <strong
+                                    style="color:green">actived</strong> until {{ account.getExpirePremiumTime()|date("j M Y, H:i") }}
+                                {% else %}
+                                  <strong style="color:red">desactivated</strong>
+                                {% endif %}
+                              {% else %}
+                                {% if account.isPremium() %}
+                                  <font color="green"><b>Premium Account</b></font>
+                                {% else %}
+                                  <font color="red">Free Account</font>
+                                {% endif %}
+                              {% endif %}
+                            </td>
                           </tr>
 
                           </tbody>

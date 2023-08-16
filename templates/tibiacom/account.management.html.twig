@@ -50,12 +50,12 @@
                       <td>
                         {% if account_logged.isPremium() %}
                           <img class="AccountStatusImage"
-                               src="{{ template_path }}/images/account/account-status_green.gif" title="Premium Account"
-                               alt="premium account">
+                               src="{{ template_path }}/images/account/account-status_green.gif"
+                               title="{{ tag }} Account" alt="{{ tag }} account">
                         {% else %}
                           <img class="AccountStatusImage"
-                               src="{{ template_path }}/images/account/account-status_red.gif" title="Free Account"
-                               alt="free account">
+                               src="{{ template_path }}/images/account/account-status_red.gif"
+                               title="Free Account" alt="free account">
                         {% endif %}
                       </td>
                       <td width="100%" valign="middle">
@@ -64,7 +64,8 @@
                           {{ account_status }}
                         {% endautoescape %}
                         </span>
-                        <small><br>(Balance of Premium Time: {{ account_logged.getPremDays() }} days)</small>
+                        <small><br>{{ account_expire_time[0] }} {% if account_expire_time[1] %}
+                            (<a href="?points">donate now</a>) {% endif %}</small>
                       </td>
                       <td>
                         {% if config.gifts_system %}
@@ -78,7 +79,6 @@
                             </div>
                           </a>
                         {% endif %}
-
                         <div style="font-size:1px;height:4px;"></div>
 
                         <form action="{{ getLink('account/logout') }}" method="post" style="padding:0px;margin:0px;">
@@ -191,7 +191,7 @@
                             <br>
                             <a style="position: absolute; bottom: -5px; right: 0px;" href="?downloadclient">Download</a>
                           </div>
-                          <span style="position: relative; top: 18px;">Click <a href="?downloadclient">here</a> to download the latest Tibia client!</span>
+                          <span style="position: relative; top: 18px;">Click <a href="?downloadclient">here</a> to download the latest {{ config['lua']['serverName'] }} client!</span>
                         </div>
                       </td>
                     </tr>
@@ -671,6 +671,10 @@
                                 <td class="LabelV">Address:</td>
                                 <td style="width:90%;">{{ account_location }}</td>
                               </tr>
+                              <tr>
+                                <td class="LabelV">Phone:</td>
+                                <td style="width:90%;">{{ account_phone }}</td>
+                              </tr>
                             </table>
                           </td>
                           <td align=right>
@@ -751,7 +755,7 @@
                           <tr style="background-color: {{ getStyle(i) }}">
                             <td>{{ action.action }}</td>
                             <td>{{ action.date|date("d M Y, H:i:s") }}</td>
-                            <td>{{ action.ip }}</td>
+                            <td title="{{ action.ipv6 }}">{{ action.ip }}</td>
                           </tr>
                         {% endfor %}
                       {% endautoescape %}

@@ -89,13 +89,13 @@ switch ($action) {
 
     case 'login':
 
-        $ip   = $config['lua']['ip'];
-        $port = $config['lua']['gameProtocolPort'];
+        $ip   = configLua('ip');
+        $port = configLua('gameProtocolPort');
 
         // default world info
         $world = [
             'id'                         => 0,
-            'name'                       => $config['lua']['serverName'],
+            'name'                       => configLua('serverName'),
             'externaladdress'            => $ip,
             'externaladdressprotected'   => $ip,
             'externaladdressunprotected' => $ip,
@@ -105,7 +105,7 @@ switch ($action) {
             'previewstate'               => 0,
             'location'                   => 'BRA', // BRA, EUR, USA
             'anticheatprotection'        => false,
-            'pvptype'                    => array_search($config['lua']['worldType'], ['pvp', 'no-pvp', 'pvp-enforced']),
+            'pvptype'                    => array_search(configLua('worldType'), ['pvp', 'no-pvp', 'pvp-enforced']),
             'istournamentworld'          => false,
             'restrictedstore'            => false,
             'currenttournamentphase'     => 2
@@ -144,7 +144,7 @@ switch ($action) {
         $session  = [
             'sessionkey'                    => "$result->email\n$result->password",
             'lastlogintime'                 => (!$account) ? 0 : $account->getLastLogin(),
-            'ispremium'                     => $config['lua']['freePremium'] || $account->isPremium(),
+            'ispremium'                     => $account->isPremium(),
             'premiumuntil'                  => $premU,
             'status'                        => 'active', // active, frozen or suspended
             'returnernotification'          => false,
@@ -193,7 +193,7 @@ function createChar($config, $player)
 }
 
 /**
- * Function to check account has premium time
+ * Function to check account has premium time and update days
  * @param $db
  * @param $query
  * @param $account

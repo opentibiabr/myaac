@@ -1329,6 +1329,14 @@ function getDatabasePages($withHidden = false): array
     return $ret;
 }
 
+/**
+ * @return bool
+ */
+function isVipSystemEnabled(): bool
+{
+    return getBoolean(configLua('vipSystemEnabled'));
+}
+
 // validator functions
 require_once LIBS . 'validator.php';
 require_once SYSTEM . 'compat/base.php';

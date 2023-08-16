@@ -398,6 +398,10 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
         return $this->hasFlag(FLAG_SUPER_ADMIN);
     }
 
+    /**
+     * @return false|float|int
+     * @throws E_OTS_NotLoaded
+     */
     public function getPremDays()
     {
         if (!isset($this->data['lastday']) && !isset($this->data['premend']) && !isset($this->data['premium_ends_at'])) {
@@ -406,38 +410,38 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
 
         if (isset($this->data['premium_ends_at']) || isset($this->data['premend'])) {
             $col = isset($this->data['premium_ends_at']) ? 'premium_ends_at' : 'premend';
-            $ret = ceil(($this->data[$col] - time()) / (24 * 60 * 60));
+            $ret = ceil(($this->data[$col] - time()) / 86400);
             return $ret > 0 ? $ret : 0;
         }
 
-        if ($this->data['premdays'] == 0) {
-            return 0;
-        }
-
         global $config;
-        if (isset($config['lua']['freePremium']) && getBoolean($config['lua']['freePremium'])) return -1;
+        if (!isVipSystemEnabled() && isset($config['lua']['freePremium']) && configLua('freePremium')) return -1;
 
         if ($this->data['premdays'] == self::GRATIS_PREMIUM_DAYS) {
             return self::GRATIS_PREMIUM_DAYS;
+        }
+
+        if (isset($this->data['lastday'])) {
+            $ret = ceil(($this->data['lastday'] - time()) / 86400);
+            return $ret > 0 ? $ret : 0;
         }
 
         $ret = ceil($this->data['premdays'] - (date("z", time()) + (365 * (date("Y", time()) - date("Y", $this->data['lastday']))) - date("z", $this->data['lastday'])));
         return $ret > 0 ? $ret : 0;
     }
 
-    public function getLastLogin()
+    /**
+     * @return mixed
+     */
+    public function getExpirePremiumTime()
     {
-        if (!isset($this->data['lastday'])) {
-            throw new E_OTS_NotLoaded();
-        }
-
         return $this->data['lastday'];
     }
 
-    public function isPremium()
+    public function isPremium(): bool
     {
         global $config;
-        if (isset($config['lua']['freePremium']) && getBoolean($config['lua']['freePremium'])) return true;
+        if (!isVipSystemEnabled() && isset($config['lua']['freePremium']) && configLua('freePremium')) return true;
 
         if (isset($this->data['premium_ends_at'])) {
             return $this->data['premium_ends_at'] > time();
@@ -447,7 +451,20 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
             return $this->data['premend'] > time();
         }
 
+        if (isset($this->data['lastday'])) {
+            return $this->data['lastday'] > time();
+        }
+
         return ($this->data['premdays'] - (date("z", time()) + (365 * (date("Y", time()) - date("Y", $this->data['lastday']))) - date("z", $this->data['lastday'])) > 0);
+    }
+
+    public function getLastLogin()
+    {
+        if (!isset($this->data['lastday'])) {
+            throw new E_OTS_NotLoaded();
+        }
+
+        return $this->data['lastday'];
     }
 
     public function getCreated()
@@ -632,6 +649,8 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
             throw new E_OTS_NotLoaded();
         }
 
+        $field = $field == 'premium_points' ? 'coins' : $field;
+
         $value = $this->db->query('SELECT ' . $this->db->fieldName($field) . ' FROM ' . $this->db->tableName('accounts') . ' WHERE ' . $this->db->fieldName('id') . ' = ' . $this->data['id'])->fetch();
         return $value[$field];
     }
@@ -663,6 +682,8 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
         if (!isset($this->data['id'])) {
             throw new E_OTS_NotLoaded();
         }
+
+        $field = $field == 'premium_points' ? 'coins' : $field;
 
         // quotes value for SQL query
         if (!(is_int($value) || is_float($value))) {
