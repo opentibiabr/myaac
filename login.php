@@ -201,35 +201,27 @@ function createChar($config, $player)
  */
 function checkPremium($db, $query, $account)
 {
-    $premDays = (int)$query['premdays'];
-    $lastDay  = (int)$query['lastday'];
-    $save     = false;
-    $timeNow  = time();
-    if ($premDays != 0 && $premDays != PHP_INT_MAX) {
-        if ($lastDay == 0) {
-            $lastDay = $timeNow;
-            $save    = true;
+    $lastDay = (int)$query['lastday'];
+    $timeNow = time();
+
+    if ($lastDay < $timeNow) {
+        $premDays = 0;
+        $lastDay  = 0;
+    } else if ($lastDay == 0) {
+        $premDays = 0;
+    } else {
+        $daysLeft = (int)(($lastDay - $timeNow) / 86400);
+        $timeLeft = (int)(($lastDay - $timeNow) % 86400);
+        if ($daysLeft > 0) {
+            $premDays = $daysLeft;
+        } else if ($daysLeft == 0 && $timeLeft > 0) {
+            $premDays = 1;
         } else {
-            $days = (int)(($timeNow - $lastDay) / 86400);
-            if ($days > 0) {
-                if ($days >= $premDays) {
-                    $premDays = 0;
-                    $lastDay  = 0;
-                } else {
-                    $premDays -= $days;
-                    $reminder = (int)(($timeNow - $lastDay) % 86400);
-                    $lastDay  = $timeNow - $reminder;
-                }
-                $save = true;
-            }
+            $premDays = 0;
+            $lastDay  = 0;
         }
-    } else if ($lastDay != 0) {
-        $lastDay = 0;
-        $save    = true;
     }
 
-    if ($save) {
-        $db->query("update `accounts` set `premdays` = {$premDays}, `lastday` = {$lastDay} where `id` = {$account->getId()}");
-    }
-    return $premDays > 0 ? $timeNow + ($premDays * 86400) : 0;
+    $db->query("update `accounts` set `premdays` = {$premDays}, `lastday` = {$lastDay} where `id` = {$account->getId()}");
+    return $lastDay;
 }
