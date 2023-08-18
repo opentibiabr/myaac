@@ -137,6 +137,7 @@ if ($action == '') {
         'tournament_coins' => $tournament_coins,
         'account_email' => $account_email,
         'account_created' => $account_created,
+        'account_web_lastlogin' => $account_logged->getCustomField('web_lastlogin'),
         'account_status' => $account_status,
         'account_registered' => $account_registered,
         'account_rlname' => $account_rlname,

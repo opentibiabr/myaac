@@ -90,7 +90,7 @@ if ($id > 0) {
     $account = new OTS_Account();
     $account->load($id);
 
-    if (isset($account, $_POST['save']) && $account->isLoaded()) {// we want to save
+    if (isset($account, $_POST['save']) && $account->isLoaded()) {
         $error = false;
 
         $_error = '';
@@ -133,16 +133,22 @@ if ($id > 0) {
             $t_coins = $_POST['t_coins'];
             verify_number($t_coins, 'Tibia coins', 12);
         }
-        // prem days
+        //prem days
         $p_days = (int)$_POST['p_days'];
-        verify_number($p_days, 'Prem days', 11);
+        verify_number($p_days, (isVipSystemEnabled() ? 'VIP' : 'Premium') . ' days', 11);
 
         //prem points
-        $p_points = $_POST['p_points'];
-        verify_number($p_points, 'Prem Points', 11);
+        if ($hasPointsColumn) {
+            $p_points = $_POST['p_points'];
+            verify_number($p_points, 'Points', 11);
+        }
 
         //rl name
         $rl_name = $_POST['rl_name'];
+
+        //rl phone
+        $phone = $_POST['phone'];
+        verify_number($phone, 'Phone', 14);
 
         //location
         $rl_loca = $_POST['rl_loca'];
@@ -181,19 +187,12 @@ if ($id > 0) {
                 $account->setCustomField('coins', $t_coins);
             }
 
-            $lastDay = 0;
-            if ($p_days != 0 && $p_days != OTS_Account::GRATIS_PREMIUM_DAYS) {
-                $lastDay = time();
-            } else if ($lastDay != 0) {
-                $lastDay = 0;
-            }
-
             $account->setPremDays($p_days);
-            $account->setLastLogin($lastDay);
             if ($hasPointsColumn) {
                 $account->setCustomField('premium_points', $p_points);
             }
             $account->setRLName($rl_name);
+            $account->setCustomField('phone', $phone);
             $account->setLocation($rl_loca);
             $account->setCountry($rl_country);
             $account->setCustomField('created', $created);
@@ -354,7 +353,7 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
                         </div>
                         <?php if ($hasPointsColumn): ?>
                             <div class="col-6 mb-3">
-                                <label for="p_points" class="control-label">Premium Points:</label>
+                                <label for="p_points" class="control-label">Points:</label>
                                 <input type="text" class="form-control" id="p_points" name="p_points"
                                        autocomplete="off" maxlength="8"
                                        value="<?= $account->getCustomField('premium_points') ?>"/>
@@ -385,6 +384,12 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-4 mb-3">
+                            <label for="phone" class="control-label">Phone:</label>
+                            <input type="text" class="form-control" id="phone" name="phone"
+                                   autocomplete="off" maxlength="14"
+                                   value="<?= $account->getCustomField('phone'); ?>"/>
+                        </div>
                         <div class="col-4 mb-3">
                             <label for="created" class="control-label">Created:</label>
                             <input type="text" class="form-control" id="created" name="created"

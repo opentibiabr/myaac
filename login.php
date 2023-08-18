@@ -143,7 +143,7 @@ switch ($action) {
         $playdata = compact('worlds', 'characters');
         $session  = [
             'sessionkey'                    => "$result->email\n$result->password",
-            'lastlogintime'                 => (!$account) ? 0 : $account->getLastLogin(),
+            'lastlogintime'                 => $account ? $account->getLastLogin() : 0,
             'ispremium'                     => $account->isPremium(),
             'premiumuntil'                  => $premU,
             'status'                        => 'active', // active, frozen or suspended

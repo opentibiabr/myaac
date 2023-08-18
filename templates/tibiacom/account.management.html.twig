@@ -532,7 +532,7 @@
                       </tr>
                       <tr style="background-color: {{ config.darkborder }};">
                         <td class="LabelV">Last Login:</td>
-                        <td>{{ "now"|date("M d Y, G:i:s") }}</td>
+                        <td>{{ account_web_lastlogin|date("M d Y, G:i:s") }}</td>
                       </tr>
                       {% autoescape false %}
                         <tr style="background-color: {{ config.lightborder }};">
