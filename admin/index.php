@@ -17,7 +17,7 @@ if (file_exists(BASE . 'install') && (!isset($config['installed']) || !$config['
 $content = '';
 
 // validate page
-$page = isset($_GET['p']) ? $_GET['p'] : '';
+$page = $_GET['p'] ?? '';
 if (empty($page) || preg_match("/[^a-zA-Z0-9_\-]/", $page))
     $page = 'dashboard';
 
@@ -69,7 +69,7 @@ $template_path = 'template/';
 require ADMIN . $template_path . 'template.php';
 ?>
 
-<?php if ($config['pace_load'] == true) { ?>
+<?php if ($config['pace_load']) { ?>
     <script src="../admin/bootstrap/pace/pace.js"></script>
     <link href="../admin/bootstrap/pace/themes/white/pace-theme-flash.css" rel="stylesheet"/>
 <?php } ?>
