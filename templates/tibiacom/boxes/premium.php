@@ -37,7 +37,7 @@ $activeBox = rand(1,7);
   <div id="PremiumBoxDecor" style="background-image:url(<?php echo $template_path ?>/images/themeboxes/premium/coin_animation.gif);"></div>
   <div id="PremiumBoxBg" style="background-image:url(<?php echo $template_path ?>/images/themeboxes/premium/coins_premium.png);"></div>
   <div id="PremiumBoxOverlay" style="background-image:url(<?php echo $template_path ?>/images/themeboxes/premium/type_overlay.png);">
-    <p id="PremiumBoxOverlayText">Become Premium!</p>
+    <p id="PremiumBoxOverlayText">Become <?= isVipSystemEnabled() ? 'VIP' : 'Premium' ?>!</p>
   </div>
   <div id="PremiumBoxButton">
     <form action="?points" method="post" style="padding:0px;margin:0px;">

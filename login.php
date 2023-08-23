@@ -89,13 +89,13 @@ switch ($action) {
 
     case 'login':
 
-        $ip   = $config['lua']['ip'];
-        $port = $config['lua']['gameProtocolPort'];
+        $ip   = configLua('ip');
+        $port = configLua('gameProtocolPort');
 
         // default world info
         $world = [
             'id'                         => 0,
-            'name'                       => $config['lua']['serverName'],
+            'name'                       => configLua('serverName'),
             'externaladdress'            => $ip,
             'externaladdressprotected'   => $ip,
             'externaladdressunprotected' => $ip,
@@ -105,7 +105,7 @@ switch ($action) {
             'previewstate'               => 0,
             'location'                   => 'BRA', // BRA, EUR, USA
             'anticheatprotection'        => false,
-            'pvptype'                    => array_search($config['lua']['worldType'], ['pvp', 'no-pvp', 'pvp-enforced']),
+            'pvptype'                    => array_search(configLua('worldType'), ['pvp', 'no-pvp', 'pvp-enforced']),
             'istournamentworld'          => false,
             'restrictedstore'            => false,
             'currenttournamentphase'     => 2
@@ -143,8 +143,8 @@ switch ($action) {
         $playdata = compact('worlds', 'characters');
         $session  = [
             'sessionkey'                    => "$result->email\n$result->password",
-            'lastlogintime'                 => (!$account) ? 0 : $account->getLastLogin(),
-            'ispremium'                     => $config['lua']['freePremium'] || $account->isPremium(),
+            'lastlogintime'                 => $account ? $account->getLastLogin() : 0,
+            'ispremium'                     => $account->isPremium(),
             'premiumuntil'                  => $premU,
             'status'                        => 'active', // active, frozen or suspended
             'returnernotification'          => false,
@@ -193,7 +193,7 @@ function createChar($config, $player)
 }
 
 /**
- * Function to check account has premium time
+ * Function to check account has premium time and update days
  * @param $db
  * @param $query
  * @param $account
@@ -201,35 +201,27 @@ function createChar($config, $player)
  */
 function checkPremium($db, $query, $account)
 {
-    $premDays = (int)$query['premdays'];
-    $lastDay  = (int)$query['lastday'];
-    $save     = false;
-    $timeNow  = time();
-    if ($premDays != 0 && $premDays != PHP_INT_MAX) {
-        if ($lastDay == 0) {
-            $lastDay = $timeNow;
-            $save    = true;
+    $lastDay = (int)$query['lastday'];
+    $timeNow = time();
+
+    if ($lastDay < $timeNow) {
+        $premDays = 0;
+        $lastDay  = 0;
+    } else if ($lastDay == 0) {
+        $premDays = 0;
+    } else {
+        $daysLeft = (int)(($lastDay - $timeNow) / 86400);
+        $timeLeft = (int)(($lastDay - $timeNow) % 86400);
+        if ($daysLeft > 0) {
+            $premDays = $daysLeft;
+        } else if ($daysLeft == 0 && $timeLeft > 0) {
+            $premDays = 1;
         } else {
-            $days = (int)(($timeNow - $lastDay) / 86400);
-            if ($days > 0) {
-                if ($days >= $premDays) {
-                    $premDays = 0;
-                    $lastDay  = 0;
-                } else {
-                    $premDays -= $days;
-                    $reminder = (int)(($timeNow - $lastDay) % 86400);
-                    $lastDay  = $timeNow - $reminder;
-                }
-                $save = true;
-            }
+            $premDays = 0;
+            $lastDay  = 0;
         }
-    } else if ($lastDay != 0) {
-        $lastDay = 0;
-        $save    = true;
     }
 
-    if ($save) {
-        $db->query("update `accounts` set `premdays` = {$premDays}, `lastday` = {$lastDay} where `id` = {$account->getId()}");
-    }
-    return $premDays > 0 ? $timeNow + ($premDays * 86400) : 0;
+    $db->query("update `accounts` set `premdays` = {$premDays}, `lastday` = {$lastDay} where `id` = {$account->getId()}");
+    return $lastDay;
 }
