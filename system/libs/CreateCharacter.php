@@ -89,7 +89,7 @@ class CreateCharacter
         if (empty($errors)) {
             if (!isset(config('genders')[$sex]))
                 $errors['sex'] = 'Sex is invalid.';
-            if (!in_array($town, config('character_towns'), false))
+            if (!in_array($town, config('character_towns')))
                 $errors['town'] = 'Please select valid town.';
             if (count(config('character_samples')) > 1) {
                 $newchar_vocation_check = false;

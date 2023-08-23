@@ -93,7 +93,7 @@ function MostreSemanas(){
 	$semanas = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
 
 	for($i = 0; $i < 7; $i++)
-	 echo "<td>".$semanas{$i}."</td>";
+	 echo "<td>".$semanas[$i]."</td>";
 }
 
 function GetNumeroDias($mes){
