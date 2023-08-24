@@ -23,7 +23,7 @@
  * @copyright 2019 MyAAC
  * @link      https://my-aac.org
  */
-if (version_compare(phpversion(), '7.2.5', '<')) die('PHP version 7.2.5 or higher is required.');
+if (version_compare(phpversion(), '7.4', '<')) die('PHP version 7.4 or higher is required.');
 
 define('MYAAC', true);
 define('MYAAC_VERSION', '0.8.12');
