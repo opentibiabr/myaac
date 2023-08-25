@@ -661,8 +661,6 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
             throw new E_OTS_NotLoaded();
         }
 
-        $field = $field == 'premium_points' ? 'coins' : $field;
-
         $value = $this->db->query('SELECT ' . $this->db->fieldName($field) . ' FROM ' . $this->db->tableName('accounts') . ' WHERE ' . $this->db->fieldName('id') . ' = ' . $this->data['id'])->fetch();
         return $value[$field];
     }
@@ -694,8 +692,6 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
         if (!isset($this->data['id'])) {
             throw new E_OTS_NotLoaded();
         }
-
-        $field = $field == 'premium_points' ? 'coins' : $field;
 
         // quotes value for SQL query
         if (!(is_int($value) || is_float($value))) {
