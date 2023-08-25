@@ -99,7 +99,7 @@ $config = array(
     'account_mail_confirmed_reward' => [ // reward users for confirming their E-Mails
         // account_mail_verify needs to be enabled too
         'premium_days' => 0,
-        'premium_points' => 0,
+        'coins_transferable' => 0,
         'coins' => 0,
         'message' => 'You received %d %s for confirming your E-Mail address.' // example: You received 20 coins for confirming your E-Mail address.
     ],
