@@ -214,7 +214,7 @@ function checkPremium($db, $query, $account)
         $timeLeft = (int)(($lastDay - $timeNow) % 86400);
         if ($daysLeft > 0) {
             $premDays = $daysLeft;
-        } else if ($daysLeft == 0 && $timeLeft > 0) {
+        } else if ($timeLeft > 0) {
             $premDays = 1;
         } else {
             $premDays = 0;
