@@ -66,7 +66,7 @@ We extend our heartfelt gratitude to Jetbrains for generously granting us licens
 ### License
 
 This program and all associated files are released under the GNU Public License.  
-See [LICENSE](https://github.com/lucasgiovannibr/myaac/blob/main/LICENSE) for details.
+See [LICENSE](https://github.com/opentibiabr/myaac/blob/main/LICENSE) for details.
 
 ### Credits
 

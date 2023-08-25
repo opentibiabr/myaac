@@ -1,30 +1,31 @@
-<?php defined('MYAAC') or die('Direct access not allowed!'); ?>
+<?php
+global $config;
+defined('MYAAC') or die('Direct access not allowed!'); ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <?php echo template_header(true);
+    <?php
+    echo template_header(true);
     $title_full = (isset($title) ? $title . $config['title_separator'] : '') . $config['lua']['serverName'];
     ?>
 
-    <title><?php echo $title_full ?></title>
-    <link rel="shortcut icon" href="<?php echo BASE_URL; ?>images/favicon.ico" type="image/x-icon"/>
-    <link rel="icon" href="<?php echo BASE_URL; ?>images/favicon.ico" type="image/x-icon"/>
+    <title><?= $title_full ?></title>
+    <link rel="shortcut icon" href="<?= BASE_URL; ?>images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="<?= BASE_URL; ?>images/favicon.ico" type="image/x-icon"/>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>admin/bootstrap/css/bootstrap.min.css"> <!-- BOOTSTRAP 5 -->
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>admin/bootstrap/bootstrap-lucasg.css"> <!-- CUSTOM -->
-    <!-- <link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/bootstrap.min.css"> -->
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/skins/skin-blue.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL; ?>admin/bootstrap/css/bootstrap.min.css"> <!-- BOOTSTRAP 5 -->
+    <link rel="stylesheet" href="<?= BASE_URL; ?>admin/bootstrap/bootstrap-myaac.css"> <!-- CUSTOM -->
+    <link rel="stylesheet" href="<?= BASE_URL; ?>tools/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL; ?>tools/css/skins/skin-blue.min.css">
 
-    <!-- <link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/font-awesome.min.css"> -->
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/fontawesome.min.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/fonts/fontawesome/all.css">
-    <script src="<?php echo BASE_URL; ?>tools/fonts/fontawesome/all.js"></script>
+    <link rel="stylesheet" href="<?= BASE_URL; ?>tools/css/fontawesome.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL; ?>tools/fonts/fontawesome/all.css">
+    <script src="<?= BASE_URL; ?>tools/fonts/fontawesome/all.js"></script>
 
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>tools/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo $template_path; ?>style.css"/>
+    <link rel="stylesheet" href="<?= BASE_URL; ?>tools/css/ionicons.min.css">
+    <link rel="stylesheet" href="<?= BASE_URL; ?>tools/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="<?= $template_path; ?>style.css"/>
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -34,9 +35,7 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-    <?php
-    if ($logged && admin()) {
-    ?>
+    <?php if ($logged && admin()) { ?>
     <header class="main-header">
         <a href="." class="logo">
             <span class="logo-mini"><b>M</b>A</span>
@@ -149,16 +148,16 @@
 
     <div class="content-wrapper">
         <section class="content-header">
-            <h1><?php echo(isset($title) ? $title : ''); ?>
+            <h1><?= ($title ?? ''); ?>
                 <small> - Admin Panel</small>
                 <div class="float-end">
                     <span
-                        class="badge bg-<?php echo(($status['online']) ? 'success' : 'danger'); ?>"><?php echo $config['lua']['serverName'] ?></span>
+                        class="badge bg-<?= (($status['online']) ? 'success' : 'danger'); ?>"><?= $config['lua']['serverName'] ?></span>
                 </div>
             </h1>
         </section>
         <section class="content">
-            <?php echo $content; ?>
+            <?= $content; ?>
         </section>
 
     </div>
@@ -174,7 +173,7 @@
                 <?php endif; ?>
             </div>
         </div>
-        Powered by MyAAC and edited by Lucas Giovanni.
+        Powered by MyAAC and edited by OpenTibiaBR Contributors.
     </footer>
 
     <aside class="control-sidebar control-sidebar-dark">
@@ -192,7 +191,7 @@
                             <div class="menu-info">
                                 <h4 class="control-sidebar-subheading">Log out</h4>
                                 <p>This will log you out
-                                    of <?php echo(USE_ACCOUNT_NAME ? $account_logged->getName() : $account_logged->getId()); ?></p>
+                                    of <?= (USE_ACCOUNT_NAME ? $account_logged->getName() : $account_logged->getId()); ?></p>
                             </div>
                         </a>
                     </li>
@@ -200,7 +199,7 @@
                 <h3 class="control-sidebar-heading">Site</h3>
                 <ul class="control-sidebar-menu">
                     <li>
-                        <a href="<?php echo BASE_URL; ?>" target="_blank">
+                        <a href="<?= BASE_URL; ?>" target="_blank">
                             <i class="menu-icon fa  fa-eye bg-blue"></i>
                             <div class="menu-info">
                                 <h4 class="control-sidebar-subheading">Preview</h4>
@@ -219,7 +218,7 @@
                             0.8.6 (<a href="?p=version">Check for updates</a>)<br/>
                         </label>
                         <label class="control-sidebar-subheading">
-                            <p><a href="https://github.com/lucaslking/myaac" target="_blank">Github</a></p>
+                            <p><a href="https://github.com/opentibiabr/myaac" target="_blank">Github</a></p>
                     </div>
                 </form>
             </div>
@@ -234,10 +233,10 @@ if (!$logged && !admin()) {
 }
 ?>
 
-<script src="<?php echo BASE_URL; ?>admin/bootstrap/js/bootstrap.min.js"></script> <!-- BOOTSTRAP 5 -->
-<!-- <script src="<?php echo BASE_URL; ?>tools/js/bootstrap.min.js"></script> -->
-<script src="<?php echo BASE_URL; ?>tools/js/jquery-ui.min.js"></script>
-<script src="<?php echo BASE_URL; ?>tools/js/jquery.dataTables.min.js"></script>
-<script src="<?php echo BASE_URL; ?>tools/js/adminlte.min.js"></script>
+<script src="<?= BASE_URL; ?>admin/bootstrap/js/bootstrap.min.js"></script> <!-- BOOTSTRAP 5 -->
+<!-- <script src="<?= BASE_URL; ?>tools/js/bootstrap.min.js"></script> -->
+<script src="<?= BASE_URL; ?>tools/js/jquery-ui.min.js"></script>
+<script src="<?= BASE_URL; ?>tools/js/jquery.dataTables.min.js"></script>
+<script src="<?= BASE_URL; ?>tools/js/adminlte.min.js"></script>
 </body>
 </html>

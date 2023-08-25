@@ -24,7 +24,7 @@ if (isset($config['boxes']))
     <script src="admin/bootstrap/jquery-3.6.0.min.js"></script>
     <script src="admin/bootstrap/popper.min.js"></script>
     <script src="admin/bootstrap/js/bootstrap.min.js"></script>
-    <link href="admin/bootstrap/bootstrap-lucasg.css" rel="stylesheet" type="text/css">
+    <link href="admin/bootstrap/bootstrap-myaac.css" rel="stylesheet" type="text/css">
 
     <?php if ($config['pace_load']) { ?>
         <script src="admin/bootstrap/pace/pace.js"></script>
