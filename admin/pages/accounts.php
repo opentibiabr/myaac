@@ -39,7 +39,7 @@ function verify_number($number, $name, $max_length)
 
 $hasSecretColumn = $db->hasColumn('accounts', 'secret');
 $hasCoinsColumn = $db->hasColumn('accounts', 'coins');
-$hasPointsColumn = $db->hasColumn('accounts', 'premium_points');
+$hasTransferableColumn = $db->hasColumn('accounts', 'coins_transferable');
 $hasTypeColumn = $db->hasColumn('accounts', 'type');
 $hasGroupColumn = $db->hasColumn('accounts', 'group_id');
 
@@ -128,27 +128,30 @@ if ($id > 0) {
         if (!Validator::email($email))
             $errors['email'] = Validator::getLastError();
 
+        //prem days
+        $p_days = (int)$_POST['p_days'];
+        verify_number($p_days, (isVipSystemEnabled() ? 'VIP' : 'Premium') . ' days', 4);
+
         //tibia coins
         if ($hasCoinsColumn) {
             $t_coins = $_POST['t_coins'];
-            verify_number($t_coins, 'Tibia coins', 12);
+            verify_number($t_coins, 'Tibia coins', 5);
         }
-        //prem days
-        $p_days = (int)$_POST['p_days'];
-        verify_number($p_days, (isVipSystemEnabled() ? 'VIP' : 'Premium') . ' days', 11);
 
-        //prem points
-        if ($hasPointsColumn) {
-            $p_points = $_POST['p_points'];
-            verify_number($p_points, 'Points', 11);
+        //coins transferable
+        if ($hasTransferableColumn) {
+            $t_coins_transf = $_POST['t_coins_transf'];
+            verify_number($t_coins_transf, 'Tibia coins (transferable)', 5);
         }
 
         //rl name
         $rl_name = $_POST['rl_name'];
 
         //rl phone
-        $phone = $_POST['phone'];
-        verify_number($phone, 'Phone', 14);
+        $phone = $_POST['phone'] ?? null;
+        if ($phone) {
+            verify_number($phone, 'Phone', 14);
+        }
 
         //location
         $rl_loca = $_POST['rl_loca'];
@@ -183,13 +186,12 @@ if ($id > 0) {
             }
             $account->setCustomField('key', $key);
             $account->setEMail($email);
+            $account->setPremDays($p_days);
+            if ($hasTransferableColumn) {
+                $account->setCustomField('coins_transferable', $t_coins_transf);
+            }
             if ($hasCoinsColumn) {
                 $account->setCustomField('coins', $t_coins);
-            }
-
-            $account->setPremDays($p_days);
-            if ($hasPointsColumn) {
-                $account->setCustomField('premium_points', $p_points);
             }
             $account->setRLName($rl_name);
             $account->setCustomField('phone', $phone);
@@ -323,6 +325,12 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
                             </div>
                         <?php endif; ?>
                         <div class="col-6 mb-3">
+                            <label for="email" class="control-label">Email:</label>
+                            <input type="text" class="form-control" id="email" name="email"
+                                   autocomplete="off" maxlength="20"
+                                   value="<?= $account->getEMail(); ?>"/>
+                        </div>
+                        <div class="col-6 mb-3">
                             <label for="key" class="control-label">Key:</label>
                             <input type="text" class="form-control" id="key" name="key"
                                    autocomplete="off" style="cursor: auto;" size="8" maxlength="11"
@@ -331,35 +339,34 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
                     </div>
                     <div class="row">
                         <div class="col-6 mb-3">
-                            <label for="email" class="control-label">Email:</label>
-                            <input type="text" class="form-control" id="email" name="email"
-                                   autocomplete="off" maxlength="20"
-                                   value="<?= $account->getEMail(); ?>"/>
-                        </div>
-                        <?php if ($hasCoinsColumn): ?>
-                            <div class="col-6 mb-3">
-                                <label for="t_coins" class="control-label">Tibia Coins:</label>
-                                <input type="text" class="form-control" id="t_coins" name="t_coins"
-                                       autocomplete="off" maxlength="8"
-                                       value="<?= $account->getCustomField('coins') ?>"/>
-                            </div>
-                        <?php endif; ?>
-                        <div class="col-6 mb-3">
                             <label for="p_days" class="control-label">
                                 <?= isVipSystemEnabled() ? 'VIP' : 'Premium' ?> Days:</label>
-                            <input type="text" class="form-control" id="p_days" name="p_days"
-                                   autocomplete="off" maxlength="11"
+                            <input type="number" class="form-control" id="p_days" name="p_days"
+                                   autocomplete="off" maxlength="4"
                                    value="<?= $account->getPremDays(); ?>"/>
                         </div>
-                        <?php if ($hasPointsColumn): ?>
-                            <div class="col-6 mb-3">
-                                <label for="p_points" class="control-label">Points:</label>
-                                <input type="text" class="form-control" id="p_points" name="p_points"
-                                       autocomplete="off" maxlength="8"
-                                       value="<?= $account->getCustomField('premium_points') ?>"/>
-                            </div>
-                        <?php endif; ?>
                     </div>
+                    <?php if ($hasCoinsColumn || $hasTransferableColumn): ?>
+                        <div class="row">
+                            <?php if ($hasCoinsColumn): ?>
+                                <div class="col-6 mb-3">
+                                    <label for="t_coins" class="control-label">Tibia Coins:</label>
+                                    <input type="number" class="form-control" id="t_coins" name="t_coins"
+                                           autocomplete="off" maxlength="5"
+                                           value="<?= $account->getCustomField('coins') ?>"/>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($hasTransferableColumn): ?>
+                                <div class="col-6 mb-3">
+                                    <label for="t_coins_transf" class="control-label">Tibia Coins
+                                        (transferable):</label>
+                                    <input type="number" class="form-control" id="t_coins_transf" name="t_coins_transf"
+                                           autocomplete="off" maxlength="5"
+                                           value="<?= $account->getCustomField('coins_transferable') ?>"/>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="row">
                         <div class="col-4 mb-3">
                             <label for="rl_name" class="control-label">RL Name:</label>
