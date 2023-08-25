@@ -356,7 +356,7 @@ $config = array(
 	'status_interval' => 60,
 
 	// admin panel
-	'admin_panel_modules' => 'lastlogin,points,coins',
+	'admin_panel_modules' => 'lastlogin,coinstransferable,coins',
 
 	// other
 	'anonymous_usage_statistics' => true,
