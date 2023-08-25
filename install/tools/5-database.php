@@ -126,11 +126,6 @@ if ($db->hasColumn('accounts', 'next_email')) {
         success($locale['step_database_adding_field'] . ' accounts.email_next...');
 }
 
-if (!$db->hasColumn('accounts', 'premium_points')) {
-    if (query("ALTER TABLE `accounts` ADD `premium_points` INT(11) NOT NULL DEFAULT 0 AFTER `email_next`;"))
-        success($locale['step_database_adding_field'] . ' accounts.premium_points...');
-}
-
 if ($db->hasColumn('guilds', 'checkdata')) {
     if (query("ALTER TABLE `guilds` MODIFY `checkdata` INT NOT NULL DEFAULT 0;"))
         success($locale['step_database_modifying_field'] . ' guilds.checkdata...');
