@@ -24,11 +24,7 @@ MyAAC is a free and open-source Automatic Account Creator (AAC) written in PHP. 
 
 	  Note: Linux only
 		If you're under linux use these commands to set proper permissions:
-			chmod 660 config.local.php
-			chmod 660 images/guilds
-			chmod 660 images/houses
-			chmod 660 images/gallery
-			chmod -R 770 system/cache
+            sudo chmod 755 -R . && sudo chmod 777 -R outfits/ system/ images/ plugins/ tools/
 
 	Visit http://your_domain/install (http://127.0.0.1/install) and follow instructions in the browser.
 

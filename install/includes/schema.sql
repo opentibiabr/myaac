@@ -370,4 +370,5 @@ ALTER TABLE `server_config` ADD `timestamp` TIMESTAMP on update CURRENT_TIMESTAM
 
 ALTER TABLE `accounts` CHANGE `name` `name` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
 
+ALTER TABLE `accounts` ADD `phone` VARCHAR(15) NULL AFTER `rlname`;
 ALTER TABLE `players` ADD `ismain` TINYINT(1) NOT NULL DEFAULT 0 AFTER `istutorial`;
