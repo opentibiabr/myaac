@@ -23,7 +23,7 @@ $needCoins = $config['account_change_character_main_coins'];
 /** @var OTS_Players_List $account_players */
 $account_players = $account_logged->getPlayersList();
 $account_players->orderBy('id');
-$coins = $account_logged->getCustomField('coins');
+$coins = $account_logged->getCustomField($coinType);
 $main_changed = false;
 $player_id = isset($_POST['player_id']) ? (int)$_POST['player_id'] : NULL;
 if (isset($_POST['changemainsave']) && $_POST['changemainsave'] == 1) {
@@ -41,7 +41,7 @@ if (isset($_POST['changemainsave']) && $_POST['changemainsave'] == 1) {
                     $db->query("update `players` set `ismain` = 0 where `account_id` = {$player_account->getId()}");
                     $db->query("update `players` set `ismain` = 1, `hidden` = 0 where `id` = {$player_id}");
                     $main_changed = true;
-                    $account_logged->setCustomField("coins", $coins - $needCoins);
+                    $account_logged->setCustomField($coinType, $coins - $needCoins);
                     $account_logged->logAction($desc = "Changed main character to <b>{$player->getName()}</b>.");
                     $twig->display('success.html.twig', array(
                         'title' => 'Main Character Changed',
