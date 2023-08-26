@@ -113,7 +113,7 @@ $config = array(
 
     'account_change_coin_type' => 'coins', // which coin you want to use, coins or transferable_coins to buy changes at site
     'account_change_character_name' => false, // can user change their character name for coins?
-	'account_change_character_name_points' => 30, // cost of name change
+	'account_change_character_name_coins' => 30, // cost of name change
 	'account_change_character_sex' => false, // can user change their character sex for coins?
 	'account_change_character_sex_points' => 30, // cost of sex change
     'account_change_character_main' => true, // can user change their main character for coins?
