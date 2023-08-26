@@ -223,8 +223,8 @@ if($save)
 			}
 		}
 
-		if($config['account_premium_points']) {
-			$new_account->setCustomField('premium_points', $config['account_premium_points']);
+		if($config['account_premium_coins']) {
+			$new_account->setCustomField('coins', $config['account_premium_coins']);
 		}
 
 		$tmp_account = (USE_ACCOUNT_NAME ? $account_name : $account_id);
