@@ -216,11 +216,12 @@ if($save)
 		if($config['account_premium_days'] && $config['account_premium_days'] > 0) {
 			if($db->hasColumn('accounts', 'premend')) { // othire
 				$new_account->setCustomField('premend', time() + $config['account_premium_days'] * 86400);
-			}
-			else { // rest
-				$new_account->setCustomField('premdays', $config['account_premium_days']);
-				$new_account->setCustomField('lastday', time());
-			}
+			} else { // rest
+                $premdays = $config['account_premium_days'];
+                $new_account->setCustomField('premdays', $premdays);
+                $lastDay = ($premdays > 0 && $premdays < OTS_Account::GRATIS_PREMIUM_DAYS) ? time() + ($premdays * 86400) : 0;
+                $new_account->setCustomField('lastday', $lastDay);
+            }
 		}
 
 		if($config['account_premium_coins']) {
