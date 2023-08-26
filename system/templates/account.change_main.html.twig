@@ -1,13 +1,14 @@
 Select a main character and submit.<br/>
-<span style="color: {{ color }}">Change main character cost {{ config.account_change_character_main_coins }} coins. You have {{ coins }} coins.</span><br/><br/>
+<span style="color: {{ color }}">Change main character cost {{ config.account_change_character_main_coins }} {{ coin_type }}. You have {{ coins }} {{ coin_type }}.</span>
+<br/><br/>
 <form action="{{ getLink('account/character/main') }}" method="post">
   <input type="hidden" name="changemainsave" value="1"/>
   <div class="TableContainer">
     <table class="Table1" cellpadding="0" cellspacing="0" style="width:100%;">
       <div class="CaptionContainer">
         <div class="CaptionInnerContainer">
-                    <span class="CaptionEdgeLeftTop"
-                          style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
+          <span class="CaptionEdgeLeftTop"
+                style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
           <span class="CaptionEdgeRightTop"
                 style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
           <span class="CaptionBorderTop"
