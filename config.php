@@ -120,6 +120,10 @@ $config = array(
     'account_change_character_main_coins' => 250, // cost of main change
 	'characters_per_account' => 10,	// max. number of characters per account
 
+    // recovery key
+    'generate_new_reckey' => true,				// let player generate new recovery key, he will receive e-mail with new rec key (not display on page, hacker can't generate rec key)
+    'generate_new_reckey_price' => 20,			// coins price for new recovery key
+
 	// mail
 	'mail_enabled' => false, // is aac maker configured to send e-mails?
 	'mail_address' => 'no-reply@your-server.org', // server e-mail address (from:)
@@ -143,9 +147,7 @@ $config = array(
 	'recaptcha_secret_key' => '',
 	'recaptcha_theme' => 'light', // light, dark
 
-	//
-	'generate_new_reckey' => true,				// let player generate new recovery key, he will receive e-mail with new rec key (not display on page, hacker can't generate rec key)
-	'generate_new_reckey_price' => 20,			// price for new recovery key
+	// e-mail senders
 	'send_mail_when_change_password' => true,	// send e-mail with new password when change password to account
 	'send_mail_when_generate_reckey' => true,	// send e-mail with rec key (key is displayed on page anyway when generate)
 
