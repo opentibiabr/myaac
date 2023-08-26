@@ -12,13 +12,17 @@ defined('MYAAC') or die('Direct access not allowed!');
 
 $player_id = isset($_POST['player_id']) ? (int)$_POST['player_id'] : NULL;
 $name = isset($_POST['name']) ? stripslashes(ucwords(strtolower($_POST['name']))) : NULL;
-if ((!$config['account_change_character_name']))
-    echo 'Changing character name for premium points is disabled on this server.';
+$coinType = $config['account_change_coin_type'] ?? 'coins';
+$coinName = $coinType == 'coins' ? $coinType : 'transferable coins';
+$needCoins = $config['account_change_character_name_coins'];
+
+if (!$config['account_change_character_name'])
+    echo 'Changing character name for coins is disabled on this server.';
 else {
-    $points = $account_logged->getCustomField('premium_points');
+    $coins = $account_logged->getCustomField($coinType);
     if (isset($_POST['changenamesave']) && $_POST['changenamesave'] == 1) {
-        if ($points < $config['account_change_character_name_points'])
-            $errors[] = 'You need ' . $config['account_change_character_name_points'] . ' premium points to change name. You have <b>' . $points . '<b> premium points.';
+        if ($coins < $needCoins)
+            $errors[] = "You need {$needCoins} {$coinName} to change name. You have <b>{$coins}</b> {$coinName}.";
 
         $minLength = config('character_name_min_length');
         $maxLength = config('character_name_max_length');
@@ -54,7 +58,7 @@ else {
                         $old_name = $player->getName();
                         $player->setName($name);
                         $player->save();
-                        $account_logged->setCustomField("premium_points", $points - $config['account_change_character_name_points']);
+                        $account_logged->setCustomField($coinType, $coins - $needCoins);
                         $account_logged->logAction('Changed name from <b>' . $old_name . '</b> to <b>' . $player->getName() . '</b>.');
                         $twig->display('success.html.twig', array(
                             'title' => 'Character Name Changed',
@@ -76,9 +80,11 @@ else {
         }
 
         $twig->display('account.change_name.html.twig', array(
-            'points' => $points,
-            'errors' => $errors
-            //'account_players' => $account_logged->getPlayersList()
+            'coins'     => $coins,
+            'coin_type' => $coinType,
+            'coin_name' => $coinName,
+            'color'     => $coins >= $needCoins ? 'green' : 'red',
+            'errors'    => $errors,
         ));
     }
 }

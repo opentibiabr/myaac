@@ -1,24 +1,24 @@
-{% if players is iterable %}
+{% if result is iterable %}
   <div class="col-md-3">
     <div class="box">
       <div class="box-header">
-        <h3 class="box-title">Last 10 Logins</h3>
+        <h3 class="box-title">Top 10 - Most coins (transferable)</h3>
       </div>
       <div class="box-body no-padding">
         <table class="table table-condensed">
           <tbody>
           <tr>
             <th>#</th>
-            <th>Player</th>
-            <th>Login Date</th>
+            <th>Account {{ account_type }}</th>
+            <th>Points</th>
           </tr>
           {% set i = 0 %}
-          {% for result in players %}
+          {% for item in result %}
             {% set i = i + 1 %}
             <tr>
               <td>{{ i }}</td>
-              <td>{{ result.name }}</td>
-              <td>{{ result.lastlogin|date("M d Y, H:i:s") }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.coins_transferable }}</td>
             </tr>
           {% endfor %}
           </tbody>

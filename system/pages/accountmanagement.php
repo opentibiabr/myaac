@@ -64,6 +64,7 @@ if ($action == '') {
 
     $recovery_key = $account_logged->getCustomField('key');
     $account_coins = $account_logged->getCustomField('coins');
+    $acc_coins_transfer = $account_logged->getCustomField('coins_transferable');
     $tournament_coins = $account_logged->getCustomField('tournament_coins');
 
     $tag = isVipSystemEnabled() ? 'VIP' : "Premium";
@@ -134,6 +135,7 @@ if ($action == '') {
         'account' => USE_ACCOUNT_NAME ? $account_logged->getName() : $account_logged->getNumber(),
         'account_premdays' => $account_premdays,
         'account_coins' => $account_coins,
+        'account_coins_transferable' => $acc_coins_transfer,
         'tournament_coins' => $tournament_coins,
         'account_email' => $account_email,
         'account_created' => $account_created,

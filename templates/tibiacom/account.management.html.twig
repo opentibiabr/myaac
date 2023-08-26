@@ -542,9 +542,10 @@
                         <tr style="background-color: {{ config.darkborder }};">
                           <td class="LabelV">Tibia Coins:</td>
                           <td>{{ account_coins }} <img src="{{ template_path }}/images/account/icon-tibiacoin.png"
-                                                       class="VSCCoinImages"></span> (Including: {{ account_coins }}
-                            <img src="{{ template_path }}/images/account/icon-tibiacointrusted.png"
-                                 class="VSCCoinImages">)
+                                                       class="VSCCoinImages"/>
+                            (Including: {{ account_coins_transferable }} <img
+                              src="{{ template_path }}/images/account/icon-tibiacointrusted.png"
+                              class="VSCCoinImages">)
                           </td>
                         </tr>
                         <tr style="background-color: {{ config.lightborder }};">

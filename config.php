@@ -99,24 +99,30 @@ $config = array(
     'account_mail_confirmed_reward' => [ // reward users for confirming their E-Mails
         // account_mail_verify needs to be enabled too
         'premium_days' => 0,
-        'premium_points' => 0,
+        'coins_transferable' => 0,
         'coins' => 0,
         'message' => 'You received %d %s for confirming your E-Mail address.' // example: You received 20 coins for confirming your E-Mail address.
     ],
 	'account_mail_unique' => true, // email addresses cannot be duplicated? (one account = one email)
 	'account_premium_days' => 0, // default premium days on new account
-	'account_premium_points' => 0, // default premium points on new account
+	'account_premium_coins' => 0, // default coins on new account
 	'account_welcome_mail' => false, // send welcome email when user registers
 	'account_mail_change' => 2, // how many days user need to change email to account - block hackers
 	'account_country' => true, // user will be able to set country of origin when registering account, this information will be viewable in others places aswell
 	'account_country_recognize' => true, // should country of user be automatically recognized by his IP? This makes an external API call to http://ipinfo.io
-	'account_change_character_name' => false, // can user change their character name for premium points?
-	'account_change_character_name_points' => 30, // cost of name change
-	'account_change_character_sex' => false, // can user change their character sex for premium points?
-	'account_change_character_sex_points' => 30, // cost of sex change
+
+    'account_change_coin_type' => 'coins', // which coin you want to use, coins or transferable_coins to buy changes at site
+    'account_change_character_name' => false, // can user change their character name for coins?
+	'account_change_character_name_coins' => 30, // cost of name change
+	'account_change_character_sex' => false, // can user change their character sex for coins?
+	'account_change_character_sex_coins' => 30, // cost of sex change
     'account_change_character_main' => true, // can user change their main character for coins?
     'account_change_character_main_coins' => 250, // cost of main change
 	'characters_per_account' => 10,	// max. number of characters per account
+
+    // recovery key
+    'generate_new_reckey' => true,				// let player generate new recovery key, he will receive e-mail with new rec key (not display on page, hacker can't generate rec key)
+    'generate_new_reckey_price' => 20,			// coins price for new recovery key
 
 	// mail
 	'mail_enabled' => false, // is aac maker configured to send e-mails?
@@ -141,9 +147,7 @@ $config = array(
 	'recaptcha_secret_key' => '',
 	'recaptcha_theme' => 'light', // light, dark
 
-	//
-	'generate_new_reckey' => true,				// let player generate new recovery key, he will receive e-mail with new rec key (not display on page, hacker can't generate rec key)
-	'generate_new_reckey_price' => 20,			// price for new recovery key
+	// e-mail senders
 	'send_mail_when_change_password' => true,	// send e-mail with new password when change password to account
 	'send_mail_when_generate_reckey' => true,	// send e-mail with rec key (key is displayed on page anyway when generate)
 
@@ -356,7 +360,7 @@ $config = array(
 	'status_interval' => 60,
 
 	// admin panel
-	'admin_panel_modules' => 'lastlogin,points,coins',
+	'admin_panel_modules' => 'lastlogin,coinstransferable,coins',
 
 	// other
 	'anonymous_usage_statistics' => true,
