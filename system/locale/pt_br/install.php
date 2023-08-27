@@ -56,8 +56,6 @@ $locale['step_config_timezone_error'] = 'O fuso horário não está correto.';
 $locale['step_config_client'] = 'Versão do cliente';
 $locale['step_config_client_desc'] = 'Usado para a página de download e alguns modelos.';
 $locale['step_config_client_error'] = 'O cliente não está correto.';
-$locale['step_config_usage'] = 'Estatísticas de utilização';
-$locale['step_config_usage_desc'] = 'Permitir que o MyAAC informe estatísticas de uso anônimas? Os dados são enviados apenas uma vez por 30 dias e são totalmente confidenciais.';
 
 // database
 $locale['step_database'] = 'Importar schema';

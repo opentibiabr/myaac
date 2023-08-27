@@ -52,8 +52,6 @@ $locale['step_config_mail_address_desc'] = 'Ten adres będzie używany do wysył
 $locale['step_config_mail_address_error'] = 'E-Mail serwera jest niepoprawny.';
 $locale['step_config_client'] = 'Wersja klienta';
 $locale['step_config_client_desc'] = 'Używana do strony pobieranie klienta oraz kilku szablonów';
-$locale['step_config_usage'] = 'Raportowanie Statystyk';
-$locale['step_config_usage_desc'] = 'Zezwalaj MyAAC na raportowanie anonimowych statystyk? Dane są wysyłane raz na 30 dni i są w pełni anonimowe.';
 
 // database
 $locale['step_database'] = 'Baza Danych';

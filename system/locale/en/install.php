@@ -56,8 +56,6 @@ $locale['step_config_timezone_error'] = 'Timezone is not correct.';
 $locale['step_config_client'] = 'Client version';
 $locale['step_config_client_desc'] = 'Used for download page and some templates';
 $locale['step_config_client_error'] = 'Client is not correct.';
-$locale['step_config_usage'] = 'Usage Statistics';
-$locale['step_config_usage_desc'] = 'Allow MyAAC to report anonymous usage statistics? The data is sent only once per 30 days and is fully confidential.';
 
 // database
 $locale['step_database'] = 'Import schema';

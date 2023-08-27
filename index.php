@@ -192,39 +192,6 @@ require SYSTEM . 'migrate.php';
 
 $hooks->trigger(HOOK_STARTUP);
 
-// anonymous usage statistics
-// sent only when user agrees
-if (isset($config['anonymous_usage_statistics']) && $config['anonymous_usage_statistics']) {
-    $report_time = 30 * 24 * 60 * 60; // report one time per 30 days
-    $should_report = true;
-
-    $value = '';
-    if ($cache->enabled() && $cache->fetch('last_usage_report', $value)) {
-        $should_report = time() > (int)$value + $report_time;
-    } else {
-        $value = '';
-        if (fetchDatabaseConfig('last_usage_report', $value)) {
-            $should_report = time() > (int)$value + $report_time;
-            if ($cache->enabled()) {
-                $cache->set('last_usage_report', $value);
-            }
-        } else {
-            registerDatabaseConfig('last_usage_report', time() - ($report_time - (7 * 24 * 60 * 60))); // first report after a week
-            $should_report = false;
-        }
-    }
-
-    if ($should_report) {
-        require_once LIBS . 'usage_statistics.php';
-        Usage_Statistics::report();
-
-        updateDatabaseConfig('last_usage_report', time());
-        if ($cache->enabled()) {
-            $cache->set('last_usage_report', time());
-        }
-    }
-}
-
 if ($config['views_counter'])
     require_once SYSTEM . 'counter.php';
 
