@@ -173,7 +173,7 @@ defined('MYAAC') or die('Direct access not allowed!'); ?>
                 <?php endif; ?>
             </div>
         </div>
-        Powered by MyAAC and edited by OpenTibiaBR Contributors.
+        <?= base64_decode('UG93ZXJlZCBieSA8YSBocmVmPSJodHRwczovL2dpdGh1Yi5jb20vb3BlbnRpYmlhYnIvbXlhYWMiIHRhcmdldD0iX2JsYW5rIj5PcGVuVGliaWFCUjwvYT4gYW5kIENvbnRyaWJ1dG9ycy4=') ?>
     </footer>
 
     <aside class="control-sidebar control-sidebar-dark">
