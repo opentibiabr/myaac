@@ -1,6 +1,21 @@
 Select a main character and submit.<br/>
-<span style="color: {{ color }}">Change main character cost {{ config.account_change_character_main_coins }} {{ coin_type }}. You have {{ coins }} {{ coin_type }}.</span>
-<br/><br/>
+<span>Change main character cost: <b>{{ config.account_change_character_main_coins }} {{ coin_name }}</b>.</span><br/>
+<span>
+  Coins Balance:
+  {% if coins > 0 %}
+    <span style="color: green; font-weight: bold">{{ coins }} {{ coin_name }}
+      {% if coins < config.account_change_character_main_coins %}
+        <span style="color: red; font-weight: normal"> (you do not have {{ coin_name }} enough,
+                 <a href="?points" target="_blank">donate</a> now)</span>
+      {% endif %}
+      </span>
+  {% else %}
+    <span style="color: red; font-weight: bold">You do not have {{ coin_name }},
+  <a href="?points" target="_blank">donate</a> now</span>
+  {% endif %}
+</span>
+<br><br>
+
 <form action="{{ getLink('account/character/main') }}" method="post">
   <input type="hidden" name="changemainsave" value="1"/>
   <div class="TableContainer">
