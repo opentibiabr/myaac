@@ -12,7 +12,7 @@
  *
  * @package   MyAAC
  * @author    Slawkens <slawkens@gmail.com>
- * @copyright 2019 MyAAC
+ * @copyright 2023 MyAAC
  * @link      https://github.com/opentibiabr/myaac
  */
 

@@ -20,7 +20,7 @@
  *
  * @package   MyAAC
  * @author    Slawkens <slawkens@gmail.com>
- * @copyright 2019 MyAAC
+ * @copyright 2023 MyAAC
  * @link      https://github.com/opentibiabr/myaac
  */
 if (version_compare(phpversion(), '7.4', '<')) die('PHP version 7.4 or higher is required.');

@@ -4,7 +4,7 @@
  *
  * @package   MyAAC
  * @author    Elson
- * @copyright 2019 MyAAC
+ * @copyright 2023 MyAAC
  * @link      https://github.com/opentibiabr/myaac
  */
 defined('MYAAC') or die('Direct access not allowed!');
