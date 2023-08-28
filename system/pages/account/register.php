@@ -5,6 +5,7 @@
  * @package   MyAAC
  * @author    Gesior <jerzyskalski@wp.pl>
  * @author    Slawkens <slawkens@gmail.com>
+ * @author    OpenTibiaBR
  * @copyright 2023 MyAAC
  * @link      https://github.com/opentibiabr/myaac
  */
@@ -55,5 +56,3 @@ if($show_form) {
 	//show form
 	$twig->display('account.generate_recovery_key.html.twig');
 }
-
-?>

@@ -5,6 +5,7 @@
  * @package   MyAAC
  * @author    Gesior <jerzyskalski@wp.pl>
  * @author    Slawkens <slawkens@gmail.com>
+ * @author    OpenTibiaBR
  * @copyright 2023 MyAAC
  * @link      https://github.com/opentibiabr/myaac
  */
@@ -547,4 +548,3 @@ elseif($action == 'setnewpassword')
 				' . $twig->render('buttons.submit.html.twig') . '</div>
 				</TD></TR></FORM></TABLE></TABLE>';
 }
-?>

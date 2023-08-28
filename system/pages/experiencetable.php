@@ -18,6 +18,7 @@
  *
  * @package   MyAAC
  * @author    Slawkens <slawkens@gmail.com>
+ * @author    OpenTibiaBR
  * @copyright 2023 MyAAC
  * @link      https://github.com/opentibiabr/myaac
  */
@@ -36,4 +37,3 @@ for($i = 0; $i < $columns; $i++) {
 $twig->display('experience_table.html.twig', array(
 	'experience' => $experience
 ));
-?>

@@ -4,6 +4,7 @@
  *
  * @package   MyAAC
  * @author    Lee
+ * @author    OpenTibiaBR
  * @copyright 2023 MyAAC
  * @link      https://github.com/opentibiabr/myaac
  */

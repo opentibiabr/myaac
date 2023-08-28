@@ -5,6 +5,7 @@
  * @package   MyAAC
  * @author    Gesior <jerzyskalski@wp.pl>
  * @author    Slawkens <slawkens@gmail.com>
+ * @author    OpenTibiaBR
  * @copyright 2023 MyAAC
  * @link      https://github.com/opentibiabr/myaac
  */
@@ -66,4 +67,3 @@ else
 	echo "0 players found.";
 
 $twig->display('guilds.back_button.html.twig');
-?>
