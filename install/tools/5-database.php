@@ -62,6 +62,11 @@ if (!$db->hasColumn('accounts', 'rlname')) {
         success($locale['step_database_adding_field'] . ' accounts.rlname...');
 }
 
+if (!$db->hasColumn('accounts', 'phone')) {
+    if (query("ALTER TABLE `accounts` ADD `phone` VARCHAR(15) NULL AFTER `rlname`;"))
+        success($locale['step_database_adding_field'] . ' accounts.phone...');
+}
+
 if (!$db->hasColumn('accounts', 'location')) {
     if (query("ALTER TABLE `accounts` ADD `location` VARCHAR(255) NOT NULL DEFAULT '' AFTER `rlname`;"))
         success($locale['step_database_adding_field'] . ' accounts.location...');
@@ -181,6 +186,10 @@ if ($db->hasColumn('players', 'hide_char')) {
 if (!$db->hasColumn('players', 'comment')) {
     if (query("ALTER TABLE `players` ADD `comment` TEXT NOT NULL;"))
         success($locale['step_database_adding_field'] . ' players.comment...');
+}
+if (!$db->hasColumn('players', 'ismain')) {
+    if (query("ALTER TABLE `players` ADD `ismain` TINYINT(1) NOT NULL DEFAULT 0 AFTER `istutorial`;"))
+        success($locale['step_database_adding_field'] . ' players.ismain...');
 }
 
 if ($db->hasColumn('players', 'rank_id')) {
