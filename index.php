@@ -328,7 +328,7 @@ if ($config['backward_support']) {
 $title_full = (isset($title) ? $title . $config['title_separator'] : '') . $config['lua']['serverName'];
 require $template_path . '/' . $template_index;
 
-echo base64_decode('UG93ZXJlZCBieSA8YSBocmVmPSJodHRwczovL2dpdGh1Yi5jb20vb3BlbnRpYmlhYnIvbXlhYWMiIHRhcmdldD0iX2JsYW5rIj5PcGVuVGliaWFCUjwvYT4gYW5kIENvbnRyaWJ1dG9ycy4=') . PHP_EOL;
+echo base64_decode('PCEtLSBQb3dlcmVkIGJ5IE9wZW5UaWJpYUJSIE15QUFDIDo6IGh0dHBzOi8vZ2l0aHViLmNvbS9vcGVudGliaWFici9teWFhYyAtLT4=') . PHP_EOL;
 if (superAdmin()) {
     echo '<!-- Generated in: ' . round(microtime(true) - START_TIME, 4) . 'ms -->';
     echo PHP_EOL . '<!-- Queries done: ' . $db->queries() . ' -->';
