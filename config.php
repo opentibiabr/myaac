@@ -12,8 +12,9 @@
  *
  * @package   MyAAC
  * @author    Slawkens <slawkens@gmail.com>
- * @copyright 2019 MyAAC
- * @link      https://my-aac.org
+ * @author    OpenTibiaBR
+ * @copyright 2023 MyAAC
+ * @link      https://github.com/opentibiabr/myaac
  */
 
 $config = array(
@@ -41,7 +42,7 @@ $config = array(
 	'client' => 1320, // 1320 = client 13.20
 
 	'session_prefix' => 'myaac_', // must be unique for every site on your server
-	'friendly_urls' => false, // mod_rewrite is required for this, it makes links looks more elegant to eye, and also are SEO friendly (example: https://my-aac.org/guilds/Testing instead of https://my-aac.org/?subtopic=guilds&name=Testing). Remember to rename .htaccess.dist to .htaccess
+	'friendly_urls' => false, // mod_rewrite is required for this, it makes links looks more elegant to eye, and also are SEO friendly (example: https://localhost/guilds/Testing instead of https://localhost?subtopic=guilds&name=Testing). Remember to rename .htaccess.dist to .htaccess
 	'gzip_output' => false, // gzip page content before sending it to the browser, uses less bandwidth but more cpu cycles
 
 	// gesior backward support (templates & pages)

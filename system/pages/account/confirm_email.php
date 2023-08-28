@@ -4,8 +4,9 @@
  *
  * @package   MyAAC
  * @author    Slawkens <slawkens@gmail.com>
- * @copyright 2019 MyAAC
- * @link      https://my-aac.org
+ * @author    OpenTibiaBR
+ * @copyright 2023 MyAAC
+ * @link      https://github.com/opentibiabr/myaac
  */
 defined('MYAAC') or die('Direct access not allowed!');
 
@@ -34,4 +35,3 @@ if (!$res->rowCount()) {
     $db->update('accounts', array('email_verified' => '1'), array('email_hash' => $hash));
     success('You have now verified your e-mail, this will increase the security of your account. Thank you for doing this.');
 }
-?>

@@ -5,8 +5,9 @@
  *
  * @package   MyAAC
  * @author    Slawkens <slawkens@gmail.com>
- * @copyright 2019 MyAAC
- * @link      https://my-aac.org
+ * @author    OpenTibiaBR
+ * @copyright 2023 MyAAC
+ * @link      https://github.com/opentibiabr/myaac
  */
 
 // we need some functions
@@ -112,5 +113,3 @@ function error_($desc) {
 	));
 	exit();
 }
-
-?>

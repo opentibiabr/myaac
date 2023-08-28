@@ -18,8 +18,9 @@
  *
  * @package   MyAAC
  * @author    Slawkens <slawkens@gmail.com>
- * @copyright 2019 MyAAC
- * @link      https://my-aac.org
+ * @author    OpenTibiaBR
+ * @copyright 2023 MyAAC
+ * @link      https://github.com/opentibiabr/myaac
  */
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Experience Table';
@@ -36,4 +37,3 @@ for($i = 0; $i < $columns; $i++) {
 $twig->display('experience_table.html.twig', array(
 	'experience' => $experience
 ));
-?>

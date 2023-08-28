@@ -58,7 +58,7 @@ defined('MYAAC') or die('Direct access not allowed!'); ?>
     <aside class="main-sidebar">
         <section class="sidebar">
             <ul class="sidebar-menu" data-widget="tree">
-                <li class="header">MyAAC v0.8.6</li>
+                <li class="header">MyAAC v<?= MYAAC_VERSION ?></li>
 
                 <?php
                 $icons_a = array(
@@ -177,30 +177,27 @@ defined('MYAAC') or die('Direct access not allowed!'); ?>
     </footer>
 
     <aside class="control-sidebar control-sidebar-dark">
-        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-            <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-            <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-        </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="control-sidebar-home-tab">
                 <h3 class="control-sidebar-heading">Account</h3>
                 <ul class="control-sidebar-menu">
                     <li>
                         <a href="?action=logout">
-                            <i class="menu-icon fa  fa-sign-out bg-red"></i>
+                            <i class="menu-icon fa fa-sign-out bg-red"></i>
                             <div class="menu-info">
                                 <h4 class="control-sidebar-subheading">Log out</h4>
-                                <p>This will log you out
-                                    of <?= (USE_ACCOUNT_NAME ? $account_logged->getName() : $account_logged->getId()); ?></p>
+                                <p>This will log you out of
+                                    account <?= (USE_ACCOUNT_NAME ? $account_logged->getName() : $account_logged->getId()); ?></p>
                             </div>
                         </a>
                     </li>
                 </ul>
+
                 <h3 class="control-sidebar-heading">Site</h3>
                 <ul class="control-sidebar-menu">
                     <li>
                         <a href="<?= BASE_URL; ?>" target="_blank">
-                            <i class="menu-icon fa  fa-eye bg-blue"></i>
+                            <i class="menu-icon fa fa-eye bg-blue"></i>
                             <div class="menu-info">
                                 <h4 class="control-sidebar-subheading">Preview</h4>
                                 <p>This will open a new tab</p>
@@ -208,19 +205,19 @@ defined('MYAAC') or die('Direct access not allowed!'); ?>
                         </a>
                     </li>
                 </ul>
-            </div>
-            <div class="tab-pane" id="control-sidebar-settings-tab">
-                <form method="post">
-                    <h3 class="control-sidebar-heading">Version</h3>
 
-                    <div class="form-group">
-                        <label class="control-sidebar-subheading">
-                            0.8.6 (<a href="?p=version">Check for updates</a>)<br/>
-                        </label>
-                        <label class="control-sidebar-subheading">
-                            <p><a href="https://github.com/opentibiabr/myaac" target="_blank">Github</a></p>
-                    </div>
-                </form>
+                <h3 class="control-sidebar-heading">Version</h3>
+                <ul class="control-sidebar-menu">
+                    <li>
+                        <a href="?p=version">
+                            <i class="menu-icon fa fa-info bg-warning"></i>
+                            <div class="menu-info">
+                                <h4 class="control-sidebar-subheading">Check Version</h4>
+                                <p><?= MYAAC_VERSION ?> (check for updates)</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </aside>
