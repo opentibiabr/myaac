@@ -1,5 +1,18 @@
 To change a sex of character select player and choose a new sex.<br/>
-<span style="color: {{ color }}">Change sex cost {{ config.account_change_character_sex_coins }} {{ coin_type }}. You have {{ coins }} {{ coin_type }}.</span>
+<span>Change sex cost: <b>{{ config.account_change_character_sex_coins }} {{ coin_name }}</b>.</span><br/>
+<span>
+  Coins Balance:
+  {% if coins > 0 %}
+    <span style="color: green; font-weight: bold">{{ coins }} {{ coin_name }}
+         {% if coins < config.account_change_character_sex_coins %}
+           <span style="color: red; font-weight: normal"> (you do not have {{ coin_name }} enough,
+                 <a href="?points" target="_blank">donate</a> now)</span>
+         {% endif %}
+      </span>
+  {% else %}
+    <span style="color: red; font-weight: bold">You do not have {{ coin_name }}, <a href="?points" target="_blank">donate</a> now</span>
+  {% endif %}
+</span>
 <br/><br/>
 <form action="{{ getLink('account/character/sex') }}" method="post">
   <input type="hidden" name="changesexsave" value="1"/>

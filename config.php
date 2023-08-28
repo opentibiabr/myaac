@@ -37,8 +37,8 @@ $config = array(
 	'vocations_amount' => 4, // how much basic vocations your server got (without promotion)
 
 	// what client version are you using on this OT?
-	// used for the Downloads page and some templates aswell
-	'client' => 1098, // 954 = client 9.54
+	// used for the Downloads page and some templates as well
+	'client' => 1320, // 1320 = client 13.20
 
 	'session_prefix' => 'myaac_', // must be unique for every site on your server
 	'friendly_urls' => false, // mod_rewrite is required for this, it makes links looks more elegant to eye, and also are SEO friendly (example: https://my-aac.org/guilds/Testing instead of https://my-aac.org/?subtopic=guilds&name=Testing). Remember to rename .htaccess.dist to .htaccess
@@ -111,7 +111,7 @@ $config = array(
 	'account_country' => true, // user will be able to set country of origin when registering account, this information will be viewable in others places aswell
 	'account_country_recognize' => true, // should country of user be automatically recognized by his IP? This makes an external API call to http://ipinfo.io
 
-    'account_change_coin_type' => 'coins', // which coin you want to use, coins or transferable_coins to buy changes at site
+    'account_change_coin_type' => 'coins', // which coin you want to use, coins or coins_transferable to buy changes at site
     'account_change_character_name' => false, // can user change their character name for coins?
 	'account_change_character_name_coins' => 30, // cost of name change
 	'account_change_character_sex' => false, // can user change their character sex for coins?
@@ -295,17 +295,17 @@ $config = array(
 	'news_author' => false, // show author of the news
 
 	// banner home
-	'banner_status' => true,
+	'banner_status' => false,
 	'banner_image' => '500x660.png', // templates->tibiacom->images->carousel
 	'banner_link' => 'www.instagram.com',
 
 	// status bar
 	'status_bar' => true,
-	'client_link' => 'https://www.lucasgiovanni.com', // link to download tibia client
-	'discord_link' => 'https://www.lucasgiovanni.com', // link to join discord channel
+	'client_link' => 'https://codeload.github.com/dudantas/tibia-client/zip/refs/tags/13.20.13560', // link to download tibia client
+	'discord_link' => 'https://discord.com/invite/gvTj5sh9Mp', // link to join discord channel
 	'whatsapp_link' => '5511912345678', // wa.me/5511912345678
-	'instagram_link' => 'test', // www.instagram.com/PROFILE
-	'facebook_link' => 'test', // www.facebook.com/PAGE
+	'instagram_link' => 'profile', // www.instagram.com/profile
+	'facebook_link' => 'page', // www.facebook.com/page
 	'collapse_status' => true,
 
 	// events
@@ -363,7 +363,6 @@ $config = array(
 	'admin_panel_modules' => 'lastlogin,coinstransferable,coins',
 
 	// other
-	'anonymous_usage_statistics' => true,
 	'email_lai_sec_interval' => 60, // time in seconds between e-mails to one account from lost account interface, block spam
 	'google_analytics_id' => '', // e.g.: UA-XXXXXXX-X
 	'experiencetable_columns' => 4, // how many columns to display in experience table page. * experiencetable_rows, 5 = 500 (will show up to 500 level)

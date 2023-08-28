@@ -43,7 +43,7 @@ $locale['step_requirements_extension'] = '$EXTENSION$ PHP extension';
 $locale['step_config'] = 'Configuration';
 $locale['step_config_title'] = 'Basic configuration';
 $locale['step_config_server_path'] = 'Server path';
-$locale['step_config_server_path_desc'] = 'Path to your TFS main directory, where you have config.lua located.';
+$locale['step_config_server_path_desc'] = 'Path to your Canary main directory, where you have config.lua located.';
 $locale['step_config_mail_admin'] = 'Admin Email';
 $locale['step_config_mail_admin_desc'] = 'Address where emails from contact form will be delivered, for example admin@gmail.com';
 $locale['step_config_mail_admin_error'] = 'Admin Email is not correct.';
@@ -56,8 +56,6 @@ $locale['step_config_timezone_error'] = 'Timezone is not correct.';
 $locale['step_config_client'] = 'Client version';
 $locale['step_config_client_desc'] = 'Used for download page and some templates';
 $locale['step_config_client_error'] = 'Client is not correct.';
-$locale['step_config_usage'] = 'Usage Statistics';
-$locale['step_config_usage_desc'] = 'Allow MyAAC to report anonymous usage statistics? The data is sent only once per 30 days and is fully confidential.';
 
 // database
 $locale['step_database'] = 'Import schema';

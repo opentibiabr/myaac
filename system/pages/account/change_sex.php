@@ -88,7 +88,6 @@ else {
             'coins'      => $coins,
             'coin_type'  => $coinType,
             'coin_name'  => $coinName,
-            'color'      => $coins >= $needCoins ? 'green' : 'red',
         ));
     }
 }

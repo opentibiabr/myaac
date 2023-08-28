@@ -43,7 +43,7 @@ $locale['step_requirements_extension'] = '$EXTENSION$ PHP Erweiterung';
 $locale['step_config'] = 'Konfiguration';
 $locale['step_config_title'] = 'Grundkonfiguration';
 $locale['step_config_server_path'] = 'Serverpfad';
-$locale['step_config_server_path_desc'] = 'Pfad zu Ihrem TFS-Hauptverzeichnis, in dem sich die config.lua befinden.';
+$locale['step_config_server_path_desc'] = 'Pfad zu Ihrem Canary-Hauptverzeichnis, in dem sich die config.lua befinden.';
 $locale['step_config_mail_admin'] = 'Admin E-Mail';
 $locale['step_config_mail_admin_desc'] = 'Adresse, an die E-Mails aus dem Kontaktformular gesendet werden, z. B. admin@gmail.com';
 $locale['step_config_mail_admin_error'] = 'Admin E-Mail ist nicht korrekt.';
@@ -56,8 +56,6 @@ $locale['step_config_timezone_error'] = 'Zeitzone ist nicht korrekt.';
 $locale['step_config_client'] = 'Client Version';
 $locale['step_config_client_desc'] = 'Wird für die Downloadseite und einige Vorlagen verwendet';
 $locale['step_config_client_error'] = 'Client ist nicht korrekt.';
-$locale['step_config_usage'] = 'Nutzungsstatistiken';
-$locale['step_config_usage_desc'] = 'MyAAC erlauben, anonyme Nutzungsstatistiken zu melden? Die Daten werden nur einmal alle 30 Tage gesendet und sind vollständig vertraulich.';
 
 // database
 $locale['step_database'] = 'Schema importieren';

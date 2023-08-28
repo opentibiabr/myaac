@@ -44,18 +44,6 @@
         <label class="small">{{ locale.step_config_client_desc }}</label>
       </td>
     </tr>
-    <tr>
-      <td class="pb-3">
-        <label for="vars_usage">
-          <span class="fw-bold">{{ locale.step_config_usage }}</span>
-        </label>
-        <br/>
-        <input type="hidden" value="0" name="vars[usage]">
-        <input class="form-check-input" type="checkbox" name="vars[usage]" id="vars_usage"
-               value="1"{% if session['var_usage'] is null or session['var_usage'] == 1 %} checked{% endif %}/>
-        <label class="small">{{ locale.step_config_usage_desc }}</label>
-      </td>
-    </tr>
   </table>
 
   {% if errors is defined %}

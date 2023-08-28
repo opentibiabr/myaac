@@ -192,39 +192,6 @@ require SYSTEM . 'migrate.php';
 
 $hooks->trigger(HOOK_STARTUP);
 
-// anonymous usage statistics
-// sent only when user agrees
-if (isset($config['anonymous_usage_statistics']) && $config['anonymous_usage_statistics']) {
-    $report_time = 30 * 24 * 60 * 60; // report one time per 30 days
-    $should_report = true;
-
-    $value = '';
-    if ($cache->enabled() && $cache->fetch('last_usage_report', $value)) {
-        $should_report = time() > (int)$value + $report_time;
-    } else {
-        $value = '';
-        if (fetchDatabaseConfig('last_usage_report', $value)) {
-            $should_report = time() > (int)$value + $report_time;
-            if ($cache->enabled()) {
-                $cache->set('last_usage_report', $value);
-            }
-        } else {
-            registerDatabaseConfig('last_usage_report', time() - ($report_time - (7 * 24 * 60 * 60))); // first report after a week
-            $should_report = false;
-        }
-    }
-
-    if ($should_report) {
-        require_once LIBS . 'usage_statistics.php';
-        Usage_Statistics::report();
-
-        updateDatabaseConfig('last_usage_report', time());
-        if ($cache->enabled()) {
-            $cache->set('last_usage_report', time());
-        }
-    }
-}
-
 if ($config['views_counter'])
     require_once SYSTEM . 'counter.php';
 
@@ -361,7 +328,7 @@ if ($config['backward_support']) {
 $title_full = (isset($title) ? $title . $config['title_separator'] : '') . $config['lua']['serverName'];
 require $template_path . '/' . $template_index;
 
-echo base64_decode('PCEtLSBQb3dlcmVkIGJ5IE15QUFDIDo6IGh0dHBzOi8vd3d3Lm15LWFhYy5vcmcvIC0tPg==') . PHP_EOL;
+echo base64_decode('UG93ZXJlZCBieSA8YSBocmVmPSJodHRwczovL2dpdGh1Yi5jb20vb3BlbnRpYmlhYnIvbXlhYWMiIHRhcmdldD0iX2JsYW5rIj5PcGVuVGliaWFCUjwvYT4gYW5kIENvbnRyaWJ1dG9ycy4=') . PHP_EOL;
 if (superAdmin()) {
     echo '<!-- Generated in: ' . round(microtime(true) - START_TIME, 4) . 'ms -->';
     echo PHP_EOL . '<!-- Queries done: ' . $db->queries() . ' -->';
