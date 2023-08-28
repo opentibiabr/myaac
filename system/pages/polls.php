@@ -6,7 +6,7 @@
  * @author    Averatec <pervera.pl & otland.net>
  * @author    Slawkens <slawkens@gmail.com>
  * @copyright 2019 MyAAC
- * @link      https://my-aac.org
+ * @link      https://github.com/opentibiabr/myaac
  */
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Polls';
@@ -76,7 +76,7 @@ Let us and the Tibia community know what you think! Click on an active poll from
 <td class="LabelV175" style="text-align: right;">End</td>
 </tr>
 <?php
-	
+
 	$empty_active = false;
 	foreach($active as $poll) {
 		$bgcolor = getStyle($number_of_rows++);
@@ -95,7 +95,7 @@ Let us and the Tibia community know what you think! Click on an active poll from
 			</tr>';
 			$empty_active = true;
 	}
-	
+
 	if(!$empty_active) {
 		echo '<tr bgcolor="'.$bgcolor.'"><td colspan=2><div style="text-align:center"><i>There are no active polls.</i></div></td></tr>';
 	}

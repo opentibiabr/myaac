@@ -6,7 +6,7 @@
  * @author    Slawkens <slawkens@gmail.com>
  * @author    Mark Samman (Talaturen) <marksamman@gmail.com>
  * @copyright 2019 MyAAC
- * @link      https://my-aac.org
+ * @link      https://github.com/opentibiabr/myaac
  */
 defined('MYAAC') or die('Direct access not allowed!');
 
