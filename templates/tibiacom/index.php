@@ -148,7 +148,7 @@ if (isset($config['boxes']))
         }
 
         function SaveMenu() {
-            if (unloadhelper == false) {
+            if (!unloadhelper) {
                 SaveMenuArray();
                 unloadhelper = true;
             }
@@ -200,6 +200,11 @@ if (isset($config['boxes']))
             if (menu[0][sourceId] == 1) {
                 CloseMenuItem(sourceId);
             } else {
+                $.each(menu[0], function (index, value) {
+                    if (value === '1') {
+                        CloseMenuItem(index);
+                    }
+                });
                 OpenMenuItem(sourceId);
             }
         }
@@ -312,7 +317,12 @@ if (isset($config['boxes']))
 <?php } ?>
 <div id="top"></div>
 <div id="ArtworkHelper"
-     style="background-image:url(<?= $template_path; ?>/images/header/<?= $config['background_image']; ?>);">
+     style="background-image:url(<?= $template_path ?><?= getImageMenuRandom('bgs') ?>);
+         background-size: 100%;
+         background-position: top center;
+         background-repeat: no-repeat;
+         background-attachment: fixed;
+         ">
     <div id="Bodycontainer">
         <div id="ContentRow">
             <div id="MenuColumn">
@@ -321,8 +331,7 @@ if (isset($config['boxes']))
                          src="<?= $template_path; ?>/images/header/<?= $config['logo_image']; ?>"
                          onClick="window.location = '<?= getLink('news') ?>';" alt="logoartwork"/>
                     <img id="LogoLink" src="<?= $template_path; ?>/images/header/tibia-logo-artwork-string.gif"
-                         onClick="window.location = 'mailto:<?= $config['mail_address']; ?>';"
-                         alt="logoartwork"/>
+                         onClick="window.location = 'mailto:<?= $config['mail_address']; ?>';" alt="logoartwork"/>
                 </div>
 
                 <div id="Loginbox">
@@ -408,8 +417,7 @@ if (isset($config['boxes']))
                         ?>
                         <div id='<?= $cat['id']; ?>' class='menuitem'>
 	<span onClick="MenuItemAction('<?= $cat['id']; ?>')">
-		<div class='MenuButton'
-             style='background-image:url(<?= $template_path; ?>/images/menu/button-background.gif);'>
+		<div class='MenuButton' style='background-image:url(<?= $template_path ?>/images/menu/button-background.gif);'>
 			<div onMouseOver='MouseOverMenuItem(this);' onMouseOut='MouseOutMenuItem(this);'><div class='Button'
                                                                                                   style='background-image:url(<?= $template_path; ?>/images/menu/button-background-over.gif);'></div>
 				<span id='<?= $cat['id']; ?>_Lights' class='Lights'>
@@ -421,7 +429,7 @@ if (isset($config['boxes']))
                          style='background-image:url(<?= $template_path; ?>/images/menu/green-light.gif);'></div>
 				</span>
 				<div id='<?= $cat['id']; ?>_Icon' class='Icon'
-                     style='background-image:url(<?= $template_path; ?>/images/menu/icon-<?= $cat['id']; ?>.gif);'></div>
+                     style='background-image:url(<?= $template_path ?><?= getImageMenuRandom($cat['id']) ?>);'></div>
 				<div id='<?= $cat['id']; ?>_Label' class='Label'
                      style='background-image:url(<?= $template_path; ?>/images/menu/label-<?= $cat['id']; ?>.gif);'></div>
 				<div id='<?= $cat['id']; ?>_Extend' class='Extend'
@@ -439,14 +447,12 @@ if (isset($config['boxes']))
                                     <a href='<?= $menu['link_full']; ?>'<?= $menu['blank'] ? ' target="_blank"' : '' ?>>
                                         <div id='submenu_<?= str_replace('/', '', $menu['link']); ?>'
                                              class='Submenuitem' onMouseOver='MouseOverSubmenuItem(this)'
-                                             onMouseOut='MouseOutSubmenuItem(this)'
-                                             style="color: <?= $link_color; ?>;">
+                                             onMouseOut='MouseOutSubmenuItem(this)' style="color: <?= $link_color; ?>;">
                                             <div class='LeftChain'
                                                  style='background-image:url(<?= $template_path; ?>/images/general/chain.gif);'></div>
-                                            <div
-                                                id='ActiveSubmenuItemIcon_<?= str_replace('/', '', $menu['link']); ?>'
-                                                class='ActiveSubmenuItemIcon'
-                                                style='background-image:url(<?= $template_path; ?>/images/menu/icon-activesubmenu.gif);'></div>
+                                            <div id='ActiveSubmenuItemIcon_<?= str_replace('/', '', $menu['link']); ?>'
+                                                 class='ActiveSubmenuItemIcon'
+                                                 style='background-image:url(<?= $template_path; ?>/images/menu/icon-activesubmenu.gif);'></div>
                                             <div class='SubmenuitemLabel'
                                                  style="color: <?= $link_color; ?>;"><?= $menu['name']; ?></div>
                                             <div class='RightChain'
@@ -504,8 +510,8 @@ if (isset($config['boxes']))
                                              src="<?= $template_path; ?>/images/global/header/icon-whatsapp.png"
                                              width="16">
                                         <span class="InfoBarNumbers">
-					<a class="InfoBarLinks" href="https://wa.me/<?= $config['whatsapp_link']; ?>"
-                       target="new"><span class="InfoBarSmallElement">Whatsapp</span></a>
+					<a class="InfoBarLinks" href="https://wa.me/<?= $config['whatsapp_link']; ?>" target="new"><span
+                            class="InfoBarSmallElement">Whatsapp</span></a>
 				</span>
                                     <?php } ?>
                                     <?php if (isset($config['instagram_link']) && !empty($config['instagram_link'])) { ?>
@@ -533,8 +539,7 @@ if (isset($config['boxes']))
                             class="InfoBarSmallElement">Download</span></a>
 				</span>
                                     <span style="float: right; margin-top: -2px;">
-				<img class="InfoBarBigLogo"
-                     src="<?= $template_path; ?>/images/global/header/icon-players-online.png">
+				<img class="InfoBarBigLogo" src="<?= $template_path; ?>/images/global/header/icon-players-online.png">
 				<span class="InfoBarNumbers">
 					<span class="InfoBarSmallElement">
 						<a class="InfoBarLinks" href="?online">
@@ -700,7 +705,7 @@ if ($status['online']) {
                         </div>
                     </div>
                 </div>
-                <div id="Footer"><?= template_footer(); ?><br/>Layout by CipSoft GmbH.</div>
+                <div id="Footer"><?= template_footer(); ?></div>
             </div>
 
             <div id="ThemeboxesColumn">
@@ -819,8 +824,7 @@ if ($status['online']) {
      style="background: url(<?= $template_path; ?>/images/global/content/top.png) no-repeat 0 0;"></div>
 
 <script src="<?= $template_path; ?>/js/generic.js"></script>
-<div id="HelperDivContainer"
-     style="background-image: url(<?= $template_path; ?>/images/global/content/scroll.gif);">
+<div id="HelperDivContainer" style="background-image: url(<?= $template_path; ?>/images/global/content/scroll.gif);">
     <div class="HelperDivArrow"
          style="background-image: url(<?= $template_path; ?>/images/global/content/helper-div-arrow.png);"></div>
     <div id="HelperDivHeadline"></div>
@@ -828,7 +832,6 @@ if ($status['online']) {
     <center><img class="Ornament" src="<?= $template_path; ?>/images/global/content/ornament.gif"></center>
     <br>
 </div>
-
 
 </body>
 </html>
@@ -839,5 +842,35 @@ function logo_monster()
     return str_replace(" ", "", trim(strtolower($config['logo_monster'])));
 }
 
-?>
+/**
+ * @param $menu
+ * @return string
+ */
+function getImageMenuRandom($menu): string
+{
+    global $config;
+    if (!$config['allow_menu_animated']) {
+        return $menu === 'bgs' ? "/images/header/{$config['background_image']}" : "/images/menu/icon-{$menu}.gif";
+    }
 
+    $images = [
+        'bgs'            => ['00.jpg', '01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg', '09.jpg', '10.jpg', '11.jpg', '12.jpg'],
+        'news'           => ['icon-news01.gif', 'icon-news02.gif', 'icon-news03.gif', 'icon-news04.gif', 'icon-news05.gif', 'icon-news06.gif'],
+        'community'      => ['icon-community01.gif', 'icon-community02.gif', 'icon-community03.gif', 'icon-community04.gif', 'icon-community05.gif', 'icon-community06.gif', 'icon-community07.gif', 'icon-community08.gif'],
+        'forum'          => ['icon-forum01.gif', 'icon-forum02.gif', 'icon-forum03.gif', 'icon-forum04.gif', 'icon-forum05.gif', 'icon-forum06.gif', 'icon-forum07.gif', 'icon-forum08.gif', 'icon-forum09.gif', 'icon-forum10.gif'],
+        'account'        => ['icon-account01.gif', 'icon-account02.gif', 'icon-account03.gif', 'icon-account04.gif', 'icon-account05.gif'],
+        'library'        => ['icon-library01.gif', 'icon-library02.gif', 'icon-library03.gif', 'icon-library04.gif', 'icon-library05.gif'],
+        'wars'           => ['icon-wars01.gif', 'icon-wars02.gif', 'icon-wars03.gif', 'icon-wars04.gif', 'icon-wars05.gif', 'icon-wars06.gif', 'icon-wars07.gif', 'icon-wars08.gif', 'icon-wars09.gif', 'icon-wars10.gif', 'icon-wars11.gif', 'icon-wars12.gif', 'icon-wars13.gif', 'icon-wars14.gif'],
+        'events'         => ['icon-events01.gif', 'icon-events02.gif', 'icon-events03.gif', 'icon-events04.gif', 'icon-events05.gif', 'icon-events06.gif', 'icon-events07.gif', 'icon-events08.gif', 'icon-events09.gif', 'icon-events10.gif', 'icon-events11.gif', 'icon-events12.gif', 'icon-events13.gif'],
+        'support'        => ['icon-support01.gif', 'icon-support02.gif', 'icon-support03.gif', 'icon-support04.gif', 'icon-support05.gif', 'icon-support06.gif', 'icon-support07.gif', 'icon-support08.gif', 'icon-support09.gif', 'icon-support10.gif', 'icon-support11.gif'],
+        'shops'          => ['icon-shops01.gif', 'icon-shops02.gif', 'icon-shops03.gif', 'icon-shops04.gif'],
+        'charactertrade' => ['icon-bazaar01.gif', 'icon-bazaar02.gif'],
+    ];
+    if (!$images[$menu]) {
+        return "/images/menu/icon-{$menu}.gif";
+    }
+
+    // generate random number size of the array
+    $img = $images[$menu][rand(0, count($images[$menu]) - 1)];
+    return $menu !== 'bgs' ? "/images/menu/anim/{$img}" : "/images/header/bgs/{$img}";
+}

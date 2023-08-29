@@ -578,7 +578,7 @@ function template_footer()
         $ret .= '<br/>' . $config['footer'];
 
     // please respect my work and help spreading the word, thanks!
-    return $ret . '<br/> Copyright by Myaac. All rights reserved.';
+    return $ret . '<br/>' . base64_decode('Q29weXJpZ2h0IGJ5IE15YWFjIDxzdHJvbmc+JmNvcHk7IE9wZW5UaWJpYUJSPC9zdHJvbmc+LiBBbGwgcmlnaHRzIHJlc2VydmVkLg==');
 }
 
 function template_ga_code()
