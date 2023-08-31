@@ -289,6 +289,8 @@ $config = array(
 	'signature_cache_time' => 5, // how long to store cached file (in minutes), default 5 minutes
 	'signature_browser_cache' => 60, // how long to cache by browser (in minutes), default 1 hour
 
+    'allow_menu_animated' => true, // allow menu with animated gifs
+
 	// news page
 	'news_limit' => 5, // limit of news on the latest news page
 	'news_ticker_limit' => 5, // limit of news in tickers (mini news) (0 to disable)
@@ -368,7 +370,7 @@ $config = array(
 	'google_analytics_id' => '', // e.g.: UA-XXXXXXX-X
 	'experiencetable_columns' => 4, // how many columns to display in experience table page. * experiencetable_rows, 5 = 500 (will show up to 500 level)
 	'experiencetable_rows' => 500, // till how many levels in one column
-	'date_timezone' => 'Europe/Berlin', // more info at http://php.net/manual/en/timezones.php
+	'date_timezone' => 'America/Sao_Paulo', // more info at http://php.net/manual/en/timezones.php
 	'footer_show_load_time' => true, // display load time of the page in the footer
 
 	'npc' => [],
