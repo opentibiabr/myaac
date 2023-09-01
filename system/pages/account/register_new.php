@@ -29,7 +29,7 @@ else {
                 $errors[] = "You need {$needCoins} {$coinName} to generate new recovery key. You have <b>{$coins}</b> {$coinName}.";
             } else {
                 $show_form = false;
-                $new_rec_key = generateRandomString(10, false, true, true);
+                $new_rec_key = generateRandomString($config['recovery_key_length'] ?? 15, false, true, true);
 
                 $mailBody = $twig->render('mail.account.register.html.twig', array(
                     'recovery_key' => $new_rec_key
