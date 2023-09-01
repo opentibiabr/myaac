@@ -149,7 +149,8 @@ if ($action == '') {
         'account_expire_time' => $accountExpire,
         'tag' => $tag,
         'actions' => $actions,
-        'players' => $account_players
+        'players' => $account_players,
+        'account_update_info_on_register' => $config['account_update_info_on_register'],
     ));
 } else {
     if (!ctype_alnum(str_replace(array('-', '_'), '', $action))) {

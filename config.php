@@ -120,10 +120,12 @@ $config = array(
     'account_change_character_main' => true, // can user change their main character for coins?
     'account_change_character_main_coins' => 250, // cost of main change
 	'characters_per_account' => 10,	// max. number of characters per account
+    'account_update_info_on_register' => true, // let player update your 'Public Information' when register at first time only
 
     // recovery key
+    'recovery_key_length' => 15,                // length of recovery key code
     'generate_new_reckey' => true,				// let player generate new recovery key, he will receive e-mail with new rec key (not display on page, hacker can't generate rec key)
-    'generate_new_reckey_price' => 20,			// coins price for new recovery key
+    'generate_new_reckey_price' => 250,			// coins price for new recovery key
 
 	// mail
 	'mail_enabled' => false, // is aac maker configured to send e-mails?

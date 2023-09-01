@@ -620,64 +620,64 @@
 
 <br/>
 
-{% if recovery_key is empty %}
-  <a name="Public+Information"></a>
-  <div class="TopButtonContainer">
-    <div class="TopButton">
-      <a href="#top">
-        <img style="border:0px;" src="{{ template_path }}/images/content/back-to-top.gif"/>
-      </a>
-    </div>
+<a name="Public+Information"></a>
+<div class="TopButtonContainer">
+  <div class="TopButton">
+    <a href="#top">
+      <img style="border:0px;" src="{{ template_path }}/images/content/back-to-top.gif"/>
+    </a>
   </div>
-  <div class="TableContainer">
-    <table class="Table5" cellpadding="0" cellspacing="0">
-      <div class="CaptionContainer">
-        <div class="CaptionInnerContainer">
+</div>
+<div class="TableContainer">
+  <table class="Table5" cellpadding="0" cellspacing="0">
+    <div class="CaptionContainer">
+      <div class="CaptionInnerContainer">
           <span class="CaptionEdgeLeftTop"
                 style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
-          <span class="CaptionEdgeRightTop"
-                style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
-          <span class="CaptionBorderTop"
-                style="background-image:url({{ template_path }}/images/content/table-headline-border.gif);"></span>
-          <span class="CaptionVerticalLeft"
-                style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></span>
-          <div class="Text">Public Information</div>
-          <span class="CaptionVerticalRight"
-                style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></span>
-          <span class="CaptionBorderBottom"
-                style="background-image:url({{ template_path }}/images/content/table-headline-border.gif);"></span>
-          <span class="CaptionEdgeLeftBottom"
-                style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
-          <span class="CaptionEdgeRightBottom"
-                style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
-        </div>
+        <span class="CaptionEdgeRightTop"
+              style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
+        <span class="CaptionBorderTop"
+              style="background-image:url({{ template_path }}/images/content/table-headline-border.gif);"></span>
+        <span class="CaptionVerticalLeft"
+              style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></span>
+        <div class="Text">Public Information</div>
+        <span class="CaptionVerticalRight"
+              style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></span>
+        <span class="CaptionBorderBottom"
+              style="background-image:url({{ template_path }}/images/content/table-headline-border.gif);"></span>
+        <span class="CaptionEdgeLeftBottom"
+              style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
+        <span class="CaptionEdgeRightBottom"
+              style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
       </div>
-      <tr>
-        <td>
-          <div class="InnerTableContainer">
-            <table style="width:100%;">
-              <tr>
-                <td>
-                  <div class="TableContentAndRightShadow">
-                    <div class="TableContentContainer">
-                      <table class="TableContent" width="100%">
-                        <tr>
-                          <td>
-                            <table style="width:100%;">
-                              <tr>
-                                <td class="LabelV">Real Name:</td>
-                                <td style="width:90%;">{{ account_rlname }}</td>
-                              </tr>
-                              <tr>
-                                <td class="LabelV">Address:</td>
-                                <td style="width:90%;">{{ account_location }}</td>
-                              </tr>
-                              <tr>
-                                <td class="LabelV">Phone:</td>
-                                <td style="width:90%;">{{ account_phone }}</td>
-                              </tr>
-                            </table>
-                          </td>
+    </div>
+    <tr>
+      <td>
+        <div class="InnerTableContainer">
+          <table style="width:100%;">
+            <tr>
+              <td>
+                <div class="TableContentAndRightShadow">
+                  <div class="TableContentContainer">
+                    <table class="TableContent" width="100%">
+                      <tr>
+                        <td>
+                          <table style="width:100%;">
+                            <tr>
+                              <td class="LabelV">Real Name:</td>
+                              <td style="width:90%;">{{ account_rlname }}</td>
+                            </tr>
+                            <tr>
+                              <td class="LabelV">Address:</td>
+                              <td style="width:90%;">{{ account_location }}</td>
+                            </tr>
+                            <tr>
+                              <td class="LabelV">Phone:</td>
+                              <td style="width:90%;">{{ account_phone }}</td>
+                            </tr>
+                          </table>
+                        </td>
+                        {% if not account_update_info_on_register %}
                           <td align=right>
                             <table border="0" cellspacing="0" cellpadding="0">
                               <form action="{{ getLink('account/info') }}" method="post">
@@ -689,19 +689,19 @@
                               </form>
                             </table>
                           </td>
-                        </tr>
-                      </table>
-                    </div>
+                        {% endif %}
+                      </tr>
+                    </table>
                   </div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </div>
-{% endif %}
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
 <br/>
 
 <a name="Account+Logs"></a>
