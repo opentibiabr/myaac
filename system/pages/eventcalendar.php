@@ -90,7 +90,7 @@ $title = 'Event Schedule';
                   <tbody>
 <?php
 function MostreSemanas(){
-	$semanas = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+	$semanas = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 
 	for($i = 0; $i < 7; $i++)
 	 echo "<td>".$semanas{$i}."</td>";
