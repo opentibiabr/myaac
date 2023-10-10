@@ -26,7 +26,7 @@ Please delete options that are not relevant.
 
 **Test Configuration**:
 
-  - MyAAC Version: (latest: 0.8.10)
+  - MyAAC Version: (latest: 0.8.12)
   - Browser:
   - Operating System:
 
