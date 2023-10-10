@@ -125,7 +125,7 @@ if ($getAuctionStep == 'confirm') {
         if ($getCoinsAccountLogged['coins'] > $charbazaar_create) {
             $update_accountcoins = $db->exec('UPDATE `accounts` SET `coins` = ' . $charbazaar_mycoins_calc . ' WHERE `id` = ' . $getAccount['id'] . '');
 
-            $insert_auction = $db->exec('INSERT INTO `myaac_charbazaar` (`account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`) VALUES (' . $db->quote($account_old) . ', ' . $db->quote($account_new) . ', ' . $db->quote($player_id) . ', ' . $db->quote($price) . ', ' . $db->quote($date_end) . ', ' . $db->quote($date_start) . ')');
+            $insert_auction = $db->exec('INSERT INTO `myaac_charbazaar` (`account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price`, `status`) VALUES (' . $db->quote($account_old) . ', ' . $db->quote($account_new) . ', ' . $db->quote($player_id) . ', ' . $db->quote($price) . ', ' . $db->quote($date_end) . ', ' . $db->quote($date_start) . ', 0, 0, 0)');
             $auctionId = $db->query("SELECT `id` FROM `myaac_charbazaar` WHERE `account_old` = {$account_old} AND `player_id` = {$player_id} ORDER BY `id` DESC LIMIT 1;");
             $auctionId = $auctionId->fetch();
 
