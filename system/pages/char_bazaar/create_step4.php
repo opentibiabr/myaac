@@ -11,7 +11,7 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
 
 
     /* ACCOUNT BY PLAYER */
-    $getAccount = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $getCharacter['account_id'] . '');
+    $getAccount = $db->query("SELECT `id`, `premdays`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = {$getCharacter['account_id']}");
     $getAccount = $getAccount->fetch();
     if ($getAccount['premdays'] > 0) {
         $character_prem = '<b>Premium Account</b>';
@@ -51,7 +51,7 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
     }
 
 
-    $getAccount = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $account_logged->getId() . '');
+    $getAccount = $db->query("SELECT `id`, `premdays`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = {$account_logged->getId()}");
     $getAccount = $getAccount->fetch();
 
     $auction_inputdays = $_POST['auction_days'];
@@ -139,7 +139,7 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
                       style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionVerticalLeft"
                       style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
-                <div class="Text">You account</div>
+                <div class="Text">Your account</div>
                 <span class="CaptionVerticalRight"
                       style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <span class="CaptionBorderBottom"
@@ -165,7 +165,7 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
                                             <tr>
                                                 <td style="font-weight:normal;"><?= $getAccount['coins'] ?> <img
                                                         src="<?= $template_path; ?>/images/account/icon-tibiacoin.png">
-                                                    (<?= $getAccount['coins'] ?> <img
+                                                    (<?= $getAccount['coins_transferable'] ?> <img
                                                         src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">)
                                                 </td>
                                                 <td style="font-weight:normal;"><?= $charbazaar_create ?> <img

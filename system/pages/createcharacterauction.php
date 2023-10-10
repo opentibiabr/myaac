@@ -55,7 +55,7 @@ $charbazaar_newacc = $config['bazaar_accountid'];
 $getAuctionStep = $_GET['step'] ?? null;
 
 /* REDIRECT TO STEP 1 */
-if (empty($getAuctionStep) || $getAuctionStep < 1 || $getAuctionStep > 4) {
+if (empty($getAuctionStep) || (is_numeric($getAuctionStep) && ($getAuctionStep < 1 || $getAuctionStep > 4))) {
     header('Location: ' . BASE_URL . '?subtopic=createcharacterauction&step=1');
 }
 /* REDIRECT TO STEP 1 END */
@@ -104,13 +104,8 @@ if ($getAuctionStep == 'confirm') {
         $getAccount = $db->query('SELECT `id`, `premdays`, `coins` FROM `accounts` WHERE `id` = ' . $db->quote($getCharacter['account_id']) . '');
         $getAccount = $getAccount->fetch();
 
-        if ($auction_days > 28) {
-            $auction_inputdays = $auction_days;
-            $auction_end = date('Ymd', strtotime('+' . $auction_inputdays . ' days'));
-        } else {
-            $auction_inputdays = $auction_days;
-            $auction_end = date('Ymd', strtotime('+' . $auction_inputdays . ' days'));
-        }
+        $auction_inputdays = $auction_days;
+        $auction_end = date('Ymd', strtotime('+' . $auction_inputdays . ' days'));
 
         $account_old = $getCharacter['account_id'];
         $account_new = $charbazaar_newacc;
@@ -128,7 +123,6 @@ if ($getAuctionStep == 'confirm') {
 
         $auctionId = null;
         if ($getCoinsAccountLogged['coins'] > $charbazaar_create) {
-
             $update_accountcoins = $db->exec('UPDATE `accounts` SET `coins` = ' . $charbazaar_mycoins_calc . ' WHERE `id` = ' . $getAccount['id'] . '');
 
             $insert_auction = $db->exec('INSERT INTO `myaac_charbazaar` (`account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`) VALUES (' . $db->quote($account_old) . ', ' . $db->quote($account_new) . ', ' . $db->quote($player_id) . ', ' . $db->quote($price) . ', ' . $db->quote($date_end) . ', ' . $db->quote($date_start) . ')');
@@ -136,7 +130,6 @@ if ($getAuctionStep == 'confirm') {
             $auctionId = $auctionId->fetch();
 
             $update_character = $db->exec('UPDATE `players` SET `account_id` = ' . $account_new . ' WHERE `id` = ' . $getCharacter['id'] . '');
-
         }
         /* REGISTER AUCTION END */
         ?>
@@ -180,7 +173,7 @@ if ($getAuctionStep == 'confirm') {
                                                     </td>
                                                     <td style="font-weight:bold; font-size: 24px;">Auction created</td>
                                                     <td>
-                                                        <a href="?subtopic=currentcharactertrades&details=<?= $auctionId ?>">
+                                                        <a href="?subtopic=currentcharactertrades&details=<?= $auctionId['id'] ?>">
                                                             <div class="BigButton"
                                                                  style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_green.gif)">
                                                                 <div onmouseover="MouseOverBigButton(this);"

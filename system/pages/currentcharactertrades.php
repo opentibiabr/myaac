@@ -203,7 +203,7 @@ if ($getPageAction == 'bid') {
                           style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
                     <span class="CaptionVerticalLeft"
                           style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
-                    <div class="Text">You account</div>
+                    <div class="Text">Your account</div>
                     <span class="CaptionVerticalRight"
                           style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
                     <span class="CaptionBorderBottom"
@@ -230,7 +230,7 @@ if ($getPageAction == 'bid') {
                                                     <td style="font-weight:normal;"><?= $getAccount['coins'] ?>
                                                         <img
                                                             src="<?= $template_path; ?>/images/account/icon-tibiacoin.png">
-                                                        (<?= $getAccount['coins'] ?> <img
+                                                        (<?= $getAccount['coins_transferable'] ?> <img
                                                             src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">)
                                                     </td>
                                                     <td style="font-weight:normal;"><?= $charbazaar_bid ?> <img
