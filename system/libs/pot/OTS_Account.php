@@ -415,7 +415,7 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
         }
 
         global $config;
-        if (!isVipSystemEnabled() && isset($config['lua']['freePremium']) && configLua('freePremium')) return -1;
+        if (isset($config['lua']['freePremium']) && configLua('freePremium')) return -1;
 
         if ($this->data['premdays'] == self::GRATIS_PREMIUM_DAYS) {
             return self::GRATIS_PREMIUM_DAYS;
@@ -441,7 +441,7 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
     public function isPremium(): bool
     {
         global $config;
-        if (!isVipSystemEnabled() && isset($config['lua']['freePremium']) && configLua('freePremium')) return true;
+        if (isset($config['lua']['freePremium']) && configLua('freePremium')) return true;
 
         if (isset($this->data['premium_ends_at'])) {
             return $this->data['premium_ends_at'] > time();
