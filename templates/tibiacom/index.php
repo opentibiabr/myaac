@@ -722,8 +722,9 @@ if ($status['online']) {
                 ?>
 
                 <?PHP
-                $bossquery = $SQL->query("SELECT `boostname`, `looktype`, `lookfeet` , `looklegs` , `lookhead` , `lookbody` , `lookaddons` , `lookmount`   FROM `boosted_boss`")->fetch();
+                $bossquery = $SQL->query("SELECT `boostname`, `looktypeEx`, `looktype`, `lookfeet` , `looklegs` , `lookhead` , `lookbody` , `lookaddons` , `lookmount`   FROM `boosted_boss`")->fetch();
                 $bossname = $bossquery["boostname"];
+				$bosstypeEx = $bossquery["looktypeEx"];
                 $bosstype = $bossquery["looktype"];
                 $bossfeet = $bossquery["lookfeet"];
                 $bosslegs = $bossquery["looklegs"];
@@ -738,8 +739,12 @@ if ($status['online']) {
                          alt="Creature of the Day"
                          title="Today's boosted creature: <?= ucwords(strtolower(trim($creaturename))); ?>">
                     <img id="Boss"
-                         src="<?= $config['outfit_images_url'] ?>?id=<?= $bosstype; ?>&addons=<?= $bossaddons; ?>&head=<?= $bosshead; ?>&body=<?= $bossbody; ?>&legs=<?= $bosslegs; ?>&feet=<?= $bossfeet; ?>&mount=<?= $bossmount; ?>"
-                         alt="Boss of the Day"
+						if ($bosstypeEx ~= 0) {
+						src="<?= $config['item_images_url'] ?><?= $bosstypeEx; ?>.gif" 
+						} else {
+                         src="<?= $config['outfit_images_url'] ?>?id=<?= $bosstype; ?>&addons=<?= $bossaddons; ?>&head=<?= $bosshead; ?>&body=<?= $bossbody; ?>&legs=<?= $bosslegs; ?>&feet=<?= $bossfeet; ?>&mount=<?= $bossmount; ?>"	
+						}
+						 alt="Boss of the Day"
                          title="Today's boosted boss: <?= ucwords(strtolower(trim($bossname))); ?>">
                     <img id="PedestalAndOnline" src="<?= $template_path; ?>/images/header/pedestal.gif"
                          alt="Monster Pedestal and Players Online Box"/>
