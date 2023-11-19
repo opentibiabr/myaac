@@ -261,7 +261,14 @@ if (isset($config['boxes']))
     </script>
     <?= template_place_holder('head_end'); ?>
 </head>
-<body onBeforeUnLoad="SaveMenu();" onUnload="SaveMenu();">
+<body onBeforeUnLoad="SaveMenu();" onUnload="SaveMenu();" style="background-image:url(<?= $template_path ?><?= getImageMenuRandom('bgs') ?>);
+         background-size: cover;
+         background-position: center;
+         background-repeat: no-repeat;
+         background-attachment: fixed;
+		 width: 100%;
+			height: 100%;
+         ">
 <?= template_place_holder('body_start'); ?>
 <?php if (!empty($config['network_facebook'])) { ?>
     <script type="text/javascript">
@@ -316,15 +323,7 @@ if (isset($config['boxes']))
     </script>
 <?php } ?>
 <div id="top"></div>
-<div id="ArtworkHelper"
-     style="background-image:url(<?= $template_path ?><?= getImageMenuRandom('bgs') ?>);
-         background-size: cover;
-         background-position: center;
-         background-repeat: no-repeat;
-         background-attachment: fixed;
-		 width: 100%;
-		  height: 200%;
-         ">
+<div id="ArtworkHelper">
     <div id="Bodycontainer">
         <div id="ContentRow">
             <div id="MenuColumn">
