@@ -318,10 +318,12 @@ if (isset($config['boxes']))
 <div id="top"></div>
 <div id="ArtworkHelper"
      style="background-image:url(<?= $template_path ?><?= getImageMenuRandom('bgs') ?>);
-         background-size: 100%;
-         background-position: top center;
+         background-size: cover;
+         background-position: center;
          background-repeat: no-repeat;
          background-attachment: fixed;
+		 width: 100%;
+		  height: 200%;
          ">
     <div id="Bodycontainer">
         <div id="ContentRow">
