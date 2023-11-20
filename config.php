@@ -285,6 +285,7 @@ $config = array(
 	'achievements_base' => 300000,
 
 	'server_save' => '05:00:00',
+    'timezone_set' => 'America/Sao_Paulo',
 
 	'signature_enabled' => false,
 	'signature_type' => 'tibian', // signature engine to use: tibian, mango, gesior
