@@ -305,7 +305,7 @@ if ($save) {
                 ));
 
                 if (_mail($email, 'Your account on ' . $config['lua']['serverName'], $mailBody))
-                    echo '<br /><small>These informations were send on email address <b>' . $email . '</b>.';
+                    echo '<br /><small>This information was sent on email address <b>' . $email . '</b>.';
                 else {
                     error('An error occurred while sending email. For Admin: More info can be found in system/logs/mailer-error.log');
                 }
