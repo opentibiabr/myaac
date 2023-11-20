@@ -50,8 +50,6 @@ $explodeServerSave = explode(':', $server_save);
 $hours_ServerSave = $explodeServerSave[0];
 $minutes_ServerSave = $explodeServerSave[1];
 $seconds_ServerSave = $explodeServerSave[2];
-$timezone_set = $config['timezone_set'];
-date_default_timezone_set($timezone_set);
 
 $now = new DateTime();
 $serverSaveTime = new DateTime();
