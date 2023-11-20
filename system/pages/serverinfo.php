@@ -108,7 +108,7 @@ $twig->display('serverinfo.html.twig', array(
     'blackSkullLength' => $blackSkullLength,
     'dailyFragsToRedSkull' => isset($config['lua']['dayKillsToRedSkull']) ? $config['lua']['dayKillsToRedSkull'] : (isset($config['lua']['dayKillsToRedSkull']) ? $config['lua']['dayKillsToRedSkull'] : null),
     'weeklyFragsToRedSkull' => isset($config['lua']['weekKillsToRedSkull']) ? $config['lua']['weekKillsToRedSkull'] : (isset($config['lua']['weekKillsToRedSkull']) ? $config['lua']['weekKillsToRedSkull'] : null),
-    'monthlyFragsToRedSkull' => isset($config['lua']['monthKillsToRedSkull']) ? $config['lua']['monthKillsToRedSkull'] : (isset($config['lua']['monthKillsToRedSkull']) ? $config['lua']['monthKillsToRedSkull'] : null),
+    'monthlyFragsToRedSkull' => configLua('monthKillsToRedSkull') ?? null),
     'dailyFragsToBlackSkull' => isset($config['lua']['dailyFragsToBlackSkull']) ? $config['lua']['dailyFragsToBlackSkull'] : (isset($config['lua']['kills_per_day_black_skull']) ? $config['lua']['kills_per_day_black_skull'] : null),
     'weeklyFragsToBlackSkull' => isset($config['lua']['weeklyFragsToBlackSkull']) ? $config['lua']['weeklyFragsToBlackSkull'] : (isset($config['lua']['kills_per_week_black_skull']) ? $config['lua']['kills_per_week_black_skull'] : null),
     'monthlyFragsToBlackSkull' => isset($config['lua']['monthlyFragsToBlackSkull']) ? $config['lua']['monthlyFragsToBlackSkull'] : (isset($config['lua']['kills_per_month_black_skull']) ? $config['lua']['kills_per_month_black_skull'] : null),
