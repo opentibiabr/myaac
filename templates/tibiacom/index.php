@@ -723,8 +723,9 @@ if ($status['online']) {
                 ?>
 
                 <?PHP
-                $bossquery = $SQL->query("SELECT `boostname`, `looktype`, `lookfeet` , `looklegs` , `lookhead` , `lookbody` , `lookaddons` , `lookmount`   FROM `boosted_boss`")->fetch();
+                $bossquery = $SQL->query("SELECT `boostname`, `looktypeEx`, `looktype`, `lookfeet` , `looklegs` , `lookhead` , `lookbody` , `lookaddons` , `lookmount`   FROM `boosted_boss`")->fetch();
                 $bossname = $bossquery["boostname"];
+				$bosstypeEx = $bossquery["looktypeEx"];
                 $bosstype = $bossquery["looktype"];
                 $bossfeet = $bossquery["lookfeet"];
                 $bosslegs = $bossquery["looklegs"];
@@ -733,18 +734,26 @@ if ($status['online']) {
                 $bossaddons = $bossquery["lookaddons"];
                 $bossmount = $bossquery["lookmount"];
                 ?>
-                <div id="RightArtwork">
-                    <img id="Creature"
-                         src="<?= $config['outfit_images_url'] ?>?id=<?= $creaturetype; ?>&addons=<?= $creatureaddons; ?>&head=<?= $creaturehead; ?>&body=<?= $creaturebody; ?>&legs=<?= $creaturelegs; ?>&feet=<?= $creaturefeet; ?>&mount=<?= $creaturemount; ?>"
-                         alt="Creature of the Day"
-                         title="Today's boosted creature: <?= ucwords(strtolower(trim($creaturename))); ?>">
-                    <img id="Boss"
-                         src="<?= $config['outfit_images_url'] ?>?id=<?= $bosstype; ?>&addons=<?= $bossaddons; ?>&head=<?= $bosshead; ?>&body=<?= $bossbody; ?>&legs=<?= $bosslegs; ?>&feet=<?= $bossfeet; ?>&mount=<?= $bossmount; ?>"
-                         alt="Boss of the Day"
-                         title="Today's boosted boss: <?= ucwords(strtolower(trim($bossname))); ?>">
-                    <img id="PedestalAndOnline" src="<?= $template_path; ?>/images/header/pedestal.gif"
-                         alt="Monster Pedestal and Players Online Box"/>
-                </div>
+				<div id="RightArtwork">
+					<img id="Creature"
+						 src="<?= $config['outfit_images_url'] ?>?id=<?= $creaturetype; ?>&addons=<?= $creatureaddons; ?>&head=<?= $creaturehead; ?>&body=<?= $creaturebody; ?>&legs=<?= $creaturelegs; ?>&feet=<?= $creaturefeet; ?>&mount=<?= $creaturemount; ?>"
+						 alt="Creature of the Day"
+						 title="Today's boosted creature: <?= ucwords(strtolower(trim($creaturename))); ?>">
+
+					<?php if ($bosstypeEx != 0): ?>
+						<img id="Boss" src="<?= $config['item_images_url'] ?><?= $bosstypeEx; ?>.gif"
+							 alt="Boss of the Day"
+							 title="Today's boosted boss: <?= ucwords(strtolower(trim($bossname))); ?>">
+					<?php else: ?>
+						<img id="Boss"
+							 src="<?= $config['outfit_images_url'] ?>?id=<?= $bosstype; ?>&addons=<?= $bossaddons; ?>&head=<?= $bosshead; ?>&body=<?= $bossbody; ?>&legs=<?= $bosslegs; ?>&feet=<?= $bossfeet; ?>&mount=<?= $bossmount; ?>"
+							 alt="Boss of the Day"
+							 title="Today's boosted boss: <?= ucwords(strtolower(trim($bossname))); ?>">
+					<?php endif; ?>
+
+					<img id="PedestalAndOnline" src="<?= $template_path; ?>/images/header/pedestal.gif"
+						 alt="Monster Pedestal and Players Online Box"/>
+				</div>
 
                 <div id="Themeboxes">
                     <?php
