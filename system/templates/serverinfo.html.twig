@@ -1,22 +1,25 @@
 <script>
-	var countDownDate = new Date("Jan 01, 2023 {{ server_save.0 }}:{{ server_save.1 }}:{{ server_save.2 }}").getTime();
-	var x = setInterval(function() {
-		var now = new Date().getTime();
-		var distance = countDownDate - now;
-		var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    var serverSaveTime = new Date("<?php echo $serverSaveTime->format('Y-m-d G:i:s') ?>").getTime();
+    var x = setInterval(function() {
+        var now = new Date().getTime();
+        var distance = serverSaveTime - now;
+        var hours = Math.floor(distance / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        document.getElementById("timerServerSave_hour").innerHTML = hours + "h ";
+        document.getElementById("timerServerSave_minute").innerHTML = minutes + "m ";
+        document.getElementById("timerServerSave_second").innerHTML = seconds + "s ";
 
-		document.getElementById("timerServerSave_hour").innerHTML = hours + "h ";
-		document.getElementById("timerServerSave_minute").innerHTML = minutes + "m ";
-		document.getElementById("timerServerSave_second").innerHTML = seconds + "s ";
-
-		if (distance < 0) {
-			clearInterval(x);
-			document.getElementById("timerServerSave_hour").innerHTML = "Server save now!";
-		}
-	}, 1000);
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timerServerSave_hour").innerHTML = "Server save now!";
+        }
+    }, 1000);
 </script>
+
 
 <div style="text-align:center">
     <h1>{{ config.lua.serverName }}</h1>
@@ -94,7 +97,7 @@
 															<tbody>
 															<tr bgcolor="#D4C0A1"><td><b>IP:</b> {{ serverIp }} (Port: {{ config.lua.loginPort }})</td></tr>
 															<tr bgcolor="#F1E0C6"><td><b>Client: </b> {{ clientVersion }}</td></tr>
-															<tr bgcolor="#D4C0A1"><td><b>Online:</b> 24/7</td></tr>
+															<tr bgcolor="#D4C0A1"><td><b>Uptime:</b> {{ status.uptimeReadable }} </td></tr>
 															<tr bgcolor="#F1E0C6"><td><b>Global save: </b> {{ server_save.0 }}:{{ server_save.1 }}</td></tr>
 															<tr bgcolor="#D4C0A1"><td><b>World type:</b> {{ config.lua.worldType|upper }}</td></tr>
 															<tr bgcolor="#F1E0C6"><td><b>Protection level: </b> {{ protectionLevel }}</td></tr>
@@ -153,7 +156,7 @@
 															<tr bgcolor="#D4C0A1"><td><b>Skills:</b> x{{ rateSkill }}</td></tr>
 															<tr bgcolor="#F1E0C6"><td><b>Loot: </b> x{{ rateLoot }}</td></tr>
 															<tr bgcolor="#D4C0A1"><td><b>Spawn:</b> x{{ rateSpawn }}</td></tr>
-															<tr bgcolor="#F1E0C6"><td><b>Guilds: </b> {{ config.guild_need_level }}</td></tr>
+															<tr bgcolor="#F1E0C6"><td><b>Need level to create Guild: </b> {{ config.guild_need_level }}</td></tr>
 															{%  if houseLevel %}
 																<tr bgcolor="#D4C0A1"><td><b>Houses:</b> {{ houseLevel }} level</td></tr>
 															{% endif %}
@@ -201,29 +204,43 @@
 														<table class="TableContent" width="100%">
 															<tbody>
 															<tr bgcolor="#D4C0A1"><td><b>PZ Lock:</b> {{ pzLocked / (60 * 1000) }} min</td></tr>
-															<tr bgcolor="#F1E0C6"><td><b>White Skull Time: </b> {{ whiteSkullTime }} min</td></tr>
-															<tr bgcolor="#D4C0A1"><td><b>Red skull length:</b> {{ redSkullLength / (24 * 60 * 60) }} days</td></tr>
+															{% set whiteSkullTime = 7 * 60 %}
+															{# Converter para dias, horas, minutos e segundos #}
+															{% set days = whiteSkullTime // (24 * 60) %}
+															{% set hours = (whiteSkullTime % (24 * 60)) // 60 %}
+															{% set minutes = whiteSkullTime % 60 %}
+															{% set seconds = 0 %}
+															<tr bgcolor="#F1E0C6">  	
+															<td>
+																<b>Frag Duration:</b>
+																{% if days > 0 %} {{ days }} days {% endif %}
+																{% if hours > 0 %} {{ hours }} hours {% endif %}
+																{% if minutes > 0 %} {{ minutes }} mins {% endif %}
+																{% if seconds > 0 %} {{ seconds }} segs {% endif %}
+															</td>
+															</tr>
+															<tr bgcolor="#D4C0A1"><td><b>RedSkull Duration:</b> {{ redSkullLength }} days</td></tr>
 															{% if blackSkull %}
-																<tr bgcolor="#F1E0C6"><td><b>Black skull length: </b> {{ blackSkullLength / (24 * 60 * 60) }} days</td></tr>
+																<tr bgcolor="#F1E0C6"><td><b>BlackSkull Duration: </b> {{ blackSkullLength }} days</td></tr>
 															{% endif %}
-															{% if killsToRedSkull is defined %}
-																<li>Kills to red skull: <b>{{ config.lua.killsToRedSkull }}</b></li>
-															{%  elseif config.lua.dailyFragsToRedSkull is defined or config.lua.kills_per_day_red_skull is defined %}
-																<li>
+															{% if dayKillsToRedSkull is defined %}
+																<li>Kills to red skull: <b>{{ config.lua.dayKillsToRedSkull }}</b></li>
+															{%  elseif config.lua.dayKillsToRedSkull is defined or config.lua.kills_per_day_red_skull is defined %}
+																
 																	<h3>Red skull</h3>
 																	<ul>
 																		<li>{{ dailyFragsToRedSkull }} frags daily</li>
 																		<li>{{ weeklyFragsToRedSkull }} frags weekly</li>
 																		<li>{{ monthlyFragsToRedSkull }} frags monthly</li>
 																	</ul>
-																	{% if blackSkull and config.lua.dailyFragsToBlackSkull is defined or config.lua.kills_per_day_black_skull is defined %}
+															
 																		<h3>Black skull</h3>
 																		<ul>
-																			<li>{{ dailyFragsToBlackSkull }} frags daily</li>
-																			<li>{{ weeklyFragsToBlackSkull }} frags weekly</li>
-																			<li>{{ monthlyFragsToBlackSkull }} frags monthly</li>
+																			<li>{{ dailyFragsToRedSkull * 2}} frags daily</li>
+																			<li>{{ weeklyFragsToRedSkull * 2}} frags weekly</li>
+																			<li>{{ monthlyFragsToRedSkull * 2}} frags monthly</li>
 																		</ul>
-																	{% elseif config.lua.dailyFragsToBanishment is defined %}
+																	{% if config.lua.dailyFragsToBanishment is defined %}
 																		<h3>Banishment</h3>
 																		<ul>
 																			<li>{{ config.lua.dailyFragsToBanishment }} frags daily</li>
@@ -231,7 +248,7 @@
 																			<li>{{ config.lua.monthlyFragsToBanishment }} frags monthly</li>
 																		</ul>
 																	{% endif %}
-																</li>
+																
 															{% endif %}
 															{% if banishmentLength %}
 																<li>Banishment length: <b>{{ banishmentLength }} days</b></li>
