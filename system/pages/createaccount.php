@@ -1,4 +1,5 @@
 <?php
+global $config, $logged, $db, $hooks, $template_path, $twig;
 /**
  * Create account
  *
@@ -344,12 +345,12 @@ if ($config['account_country']) {
 $twig->display('account.create.js.html.twig');
 
 $params = array(
-    'account' => isset($_POST['account']) ? $_POST['account'] : '',
-    'email' => isset($_POST['email']) ? $_POST['email'] : '',
-    'countries' => isset($countries) ? $countries : null,
-    'accept_rules' => isset($_POST['accept_rules']) ? $_POST['accept_rules'] : false,
+    'account' => $_POST['account'] ?? '',
+    'email' => $_POST['email'] ?? '',
+    'countries' => $countries ?? null,
+    'accept_rules' => $_POST['accept_rules'] ?? false,
     'country_recognized' => $country_recognized,
-    'country' => isset($country) ? $country : null,
+    'country' => $country ?? null,
     'errors' => $errors,
     'save' => $save
 );
