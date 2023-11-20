@@ -50,23 +50,40 @@ $explodeServerSave = explode(':', $server_save);
 $hours_ServerSave = $explodeServerSave[0];
 $minutes_ServerSave = $explodeServerSave[1];
 $seconds_ServerSave = $explodeServerSave[2];
+
+$now = new DateTime();
+$serverSaveTime = new DateTime();
+$serverSaveTime->setTime($hours_ServerSave, $minutes_ServerSave, $seconds_ServerSave);
+
+if ($now > $serverSaveTime) {
+    $serverSaveTime->modify('+1 day');
+}
+
+$interval = $now->diff($serverSaveTime);
 ?>
 <script>
-	var countDownDate = new Date("Jan 01, 2023 <?php echo $hours_ServerSave ?>:<?php echo $minutes_ServerSave ?>:<?php echo $seconds_ServerSave ?>").getTime();
-	var x = setInterval(function() {
-		var now = new Date().getTime();
-		var distance = countDownDate - now;
-		var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    var serverSaveTime = new Date(<?php echo $serverSaveTime->format('Y, n-1, j, G, i, s') ?>);
 
-        document.getElementById("timerServerSave").innerHTML = "" + hours + ":" + minutes + ":" + seconds + "";
+    var x = setInterval(function() {
+        var now = new Date().getTime();
+        var distance = serverSaveTime - now;
 
-		if (distance < 0) {
-			clearInterval(x);
-			document.getElementById("timerServerSave").innerHTML = "Server save now!";
-		}
-	}, 1000);
+        var hours = Math.floor(distance / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Adiciona zeros à esquerda, se necessário
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        document.getElementById("timerServerSave").innerHTML = hours + ":" + minutes + ":" + seconds;
+
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timerServerSave").innerHTML = "Server save now!";
+        }
+    }, 1000);
 </script>
 <div class="serversave">
     <div class="serversave_header">Server Save</div>
