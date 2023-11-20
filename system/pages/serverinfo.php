@@ -88,7 +88,7 @@ if(isset($status['online']))
 $twig->display('serverinfo.html.twig', array(
 	'server_save' => $explodeServerSave,
     'experienceStages' => isset($config['lua']['experienceStages']) && getBoolean($config['lua']['experienceStages']) ? $config['lua']['experienceStages'] : null,
-    'serverIp' => str_replace('/', '', str_replace('http://', '', $config['lua']['ip'])),
+    'serverIp' => str_replace(array('http://', 'https://'), '', $config['lua']['url']),
     'clientVersion' => $clientVersion,
     'globalSaveHour' => isset($config['lua']['globalSaveEnabled']) && getBoolean($config['lua']['globalSaveEnabled']) ? $config['lua']['globalSaveHour'] : null,
     'protectionLevel' => $config['lua']['protectionLevel'],
