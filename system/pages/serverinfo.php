@@ -106,7 +106,7 @@ $twig->display('serverinfo.html.twig', array(
     'redSkullLength' => $redSkullLength,
     'blackSkull' => $blackSkull,
     'blackSkullLength' => $blackSkullLength,
-    'dailyFragsToRedSkull' => isset($config['lua']['dayKillsToRedSkull']) ? $config['lua']['dayKillsToRedSkull'] : (isset($config['lua']['dayKillsToRedSkull']) ? $config['lua']['dayKillsToRedSkull'] : null),
+    'dailyFragsToRedSkull' => configLua('dayKillsToRedSkull') ?? null),
     'weeklyFragsToRedSkull' => configLua('weekKillsToRedSkull') ?? null),
     'monthlyFragsToRedSkull' => configLua('monthKillsToRedSkull') ?? null),
     'dailyFragsToBlackSkull' => isset($config['lua']['dailyFragsToBlackSkull']) ? $config['lua']['dailyFragsToBlackSkull'] : (isset($config['lua']['kills_per_day_black_skull']) ? $config['lua']['kills_per_day_black_skull'] : null),
