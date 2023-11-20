@@ -56,7 +56,7 @@ if(!isset($whiteSkullTime) && isset($config['lua']['unjust_skull_duration']))
 if(isset($whiteSkullTime))
     $whiteSkullTime = eval('return ' . $whiteSkullTime . ';');
 
-$redSkullLength = isset($config['lua']['redSkullDuration']) ? $config['lua']['redSkullDuration'] : NULL;
+$redSkullLength = $configLua('redSkullDuration') ?? null;
 if(!isset($redSkullLength) && isset($config['lua']['red_skull_duration']))
     $redSkullLength = $config['lua']['red_skull_duration'];
 
