@@ -56,22 +56,22 @@ if(!isset($whiteSkullTime) && isset($config['lua']['unjust_skull_duration']))
 if(isset($whiteSkullTime))
     $whiteSkullTime = eval('return ' . $whiteSkullTime . ';');
 
-$redSkullLength = isset($config['lua']['redSkullLength']) ? $config['lua']['redSkullLength'] : NULL;
+$redSkullLength = isset($config['lua']['redSkullDuration']) ? $config['lua']['redSkullDuration'] : NULL;
 if(!isset($redSkullLength) && isset($config['lua']['red_skull_duration']))
     $redSkullLength = $config['lua']['red_skull_duration'];
 
 if(isset($redSkullLength))
     $redSkullLength = eval('return ' . $redSkullLength . ';');
 
-$blackSkull = false;
-$blackSkullLength = NULL;
+$blackSkull = true;
+$blackSkullLength = isset($config['lua']['blackSkullDuration']) ? $config['lua']['blackSkullDuration'] : NULL;
 if(isset($config['lua']['useBlackSkull']) && getBoolean($config['lua']['useBlackSkull']))
 {
-    $blackSkullLength = $config['lua']['blackSkullLength'];
+    $blackSkullLength = $config['lua']['blackSkullDuration'];
     $blackSkull = true;
 }
 else if(isset($config['lua']['black_skull_duration'])) {
-    $blackSkullLength = eval('return ' . $config['lua']['blackSkullLength'] . ';');
+    $blackSkullLength = eval('return ' . $config['lua']['blackSkullDuration'] . ';');
     $blackSkull = true;
 }
 
@@ -88,7 +88,7 @@ if(isset($status['online']))
 $twig->display('serverinfo.html.twig', array(
 	'server_save' => $explodeServerSave,
     'experienceStages' => isset($config['lua']['experienceStages']) && getBoolean($config['lua']['experienceStages']) ? $config['lua']['experienceStages'] : null,
-    'serverIp' => str_replace('/', '', str_replace('http://', '', $config['lua']['url'])),
+    'serverIp' => str_replace('/', '', str_replace('http://', '', $config['lua']['ip'])),
     'clientVersion' => $clientVersion,
     'globalSaveHour' => isset($config['lua']['globalSaveEnabled']) && getBoolean($config['lua']['globalSaveEnabled']) ? $config['lua']['globalSaveHour'] : null,
     'protectionLevel' => $config['lua']['protectionLevel'],
@@ -106,9 +106,9 @@ $twig->display('serverinfo.html.twig', array(
     'redSkullLength' => $redSkullLength,
     'blackSkull' => $blackSkull,
     'blackSkullLength' => $blackSkullLength,
-    'dailyFragsToRedSkull' => isset($config['lua']['dailyFragsToRedSkull']) ? $config['lua']['dailyFragsToRedSkull'] : (isset($config['lua']['kills_per_day_red_skull']) ? $config['lua']['kills_per_day_red_skull'] : null),
-    'weeklyFragsToRedSkull' => isset($config['lua']['weeklyFragsToRedSkull']) ? $config['lua']['weeklyFragsToRedSkull'] : (isset($config['lua']['kills_per_week_red_skull']) ? $config['lua']['kills_per_week_red_skull'] : null),
-    'monthlyFragsToRedSkull' => isset($config['lua']['monthlyFragsToRedSkull']) ? $config['lua']['monthlyFragsToRedSkull'] : (isset($config['lua']['kills_per_month_red_skull']) ? $config['lua']['kills_per_month_red_skull'] : null),
+    'dailyFragsToRedSkull' => isset($config['lua']['dayKillsToRedSkull']) ? $config['lua']['dayKillsToRedSkull'] : (isset($config['lua']['dayKillsToRedSkull']) ? $config['lua']['dayKillsToRedSkull'] : null),
+    'weeklyFragsToRedSkull' => isset($config['lua']['weekKillsToRedSkull']) ? $config['lua']['weekKillsToRedSkull'] : (isset($config['lua']['weekKillsToRedSkull']) ? $config['lua']['weekKillsToRedSkull'] : null),
+    'monthlyFragsToRedSkull' => isset($config['lua']['monthKillsToRedSkull']) ? $config['lua']['monthKillsToRedSkull'] : (isset($config['lua']['monthKillsToRedSkull']) ? $config['lua']['monthKillsToRedSkull'] : null),
     'dailyFragsToBlackSkull' => isset($config['lua']['dailyFragsToBlackSkull']) ? $config['lua']['dailyFragsToBlackSkull'] : (isset($config['lua']['kills_per_day_black_skull']) ? $config['lua']['kills_per_day_black_skull'] : null),
     'weeklyFragsToBlackSkull' => isset($config['lua']['weeklyFragsToBlackSkull']) ? $config['lua']['weeklyFragsToBlackSkull'] : (isset($config['lua']['kills_per_week_black_skull']) ? $config['lua']['kills_per_week_black_skull'] : null),
     'monthlyFragsToBlackSkull' => isset($config['lua']['monthlyFragsToBlackSkull']) ? $config['lua']['monthlyFragsToBlackSkull'] : (isset($config['lua']['kills_per_month_black_skull']) ? $config['lua']['kills_per_month_black_skull'] : null),
