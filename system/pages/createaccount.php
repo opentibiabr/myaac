@@ -21,22 +21,22 @@ if ($logged) {
         <div class="CaptionContainer">
             <div class="CaptionInnerContainer">
                 <span class="CaptionEdgeLeftTop"
-                      style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightTop"
-                      style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionBorderTop"
-                      style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionVerticalLeft"
-                      style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <div class="Text">Please logout before attempting to create a new account.</div>
                 <span class="CaptionVerticalRight"
-                      style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <span class="CaptionBorderBottom"
-                      style="background-image:url(<?php echo $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionEdgeLeftBottom"
-                      style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightBottom"
-                      style="background-image:url(<?php echo $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
             </div>
         </div>
         <table class="Table3" cellpadding="0" cellspacing="0">
@@ -70,11 +70,11 @@ if ($logged) {
     <br>
     <div style="width: 135px; margin: 0 auto;">
         <div class="BigButton"
-             style="background-image:url(<?php echo $template_path; ?>/images/global/buttons/sbutton.gif)"><a
+             style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton.gif)"><a
                 href="?account/manage">
                 <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
                     <div class="BigButtonOver"
-                         style="background-image: url(<?php echo $template_path; ?>/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div>
+                         style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div>
                     <input class="BigButtonText" type="button" value="Login"></div>
             </a></div>
     </div>
