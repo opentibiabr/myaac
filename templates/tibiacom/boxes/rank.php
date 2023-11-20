@@ -2,6 +2,7 @@
     .rank{
         width: 180px;
         max-height: 360px;
+        margin-top: -11px;
     }
     .rank_header{
         height: 45px;
