@@ -300,6 +300,7 @@ if ($save) {
             if ($config['mail_enabled'] && $config['account_welcome_mail']) {
                 $mailBody = $twig->render('account.welcome_mail.html.twig', array(
                     'account' => $tmp_account,
+                    'email' => $email,
                     'password' => $password ?? null
                 ));
 
