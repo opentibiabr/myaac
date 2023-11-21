@@ -1,9 +1,10 @@
 <style>
-    .serversave{
+    .serversave {
         width: 180px;
         height: 135px;
     }
-    .serversave_header{
+
+    .serversave_header {
         height: 45px;
         width: 180px;
         background-image: url('templates/tibiacom/images/themeboxes/box_top.png');
@@ -12,13 +13,15 @@
         color: #d5c3af;
         line-height: 65px;
     }
-    .serversave_bottom{
+
+    .serversave_bottom {
         height: 30px;
         width: 180px;
         margin-top: -20px;
         background-image: url('templates/tibiacom/images/themeboxes/box_bottom.png');
     }
-    .serversave_content{
+
+    .serversave_content {
         padding: 0px 10px;
         width: 160px;
         height: 70px;
@@ -28,12 +31,14 @@
         justify-content: center;
         align-items: center;
     }
-    .serversave_text{
+
+    .serversave_text {
         font-family: Verdana;
         color: #d5c3af;
         font-size: 12px !important;
     }
-    .serversave_countdown{
+
+    .serversave_countdown {
         font-family: Verdana;
         font-size: 22px !important;
         font-weight: bold;
@@ -44,9 +49,7 @@
     }
 </style>
 <?php
-global $config;
-$server_save = $config['server_save'];
-$explodeServerSave = explode(':', $server_save);
+$explodeServerSave = explode(':', configLua('globalServerSaveTime') ?? '05:00:00');
 $hours_ServerSave = $explodeServerSave[0];
 $minutes_ServerSave = $explodeServerSave[1];
 $seconds_ServerSave = $explodeServerSave[2];
@@ -62,9 +65,9 @@ if ($now > $serverSaveTime) {
 $interval = $now->diff($serverSaveTime);
 ?>
 <script>
-    var serverSaveTime = new Date(<?php echo $serverSaveTime->format('Y, n-1, j, G, i, s') ?>);
+    var serverSaveTime = new Date(<?= $serverSaveTime->format('Y, n-1, j, G, i, s') ?>);
 
-    var x = setInterval(function() {
+    var x = setInterval(function () {
         var now = new Date().getTime();
         var distance = serverSaveTime - now;
 

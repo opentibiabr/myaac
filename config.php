@@ -285,8 +285,6 @@ $config = array(
 
 	'achievements_base' => 300000,
 
-	'server_save' => '05:00:00',
-
 	'signature_enabled' => false,
 	'signature_type' => 'tibian', // signature engine to use: tibian, mango, gesior
 	'signature_cache_time' => 5, // how long to store cached file (in minutes), default 5 minutes
