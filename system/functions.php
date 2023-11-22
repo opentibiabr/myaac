@@ -991,7 +991,7 @@ function load_config_lua($filename)
                     elseif (in_array(@$value[0], array("'", '"')) && in_array(@$value[strlen($value) - 1], array("'", '"')))
                         $result[$key] = (string)substr(substr($value, 1), 0, -1);
                     elseif (in_array($value, array('true', 'false')))
-                        $result[$key] = ($value === 'true') ? true : false;
+                        $result[$key] = $value === 'true';
                     elseif (@$value[0] === '{') {
                         // arrays are not supported yet
                         // just ignore the error
@@ -1011,7 +1011,7 @@ function load_config_lua($filename)
         }
     }
 
-    $result = array_merge($result, isset($config['lua']) ? $config['lua'] : array());
+    $result = array_merge($result, $config['lua'] ?? array());
     return $result;
 }
 
@@ -1143,7 +1143,7 @@ function configLua($key)
         return $config['lua'][$key[0]] = $key[1];
     }
 
-    return @$config['lua'][$key];
+    return @$config['lua'][$key] ?? null;
 }
 
 function clearCache()
@@ -1336,6 +1336,67 @@ function getDatabasePages($withHidden = false): array
 function isVipSystemEnabled(): bool
 {
     return getBoolean(configLua('vipSystemEnabled'));
+}
+
+/**
+ * @param $configFile
+ * @return array
+ *
+ * Function to get stages.lua from canary server.
+ */
+function loadStagesData($configFile)
+{
+    if (!@file_exists($configFile)) {
+        log_append('error.log', "[loadStagesData] Fatal error: Cannot load stages.lua ($configFile).");
+        throw new RuntimeException("ERROR: Cannot find $configFile file.");
+    }
+
+    $result = [];
+    $config_string = str_replace(["\r\n", "\r"], "\n", file_get_contents($configFile));
+    $lines = explode("\n", $config_string);
+
+    $lastKey = "";
+    if (count($lines) > 0) {
+        for ($ln = 0; $ln < count($lines); $ln++) {
+            $line = str_replace(" ", "", trim($lines[$ln]));
+            if (strpos($line, '--') !== false || empty($line)) {
+                continue;
+            }
+
+            if (strpos($line, 'experienceStages') !== false) {
+                $lastKey = 'experienceStages';
+                $result[$lastKey] = [];
+            } else if (strpos($line, 'skillsStages') !== false) {
+                $lastKey = 'skillsStages';
+                $result[$lastKey] = [];
+            } else if (strpos($line, 'magicLevelStages') !== false) {
+                $lastKey = 'magicLevelStages';
+                $result[$lastKey] = [];
+            }
+
+            if (strpos($line, '{') !== false) {
+                $checks = [
+                    'min' => @explode("=", $lines[$ln + 1]),
+                    'max' => @explode("=", $lines[$ln + 2]),
+                    'mul' => @explode("=", $lines[$ln + 3]),
+                ];
+                $minlevel = isset($checks['min'][0]) && trim($checks['min'][0]) == 'minlevel' ? $checks['min'][1] : null;
+                $maxlevel = !isset($checks['mul'][1]) ? null : (trim($checks['max'][0]) == 'maxlevel' ? $checks['max'][1] : null);
+                $multiplier = isset($checks['mul'][0]) && trim($checks['mul'][0]) == 'multiplier' ? $checks['mul'][1] : (trim($checks['max'][0]) == 'multiplier' ? $checks['max'][1] : null);
+
+                if (!$minlevel && !$maxlevel && !$multiplier) {
+                    continue;
+                }
+
+                $result[$lastKey][] = [
+                    'minlevel' => $minlevel ? (int)str_replace([" ", ","], "", $minlevel) : null,
+                    'maxlevel' => $maxlevel ? (int)str_replace([" ", ","], "", $maxlevel) : null,
+                    'multiplier' => $multiplier ? (int)str_replace([" ", ","], "", $multiplier) : null,
+                ];
+            }
+        }
+    }
+    return $result;
 }
 
 // validator functions

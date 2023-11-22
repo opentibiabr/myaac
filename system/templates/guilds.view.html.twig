@@ -372,6 +372,18 @@
             {% include('buttons.base.html.twig') %}
           </form>
         </td>
+        <td>
+          <form action="?subtopic=guilds&action=accept_invite&guild={{ guild_name|url_encode }}" method="post">
+            {% set button_name = 'Accept Guild' %}
+            {% include('buttons.base.html.twig') %}
+          </form>
+        </td>
+        <td>
+          <form action="?subtopic=guilds&action=leave_guild&guild={{ guild_name|url_encode }}" method="post">
+            {% set button_name = 'Leave Guild' %}
+            {% include('buttons.base.html.twig') %}
+          </form>
+        </td>
       {% endif %}
       {% if not isLeader %}
         <td>
