@@ -69,4 +69,3 @@ $twig->display('serverinfo.html.twig', [
     'weeklyFragsToRedSkull' => configLua('weekKillsToRedSkull') ?? null,
     'monthlyFragsToRedSkull' => configLua('monthKillsToRedSkull') ?? null,
 ]);
-
