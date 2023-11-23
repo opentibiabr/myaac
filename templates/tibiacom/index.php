@@ -346,8 +346,8 @@ if (isset($config['boxes']))
                          style="background-image:url(<?= $template_path; ?>/images/loginbox/loginbox-textfield-background.gif)">
                         <div id="LoginButton"
                              style="background-image:url(<?= $template_path; ?>/images/global/buttons/mediumbutton.gif)">
-                            <div onClick="LoginButtonAction();" onMouseOver="MouseOverBigButton2(this);"
-                                 onMouseOut="MouseOutBigButton2(this);">
+                            <div onClick="LoginButtonAction();" onMouseOver="MouseOverBigButton(this);"
+                                 onMouseOut="MouseOutBigButton(this);">
                                 <div class="Button"
                                      style="background-image:url(<?= $template_path; ?>/images/global/buttons/mediumbutton-over.gif)"></div>
                                 <?php
@@ -389,8 +389,8 @@ if (isset($config['boxes']))
                             <div id="PlayNowContainer">
                                 <div class="MediumButtonBackground"
                                      style="background-image:url(<?= $template_path; ?>/images/global/buttons/mediumbutton.gif)"
-                                     onmouseover="MouseOverBigButtonDownload(this);" onmouseout="MouseOutBigButtonDownload(this);">
-                                    <div class="MediumButtonOver MediumButtonOverDownload"
+                                     onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
+                                    <div class="MediumButtonOver"
                                          style="background-image: url(<?= $template_path; ?>/images/global/buttons/mediumbutton-over.gif); visibility: hidden;"></div>
                                     <input class="MediumButtonText" type="image" name="Download" alt="Download"
                                            src="<?= $template_path; ?>/images/global/buttons/mediumbutton_download.png">
@@ -842,31 +842,6 @@ if ($status['online']) {
     <center><img class="Ornament" src="<?= $template_path; ?>/images/global/content/ornament.gif"></center>
     <br>
 </div>
-
-            if (MediumButtonOverDownload) {
-                MediumButtonOverDownload.style.visibility = 'hidden';
-                // Restante do código...
-            }
-        }
-    </script>
-    
-        <script>
-        function MouseOverLoginBoxText(element) {
-            var loginStatusText = document.querySelector('#LoginstatusText_2_2');
-            if (loginStatusText) {
-                loginStatusText.style.visibility = 'visible';
-                // Restante do código...
-            }
-        }
-
-        function MouseOutLoginBoxText(element) {
-            var loginStatusText = document.querySelector('#LoginstatusText_2_2');
-            if (loginStatusText) {
-                loginStatusText.style.visibility = 'hidden';
-                // Restante do código...
-            }
-        }
-    </script>
 
 </body>
 </html>
