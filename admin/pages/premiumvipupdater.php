@@ -27,7 +27,7 @@ function echo_error($message)
     $error = true;
 }
 
-$query = $db->query("SELECT `id`, `name`, `email`, `premdays`, `lastday` FROM `accounts`;");
+$query = $db->query("SELECT `id`, `name`, `email`, `premdays`, `lastday` FROM `accounts` WHERE ID > 1;");
 $accounts = [];
 if ($query->rowCount() > 0) {
     $accounts = $query->fetchAll();
@@ -47,7 +47,7 @@ if (isset($_POST['add_days']) && $account_logged->isSuperAdmin()) {
                     $db->exec("UPDATE `accounts` SET `premdays` = {$days}, `lastday` = {$newLastDay} WHERE `id` = {$acc['id']}");
                 }
                 echo_success("You have added {$daysToAdd} {$addTitle} days to all accounts at: " . date('G:i'));
-                $accounts = $db->query("SELECT `id`, `name`, `email`, `premdays`, `lastday` FROM `accounts`;")->fetchAll();
+                $accounts = $db->query("SELECT `id`, `name`, `email`, `premdays`, `lastday` FROM `accounts` WHERE ID > 1;")->fetchAll();
             } catch (PDOException $error) {
                 echo_error($error->getMessage());
             }
