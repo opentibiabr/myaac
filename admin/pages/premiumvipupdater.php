@@ -34,23 +34,25 @@ if ($query->rowCount() > 0) {
 }
 
 if (isset($_POST['add_days']) && $account_logged->isSuperAdmin()) {
-    $daysToAdd = $_POST['days_'] ?? 0;
-    if ($daysToAdd == 0) {
-        echo_error("You can't add 0 days!");
+    $daysToAdd = (int)$_POST['days_'] ?? 0;
+    if ($daysToAdd < 1) {
+        echo_error("You need add 1 or more days!");
     } else {
         if ($query->rowCount() > 0) {
             try {
                 foreach ($accounts as $acc) {
-                    $days = $acc['premdays'] > 0 ? $acc['premdays'] + $daysToAdd : $daysToAdd;
-                    $lastDay = $acc['lastday'] > 0 ? $acc['lastday'] : $now;
+                    $days = (int)$acc['premdays'] + $daysToAdd;
+                    $lastDay = (int)$acc['lastday'] > 0 ? (int)$acc['lastday'] : $now;
                     $newLastDay = $lastDay + ($daysToAdd * 86400);
                     $db->exec("UPDATE `accounts` SET `premdays` = {$days}, `lastday` = {$newLastDay} WHERE `id` = {$acc['id']}");
                 }
                 echo_success("You have added {$daysToAdd} {$addTitle} days to all accounts at: " . date('G:i'));
-                $accounts = $db->query("SELECT `id`, `name`, `email`, `premdays`, `lastday` FROM `accounts` WHERE ID > 2;")->fetchAll();
+                $accounts = $db->query("SELECT `id`, `name`, `email`, `premdays`, `lastday` FROM `accounts`;")->fetchAll();
             } catch (PDOException $error) {
                 echo_error($error->getMessage());
             }
+        } else {
+            echo_error("You don't have accounts to update!");
         }
     }
 }
@@ -68,9 +70,9 @@ if (isset($_POST['add_days']) && $account_logged->isSuperAdmin()) {
                                 <div class="form-group">
                                     <div class="input-group justify-content-between">
                                         <div>
-                                            <small>Put here the days you want to add for all accounts.</small><br>
-                                            <input name="days_" maxlength="2" min="1" max="99" autofocus
-                                                   style="width: 100px;">
+                                            <small>Insert days you want to add for all accounts.</small><br>
+                                            <input type="number" name="days_" maxlength="2" min="1" max="99" autofocus
+                                                   placeholder="(min 1, max 99)" style="width: 140px;">
                                         </div>
                                         <div class="input-group-btn d-flex align-items-end">
                                             <button type="submit" class="btn btn-success" name="add_days"><i
