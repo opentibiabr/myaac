@@ -1,32 +1,22 @@
 <?php
 
+global $character_prem_info;
+
 if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
     $selectCharacter = $_POST['auction_character'];
-
 
     /* PLAYERS */
     $getCharacter = $db->query('SELECT `id`, `account_id`, `name`, `level`, `vocation`, `sex`, `health`, `healthmax`, `mana`, `manamax`, `maglevel`, `manaspent`, `balance`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `skill_shielding`, `skill_shielding_tries`, `cap`, `experience`, `created`, `soul`, `blessings` FROM `players`' . 'WHERE `id` = ' . $db->quote($selectCharacter) . '');
     $getCharacter = $getCharacter->fetch();
     /* PLAYERS END */
 
-
     /* ACCOUNT BY PLAYER */
     $getAccount = $db->query("SELECT `id`, `premdays`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = {$getCharacter['account_id']}");
     $getAccount = $getAccount->fetch();
-    if ($getAccount['premdays'] > 0) {
-        $character_prem = '<b>Premium Account</b>';
-    } else {
-        $character_prem = '<b>Free Account</b>';
-    }
+    $character_prem = $getAccount['premdays'] > 0 ? "<b>{$character_prem_info} Account</b>" : '<b>Free Account</b>';
     /* ACCOUNT BY PLAYER END */
 
-
-    if ($getCharacter['sex'] == 0) {
-        $character_sex = 'Female';
-    } else {
-        $character_sex = 'Male';
-    }
-
+    $character_sex = $getCharacter['sex'] == 0 ? 'Female' : 'Male';
 
     if ($getCharacter['vocation'] == 0) {
         $character_voc = 'None';

@@ -1399,6 +1399,15 @@ function loadStagesData($configFile)
     return $result;
 }
 
+/**
+ * Return type of coins to use in site: 'coins_transferable' as default or 'coins'
+ * @return string
+ */
+function getCoinType()
+{
+    return $config['site_coin_type'] ?? 'coins_transferable';
+}
+
 // validator functions
 require_once LIBS . 'validator.php';
 require_once SYSTEM . 'compat/base.php';

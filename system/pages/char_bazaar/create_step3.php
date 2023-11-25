@@ -1,5 +1,6 @@
 <?php
 
+global $db, $account_logged, $character_prem_info;
 if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
     $selectCharacter = $_POST['auction_character'];
 
@@ -11,18 +12,10 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
     /* ACCOUNT BY PLAYER */
     $getAccount = $db->query("SELECT `id`, `premdays`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = {$getCharacter['account_id']}");
     $getAccount = $getAccount->fetch();
-    if ($getAccount['premdays'] > 0) {
-        $character_prem = '<b>Premium Account</b>';
-    } else {
-        $character_prem = '<b>Free Account</b>';
-    }
+    $character_prem = $getAccount['premdays'] > 0 ? "<b>{$character_prem_info} Account</b>" : '<b>Free Account</b>';
     /* ACCOUNT BY PLAYER END */
 
-    if ($getCharacter['sex'] == 0) {
-        $character_sex = 'Female';
-    } else {
-        $character_sex = 'Male';
-    }
+    $character_sex = $getCharacter['sex'] == 0 ? 'Female' : 'Male';
 
     if ($getCharacter['vocation'] == 0) {
         $character_voc = 'None';
@@ -45,15 +38,6 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
     } else {
         $character_voc = 'None';
     }
-
-    $getAccountLogged = $db->query("SELECT `id`, `premdays`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = {$account_logged->getId()}");
-    $getAccountLogged = $getAccountLogged->fetch();
-    if ($getAccountLogged['premdays'] > 0) {
-        $character_prem = '<b>Premium Account</b>';
-    } else {
-        $character_prem = '<b>Free Account</b>';
-    }
-
     ?>
     <div id="ProgressBar">
         <div id="MainContainer">
@@ -496,9 +480,10 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
                                                                     class="LabelV150">Price:
                                                                 </td>
                                                                 <td class="GreedyCell">
-                                                                    <input style="width: 100%;" name="auction_price"
-                                                                           type="text" placeholder="in Tibia Coins"
-                                                                           size="15" maxlength="15" autofocus="">
+                                                                    <input type="number" style="width: 100%;"
+                                                                           name="auction_price" min="1" max="999999"
+                                                                           placeholder="in Tibia Coins"
+                                                                           size="15" maxlength="15" autofocus>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -506,10 +491,10 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
                                                                     class="LabelV150">Days to end:
                                                                 </td>
                                                                 <td class="GreedyCell">
-                                                                    <input style="width: 100%;" name="auction_days"
-                                                                           type="text"
+                                                                    <input type="number" style="width: 100%;"
+                                                                           name="auction_days" min="1" max="28"
                                                                            placeholder="min 1 day and max 28 days"
-                                                                           size="29" maxlength="2" autofocus="">
+                                                                           size="29" maxlength="2" autofocus>
                                                                 </td>
                                                                 <td>
                                                                     <div id="auction_result"></div>

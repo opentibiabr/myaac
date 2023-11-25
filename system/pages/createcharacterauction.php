@@ -1,3 +1,4 @@
+<?php global $config, $db, $logged, $twig; ?>
 <style>
     form {
         display: block;
@@ -50,6 +51,8 @@ $charbazaar_create = $config['bazaar_create'];
 $charbazaar_tax = $config['bazaar_tax'];
 $charbazaar_bid = $config['bazaar_bid'];
 $charbazaar_newacc = $config['bazaar_accountid'];
+$coinType = getCoinType();
+$character_prem_info = isVipSystemEnabled() ? 'VIP' : 'Premium';
 /* CHAR BAZAAR CONFIG END */
 
 $getAuctionStep = $_GET['step'] ?? null;
@@ -101,7 +104,7 @@ if ($getAuctionStep == 'confirm') {
         $getCharacter = $db->query('SELECT `id`, `account_id` FROM `players` WHERE `id` = ' . $db->quote($auction_character) . '');
         $getCharacter = $getCharacter->fetch();
 
-        $getAccount = $db->query('SELECT `id`, `premdays`, `coins` FROM `accounts` WHERE `id` = ' . $db->quote($getCharacter['account_id']) . '');
+        $getAccount = $db->query('SELECT `id`, `premdays`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = ' . $getCharacter['account_id']);
         $getAccount = $getAccount->fetch();
 
         $auction_inputdays = $auction_days;
@@ -115,21 +118,21 @@ if ($getAuctionStep == 'confirm') {
         $date_start = date('YmdHis');
         $date_end = $auction_end . date('His');
 
-        $getCoinsAccountLogged = $db->query('SELECT `id`, `coins` FROM `accounts` WHERE `id` = ' . $account_logged->getId() . '');
+        $getCoinsAccountLogged = $db->query('SELECT `id`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = ' . $account_logged->getId());
         $getCoinsAccountLogged = $getCoinsAccountLogged->fetch();
 
-        $charbazaar_mycoins = $getCoinsAccountLogged['coins'];
+        $charbazaar_mycoins = $getCoinsAccountLogged[$coinType];
         $charbazaar_mycoins_calc = $charbazaar_mycoins - $charbazaar_create;
 
         $auctionId = null;
-        if ($getCoinsAccountLogged['coins'] > $charbazaar_create) {
-            $update_accountcoins = $db->exec('UPDATE `accounts` SET `coins` = ' . $charbazaar_mycoins_calc . ' WHERE `id` = ' . $getAccount['id'] . '');
+        if ($getCoinsAccountLogged[$coinType] > $charbazaar_create) {
+            $update_accountcoins = $db->exec("UPDATE `accounts` SET `{$coinType}` = {$charbazaar_mycoins_calc} WHERE `id` = {$getAccount['id']}");
 
             $insert_auction = $db->exec('INSERT INTO `myaac_charbazaar` (`account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price`, `status`) VALUES (' . $db->quote($account_old) . ', ' . $db->quote($account_new) . ', ' . $db->quote($player_id) . ', ' . $db->quote($price) . ', ' . $db->quote($date_end) . ', ' . $db->quote($date_start) . ', 0, 0, 0)');
             $auctionId = $db->query("SELECT `id` FROM `myaac_charbazaar` WHERE `account_old` = {$account_old} AND `player_id` = {$player_id} ORDER BY `id` DESC LIMIT 1;");
             $auctionId = $auctionId->fetch();
 
-            $update_character = $db->exec('UPDATE `players` SET `account_id` = ' . $account_new . ' WHERE `id` = ' . $getCharacter['id'] . '');
+            $update_character = $db->exec('UPDATE `players` SET `account_id` = ' . $account_new . ' WHERE `id` = ' . $getCharacter['id']);
         }
         /* REGISTER AUCTION END */
         ?>
