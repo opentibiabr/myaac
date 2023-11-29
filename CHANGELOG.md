@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.13 - 29.11.2023]
+
+### Added
+* Add further new clients versions.
+* patching from develop - twig context for hooks
+
+### Fixed
+* fixed XSS vulnerability in some pages
+
 ## [0.8.12 - 07.08.2023]
 I've moved the repository back to my personal account. (Just so you know!)
 
