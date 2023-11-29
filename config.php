@@ -330,7 +330,7 @@ $config = array(
 
 	// char bazaar
 	'bazaar_create' => 50, // price to create auction
-	'bazaar_tax' => 12, // tax to bid
+	'bazaar_tax' => 5, // tax to bid
 	'bazaar_bid' => 50, // price to bid
 	'bazaar_accountid' => 1, // account id to move auction character
 
