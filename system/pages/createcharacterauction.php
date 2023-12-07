@@ -1,4 +1,4 @@
-<?php global $config, $db, $logged, $twig; ?>
+<?php global $config, $db, $logged, $twig, $template_path, $account_logged; ?>
 <style>
     form {
         display: block;
@@ -38,7 +38,7 @@ if ($logged) {
         $twig->display('error_box.html.twig', array('errors' => $errors));
 
     $twig->display('account.login.html.twig', array(
-        'redirect' => isset($_REQUEST['redirect']) ? $_REQUEST['redirect'] : null,
+        'redirect' => $_REQUEST['redirect'] ?? null,
         'account' => USE_ACCOUNT_NAME ? 'Name' : 'Number',
         'account_login_by' => getAccountLoginByLabel(),
         'error' => isset($errors[0]) ? $errors[0] : null
@@ -179,9 +179,9 @@ if ($getAuctionStep == 'confirm') {
                                                         <a href="?subtopic=currentcharactertrades&details=<?= $auctionId['id'] ?>">
                                                             <div class="BigButton"
                                                                  style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_green.gif)">
-                                                                <div onmouseover="MouseOverBigButton(this);"
-                                                                     onmouseout="MouseOutBigButton(this);">
-                                                                    <div class="BigButtonOver"
+                                                                <div onmouseover="MouseOverBigButton('ViewAuction');"
+                                                                     onmouseout="MouseOutBigButton('ViewAuction');">
+                                                                    <div id="ViewAuction" class="BigButtonOver"
                                                                          style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
                                                                     <input name="auction_confirm" class="BigButtonText"
                                                                            type="button" value="View auction"></div>

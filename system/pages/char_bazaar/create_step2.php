@@ -1,19 +1,19 @@
 <?php
+global $db, $account_logged, $template_path, $charbazaar_create, $config;
 
 if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
     $selected_character = $_POST['auction_character'];
     $next_truecount = 0;
 
     /* PLAYERS */
-    $getCharacter = $db->query('SELECT `id`, `account_id`, `name`, `level`, `vocation`' . 'FROM `players`' . 'WHERE `id` = ' . $db->quote($selected_character) . '');
-    $getCharacter = $getCharacter->fetch();
+    $character = $db->query('SELECT `id`, `account_id`, `name`, `level`, `vocation`' . 'FROM `players`' . 'WHERE `id` = ' . $db->quote($selected_character) . '');
+    $character = $character->fetch();
     /* PLAYERS END */
-
 
     /* VERIFICA CONTA */
     $idLogged = $account_logged->getCustomField('id');
 
-    if ($idLogged == $getCharacter['account_id']) {
+    if ($idLogged == $character['account_id']) {
         $next_truecount++;
     } else {
         header('Location: index.php?news');
@@ -22,14 +22,13 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
 
 
     /* GET LEVEL PLAYERS */
-    if ($getCharacter['level'] >= 8) {
+    if ($character['level'] >= 8) {
         $verif_level = '<img src="' . $template_path . '/images/premiumfeatures/icon_yes.png">';
         $next_truecount++;
     } else {
         $verif_level = '<img src="' . $template_path . '/images/premiumfeatures/icon_no.png">';
     }
     /* GET LEVEL PLAYERS END */
-
 
     /* GET FRAGS PLAYERS */
     $frags_enabled = $db->hasTable('player_killers') && $config['characters']['frags'];
@@ -38,7 +37,7 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
         $query = $db->query(
             'SELECT COUNT(`player_id`) as `frags`' .
             'FROM `player_killers`' .
-            'WHERE `player_id` = ' . $getCharacter['id'] . ' ' .
+            'WHERE `player_id` = ' . $character['id'] . ' ' .
             'GROUP BY `player_id`' .
             'ORDER BY COUNT(`player_id`) DESC');
 
@@ -54,7 +53,7 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
 
 
     /* GET COINS */
-    $getCoins = $db->query('SELECT `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $getCharacter['account_id'] . '');
+    $getCoins = $db->query('SELECT `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $character['account_id'] . '');
     $getCoins = $getCoins->fetch();
 
     if ($getCoins >= $charbazaar_create) {
@@ -67,7 +66,7 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
 
 
     /* GET HOUSE */
-    $getHouse = $db->query('SELECT `owner`' . 'FROM `houses`' . 'WHERE `owner` = ' . $getCharacter['id'] . '');
+    $getHouse = $db->query('SELECT `owner`' . 'FROM `houses`' . 'WHERE `owner` = ' . $character['id'] . '');
     $getHouse = $getHouse->fetch();
 
     if ($getHouse == 0) {
@@ -80,13 +79,13 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
 
 
     /* GET GUILD */
-    $getGuildOwner = $db->query('SELECT `ownerid`' . 'FROM `guilds`' . 'WHERE `ownerid` = ' . $getCharacter['id'] . '');
+    $getGuildOwner = $db->query('SELECT `ownerid`' . 'FROM `guilds`' . 'WHERE `ownerid` = ' . $character['id'] . '');
     $getGuildOwner = $getGuildOwner->fetch();
 
-    $getGuildInvited = $db->query('SELECT `player_id`' . 'FROM `guild_invites`' . 'WHERE `player_id` = ' . $getCharacter['id'] . '');
+    $getGuildInvited = $db->query('SELECT `player_id`' . 'FROM `guild_invites`' . 'WHERE `player_id` = ' . $character['id'] . '');
     $getGuildInvited = $getGuildInvited->fetch();
 
-    $getGuildMember = $db->query('SELECT `player_id`' . 'FROM `guild_membership`' . 'WHERE `player_id` = ' . $getCharacter['id'] . '');
+    $getGuildMember = $db->query('SELECT `player_id`' . 'FROM `guild_membership`' . 'WHERE `player_id` = ' . $character['id'] . '');
     $getGuildMember = $getGuildMember->fetch();
 
     if ($getGuildOwner == 0 && $getGuildInvited == 0 && $getGuildMember == 0) {
@@ -99,7 +98,7 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
 
 
     /* GET MARKET */
-    $getMarket = $db->query('SELECT `player_id`' . 'FROM `market_offers`' . 'WHERE `player_id` = ' . $getCharacter['id'] . '');
+    $getMarket = $db->query('SELECT `player_id`' . 'FROM `market_offers`' . 'WHERE `player_id` = ' . $character['id'] . '');
     $getMarket = $getMarket->fetch();
 
     if ($getMarket == 0) {
@@ -123,7 +122,7 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
 
 
     /* GET CHARACTER ONLINE */
-    $getOnline = $db->query('SELECT `player_id`' . 'FROM `players_online`' . 'WHERE `player_id` = ' . $getCharacter['id'] . '');
+    $getOnline = $db->query('SELECT `player_id`' . 'FROM `players_online`' . 'WHERE `player_id` = ' . $character['id'] . '');
     $getOnline = $getOnline->rowCount();
 
     if ($getOnline == 0) {
@@ -199,7 +198,7 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
     </div>
     <br>
     <form method="post" action="?subtopic=createcharacterauction&step=3">
-        <input type="hidden" name="auction_character" value="<?= $getCharacter['id'] ?>">
+        <input type="hidden" name="auction_character" value="<?= $character['id'] ?>">
         <div class="TableContainer">
             <div class="CaptionContainer">
                 <div class="CaptionInnerContainer">
@@ -322,10 +321,12 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
                         <a href="?subtopic=createcharacterauction&step=1">
                             <div class="BigButton"
                                  style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton.gif)">
-                                <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
-                                    <div class="BigButtonOver"
+                                <div onmouseover="MouseOverBigButton('BackBazaar');"
+                                     onmouseout="MouseOutBigButton('BackBazaar');">
+                                    <div id="BackBazaar" class="BigButtonOver"
                                          style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div>
-                                    <input class="BigButtonText" type="button" value="Back"></div>
+                                    <input class="BigButtonText" type="button" value="Back">
+                                </div>
                             </div>
                         </a>
                     </div>
@@ -335,8 +336,9 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
                         <?php if ($next_truecount == 9) { ?>
                             <div class="BigButton"
                                  style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_green.gif)">
-                                <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
-                                    <div class="BigButtonOver"
+                                <div onmouseover="MouseOverBigButton('NextBazaar');"
+                                     onmouseout="MouseOutBigButton('NextBazaar');">
+                                    <div id="NextBazaar" class="BigButtonOver"
                                          style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
                                     <input name="auction_submit" class="BigButtonText" type="submit" value="Next">
                                 </div>
@@ -344,10 +346,11 @@ if (isset($_POST['auction_submit']) && isset($_POST['auction_character'])) {
                         <?php } else { ?>
                             <div class="BigButton"
                                  style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_red.gif)">
-                                <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
-                                    <div class="BigButtonOver"
+                                <div onmouseover="MouseOverBigButton('ErrorBazaar');"
+                                     onmouseout="MouseOutBigButton('ErrorBazaar');">
+                                    <div id="ErrorBazaar" class="BigButtonOver"
                                          style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_red_over.gif); visibility: hidden;"></div>
-                                    <input name="auction_submit" class="BigButtonText" type="button" value="Erro">
+                                    <input class="BigButtonText" type="button" value="Error">
                                 </div>
                             </div>
                         <?php } ?>
