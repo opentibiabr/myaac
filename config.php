@@ -39,7 +39,7 @@ $config = array(
 
 	// what client version are you using on this OT?
 	// used for the Downloads page and some templates as well
-	'client' => 1320, // 1320 = client 13.20
+    'client' => 1321, // 1321 = client 13.21
 
 	'session_prefix' => 'myaac_', // must be unique for every site on your server
 	'friendly_urls' => false, // mod_rewrite is required for this, it makes links looks more elegant to eye, and also are SEO friendly (example: https://localhost/guilds/Testing instead of https://localhost?subtopic=guilds&name=Testing). Remember to rename .htaccess.dist to .htaccess
@@ -87,7 +87,7 @@ $config = array(
 	),
 
 	// images
-	'outfit_images_url' => 'outfit/animoutfit.php', // set to animoutfit.php for animated outfit
+	'outfit_images_url' => './outfit/animoutfit.php', // set to animoutfit.php for animated outfit
 	'item_images_url' => 'images/items/', // set to images/items if you host your own items in images folder
 
 	// account
@@ -115,9 +115,9 @@ $config = array(
 
     'account_change_coin_type' => 'coins', // which coin you want to use, coins or coins_transferable to buy changes at site
     'account_change_character_name' => false, // can user change their character name for coins?
-	'account_change_character_name_coins' => 30, // cost of name change
+	'account_change_character_name_coins' => 250, // cost of name change
 	'account_change_character_sex' => false, // can user change their character sex for coins?
-	'account_change_character_sex_coins' => 30, // cost of sex change
+	'account_change_character_sex_coins' => 150, // cost of sex change
     'account_change_character_main' => true, // can user change their main character for coins?
     'account_change_character_main_coins' => 250, // cost of main change
 	'characters_per_account' => 10,	// max. number of characters per account
@@ -125,6 +125,7 @@ $config = array(
 
     // recovery key
     'recovery_key_length' => 15,                // length of recovery key code
+    'account_show_rk' => false,
     'generate_new_reckey' => true,				// let player generate new recovery key, he will receive e-mail with new rec key (not display on page, hacker can't generate rec key)
     'generate_new_reckey_price' => 250,			// coins price for new recovery key
 
@@ -305,7 +306,7 @@ $config = array(
 
 	// status bar
 	'status_bar' => true,
-	'client_link' => 'https://codeload.github.com/dudantas/tibia-client/zip/refs/tags/13.20.13560', // link to download tibia client
+	'client_link' => 'https://github.com/dudantas/tibia-client/releases/tag/13.21.13839', // link to download tibia client
 	'discord_link' => 'https://discord.com/invite/gvTj5sh9Mp', // link to join discord channel
 	'whatsapp_link' => '5511912345678', // wa.me/5511912345678
 	'instagram_link' => 'profile', // www.instagram.com/profile
