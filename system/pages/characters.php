@@ -464,23 +464,26 @@ WHERE killers.death_id = '" . $death['id'] . "' ORDER BY killers.final_hit DESC,
     $achievementPoints = 0;
     $listAchievement = [];
     require_once BASE . '/tools/achievements.php';
-    foreach ($achievements as $achievement => $value) {
-        $achievementStorage = $config['achievements_base'] + $achievement;
-        $searchAchievementsbyStorage = $db->query('SELECT `key`, `value` FROM `player_storage` WHERE `key` = ' . $achievementStorage . ' AND `player_id` = ' . $player->getId() . '');
-        $achievementsPlayer = $searchAchievementsbyStorage->fetch();
-        if ($achievementsPlayer && $achievementsPlayer['key'] == $achievementStorage) {
-            $achievementPoints = $achievementPoints + $value['points'];
 
-            $insertAchievement = [
-                'BASE_URL' => BASE_URL,
-                'PATH_URL' => $template_path,
-                'name' => $value['name'],
-                'grade' => $value['grade'],
-                'secret' => $value['secret'],
-            ];
-        }
+    foreach ($achievements as $achievement => $value) {
+    $achievementStorage = $config['achievements_base'] + $achievement;
+    $searchAchievementsbyStorage = $db->query('SELECT `key`, `value` FROM `player_storage` WHERE `key` = ' . $achievementStorage . ' AND `player_id` = ' . $player->getId() . '');
+    $achievementsPlayer = $searchAchievementsbyStorage->fetch();
+
+    if ($achievementsPlayer && $achievementsPlayer['key'] == $achievementStorage) {
+        $achievementPoints += $value['points'];
+
+        $insertAchievement = [
+            'BASE_URL' => BASE_URL,
+            'PATH_URL' => $template_path,
+            'name' => $value['name'],
+            'grade' => $value['grade'],
+            'secret' => $value['secret'],
+        ];
+
+        array_push($listAchievement, $insertAchievement);
     }
-    array_push($listAchievement, $insertAchievement ?? []);
+}
 
     $twig->display('characters.html.twig', array(
         'outfit' => isset($outfit) ? $outfit : null,
