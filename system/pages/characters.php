@@ -67,6 +67,7 @@
     }
 </style>
 
+<?php global $db, $config, $template_path, $twig, $achievements ?>
 <?php
 /**
  * Characters
@@ -464,29 +465,24 @@ WHERE killers.death_id = '" . $death['id'] . "' ORDER BY killers.final_hit DESC,
     $achievementPoints = 0;
     $listAchievement = [];
     require_once BASE . '/tools/achievements.php';
-
     foreach ($achievements as $achievement => $value) {
-    $achievementStorage = $config['achievements_base'] + $achievement;
-    $searchAchievementsbyStorage = $db->query('SELECT `key`, `value` FROM `player_storage` WHERE `key` = ' . $achievementStorage . ' AND `player_id` = ' . $player->getId() . '');
-    $achievementsPlayer = $searchAchievementsbyStorage->fetch();
-
-    if ($achievementsPlayer && $achievementsPlayer['key'] == $achievementStorage) {
-        $achievementPoints += $value['points'];
-
-        $insertAchievement = [
-            'BASE_URL' => BASE_URL,
-            'PATH_URL' => $template_path,
-            'name' => $value['name'],
-            'grade' => $value['grade'],
-            'secret' => $value['secret'],
-        ];
-
-        array_push($listAchievement, $insertAchievement);
+        $achievementStorage = $config['achievements_base'] + $achievement;
+        $achievementsPlayer = $db->query("SELECT `key`, `value` FROM `player_storage` WHERE `key` = {$achievementStorage} AND `player_id` = {$player->getId()}")->fetch();
+        if ($achievementsPlayer && $achievementsPlayer['key'] == $achievementStorage) {
+            $achievementPoints = $achievementPoints + $value['points'];
+            $insertAchievement = [
+                'BASE_URL' => BASE_URL,
+                'PATH_URL' => $template_path,
+                'name'     => $value['name'],
+                'grade'    => $value['grade'],
+                'secret'   => $value['secret'] ?? false,
+            ];
+        }
     }
-}
+    $listAchievement[] = $insertAchievement ?? [];
 
     $twig->display('characters.html.twig', array(
-        'outfit' => isset($outfit) ? $outfit : null,
+        'outfit' => $outfit ?? null,
         'player' => $player,
         'achievementPoints' => $achievementPoints,
         'achievements' => $listAchievement,
@@ -520,6 +516,7 @@ WHERE killers.death_id = '" . $death['id'] . "' ORDER BY killers.final_hit DESC,
             'name' => isset($house['id']) ? (isset($house['name']) ? $house['name'] : $house['id']) : null,
             'town' => isset($house['town']) ? ' (' . $config['towns'][$house['town']] . ')' : ''
         ),
+        'balance' => number_format($player->getBalance(), 0, ',', ','),
         'guild' => array(
             'rank' => isset($guild_name) ? $rank_of_player->getName() : null,
             'link' => isset($guild_name) ? getGuildLink($guild_name) : null
