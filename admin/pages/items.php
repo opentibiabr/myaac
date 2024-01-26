@@ -25,10 +25,10 @@ if ($reload) {
         error(Items::getError());
     }
 
-    $weapons_start_time = microtime(true);
+    /*$weapons_start_time = microtime(true);
     if (Weapons::loadFromXML(true)) {
         success('Successfully loaded weapons (in ' . round(microtime(true) - $weapons_start_time, 4) . ' seconds).');
     } else {
         error(Weapons::getError());
-    }
+    }*/
 }
