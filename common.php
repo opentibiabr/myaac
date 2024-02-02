@@ -90,6 +90,9 @@ define('TFS_LAST', TFS_03);
 
 if (!IS_CLI) {
     session_save_path(SYSTEM . 'php_sessions');
+    session_set_cookie_params([
+        "httponly" => true
+    ]);
     session_start();
 }
 
