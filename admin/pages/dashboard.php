@@ -1,4 +1,5 @@
 <?php
+global $db, $twig, $twig_loader, $status;
 /**
  * Dashboard
  *
@@ -46,27 +47,18 @@ $tmp = '';
 if (fetchDatabaseConfig('site_closed_message', $tmp))
     $closed_message = $tmp;
 
-$query = $db->query('SELECT count(*) as `how_much` FROM `accounts`;');
-$query = $query->fetch();
-$total_accounts = $query['how_much'];
-
-$query = $db->query('SELECT count(*) as `how_much` FROM `players`;');
-$query = $query->fetch();
-$total_players = $query['how_much'];
-
-$query = $db->query('SELECT count(*) as `how_much` FROM `guilds`;');
-$query = $query->fetch();
-$total_guilds = $query['how_much'];
-
-$query = $db->query('SELECT count(*) as `how_much` FROM `houses`;');
-$query = $query->fetch();
-$total_houses = $query['how_much'];
+$total_accounts = $db->query('SELECT `id` FROM `accounts`;')->rowCount();
+$total_players = $db->query('SELECT `id` FROM `players`;')->rowCount();
+$total_guilds = $db->query('SELECT `id` FROM `guilds`;')->rowCount();
+$total_houses = $db->query('SELECT `id` FROM `houses`;')->rowCount();
+$total_donates = $db->query("SELECT `id` FROM `pagseguro_transactions` WHERE `payment_status` <> 'CANCELLED'")->rowCount();
 
 $twig->display('admin.statistics.html.twig', array(
     'total_accounts' => $total_accounts,
     'total_players' => $total_players,
     'total_guilds' => $total_guilds,
-    'total_houses' => $total_houses
+    'total_houses' => $total_houses,
+    'total_donates' => $total_donates,
 ));
 
 $twig->display('admin.dashboard.html.twig', array(
