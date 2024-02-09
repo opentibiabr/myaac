@@ -439,7 +439,8 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
         <div class="box-body">
             <form action="<?= $base; ?>" method="post">
                 <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" name="search_name" value="<?= $search_account; ?>"
+                    <input type="text" class="form-control" name="search_name"
+                           value="<?= escapeHtml($search_account) ?>"
                            maxlength="32" size="32">
                     <span class="input-group-btn">
                           <button type="submit" type="button" class="btn btn-success"><i class="fa fa-search"></i> Search</button>

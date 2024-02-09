@@ -1,14 +1,17 @@
 <?php
+global $config, $db, $template_path, $logged, $status, $content, $hooks, $twig_loader, $title;
+
 defined('MYAAC') or die('Direct access not allowed!');
 
+//templates\tibiacom\config.ini
 if (isset($config['boxes']))
     $config['boxes'] = explode(",", $config['boxes']);
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <?= template_place_holder('head_start'); ?>
-    <link rel="shortcut icon" href="<?= $template_path; ?>/images/favicon.ico" type="image/x-icon"/>
-    <link rel="icon" href="<?= $template_path; ?>/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL; ?>images/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<?= BASE_URL; ?>images/favicon.ico"/>
     <link href="<?= $template_path; ?>/basic.css" rel="stylesheet" type="text/css"/>
 
     <script type="text/javascript" src="tools/basic.js"></script>
@@ -52,7 +55,7 @@ if (isset($config['boxes']))
         <?php
         if (PAGE !== 'news') {
             if (strpos(URI, 'subtopic=') !== false) {
-                $tmp = $_REQUEST['subtopic'];
+                $tmp = escapeHtml($_REQUEST['subtopic']);
                 if ($tmp === 'accountmanagement') {
                     $tmp = 'accountmanage';
                 }
@@ -104,27 +107,12 @@ if (isset($config['boxes']))
             }
         }
 
-        // mouse-over and click events of the loginbox
-        function MouseOverLoginBoxText(source) {
-            source.lastChild.style.visibility = "visible";
-            source.firstChild.style.visibility = "hidden";
-        }
-
-        function MouseOutLoginBoxText(source) {
-            source.firstChild.style.visibility = "visible";
-            source.lastChild.style.visibility = "hidden";
-        }
-
         function LoginButtonAction() {
-            if (loginStatus == "false") {
-                window.location = "<?= getLink('account/manage'); ?>";
-            } else {
-                window.location = "<?= getLink('account/manage'); ?>";
-            }
+            window.location = "<?= getLink('account/manage'); ?>";
         }
 
         function LoginstatusTextAction(source) {
-            if (loginStatus == "false") {
+            if (loginStatus === "false") {
                 window.location = "<?= getLink('account/create'); ?>";
             } else {
                 window.location = "<?= getLink('account/logout'); ?>";
@@ -262,13 +250,13 @@ if (isset($config['boxes']))
     <?= template_place_holder('head_end'); ?>
 </head>
 <body onBeforeUnLoad="SaveMenu();" onUnload="SaveMenu();" style="background-image:url(<?= $template_path ?><?= getImageMenuRandom('bgs') ?>);
-         background-size: cover;
-         background-position: center;
-         background-repeat: no-repeat;
-         background-attachment: fixed;
-		 width: 100%;
-			height: 100%;
-         ">
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    width: 100%;
+    height: 100%;
+    ">
 <?= template_place_holder('body_start'); ?>
 <?php if (!empty($config['network_facebook'])) { ?>
     <script type="text/javascript">
@@ -346,14 +334,11 @@ if (isset($config['boxes']))
                          style="background-image:url(<?= $template_path; ?>/images/loginbox/loginbox-textfield-background.gif)">
                         <div id="LoginButton"
                              style="background-image:url(<?= $template_path; ?>/images/global/buttons/mediumbutton.gif)">
-                            <div onClick="LoginButtonAction();" onMouseOver="MouseOverBigButton(this);"
-                                 onMouseOut="MouseOutBigButton(this);">
-                                <div class="Button"
-                                     style="background-image:url(<?= $template_path; ?>/images/global/buttons/mediumbutton-over.gif)"></div>
-                                <?php
-                                echo '<div id="ButtonText" ' . ($logged ? '' : 'style="background-image:url(' . $template_path . '/images/global/buttons/mediumbutton_login.png)"') . '>
-			 </div>';
-                                ?>
+                            <div onClick="LoginButtonAction();" onMouseOver="MouseOverBigButton('LoginButtonOver');"
+                                 onMouseOut="MouseOutBigButton('LoginButtonOver');">
+                                <div id="LoginButtonOver" class="Button"
+                                     style="background-image:url(<?= $template_path; ?>/images/global/buttons/mediumbutton-over.gif); visibility: hidden;"></div>
+                                <div id="ButtonText" <?= !$logged ? "style='background-image:url(\"$template_path/images/global/buttons/mediumbutton_login.png\")'" : '' ?>></div>
                             </div>
                         </div>
 
@@ -389,8 +374,9 @@ if (isset($config['boxes']))
                             <div id="PlayNowContainer">
                                 <div class="MediumButtonBackground"
                                      style="background-image:url(<?= $template_path; ?>/images/global/buttons/mediumbutton.gif)"
-                                     onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
-                                    <div class="MediumButtonOver"
+                                     onmouseover="MouseOverBigButton('DownloadButtonOver');"
+                                     onmouseout="MouseOutBigButton('DownloadButtonOver');">
+                                    <div id="DownloadButtonOver" class="MediumButtonOver"
                                          style="background-image: url(<?= $template_path; ?>/images/global/buttons/mediumbutton-over.gif); visibility: hidden;"></div>
                                     <input class="MediumButtonText" type="image" name="Download" alt="Download"
                                            src="<?= $template_path; ?>/images/global/buttons/mediumbutton_download.png">
@@ -404,7 +390,7 @@ if (isset($config['boxes']))
                          style="background-image:url(<?= $template_path; ?>/images/global/general/box-bottom.gif);"></div>
                 </div>
 
-                <div-- id='Menu'>
+                <div id='Menu'>
                     <div id='MenuTop'
                          style='background-image:url(<?= $template_path; ?>/images/general/box-top.gif);'></div>
 
@@ -417,27 +403,29 @@ if (isset($config['boxes']))
                         }
                         ?>
                         <div id='<?= $cat['id']; ?>' class='menuitem'>
-	<span onClick="MenuItemAction('<?= $cat['id']; ?>')">
-		<div class='MenuButton' style='background-image:url(<?= $template_path ?>/images/menu/button-background.gif);'>
-			<div onMouseOver='MouseOverMenuItem(this);' onMouseOut='MouseOutMenuItem(this);'><div class='Button'
-                                                                                                  style='background-image:url(<?= $template_path; ?>/images/menu/button-background-over.gif);'></div>
-				<span id='<?= $cat['id']; ?>_Lights' class='Lights'>
-					<div class='light_lu'
-                         style='background-image:url(<?= $template_path; ?>/images/menu/green-light.gif);'></div>
-					<div class='light_ld'
-                         style='background-image:url(<?= $template_path; ?>/images/menu/green-light.gif);'></div>
-					<div class='light_ru'
-                         style='background-image:url(<?= $template_path; ?>/images/menu/green-light.gif);'></div>
-				</span>
-				<div id='<?= $cat['id']; ?>_Icon' class='Icon'
-                     style='background-image:url(<?= $template_path ?><?= getImageMenuRandom($cat['id']) ?>);'></div>
-				<div id='<?= $cat['id']; ?>_Label' class='Label'
-                     style='background-image:url(<?= $template_path; ?>/images/menu/label-<?= $cat['id']; ?>.gif);'></div>
-				<div id='<?= $cat['id']; ?>_Extend' class='Extend'
-                     style='background-image:url(<?= $template_path; ?>/images/general/plus.gif);'></div>
-			</div>
-		</div>
-	</span>
+                            <span onClick="MenuItemAction('<?= $cat['id']; ?>')">
+                                <div class='MenuButton'
+                                     style='background-image:url(<?= $template_path ?>/images/menu/button-background.gif);'>
+                                    <div onMouseOver='MouseOverMenuItem(this);' onMouseOut='MouseOutMenuItem(this);'><div
+                                                class='Button'
+                                                style='background-image:url(<?= $template_path; ?>/images/menu/button-background-over.gif);'></div>
+                                        <span id='<?= $cat['id']; ?>_Lights' class='Lights'>
+                                            <div class='light_lu'
+                                                 style='background-image:url(<?= $template_path; ?>/images/menu/green-light.gif);'></div>
+                                            <div class='light_ld'
+                                                 style='background-image:url(<?= $template_path; ?>/images/menu/green-light.gif);'></div>
+                                            <div class='light_ru'
+                                                 style='background-image:url(<?= $template_path; ?>/images/menu/green-light.gif);'></div>
+                                        </span>
+                                        <div id='<?= $cat['id']; ?>_Icon' class='Icon'
+                                             style='background-image:url(<?= $template_path ?><?= getImageMenuRandom($cat['id']) ?>);'></div>
+                                        <div id='<?= $cat['id']; ?>_Label' class='Label'
+                                             style='background-image:url(<?= $template_path; ?>/images/menu/label-<?= $cat['id']; ?>.gif);'></div>
+                                        <div id='<?= $cat['id']; ?>_Extend' class='Extend'
+                                             style='background-image:url(<?= $template_path; ?>/images/general/plus.gif);'></div>
+                                    </div>
+                                </div>
+                            </span>
                             <div id='<?= $cat['id']; ?>_Submenu' class='Submenu'>
                                 <?php
                                 $default_menu_color = "ffffff";
@@ -479,15 +467,13 @@ if (isset($config['boxes']))
                     <script type="text/javascript">
                         InitializePage();
                     </script>
+                </div>
             </div>
 
-
             <div id="ContentColumn">
-
-
                 <div class="Content">
 
-                    <?php if ($config['status_bar'] == true) { ?>
+                    <?php if ($config['status_bar']) { ?>
                         <div class="Box">
                             <div class="Corner-tl"
                                  style="background-image:url(<?= $template_path; ?>/images/global/content/corner-tl.gif);"></div>
@@ -498,73 +484,67 @@ if (isset($config['boxes']))
                             <div class="BorderTitleText"
                                  style="background-image:url(<?= $template_path; ?>/images/global/content/newsheadline_background.gif); height: 28px;">
                                 <div class="InfoBar">
-                                    <?php if (isset($config['discord_link']) && !empty($config['discord_link'])) { ?>
-                                        <img class="InfoBarBigLogo"
-                                             src="<?= $template_path; ?>/images/global/header/icon-discord.png">
-                                        <span class="InfoBarNumbers">
-					<a class="InfoBarLinks" href="<?= $config['discord_link']; ?>" target="new"><span
-                            class="InfoBarSmallElement">Join Discord</span></a>
-				</span>
-                                    <?php } ?>
-                                    <?php if (isset($config['whatsapp_link']) && !empty($config['whatsapp_link'])) { ?>
-                                        <img class="InfoBarBigLogo"
-                                             src="<?= $template_path; ?>/images/global/header/icon-whatsapp.png"
-                                             width="16">
-                                        <span class="InfoBarNumbers">
-					<a class="InfoBarLinks" href="https://wa.me/<?= $config['whatsapp_link']; ?>" target="new"><span
-                            class="InfoBarSmallElement">Whatsapp</span></a>
-				</span>
-                                    <?php } ?>
-                                    <?php if (isset($config['instagram_link']) && !empty($config['instagram_link'])) { ?>
-                                        <img class="InfoBarBigLogo"
-                                             src="<?= $template_path; ?>/images/global/header/icon-instagram.png"
-                                             width="16">
-                                        <span class="InfoBarNumbers">
-					<a class="InfoBarLinks" href="https://www.instagram.com/<?= $config['instagram_link']; ?>"
-                       target="new"><span class="InfoBarSmallElement">Instagram</span></a>
-				</span>
-                                    <?php } ?>
-                                    <?php if (isset($config['facebook_link']) && !empty($config['facebook_link'])) { ?>
-                                        <img class="InfoBarBigLogo"
-                                             src="<?= $template_path; ?>/images/global/header/icon-facebook.png"
-                                             width="16">
-                                        <span class="InfoBarNumbers">
-					<a class="InfoBarLinks" href="https://www.facebook.com/<?= $config['facebook_link']; ?>"
-                       target="new"><span class="InfoBarSmallElement">Facebook</span></a>
-				</span>
-                                    <?php } ?>
                                     <img class="InfoBarBigLogo"
                                          src="<?= $template_path; ?>/images/global/header/icon-download.png">
                                     <span class="InfoBarNumbers">
-					<a class="InfoBarLinks" href="?subtopic=downloadclient"><span
-                            class="InfoBarSmallElement">Download</span></a>
-				</span>
-                                    <span style="float: right; margin-top: -2px;">
-				<img class="InfoBarBigLogo" src="<?= $template_path; ?>/images/global/header/icon-players-online.png">
-				<span class="InfoBarNumbers">
-					<span class="InfoBarSmallElement">
-						<a class="InfoBarLinks" href="?online">
-<?php
-if ($status['online']) {
-    echo '' . $status['players'] . ' Players Online';
-} else {
-    echo 'Server Offline';
-}
-?>
-						</a>
-					</span>
-				</span>
-<?php if ($config['collapse_status'] == true) { ?>
-    <a data-bs-toggle="collapse" href="#statusbar" role="button" aria-expanded="false" aria-controls="statusbar">
-<img src="<?= $template_path; ?>/images/global/content/top-to-back.gif" class="InfoBarBigLogo">
-</a>
-<?php } ?>
-</span>
+                                        <a class="InfoBarLinks" href="?subtopic=downloadclient"><span
+                                                    class="InfoBarSmallElement">Download Client</span></a>
+                                    </span>
 
+                                    <?php if (!empty($config['whatsapp_link'])) { ?>
+                                        <img class="InfoBarBigLogo" style="margin-left: 8px"
+                                             src="<?= $template_path; ?>/images/global/header/icon-whatsapp.png"
+                                             width="16">
+                                        <span class="InfoBarNumbers">
+                                            <a class="InfoBarLinks" href="<?= $config['whatsapp_link']; ?>" target="new"><span
+                                                        class="InfoBarSmallElement">Grupo Whatsapp</span></a>
+                                        </span>
+                                    <?php } ?>
+                                    <?php if (!empty($config['discord_link'])) { ?>
+                                        <img class="InfoBarBigLogo" style="margin-left: 8px"
+                                             src="<?= $template_path; ?>/images/global/header/icon-discord.png">
+                                        <span class="InfoBarNumbers">
+                                            <a class="InfoBarLinks" href="<?= $config['discord_link']; ?>" target="new"><span
+                                                        class="InfoBarSmallElement">Discord</span></a>
+                                        </span>
+                                    <?php } ?>
+                                    <?php if (!empty($config['instagram_link'])) { ?>
+                                        <img class="InfoBarBigLogo" style="margin-left: 8px"
+                                             src="<?= $template_path; ?>/images/global/header/icon-instagram.png"
+                                             width="16">
+                                        <span class="InfoBarNumbers">
+                                            <a class="InfoBarLinks" href="https://www.instagram.com/<?= $config['instagram_link']; ?>"
+                                               target="new"><span class="InfoBarSmallElement">Instagram</span></a>
+                                        </span>
+                                    <?php } ?>
+                                    <?php if (!empty($config['facebook_link'])) { ?>
+                                        <img class="InfoBarBigLogo" style="margin-left: 8px"
+                                             src="<?= $template_path; ?>/images/global/header/icon-facebook.png"
+                                             width="16">
+                                        <span class="InfoBarNumbers">
+                                            <a class="InfoBarLinks" href="https://www.facebook.com/<?= $config['facebook_link']; ?>"
+                                               target="new"><span class="InfoBarSmallElement">Facebook</span></a>
+                                        </span>
+                                    <?php } ?>
+                                    <span style="float: right; margin-top: 1px; margin-right: 4px">
+                                        <img class="InfoBarBigLogo" src="<?= $template_path; ?>/images/global/header/icon-players-online.png">
+                                        <span class="InfoBarNumbers">
+                                            <span class="InfoBarSmallElement">
+                                                <a class="InfoBarLinks" href="?online">
+                                                    <?= $status['online'] ? $status['players'] . ' Players Online' : 'Server Offline' ?>
+                                                </a>
+                                            </span>
+                                        </span>
+                                        <?php if ($config['collapse_status']) { ?>
+                                            <a data-bs-toggle="collapse" href="#statusbar" role="button" aria-expanded="false" aria-controls="statusbar">
+                                                <img src="<?= $template_path; ?>/images/global/content/top-to-back.gif" class="InfoBarBigLogo">
+                                            </a>
+                                        <?php } ?>
+                                    </span>
                                 </div>
                             </div>
                             <!-- COLLAPSE STATUS BAR -->
-                            <?php if ($config['collapse_status'] == true) { ?>
+                            <?php if ($config['collapse_status']) { ?>
                                 <div class="collapse" id="statusbar" style="background-color: #d4c0a1;">
                                     <table class="Table3" cellpadding="0" cellspacing="0" style="width: 100%;">
                                         <tbody>
@@ -572,7 +552,7 @@ if ($status['online']) {
                                             <td>
                                                 <div class="InnerTableContainer"
                                                      style="display: flex; flex-wrap: wrap; font-family: Verdana;">
-                                                    <?php if ($config['carousel_status'] == true) { ?>
+                                                    <?php if ($config['carousel_status']) { ?>
                                                         <table style="width:100%;">
                                                             <tbody>
                                                             <tr>
@@ -651,8 +631,8 @@ if ($status['online']) {
                                         </tbody>
                                     </table>
                                 </div>
-                                <!-- COLLAPSE STATUS BAR -->
                             <?php } ?>
+                            <!-- COLLAPSE STATUS BAR -->
                             <div class="Border_1"
                                  style="background-image:url(<?= $template_path; ?>/images/global/content/border-1.gif);"></div>
                             <div class="CornerWrapper-b">
@@ -710,8 +690,8 @@ if ($status['online']) {
             </div>
 
             <div id="ThemeboxesColumn">
-                <?PHP
-                $creaturequery = $SQL->query("SELECT `boostname`, `looktype`, `lookfeet` , `looklegs` , `lookhead` , `lookbody` , `lookaddons` , `lookmount`   FROM `boosted_creature`")->fetch();
+                <?php
+                $creaturequery = $db->query("SELECT `boostname`, `looktype`, `lookfeet` , `looklegs` , `lookhead` , `lookbody` , `lookaddons` , `lookmount`   FROM `boosted_creature`")->fetch();
                 $creaturename = $creaturequery["boostname"];
                 $creaturetype = $creaturequery["looktype"];
                 $creaturefeet = $creaturequery["lookfeet"];
@@ -722,10 +702,10 @@ if ($status['online']) {
                 $creaturemount = $creaturequery["lookmount"];
                 ?>
 
-                <?PHP
-                $bossquery = $SQL->query("SELECT `boostname`, `looktypeEx`, `looktype`, `lookfeet` , `looklegs` , `lookhead` , `lookbody` , `lookaddons` , `lookmount`   FROM `boosted_boss`")->fetch();
+                <?php
+                $bossquery = $db->query("SELECT `boostname`, `looktypeEx`, `looktype`, `lookfeet` , `looklegs` , `lookhead` , `lookbody` , `lookaddons` , `lookmount`   FROM `boosted_boss`")->fetch();
                 $bossname = $bossquery["boostname"];
-				$bosstypeEx = $bossquery["looktypeEx"];
+                $bosstypeEx = $bossquery["looktypeEx"];
                 $bosstype = $bossquery["looktype"];
                 $bossfeet = $bossquery["lookfeet"];
                 $bosslegs = $bossquery["looklegs"];
@@ -734,26 +714,26 @@ if ($status['online']) {
                 $bossaddons = $bossquery["lookaddons"];
                 $bossmount = $bossquery["lookmount"];
                 ?>
-				<div id="RightArtwork">
-					<img id="Creature"
-						 src="<?= $config['outfit_images_url'] ?>?id=<?= $creaturetype; ?>&addons=<?= $creatureaddons; ?>&head=<?= $creaturehead; ?>&body=<?= $creaturebody; ?>&legs=<?= $creaturelegs; ?>&feet=<?= $creaturefeet; ?>&mount=<?= $creaturemount; ?>"
-						 alt="Creature of the Day"
-						 title="Today's boosted creature: <?= ucwords(strtolower(trim($creaturename))); ?>">
+                <div id="RightArtwork">
+                    <img id="Creature"
+                         src="<?= $config['outfit_images_url'] ?>?id=<?= $creaturetype; ?>&addons=<?= $creatureaddons; ?>&head=<?= $creaturehead; ?>&body=<?= $creaturebody; ?>&legs=<?= $creaturelegs; ?>&feet=<?= $creaturefeet; ?>&mount=<?= $creaturemount; ?>"
+                         alt="Creature of the Day"
+                         title="Today's boosted creature: <?= ucwords(strtolower(trim($creaturename))); ?>">
 
-					<?php if ($bosstypeEx != 0): ?>
-						<img id="Boss" src="<?= $config['item_images_url'] ?><?= $bosstypeEx; ?>.gif"
-							 alt="Boss of the Day"
-							 title="Today's boosted boss: <?= ucwords(strtolower(trim($bossname))); ?>">
-					<?php else: ?>
-						<img id="Boss"
-							 src="<?= $config['outfit_images_url'] ?>?id=<?= $bosstype; ?>&addons=<?= $bossaddons; ?>&head=<?= $bosshead; ?>&body=<?= $bossbody; ?>&legs=<?= $bosslegs; ?>&feet=<?= $bossfeet; ?>&mount=<?= $bossmount; ?>"
-							 alt="Boss of the Day"
-							 title="Today's boosted boss: <?= ucwords(strtolower(trim($bossname))); ?>">
-					<?php endif; ?>
+                    <?php if ($bosstypeEx != 0): ?>
+                        <img id="Boss" src="<?= $config['item_images_url'] ?><?= $bosstypeEx; ?>.gif"
+                             alt="Boss of the Day"
+                             title="Today's boosted boss: <?= ucwords(strtolower(trim($bossname))); ?>">
+                    <?php else: ?>
+                        <img id="Boss"
+                             src="<?= $config['outfit_images_url'] ?>?id=<?= $bosstype; ?>&addons=<?= $bossaddons; ?>&head=<?= $bosshead; ?>&body=<?= $bossbody; ?>&legs=<?= $bosslegs; ?>&feet=<?= $bossfeet; ?>&mount=<?= $bossmount; ?>"
+                             alt="Boss of the Day"
+                             title="Today's boosted boss: <?= ucwords(strtolower(trim($bossname))); ?>">
+                    <?php endif; ?>
 
-					<img id="PedestalAndOnline" src="<?= $template_path; ?>/images/header/pedestal.gif"
-						 alt="Monster Pedestal and Players Online Box"/>
-				</div>
+                    <img id="PedestalAndOnline" src="<?= $template_path; ?>/images/header/pedestal.gif"
+                         alt="Monster Pedestal and Players Online Box"/>
+                </div>
 
                 <div id="Themeboxes">
                     <?php
@@ -779,8 +759,6 @@ if ($status['online']) {
 
 <style>
     .scrollToTop {
-        width: 70px;
-        height: 70px;
         padding: 10px;
         text-align: center;
         font-weight: bold;
@@ -788,14 +766,15 @@ if ($status['online']) {
         text-decoration: none;
         position: fixed;
         bottom: 10px;
-        right: 10px;
+        right: 12px;
         display: none;
         z-index: 50000;
+        cursor: pointer;
     }
 
-    .scrollToTop:hover {
-        text-decoration: none;
-        cursor: pointer;
+    .scrollToTop img {
+        width: 42px;
+        height: auto;
     }
 </style>
 <script>
@@ -830,11 +809,12 @@ if ($status['online']) {
         });
     });
 </script>
-<div class="scrollToTop"
-     style="background: url(<?= $template_path; ?>/images/global/content/top.png) no-repeat 0 0;"></div>
-
+<div class="scrollToTop" title="Voltar ao Topo">
+    <img alt style="border:0;" src="<?= $template_path . '/images/global/content/back-to-top.gif' ?>">
+</div>
 <script src="<?= $template_path; ?>/js/generic.js"></script>
-<div id="HelperDivContainer" style="background-image: url(<?= $template_path; ?>/images/global/content/scroll.gif);">
+<div id="HelperDivContainer"
+     style="background-image: url(<?= $template_path; ?>/images/global/content/scroll.gif);">
     <div class="HelperDivArrow"
          style="background-image: url(<?= $template_path; ?>/images/global/content/helper-div-arrow.png);"></div>
     <div id="HelperDivHeadline"></div>
@@ -846,11 +826,6 @@ if ($status['online']) {
 </body>
 </html>
 <?php
-function logo_monster()
-{
-    global $config;
-    return str_replace(" ", "", trim(strtolower($config['logo_monster'])));
-}
 
 /**
  * @param $menu

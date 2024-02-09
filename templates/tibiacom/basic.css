@@ -1822,9 +1822,10 @@ img {
   right: 27px;
 }
 .TopButtonContainer .TopButton {
-  position: absolute;
-  right: 0px;
-  z-index: 55;
+    position: absolute;
+    right: 0;
+    z-index: 55;
+    cursor: pointer;
 }
 
 .Content .BoxContent .Odd {

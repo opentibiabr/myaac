@@ -5,7 +5,7 @@ Please include a summary of the change and which issue is fixed. Please also inc
 ## Behaviour
 ### **Actual**
 
-Do this and that doesn't happens
+Do this and that doesn't happen
 
 ### **Expected**
 
@@ -19,24 +19,24 @@ Please delete options that are not relevant.
 
   - [ ] Bug fix (non-breaking change which fixes an issue)
   - [ ] New feature (non-breaking change which adds functionality)
-  - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+  - [ ] Breaking change (fix or feature that would cause existing functionality not to work as expected)
   - [ ] This change requires a documentation update
 
 ## How Has This Been Tested
 
 **Test Configuration**:
 
-  - MyAAC Version: (latest: 0.8.12)
+  - MyAAC Version: (latest: 0.8.15)
   - Browser:
   - Operating System:
 
 ## Checklist
 
   - [ ] My code follows the style guidelines of this project
-  - [ ] I followed project rules, best practices and code indentation
+  - [ ] I followed project rules, best practices, and code indentation
   - [ ] I have performed a self-review of my own code
   - [ ] I checked the PR checks reports 
-  - [ ] I have commented my code, particularly in hard-to-understand areas
+  - [ ] I have commented on my code, particularly in hard-to-understand areas
   - [ ] I have made corresponding changes to the documentation
   - [ ] My changes generate no new warnings
   - [ ] I have added tests that prove my fix is effective or that my feature works
