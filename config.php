@@ -39,6 +39,7 @@ $config = array(
 
 	// what client version are you using on this OT?
 	// used for the Downloads page and some templates as well
+
 	'client' => 1321, // 1321 = client 13.21
 
 	'session_prefix' => 'myaac_', // must be unique for every site on your server
@@ -87,7 +88,7 @@ $config = array(
 	),
 
 	// images
-	'outfit_images_url' => 'outfit/animoutfit.php', // set to animoutfit.php for animated outfit
+	'outfit_images_url' => './outfit/animoutfit.php', // set to animoutfit.php for animated outfit
 	'item_images_url' => 'images/items/', // set to images/items if you host your own items in images folder
 
 	// account
@@ -115,9 +116,9 @@ $config = array(
 
     'site_coin_type' => 'coins_transferable', // coins or coins_transferable (which type of coin do you want to use at site)
     'account_change_character_name' => false, // can user change their character name for coins?
-	'account_change_character_name_coins' => 30, // cost of name change
+	'account_change_character_name_coins' => 250, // cost of name change
 	'account_change_character_sex' => false, // can user change their character sex for coins?
-	'account_change_character_sex_coins' => 30, // cost of sex change
+	'account_change_character_sex_coins' => 150, // cost of sex change
     'account_change_character_main' => true, // can user change their main character for coins?
     'account_change_character_main_coins' => 250, // cost of main change
 	'characters_per_account' => 10,	// max. number of characters per account
@@ -125,6 +126,7 @@ $config = array(
 
     // recovery key
     'recovery_key_length' => 15,                // length of recovery key code
+    'account_show_rk' => false,
     'generate_new_reckey' => true,				// let player generate new recovery key, he will receive e-mail with new rec key (not display on page, hacker can't generate rec key)
     'generate_new_reckey_price' => 250,			// coins price for new recovery key
 
@@ -271,14 +273,14 @@ $config = array(
 		'frags' => true,
 		'deleted' => false, // should deleted characters from same account be still listed on the list of characters? When enabled it will show that character is "[DELETED]"
 	),
-	'quests' => array(
-		'Demon Helmet' => 100,
-		'Anihilation' => 101,
-		'Pits Of Inferno' => 102,
-		'Inquisition' => 103,
-		'Demon Oak' => 104,
-		'SoulWar Quest' => 105,
-		'Yalahar Quest' => 106,
+	'quests' => array( // Canary Storages
+		'Demon Helmet' => 40077, // Storage.Quest.U6_4.DemonHelmet.Rewards.DemonHelmet
+		'Annihilator' => 10102,
+		'Pits Of Inferno' => 52003, // Storage.PitsOfInferno.WeaponReward
+		'Inquisition' => 51127, // Storage.TheInquisition.Reward
+		'Demon Oak' => 51700,// Maybe 51700
+		'SoulWar Quest' => 47223, // Storage.Quest.U12_40.SoulWar.QuestReward
+		'Yalahar Quest' => 51249, // Storage.InServiceofYalahar.DoorToReward
 		//'Some Quest' => 123,
 		//'Some Quest Two' => 456,
 	), // quests list (displayed in character view), name => storage
@@ -305,7 +307,7 @@ $config = array(
 
 	// status bar
 	'status_bar' => true,
-	'client_link' => 'https://codeload.github.com/dudantas/tibia-client/zip/refs/tags/13.20.13560', // link to download tibia client
+	'client_link' => 'https://github.com/dudantas/tibia-client/releases/tag/13.21.13839', // link to download tibia client
 	'discord_link' => 'https://discord.com/invite/gvTj5sh9Mp', // link to join discord channel
 	'whatsapp_link' => '5511912345678', // wa.me/5511912345678
 	'instagram_link' => 'profile', // www.instagram.com/profile
