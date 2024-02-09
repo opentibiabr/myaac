@@ -5,7 +5,7 @@
         <img src="{{ template_path }}/images/content/headline-bracer-left.gif"/>
       </td>
       <td
-        style="text-align:center;vertical-align:middle;horizontal-align:center;font-size:17px;font-weight:bold;">{{ welcome_message }}
+        style="text-align:center;vertical-align:middle;horizontal-align:center;font-size:17px;font-weight:bold;">{{ welcome_message|raw }}
       </td>
       <td><img src="{{ template_path }}/images/content/headline-bracer-right.gif"/></td>
     </tr>
@@ -72,9 +72,9 @@
                           <a href="?points" target="blank">
                             <div class="BigButton"
                                  style="background-image:url({{ template_path }}/images/global/buttons/sbutton_green.gif)">
-                              <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
-                                <div class="BigButtonOver"
-                                     style="background-image:url({{ template_path }}/images/global/buttons/sbutton_green_over.gif);"></div>
+                              <div onmouseover="MouseOverBigButton('GetCoinsButton');" onmouseout="MouseOutBigButton('GetCoinsButton');">
+                                <div id="GetCoinsButton" class="BigButtonOver"
+                                     style="background-image:url({{ template_path }}/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
                                 <input class="BigButtonText" type="submit" value="Get Coins"></div>
                             </div>
                           </a>
@@ -675,6 +675,12 @@
                               <td class="LabelV">Phone:</td>
                               <td style="width:90%;">{{ account_phone }}</td>
                             </tr>
+                            {% if account_show_rk and recovery_key is not empty %}
+                              <tr>
+                                <td class="LabelV">RK:</td>
+                                <td style="width:90%;">{{ recovery_key }}</td>
+                              </tr>
+                            {% endif %}
                           </table>
                         </td>
                         {% if not account_update_info_on_register %}
