@@ -10,8 +10,8 @@ if (isset($config['boxes']))
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <?= template_place_holder('head_start'); ?>
-    <link rel="shortcut icon" href="<?= $template_path; ?>/images/favicon.ico" type="image/x-icon"/>
-    <link rel="icon" href="<?= $template_path; ?>/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" type="image/x-icon" href="<?= BASE_URL; ?>images/favicon.ico"/>
+    <link rel="shortcut icon" type="image/x-icon" href="<?= BASE_URL; ?>images/favicon.ico"/>
     <link href="<?= $template_path; ?>/basic.css" rel="stylesheet" type="text/css"/>
 
     <script type="text/javascript" src="tools/basic.js"></script>
