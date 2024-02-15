@@ -314,7 +314,7 @@ $config = array(
 	'collapse_status' => true,
 
 	// events
-	'events_xml' => 'data/xml/events.xml',
+	'events_xml' => 'core/xml/events.xml',
 
 	// slide
 	'carousel_status' => true,

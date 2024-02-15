@@ -86,7 +86,7 @@ if (isset($config['lua']['houserentperiod']))
 if ($config['item_images_url'][strlen($config['item_images_url']) - 1] !== '/')
     $config['item_images_url'] .= '/';
 
-// localize data/ directory based on data directory set in config.lua
+// localize core/ directory based on data directory set in config.lua
 foreach (array('dataDirectory', 'data_directory', 'datadir') as $key) {
     if (!isset($config['lua'][$key][0])) {
         break;
@@ -103,7 +103,7 @@ foreach (array('dataDirectory', 'data_directory', 'datadir') as $key) {
 }
 
 if (!isset($foundValue)) {
-    $foundValue = $config['server_path'] . 'data/';
+    $foundValue = $config['server_path'] . 'core/';
 }
 
 $config['data_path'] = $foundValue;
@@ -183,4 +183,4 @@ if ($cache->enabled() && $cache->fetch('towns', $tmp)) {
 
 config(['towns', $towns]);
 
-$config['lua']['rateStages'] = loadStagesData($config['server_path'] . 'data/stages.lua');
+$config['lua']['rateStages'] = loadStagesData($config['server_path'] . 'core/stages.lua');

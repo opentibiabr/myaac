@@ -51,7 +51,7 @@ switch ($action) {
 
     case 'eventschedule':
         $eventlist = [];
-        $file_path = config('server_path') . 'data/XML/events.xml';
+        $file_path = config('server_path') . 'core/XML/events.xml';
         if (!file_exists($file_path)) {
             die(json_encode([]));
         }
