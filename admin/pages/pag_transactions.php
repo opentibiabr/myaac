@@ -12,11 +12,14 @@ require_once(PLUGINS . 'pagseguro/config.php');
  * @link      https://github.com/opentibiabr/myaac
  */
 defined('MYAAC') or die('Direct access not allowed!');
+if (!$db->hasTable('pagseguro_transactions')) {
+    die("pagseguro_transactions table doesn't exists!");
+}
 
-$count = $db->query("SELECT `id` FROM `pagseguro_transactions` WHERE `id` > 0 AND `payment_status` <> 'CANCELLED'")->rowCount();
+$count = $db->query("SELECT `id` FROM `pagseguro_transactions` WHERE `payment_status` <> 'CANCELLED'")->rowCount();
 $title = "$count donates até o momento";
 $base = BASE_URL . 'admin/?p=pag_transactions';
-$donates = $db->query("SELECT * FROM `pagseguro_transactions` WHERE `id` > 0 ORDER BY `id` DESC")->fetchAll();
+$donates = $db->query("SELECT * FROM `pagseguro_transactions` ORDER BY `id` DESC")->fetchAll();
 ?>
 <div class="row">
     <div class="col-md-12">
