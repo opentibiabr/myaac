@@ -155,7 +155,7 @@
                             {% set rows = rows + 1 %}
                             <tr bgcolor="{{ getStyle(rows) }}">
                               <td class="LabelV175">Comment:</td>
-                              <td>{{ comment|raw }}</td>
+                              <td style="word-break: break-all">{{ comment|raw }}</td>
                             </tr>
                           {% endif %}
 

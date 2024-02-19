@@ -28,7 +28,7 @@ global $config;
 if (version_compare(phpversion(), '7.4', '<')) die('PHP version 7.4 or higher is required.');
 
 define('MYAAC', true);
-define('MYAAC_VERSION', '0.8.15');
+define('MYAAC_VERSION', '0.8.16');
 define('DATABASE_VERSION', 34);
 define('TABLE_PREFIX', 'myaac_');
 define('START_TIME', microtime(true));
@@ -90,6 +90,9 @@ define('TFS_LAST', TFS_03);
 
 if (!IS_CLI) {
     session_save_path(SYSTEM . 'php_sessions');
+    session_set_cookie_params([
+        "httponly" => true
+    ]);
     session_start();
 }
 
@@ -103,7 +106,7 @@ for ($i = 1; $i < $size; $i++)
 $basedir = str_replace(array('/admin', '/install', '/tools'), '', $basedir);
 define('BASE_DIR', $basedir);
 
-if (file_exists(BASE . 'config.local.php')) {
+if (file_exists(BASE . 'config.local.php') && !defined('MYAAC_INSTALL')) {
     require BASE . 'config.local.php';
 }
 

@@ -22,6 +22,9 @@ use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Tool\BearerAuthorizationTrait;
 use Psr\Http\Message\ResponseInterface;
 
+session_set_cookie_params([
+    "httponly" => true
+]);
 session_start();
 
 //If this automatic URL doesn't work, set it yourself manually
@@ -68,12 +71,12 @@ class Google extends AbstractProvider
 
     public function getResourceOwnerDetailsUrl(AccessToken $token)
     {
-	return ' ';
+        return ' ';
     }
 
     protected function getAuthorizationParameters(array $options)
     {
-	if (is_array($this->scope)) {
+        if (is_array($this->scope)) {
             $separator = $this->getScopeSeparator();
             $this->scope = implode($separator, $this->scope);
         }
@@ -81,11 +84,11 @@ class Google extends AbstractProvider
         $params = array_merge(
             parent::getAuthorizationParameters($options),
             array_filter([
-                'hd'          => $this->hostedDomain,
+                'hd' => $this->hostedDomain,
                 'access_type' => $this->accessType,
-		'scope'       => $this->scope,
+                'scope' => $this->scope,
                 // if the user is logged in with more than one account ask which one to use for the login!
-                'authuser'    => '-1'
+                'authuser' => '-1'
             ])
         );
         return $params;
@@ -108,11 +111,11 @@ class Google extends AbstractProvider
     protected function checkResponse(ResponseInterface $response, $data)
     {
         if (!empty($data['error'])) {
-            $code  = 0;
+            $code = 0;
             $error = $data['error'];
 
             if (is_array($error)) {
-                $code  = $error['code'];
+                $code = $error['code'];
                 $error = $error['message'];
             }
 
@@ -134,7 +137,7 @@ $provider = new Google(
         'clientSecret' => $clientSecret,
         'redirectUri' => $redirectUri,
         'scope' => array('https://mail.google.com/'),
-	'accessType' => 'offline'
+        'accessType' => 'offline'
     )
 );
 
