@@ -62,19 +62,24 @@ if ($config['account_country']) {
 $id = 0;
 if (isset($_REQUEST['id']))
     $id = (int)$_REQUEST['id'];
-else if (isset($_REQUEST['search_name'])) {
-    if (strlen($_REQUEST['search_name']) < 3 && !Validator::number($_REQUEST['search_name'])) {
+else if ($searchName = $_REQUEST['search_name'] ?? null) {
+    if (strlen($searchName) < 3 && !Validator::number($searchName)) {
         echo 'Player name is too short.';
     } else {
-        if (Validator::number($_REQUEST['search_name']))
-            $id = $_REQUEST['search_name'];
-        else {
-            $query = $db->query('SELECT `id` FROM `accounts` WHERE `name` = ' . $db->quote($_REQUEST['search_name']));
+        if (Validator::number($searchName)) {
+            $id = $searchName;
+            $query = $db->query("SELECT `id` FROM `accounts` WHERE `name` = {$id}");
+            if ($query->rowCount() == 1) {
+                $query = $query->fetch();
+                $id = $query['id'];
+            }
+        } else {
+            $query = $db->query("SELECT `id` FROM `accounts` WHERE `name` = {$db->quote($searchName)}");
             if ($query->rowCount() == 1) {
                 $query = $query->fetch();
                 $id = $query['id'];
             } else {
-                $query = $db->query('SELECT `id`, `name` FROM `accounts` WHERE `name` LIKE ' . $db->quote('%' . $_REQUEST['search_name'] . '%'));
+                $query = $db->query("SELECT `id`, `name` FROM `accounts` WHERE `name` LIKE {$db->quote("%{$searchName}%")}");
                 if ($query->rowCount() > 0 && $query->rowCount() <= 10) {
                     echo 'Do you mean?<ul>';
                     foreach ($query as $row)
