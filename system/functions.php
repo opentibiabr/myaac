@@ -119,7 +119,7 @@ function getForumBoardLink($board_id, $page = NULL)
     return BASE_URL . ($config['friendly_urls'] ? '' : '?') . 'forum/board/' . (int)$board_id . (isset($page) ? '/' . $page : '');
 }
 
-function getPlayerLink($name, $generate = true)
+function getPlayerLink($name, $generate = true, $blank = false)
 {
     global $config;
 
@@ -133,7 +133,7 @@ function getPlayerLink($name, $generate = true)
     $url = BASE_URL . ($config['friendly_urls'] ? '' : '?') . 'characters/' . urlencode($name);
 
     if (!$generate) return $url;
-    return generateLink($url, $name);
+    return generateLink($url, $name, $blank);
 }
 
 function getHouseLink($name, $generate = true)
@@ -1427,6 +1427,70 @@ function loadStagesData($configFile)
 function getCoinType()
 {
     return $config['site_coin_type'] ?? 'coins_transferable';
+}
+
+function getPlayerByAccountId($accountId, $orderBy = 'id')
+{
+    global $db;
+    if (is_numeric($accountId)) {
+        $players = [];
+        $playersQuery = $db->query("SELECT `id`, `lastlogin` FROM `players` WHERE `account_id` = {$accountId} ORDER BY `{$orderBy}` DESC;")->fetchAll();
+        foreach ($playersQuery as $q) {
+            $player = new OTS_Player();
+            $player->load($q['id']);
+            if ($player->isLoaded()) {
+                $players[] = getPlayerLink($player->getName(), true, true);
+            }
+        }
+        return implode(', ', $players);
+    }
+    return '';
+}
+
+function getPlayerNameByAccount($id, $name = null, $only = true, $orderBy = 'id')
+{
+    global $db;
+    if (is_numeric($id)) {
+        $player = new OTS_Player();
+        $player->load($id);
+        if ($player->isLoaded())
+            return $player->getName();
+        else {
+            $account = new OTS_Account();
+            $account->load($id);
+            if ($account->isLoaded())
+                $playerQuery = $db->query("SELECT `id` FROM `players` WHERE `account_id` = {$id} ORDER BY `lastlogin` DESC LIMIT 1;")->fetch();
+
+            $player = new OTS_Player();
+            $player->load($playerQuery['id']);
+            return $player->isLoaded() ? $player->getName() : '';
+        }
+    } else if (is_string($name)) {
+        if ($id = ($db->query("SELECT `id` FROM `accounts` WHERE `name` = {$db->quote($name)} LIMIT 1;")->fetch())['id'] ?? null) {
+            if ($only) {
+                $playerQuery = $db->query("SELECT `id` FROM `players` WHERE `account_id` = {$id} ORDER BY `lastlogin` DESC LIMIT 1;")->fetch();
+                $player = new OTS_Player();
+                $player->load($playerQuery['id']);
+                return $player->isLoaded() ? $player->getName() : '';
+            } else {
+                $players = [];
+                $playersQuery = $db->query("SELECT `id`, `lastlogin` FROM `players` WHERE `account_id` = {$id} ORDER BY `{$orderBy}` DESC;")->fetchAll();
+                foreach ($playersQuery as $q) {
+                    $player = new OTS_Player();
+                    $player->load($q['id']);
+                    if ($player->isLoaded()) {
+                        if ($orderBy == 'lastlogin') {
+                            return $player->getLastLogin();
+                        }
+                        $players[] = getPlayerLink($player->getName());
+                    }
+                }
+                return implode(', ', $players);
+            }
+
+        }
+    }
+    return '';
 }
 
 // validator functions

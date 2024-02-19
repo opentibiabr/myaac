@@ -78,6 +78,7 @@ plugins/*
 !plugins/email-confirmed-reward.json
 !plugins/email-confirmed-reward
 landing
+!plugins/pagseguro
 
 # others/rest
 system/pages/downloads.php

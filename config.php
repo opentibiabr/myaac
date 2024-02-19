@@ -366,7 +366,7 @@ $config = array(
 	'status_interval' => 60,
 
 	// admin panel
-	'admin_panel_modules' => 'lastlogin,coinstransferable,coins',
+	'admin_panel_modules' => 'lastlogin,coinstransferable,coins,donates',
 
 	// other
 	'email_lai_sec_interval' => 60, // time in seconds between e-mails to one account from lost account interface, block spam
@@ -384,4 +384,6 @@ $config = array(
         'names' => [],
         'words' => [],
     ],
+
+    'enablePagseguroLocal' => false, // set true to enable donate and boxes page on localhost.
 );
