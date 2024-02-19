@@ -25,6 +25,10 @@ if (!is_numeric($_page) || $_page < 0 || $_page > PHP_INT_MAX) {
 
 $add_sql = '';
 $config_vocations = $config['vocations'];
+
+$normalized_vocations = array_map('strtolower', $config_vocations);
+if (!array_search(strtolower($vocation), $normalized_vocations)) $vocation = "None";
+
 if ($config['highscores_vocation_box'] && isset($vocation)) {
     foreach ($config['vocations'] as $id => $name) {
         if (strtolower($name) == $vocation) {
