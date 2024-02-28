@@ -40,9 +40,11 @@ jobs:
 
       - name: Run prettier code format
         run: |
-          npx prettier --write $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}) --plugin=@prettier/plugin-php
+          npx prettier --write ${{ git diff --name-only ${{ github.event.before }} ${{ github.sha }} }} --plugin=@prettier/plugin-php
         working-directory: ${{ github.workspace }}
+
 #          npx prettier --write "**/workflow_test/*.{php,css,js}" --plugin=@prettier/plugin-php
+#          npx prettier --write $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}) --plugin=@prettier/plugin-php
 
       - name: Run add and commit
         if: ${{ github.ref != 'refs/heads/main' }}
