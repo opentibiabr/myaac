@@ -1,0 +1,54 @@
+---
+name: Format Prettier
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened, ready_for_review ]
+permissions:
+  pull-requests: write
+  issues: write
+  repository-projects: write
+jobs:
+  cancel-runs:
+    if: github.event_name == 'pull_request' && github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git
+        if: ${{ github.ref != 'refs/heads/main' }}
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Actions checkout
+        if: ${{ github.ref != 'refs/heads/main' }}
+        uses: actions/checkout@main
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install prettier @prettier/plugin-php
+
+      - name: Run prettier code format
+        run: |
+          npx prettier --write "**/workflow_test/*.{php,css,js}" --plugin=@prettier/plugin-php
+
+      - name: 🚢 Run add and commit
+        if: ${{ github.ref != 'refs/heads/main' }}
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: GitHub Actions
+          author_email: github-actions[bot]@users.noreply.github.com
+          message: "PHP code format - (prettier)"
