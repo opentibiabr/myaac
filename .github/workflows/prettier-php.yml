@@ -3,6 +3,10 @@ name: Format Prettier
 on:
   pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
+  merge_group:
+  push:
+    paths:
+      - "/**"
 jobs:
   cancel-runs:
     if: github.event_name == 'pull_request' && github.ref != 'refs/heads/main'
