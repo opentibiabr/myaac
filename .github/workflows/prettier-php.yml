@@ -40,7 +40,9 @@ jobs:
 
       - name: Run prettier code format
         run: |
-          npx prettier --write $(git diff --name-only --diff-filter d | grep -E '\.(php|css|js)$' | xargs)
+          npx prettier --write $(git diff --name-only --diff-filter d | grep -E '\.(php|css|js)$' | xargs) --plugin=@prettier/plugin-php
+
+      #          npx prettier --write "**/workflow_test/*.{php,css,js}" --plugin=@prettier/plugin-php
 
       - name: Run add and commit
         if: ${{ github.ref != 'refs/heads/main' }}
