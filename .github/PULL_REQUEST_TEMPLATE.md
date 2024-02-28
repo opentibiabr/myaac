@@ -26,12 +26,23 @@ Please delete options that are not relevant.
 
 **Test Configuration**:
 
-  - MyAAC Version: (latest: 0.8.15)
+  - MyAAC Version: (latest: 0.8.16)
   - Browser:
+    - [ ] Chrome
+    - [ ] Firefox
+    - [ ] Opera
+    - [ ] Safari
+    - [ ] Edge
+    - [ ] Other
   - Operating System:
+    - [ ] Windows
+    - [ ] Ubuntu
+    - [ ] MacOS
+    - [ ] Other
 
 ## Checklist
 
+  - [ ] I've created separated branch from main updated
   - [ ] My code follows the style guidelines of this project
   - [ ] I followed project rules, best practices, and code indentation
   - [ ] I have performed a self-review of my own code

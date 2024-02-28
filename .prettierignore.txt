@@ -1,0 +1,12 @@
+# Ignore system libs
+
+plugins/
+system/libs/PagSeguroLibrary
+system/libs/phpmailer
+system/libs/polyfill-mbstring
+system/libs/pot
+system/libs/semver
+system/libs/Twig
+system/cache
+system/php_sessions
+node_modules

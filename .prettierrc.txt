@@ -1,0 +1,43 @@
+{
+  "overrides": [
+    {
+      "files": [
+        "*.php"
+      ],
+      "options": {
+        "parser": "php",
+        "singleQuote": true,
+        "semi": false,
+        "tabWidth": 2,
+        "printWidth": 100,
+        "trailingComma": "none"
+      }
+    },
+    {
+      "files": [
+        "*.css"
+      ],
+      "options": {
+        "arrowParens": "always",
+        "bracketSameLine": false,
+        "bracketSpacing": true,
+        "semi": true,
+        "experimentalTernaries": false,
+        "singleQuote": false,
+        "jsxSingleQuote": false,
+        "quoteProps": "as-needed",
+        "trailingComma": "all",
+        "singleAttributePerLine": false,
+        "htmlWhitespaceSensitivity": "css",
+        "vueIndentScriptAndStyle": false,
+        "proseWrap": "preserve",
+        "insertPragma": true,
+        "requirePragma": false,
+        "tabWidth": 2,
+        "useTabs": false,
+        "embeddedLanguageFormatting": "auto",
+        "printWidth": 80
+      }
+    }
+  ]
+}
