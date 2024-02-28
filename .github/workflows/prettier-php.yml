@@ -38,9 +38,16 @@ jobs:
       - name: Install Dependencies
         run: npm install prettier @prettier/plugin-php
 
+      - name: Get changed files
+        id: get_changed_files
+        run: |
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+
       - name: Run prettier code format
         run: |
-          npx prettier --write "**/workflow_test/*.{php,css,js}" --plugin=@prettier/plugin-php
+          npx prettier --write ${{ prettier.steps.get_changed_files.outputs.CHANGED_FILES }} --plugin=@prettier/plugin-php
+        working-directory: ${{ github.workspace }}
+#          npx prettier --write "**/workflow_test/*.{php,css,js}" --plugin=@prettier/plugin-php
 
       - name: Run add and commit
         if: ${{ github.ref != 'refs/heads/main' }}
