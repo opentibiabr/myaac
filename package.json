@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "prettier:format": "prettier --write \"**/{*.php,*.html}\"",
+    "prettier:format": "prettier --write \"**/{*.php,*.html}\" --plugin=@prettier/plugin-php",
     "prettier:styles": "prettier --write \"**/*.css\"",
     "prepare": "husky install"
   },
