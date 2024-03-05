@@ -26,7 +26,7 @@ Please select the game world of your choice to see the list of all existing guil
                             <tbody>
                                 <tr>
                                     <td>
-                                        
+
                                         <div class="TableContentAndRightShadow">
                                             <div class="TableContentContainer">
                                                 <table class="TableContent" width="100%">
@@ -46,7 +46,7 @@ Please select the game world of your choice to see the list of all existing guil
                                                                     <img src="images/guilds/{{ guild.logo }}" width="64" height="64">
                                                                 </td>
 
-                                                                <td>
+                                                                <td style="word-break: break-all">
                                                                     <span{% if guild.description is not empty %} valign="top"{% endif %}>
                                                                         <b>{{ guild.name }}</b>{% if isAdmin %}<a href="?subtopic=guilds&action=delete_by_admin&guild={{ guild.name }}"> [DELETE]</a>{% endif %}
                                                                     </span>
@@ -99,7 +99,7 @@ Please select the game world of your choice to see the list of all existing guil
                                                 </table>
                                             </div>
                                         </div>
-                                        
+
                                     </td>
                                 </tr>
                             </tbody>

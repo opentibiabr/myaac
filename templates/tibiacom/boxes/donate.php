@@ -63,9 +63,9 @@
         <div>
             <img src="templates/tibiacom/images/themeboxes/donate/donate.png">
         </div>
-        <a href="<?php echo BASE_URL ?>?points">
+        <a href="<?php echo BASE_URL ?>?donate">
             <button type="button" class="donate_button">Donate Now</button>
-        </a>        
+        </a>
     </div>
     <div class="donate_bottom"></div>
 </div>

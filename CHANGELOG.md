@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.8.16 - 14.02.2024]
+
+### Fixed
+* database and finish step warnings/errors
+* silently ignore if the hook does not exist
+
 ## [0.8.15 - 09.12.2023]
 
 More security fixes, especially in bugtracker.

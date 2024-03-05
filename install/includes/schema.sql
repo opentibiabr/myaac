@@ -187,7 +187,8 @@ INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VA
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'My Auctions', 'owncharactertrades', 7, 3);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Create Auction', 'createcharacterauction', 7, 4);
 /* MENU_CATEGORY_SHOP tibiacom */
-INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Buy Points', 'points', 6, 0);
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Donate', 'donate', 6, 0);
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Boxes', 'boxes', 6, 0);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Shop Offer', 'gifts', 6, 1);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Shop History', 'gifts/history', 6, 2);
 

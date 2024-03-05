@@ -17,18 +17,23 @@ require SYSTEM . 'init.php';
 
 $hasNumberColumn = $db->hasColumn('accounts', 'number');
 do {
-	$length = 10;
-	$min = (int)(1 . str_repeat(0, $length - 1));
-	$max = (int)str_repeat(9, $length);
+  $length = 10;
+  $min = (int) (1 . str_repeat(0, $length - 1));
+  $max = (int) str_repeat(9, $length);
 
-	try {
-		$number = random_int($min, $max);
-	} catch (Exception $e) {
-		error_('');
-	}
+  try {
+    $number = random_int($min, $max);
+  } catch (Exception $e) {
+    error_('');
+  }
 
-	$query = $db->query('SELECT `id` FROM `accounts` WHERE `' . ($hasNumberColumn ? 'number' : 'id') . '` = ' . $db->quote($number));
-} while($query->rowCount() >= 1);
+  $query = $db->query(
+    'SELECT `id` FROM `accounts` WHERE `' .
+      ($hasNumberColumn ? 'number' : 'id') .
+      '` = ' .
+      $db->quote($number)
+  );
+} while ($query->rowCount() >= 1);
 
 success_($number);
 
@@ -37,15 +42,17 @@ success_($number);
  *
  * @param string $desc Description
  */
-function success_($desc) {
-	echo json_encode([
-		'success' => $desc
-	]);
-	exit();
+function success_($desc)
+{
+  echo json_encode([
+    'success' => $desc,
+  ]);
+  exit();
 }
-function error_($desc) {
-	echo json_encode([
-		'error' => $desc
-	]);
-	exit();
+function error_($desc)
+{
+  echo json_encode([
+    'error' => $desc,
+  ]);
+  exit();
 }

@@ -10,7 +10,7 @@ $activeBox = rand(1,7);
     <p id="PremiumBoxOverlayText">Trade Tibia Coins!</p>
   </div>
   <div id="PremiumBoxButton">
-    <form action="?points" method="post" style="padding:0px;margin:0px;">
+    <form action="?donate" method="post" style="padding:0px;margin:0px;">
       <div class="BigButton" style="background-image:url(<?php echo $template_path ?>/images/global/buttons/button.png); width: 142px; height: 34px;"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path ?>/images/global/buttons/button_hover.png); visibility: hidden;"></div><input class="BigButtonText" style="width: 142px; height: 34px;" type="submit" value="Get Tibia Coins"></div></div>
     </form>
   </div>
@@ -25,7 +25,7 @@ $activeBox = rand(1,7);
     <p id="PremiumBoxOverlayText">Buy Epic Decoration!</p>
   </div>
   <div id="PremiumBoxButton">
-    <form action="?points" method="post" style="padding:0px;margin:0px;">
+    <form action="?donate" method="post" style="padding:0px;margin:0px;">
       <div class="BigButton" style="background-image:url(<?php echo $template_path ?>/images/global/buttons/button.png); width: 142px; height: 34px;"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path ?>/images/global/buttons/button_hover.png); visibility: hidden;"></div><input class="BigButtonText" style="width: 142px; height: 34px;" type="submit" value="Get Tibia Coins"></div></div>
     </form>
   </div>
@@ -40,7 +40,7 @@ $activeBox = rand(1,7);
     <p id="PremiumBoxOverlayText">Become <?= isVipSystemEnabled() ? 'VIP' : 'Premium' ?>!</p>
   </div>
   <div id="PremiumBoxButton">
-    <form action="?points" method="post" style="padding:0px;margin:0px;">
+    <form action="?donate" method="post" style="padding:0px;margin:0px;">
       <div class="BigButton" style="background-image:url(<?php echo $template_path ?>/images/global/buttons/button.png); width: 142px; height: 34px;"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path ?>/images/global/buttons/button_hover.png); visibility: hidden;"></div><input class="BigButtonText" style="width: 142px; height: 34px;" type="submit" value="Get Tibia Coins"></div></div>
     </form>
   </div>
@@ -55,7 +55,7 @@ $activeBox = rand(1,7);
     <p id="PremiumBoxOverlayText">Use XP Boosts!</p>
   </div>
   <div id="PremiumBoxButton">
-    <form action="?points" method="post" style="padding:0px;margin:0px;">
+    <form action="?donate" method="post" style="padding:0px;margin:0px;">
       <div class="BigButton" style="background-image:url(<?php echo $template_path ?>/images/global/buttons/button.png); width: 142px; height: 34px;"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path ?>/images/global/buttons/button_hover.png); visibility: hidden;"></div><input class="BigButtonText" style="width: 142px; height: 34px;" type="submit" value="Get Tibia Coins"></div></div>
     </form>
   </div>
@@ -70,7 +70,7 @@ $activeBox = rand(1,7);
     <p id="PremiumBoxOverlayText">Get Supplies Anywhere!</p>
   </div>
   <div id="PremiumBoxButton">
-    <form action="?points" method="post" style="padding:0px;margin:0px;">
+    <form action="?donate" method="post" style="padding:0px;margin:0px;">
       <div class="BigButton" style="background-image:url(<?php echo $template_path ?>/images/global/buttons/button.png); width: 142px; height: 34px;"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path ?>/images/global/buttons/button_hover.png); visibility: hidden;"></div><input class="BigButtonText" style="width: 142px; height: 34px;" type="submit" value="Get Tibia Coins"></div></div>
     </form>
   </div>
@@ -85,7 +85,7 @@ $activeBox = rand(1,7);
     <p id="PremiumBoxOverlayText">Train Skills Offline!</p>
   </div>
   <div id="PremiumBoxButton">
-    <form action="?points" method="post" style="padding:0px;margin:0px;">
+    <form action="?donate" method="post" style="padding:0px;margin:0px;">
       <div class="BigButton" style="background-image:url(<?php echo $template_path ?>/images/global/buttons/button.png); width: 142px; height: 34px;"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path ?>/images/global/buttons/button_hover.png); visibility: hidden;"></div><input class="BigButtonText" style="width: 142px; height: 34px;" type="submit" value="Get Tibia Coins"></div></div>
     </form>
   </div>
@@ -100,7 +100,7 @@ $activeBox = rand(1,7);
     <p id="PremiumBoxOverlayText">Access ALL Areas!</p>
   </div>
   <div id="PremiumBoxButton">
-    <form action="?points" method="post" style="padding:0px;margin:0px;">
+    <form action="?donate" method="post" style="padding:0px;margin:0px;">
       <div class="BigButton" style="background-image:url(<?php echo $template_path ?>/images/global/buttons/button.png); width: 142px; height: 34px;"><div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);"><div class="BigButtonOver" style="background-image: url(<?php echo $template_path ?>/images/global/buttons/button_hover.png); visibility: hidden;"></div><input class="BigButtonText" style="width: 142px; height: 34px;" type="submit" value="Get Tibia Coins"></div></div>
     </form>
   </div>

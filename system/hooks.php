@@ -58,77 +58,78 @@ require_once LIBS . 'plugins.php';
 
 class Hook
 {
-    private $_name, $_type, $_file;
+  private $_name, $_type, $_file;
 
-    public function __construct($name, $type, $file)
-    {
-        $this->_name = $name;
-        $this->_type = $type;
-        $this->_file = $file;
-    }
+  public function __construct($name, $type, $file)
+  {
+    $this->_name = $name;
+    $this->_type = $type;
+    $this->_file = $file;
+  }
 
-    public function execute($params)
-    {
-        extract($params);
-        /*if(is_callable($this->_callback))
+  public function execute($params)
+  {
+    extract($params);
+    /*if(is_callable($this->_callback))
         {
             $tmp = $this->_callback;
             $ret = $tmp($params);
         }*/
 
-        global $db, $config, $template_path, $ots, $content, $twig;
-        $ret = include BASE . $this->_file;
+    global $db, $config, $template_path, $ots, $content, $twig;
+    $ret = include BASE . $this->_file;
 
-        return !isset($ret) || $ret == 1 || $ret;
-    }
+    return !isset($ret) || $ret == 1 || $ret;
+  }
 
-    public function name()
-    {
-        return $this->_name;
-    }
+  public function name()
+  {
+    return $this->_name;
+  }
 
-    public function type()
-    {
-        return $this->_type;
-    }
+  public function type()
+  {
+    return $this->_type;
+  }
 }
 
 class Hooks
 {
-    private static $_hooks = array();
+  private static $_hooks = [];
 
-    public function register($hook, $type = '', $file = null)
-    {
-        if (!($hook instanceof Hook))
-            $hook = new Hook($hook, $type, $file);
-
-        self::$_hooks[$hook->type()][] = $hook;
+  public function register($hook, $type = '', $file = null)
+  {
+    if (!($hook instanceof Hook)) {
+      $hook = new Hook($hook, $type, $file);
     }
 
-    public function trigger($type, $params = array())
-    {
-        $ret = true;
-        if (isset(self::$_hooks[$type])) {
-            foreach (self::$_hooks[$type] as $name => $hook) {
-                /** @var $hook Hook */
-                if (!$hook->execute($params)) {
-                    $ret = false;
-                }
-            }
+    self::$_hooks[$hook->type()][] = $hook;
+  }
+
+  public function trigger($type, $params = [])
+  {
+    $ret = true;
+    if (isset(self::$_hooks[$type])) {
+      foreach (self::$_hooks[$type] as $name => $hook) {
+        /** @var $hook Hook */
+        if (!$hook->execute($params)) {
+          $ret = false;
         }
-
-        return $ret;
+      }
     }
 
-    public function exist($type)
-    {
-        return isset(self::$_hooks[$type]);
-    }
+    return $ret;
+  }
 
-    public function load()
-    {
-        foreach (Plugins::getHooks() as $hook) {
-            $this->register($hook['name'], $hook['type'], $hook['file']);
-        }
+  public function exist($type)
+  {
+    return isset(self::$_hooks[$type]);
+  }
+
+  public function load()
+  {
+    foreach (Plugins::getHooks() as $hook) {
+      $this->register($hook['name'], $hook['type'], $hook['file']);
     }
+  }
 }
