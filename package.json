@@ -1,0 +1,9 @@
+{
+  "name": "myaac",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@prettier/plugin-php": "^0.22.2",
+    "prettier": "^3.2.5",
+    "stylelint-prettier": "^5.0.0"
+  }
+}

@@ -51,7 +51,7 @@ $total_accounts = $db->query('SELECT `id` FROM `accounts`;')->rowCount();
 $total_players = $db->query('SELECT `id` FROM `players`;')->rowCount();
 $total_guilds = $db->query('SELECT `id` FROM `guilds`;')->rowCount();
 $total_houses = $db->query('SELECT `id` FROM `houses`;')->rowCount();
-$total_donates = $db->query("SELECT `id` FROM `pagseguro_transactions` WHERE `payment_status` <> 'CANCELLED'")->rowCount();
+$total_donates = $db->hasTable('pagseguro_transactions') ? $db->query("SELECT `id` FROM `pagseguro_transactions` WHERE `payment_status` <> 'CANCELLED'")->rowCount() : null;
 
 $twig->display('admin.statistics.html.twig', array(
     'total_accounts' => $total_accounts,
