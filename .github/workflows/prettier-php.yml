@@ -3,10 +3,6 @@ name: Format Prettier
 on:
   pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
-  merge_group:
-  push:
-    paths:
-      - '*/**'
 jobs:
   cancel-runs:
     if: github.event_name == 'pull_request' && github.ref != 'refs/heads/main'
@@ -35,14 +31,17 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
+        if: ${{ github.ref != 'refs/heads/main' }}
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
       - name: Install Dependencies
+        if: ${{ github.ref != 'refs/heads/main' }}
         run: npm install prettier @prettier/plugin-php stylelint-prettier
 
       - name: Run prettier code format
+        if: ${{ github.ref != 'refs/heads/main' }}
         run: npx prettier --write **/*.{php,js} --plugin=@prettier/plugin-php --ignore-unknown && npx stylelint **/*.css --fix
 
       - name: Run add and commit
