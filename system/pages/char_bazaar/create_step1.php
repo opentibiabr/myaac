@@ -1,7 +1,9 @@
 <?php
 
 /* PLAYERS */
-$players = array();
+global $account_logged, $template_path;
+
+$players = [];
 $account_players = $account_logged->getPlayersList();
 /* PLAYERS END */
 
@@ -20,13 +22,13 @@ $account_players = $account_logged->getPlayersList();
         </div>
         <img id="TubeLeftEnd"
              src="<?= $template_path; ?>/images/global/content/progressbar/progress-bar-tube-left-green.gif"> <img
-            id="TubeRightEnd"
-            src="<?= $template_path; ?>/images/global/content/progressbar/progress-bar-tube-right-blue.gif">
+                id="TubeRightEnd"
+                src="<?= $template_path; ?>/images/global/content/progressbar/progress-bar-tube-right-blue.gif">
         <div id="FirstStep" class="Steps">
             <div class="SingleStepContainer">
                 <img class="StepIcon"
                      src="<?= $template_path; ?>/images/global/content/progressbar/progress-bar-icon-1-green.gif">
-                <div class="StepText" style="font-weight:bold;">Select character</div>
+                <div class="StepText" style="font-weight:bold;">Select Character</div>
             </div>
         </div>
         <div id="StepsContainer1">
@@ -116,15 +118,18 @@ $account_players = $account_logged->getPlayersList();
                                                                        cellspacing="0" cellpadding="0">
                                                                     <tbody>
                                                                     <tr>
-                                                                        <td><select style="width: 100%;"
+                                                                        <td>
+                                                                            <select style="width: 100%;"
                                                                                     name="auction_character">
                                                                                 <?php foreach ($account_players as $player) {
                                                                                     $item = "{$player->getname()} | Level {$player->getLevel()} | Vocation: {$player->getVocationName()}"
                                                                                     ?>
-                                                                                    <option
-                                                                                        value="<?= $player->getId() ?>"><?= $item ?></option>
+                                                                                    <option value="<?= $player->getId() ?>">
+                                                                                        <?= $item ?>
+                                                                                    </option>
                                                                                 <?php } ?>
-                                                                            </select></td>
+                                                                            </select>
+                                                                        </td>
                                                                     </tr>
                                                                     </tbody>
                                                                 </table>
@@ -153,13 +158,15 @@ $account_players = $account_logged->getPlayersList();
         <tr>
             <td>
                 <div style="float: right;">
-                    <a href="?news">
+                    <a href="?currentcharactertrades">
                         <div class="BigButton"
                              style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_red.gif)">
-                            <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
-                                <div class="BigButtonOver"
+                            <div onmouseover="MouseOverBigButton('CancelBazaar');"
+                                 onmouseout="MouseOutBigButton('CancelBazaar');">
+                                <div id="CancelBazaar" class="BigButtonOver"
                                      style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_red_over.gif); visibility: hidden;"></div>
-                                <input class="BigButtonText" type="button" value="Cancel"></div>
+                                <input class="BigButtonText" type="button" value="Cancel">
+                            </div>
                         </div>
                     </a>
                 </div>
@@ -168,10 +175,12 @@ $account_players = $account_logged->getPlayersList();
                 <div style="float: left;">
                     <div class="BigButton"
                          style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_green.gif)">
-                        <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
-                            <div class="BigButtonOver"
+                        <div onmouseover="MouseOverBigButton('NextBazaar');"
+                             onmouseout="MouseOutBigButton('NextBazaar');">
+                            <div id="NextBazaar" class="BigButtonOver"
                                  style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
-                            <input name="auction_submit" class="BigButtonText" type="submit" value="Next"></div>
+                            <input name="auction_submit" class="BigButtonText" type="submit" value="Next">
+                        </div>
                     </div>
                 </div>
             </td>

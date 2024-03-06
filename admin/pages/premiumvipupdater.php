@@ -12,7 +12,7 @@ defined('MYAAC') or die('Direct access not allowed!');
 
 $title = 'Premium/VIP Updater';
 $base = BASE_URL . 'admin/?p=premiumvipupdater';
-$addTitle = isVipSystemEnabled() ? 'VIP' : "Premium";
+$addTitle = isVipSystemEnabled() ? 'VIP' : 'Premium';
 $now = time();
 
 function echo_success($message)

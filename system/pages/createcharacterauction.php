@@ -1,3 +1,4 @@
+<?php global $config, $db, $logged, $twig, $template_path, $account_logged; ?>
 <style>
     form {
         display: block;
@@ -37,7 +38,7 @@ if ($logged) {
         $twig->display('error_box.html.twig', array('errors' => $errors));
 
     $twig->display('account.login.html.twig', array(
-        'redirect' => isset($_REQUEST['redirect']) ? $_REQUEST['redirect'] : null,
+        'redirect' => $_REQUEST['redirect'] ?? null,
         'account' => USE_ACCOUNT_NAME ? 'Name' : 'Number',
         'account_login_by' => getAccountLoginByLabel(),
         'error' => isset($errors[0]) ? $errors[0] : null
@@ -50,12 +51,14 @@ $charbazaar_create = $config['bazaar_create'];
 $charbazaar_tax = $config['bazaar_tax'];
 $charbazaar_bid = $config['bazaar_bid'];
 $charbazaar_newacc = $config['bazaar_accountid'];
+$coinType = getCoinType();
+$character_prem_info = isVipSystemEnabled() ? 'VIP' : 'Premium';
 /* CHAR BAZAAR CONFIG END */
 
 $getAuctionStep = $_GET['step'] ?? null;
 
 /* REDIRECT TO STEP 1 */
-if (empty($getAuctionStep) || $getAuctionStep < 1 || $getAuctionStep > 4) {
+if (empty($getAuctionStep) || (is_numeric($getAuctionStep) && ($getAuctionStep < 1 || $getAuctionStep > 4))) {
     header('Location: ' . BASE_URL . '?subtopic=createcharacterauction&step=1');
 }
 /* REDIRECT TO STEP 1 END */
@@ -101,16 +104,11 @@ if ($getAuctionStep == 'confirm') {
         $getCharacter = $db->query('SELECT `id`, `account_id` FROM `players` WHERE `id` = ' . $db->quote($auction_character) . '');
         $getCharacter = $getCharacter->fetch();
 
-        $getAccount = $db->query('SELECT `id`, `premdays`, `coins` FROM `accounts` WHERE `id` = ' . $db->quote($getCharacter['account_id']) . '');
+        $getAccount = $db->query('SELECT `id`, `premdays`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = ' . $getCharacter['account_id']);
         $getAccount = $getAccount->fetch();
 
-        if ($auction_days > 28) {
-            $auction_inputdays = $auction_days;
-            $auction_end = date('Ymd', strtotime('+' . $auction_inputdays . ' days'));
-        } else {
-            $auction_inputdays = $auction_days;
-            $auction_end = date('Ymd', strtotime('+' . $auction_inputdays . ' days'));
-        }
+        $auction_inputdays = $auction_days;
+        $auction_end = date('Ymd', strtotime('+' . $auction_inputdays . ' days'));
 
         $account_old = $getCharacter['account_id'];
         $account_new = $charbazaar_newacc;
@@ -120,23 +118,21 @@ if ($getAuctionStep == 'confirm') {
         $date_start = date('YmdHis');
         $date_end = $auction_end . date('His');
 
-        $getCoinsAccountLogged = $db->query('SELECT `id`, `coins` FROM `accounts` WHERE `id` = ' . $account_logged->getId() . '');
+        $getCoinsAccountLogged = $db->query('SELECT `id`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = ' . $account_logged->getId());
         $getCoinsAccountLogged = $getCoinsAccountLogged->fetch();
 
-        $charbazaar_mycoins = $getCoinsAccountLogged['coins'];
+        $charbazaar_mycoins = $getCoinsAccountLogged[$coinType];
         $charbazaar_mycoins_calc = $charbazaar_mycoins - $charbazaar_create;
 
         $auctionId = null;
-        if ($getCoinsAccountLogged['coins'] > $charbazaar_create) {
+        if ($getCoinsAccountLogged[$coinType] > $charbazaar_create) {
+            $update_accountcoins = $db->exec("UPDATE `accounts` SET `{$coinType}` = {$charbazaar_mycoins_calc} WHERE `id` = {$getAccount['id']}");
 
-            $update_accountcoins = $db->exec('UPDATE `accounts` SET `coins` = ' . $charbazaar_mycoins_calc . ' WHERE `id` = ' . $getAccount['id'] . '');
-
-            $insert_auction = $db->exec('INSERT INTO `myaac_charbazaar` (`account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`) VALUES (' . $db->quote($account_old) . ', ' . $db->quote($account_new) . ', ' . $db->quote($player_id) . ', ' . $db->quote($price) . ', ' . $db->quote($date_end) . ', ' . $db->quote($date_start) . ')');
+            $insert_auction = $db->exec('INSERT INTO `myaac_charbazaar` (`account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price`, `status`) VALUES (' . $db->quote($account_old) . ', ' . $db->quote($account_new) . ', ' . $db->quote($player_id) . ', ' . $db->quote($price) . ', ' . $db->quote($date_end) . ', ' . $db->quote($date_start) . ', 0, 0, 0)');
             $auctionId = $db->query("SELECT `id` FROM `myaac_charbazaar` WHERE `account_old` = {$account_old} AND `player_id` = {$player_id} ORDER BY `id` DESC LIMIT 1;");
             $auctionId = $auctionId->fetch();
 
-            $update_character = $db->exec('UPDATE `players` SET `account_id` = ' . $account_new . ' WHERE `id` = ' . $getCharacter['id'] . '');
-
+            $update_character = $db->exec('UPDATE `players` SET `account_id` = ' . $account_new . ' WHERE `id` = ' . $getCharacter['id']);
         }
         /* REGISTER AUCTION END */
         ?>
@@ -180,12 +176,12 @@ if ($getAuctionStep == 'confirm') {
                                                     </td>
                                                     <td style="font-weight:bold; font-size: 24px;">Auction created</td>
                                                     <td>
-                                                        <a href="?subtopic=currentcharactertrades&details=<?= $auctionId ?>">
+                                                        <a href="?subtopic=currentcharactertrades&details=<?= $auctionId['id'] ?>">
                                                             <div class="BigButton"
                                                                  style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_green.gif)">
-                                                                <div onmouseover="MouseOverBigButton(this);"
-                                                                     onmouseout="MouseOutBigButton(this);">
-                                                                    <div class="BigButtonOver"
+                                                                <div onmouseover="MouseOverBigButton('ViewAuction');"
+                                                                     onmouseout="MouseOutBigButton('ViewAuction');">
+                                                                    <div id="ViewAuction" class="BigButtonOver"
                                                                          style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
                                                                     <input name="auction_confirm" class="BigButtonText"
                                                                            type="button" value="View auction"></div>

@@ -13,7 +13,7 @@ defined('MYAAC') or die('Direct access not allowed!');
 
 $player_id = isset($_POST['player_id']) ? (int)$_POST['player_id'] : NULL;
 $name = isset($_POST['name']) ? stripslashes(ucwords(strtolower($_POST['name']))) : NULL;
-$coinType = $config['account_change_coin_type'] ?? 'coins';
+$coinType = $config['site_coin_type'] ?? 'coins';
 $coinName = $coinType == 'coins' ? $coinType : 'transferable coins';
 $needCoins = $config['account_change_character_name_coins'];
 

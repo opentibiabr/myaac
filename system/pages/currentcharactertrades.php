@@ -1,4 +1,5 @@
 <?php
+global $db, $account_logged, $config, $template_path;
 /**
  *
  * Char Bazaar
@@ -8,7 +9,7 @@ defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Current Auctions';
 
 if ($logged) {
-    $getAccountCoins = $db->query("SELECT `id`, `premdays`, `coins` FROM `accounts` WHERE `id` = {$account_logged->getId()}");
+    $getAccountCoins = $db->query("SELECT `id`, `premdays`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = {$account_logged->getId()}");
     $getAccountCoins = $getAccountCoins->fetch();
 } else {
     $account_logged = null;
@@ -22,6 +23,7 @@ $getPageAction = $_GET['action'] ?? null;
 /* CHAR BAZAAR CONFIG */
 $charbazaar_tax = $config['bazaar_tax'];
 $charbazaar_bid = $config['bazaar_bid'];
+$coinType = getCoinType();
 /* CHAR BAZAAR CONFIG END */
 
 /* COUNTER CONFIG */
@@ -158,17 +160,15 @@ if ($getPageAction == 'bid') {
     $getAuction = $getAuction->fetch();
     /* GET INFO CHARACTER END */
 
-
     if ($logged && $getAuction['account_old'] != $account_logged) {
 
-
         /* GET INFO CHARACTER */
-        $getCharacter = $db->query('SELECT `name`, `vocation`, `level`, `sex` FROM `players` WHERE `id` = ' . $getAuction['player_id'] . '');
+        $getCharacter = $db->query("SELECT `name`, `vocation`, `level`, `sex` FROM `players` WHERE `id` = {$getAuction['player_id']}");
         $character = $getCharacter->fetch();
         /* GET INFO CHARACTER END */
 
         if ($logged) {
-            $getAccount = $db->query('SELECT `id`, `premdays`, `coins` FROM `accounts` WHERE `id` = ' . $account_logged->getId() . '');
+            $getAccount = $db->query("SELECT `id`, `premdays`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = {$account_logged->getId()}");
             $getAccount = $getAccount->fetch();
         }
 
@@ -180,17 +180,8 @@ if ($getPageAction == 'bid') {
         $character_voc = $config['vocations'][$character['vocation']];
         /* CONVERT VOCATION END */
 
-        if ($Auction_maxbid >= $getAccount['coins']) {
-            $Verif_CoinsAcc = 'false';
-        } else {
-            $Verif_CoinsAcc = 'true';
-        }
-
-        if ($Auction_maxbid > $getAuction['price'] && $Auction_maxbid > $getAuction['bid_price']) {
-            $Verif_Price = 'true';
-        } else {
-            $Verif_Price = 'false';
-        }
+        $Verif_CoinsAcc = $getAccount[$coinType] >= $Auction_maxbid;
+        $Verif_Price = $Auction_maxbid > $getAuction['price'] && $Auction_maxbid > $getAuction['bid_price'];
         ?>
         <div class="TableContainer">
             <div class="CaptionContainer">
@@ -203,7 +194,7 @@ if ($getPageAction == 'bid') {
                           style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
                     <span class="CaptionVerticalLeft"
                           style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
-                    <div class="Text">You account</div>
+                    <div class="Text">Your account</div>
                     <span class="CaptionVerticalRight"
                           style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
                     <span class="CaptionBorderBottom"
@@ -230,7 +221,7 @@ if ($getPageAction == 'bid') {
                                                     <td style="font-weight:normal;"><?= $getAccount['coins'] ?>
                                                         <img
                                                             src="<?= $template_path; ?>/images/account/icon-tibiacoin.png">
-                                                        (<?= $getAccount['coins'] ?> <img
+                                                        (<?= $getAccount['coins_transferable'] ?> <img
                                                             src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">)
                                                     </td>
                                                     <td style="font-weight:normal;"><?= $charbazaar_bid ?> <img
@@ -294,7 +285,7 @@ if ($getPageAction == 'bid') {
                                             <table style="width:50%;">
                                                 <tbody>
                                                 <?php
-                                                if ($Verif_Price == 'true' and $Verif_CoinsAcc == 'true') {
+                                                if ($Verif_Price && $Verif_CoinsAcc) {
                                                     ?>
                                                     <tr>
                                                         <td style="font-weight: bold;">Maximum Bid:</td>
@@ -351,7 +342,7 @@ if ($getPageAction == 'bid') {
         </div>
         <br>
         <?php
-        if ($Verif_Price == 'false') {
+        if (!$Verif_Price) {
             ?>
             <div class="TableContainer">
                 <div class="CaptionContainer">
@@ -397,7 +388,7 @@ if ($getPageAction == 'bid') {
             <br>
         <?php } ?>
         <?php
-        if ($Verif_CoinsAcc == 'false') {
+        if (!$Verif_CoinsAcc) {
             ?>
             <div class="TableContainer">
                 <div class="CaptionContainer">
@@ -445,9 +436,7 @@ if ($getPageAction == 'bid') {
 
 
         <div style="width: 100%; text-align: center; display: flex; justify-content: center;">
-            <?php
-            if ($Verif_Price == 'true' && $Verif_CoinsAcc == 'true') {
-                ?>
+            <?php if ($Verif_Price && $Verif_CoinsAcc) { ?>
                 <script>
                     var myModalFinishBid = document.getElementById('ModalOpenFinishBid')
                     var myInputFinishBid = document.getElementById('ModalInputFinishBid')
@@ -468,9 +457,9 @@ if ($getPageAction == 'bid') {
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <!--<div class="modal-header">
-        <h5 class="modal-title" id="ModalOpenFinishBidLabel">You bid created!</h5>
-		<img src="<?= $template_path; ?>/images/content/circle-symbol-minus.gif" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-      </div>-->
+                                <h5 class="modal-title" id="ModalOpenFinishBidLabel">You bid created!</h5>
+                                <img src="<?= $template_path; ?>/images/content/circle-symbol-minus.gif" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </div>-->
                             <div class="modal-body">
                                 <div style="width: 100%; display: flex; justify-content: center; align-items: center;">
                                     <img src="<?= $template_path; ?>/images/charactertrade/confirm.gif"> <span
@@ -531,18 +520,18 @@ if ($getPageAction == 'bidfinish') {
 
         if ($countAuctionBid > 0) {
             // OLD BID ACCOUNT RETURN COINS
-            $getAccountOldBid = $db->query('SELECT `id`, `coins` FROM `accounts` WHERE `id` = ' . $getAuctionBid['account_id'] . '');
+            $getAccountOldBid = $db->query('SELECT `id`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = ' . $getAuctionBid['account_id'] . '');
             $getAccountOldBid = $getAccountOldBid->fetch();
-            $SomaCoinsOldBid = $getAccountOldBid['coins'] + $getAuctionBid['bid'];
-            $UpdateAccountOldBid = $db->exec('UPDATE `accounts` SET `coins` = ' . $SomaCoinsOldBid . ' WHERE `id` = ' . $getAuctionBid['account_id'] . '');
+            $SomaCoinsOldBid = $getAccountOldBid[$coinType] + $getAuctionBid['bid'];
+            $UpdateAccountOldBid = $db->exec("UPDATE `accounts` SET `{$coinType}` = {$SomaCoinsOldBid} WHERE `id` = {$getAuctionBid['account_id']}");
             // OLD BID ACCOUNT RETURN COINS
 
             // NEW BID ACCOUNT REMOVE COINS
-            $getAccountNewBid = $db->query('SELECT `id`, `coins` FROM `accounts` WHERE `id` = ' . $account_logged . '');
+            $getAccountNewBid = $db->query("SELECT `id`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` {$account_logged}");
             $getAccountNewBid = $getAccountNewBid->fetch();
-            $SubCoinsNewBid = $getAccountNewBid['coins'] - $bid_max;
+            $SubCoinsNewBid = $getAccountNewBid[$coinType] - $bid_max;
             $TaxCoinsNewBid = $SubCoinsNewBid - $charbazaar_bid; // TAX TO CREATE BID
-            $UpdateAccountNewBid = $db->exec('UPDATE `accounts` SET `coins` = ' . $TaxCoinsNewBid . ' WHERE `id` = ' . $account_logged . '');
+            $UpdateAccountNewBid = $db->exec("UPDATE `accounts` SET `{$coinType}` = {$TaxCoinsNewBid} WHERE `id` = {$account_logged}");
             // NEW BID ACCOUNT REMOVE COINS
 
             // UPDATE AUCTION NEW BID
@@ -554,11 +543,11 @@ if ($getPageAction == 'bidfinish') {
         } else {
 
             // NEW BID ACCOUNT REMOVE COINS
-            $getAccountNewBid = $db->query('SELECT `id`, `coins` FROM `accounts` WHERE `id` = ' . $account_logged . '');
+            $getAccountNewBid = $db->query('SELECT `id`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = ' . $account_logged . '');
             $getAccountNewBid = $getAccountNewBid->fetch();
-            $SubCoinsNewBid = $getAccountNewBid['coins'] - $bid_max;
+            $SubCoinsNewBid = $getAccountNewBid[$coinType] - $bid_max;
             $TaxCoinsNewBid = $SubCoinsNewBid - $charbazaar_bid; // TAX TO CREATE BID
-            $UpdateAccountNewBid = $db->exec('UPDATE `accounts` SET `coins` = ' . $db->quote($TaxCoinsNewBid) . ' WHERE `id` = ' . $account_logged . '');
+            $UpdateAccountNewBid = $db->exec("UPDATE `accounts` SET `{$coinType}` = {$db->quote($TaxCoinsNewBid)} WHERE `id` = {$account_logged}");
             // NEW BID ACCOUNT REMOVE COINS
 
             // UPDATE AUCTION NEW BID
@@ -589,15 +578,15 @@ if ($getPageAction == 'finish') {
     /* GET INFO BID END */
 
     /* GET COINS VENDEDOR */
-    $getCoinsVendedor = $db->query("SELECT `id`, `coins` FROM `accounts` WHERE `id` = {$getAuction['account_old']}");
+    $getCoinsVendedor = $db->query("SELECT `id`, `coins`, `coins_transferable` FROM `accounts` WHERE `id` = {$getAuction['account_old']}");
     $getCoinsVendedor = $getCoinsVendedor->fetch();
     /* GET COINS VENDEDOR END */
 
 //    $auction_taxacoins = $getBid['bid'] / 100;
 //    $auction_taxacoins = $auction_taxacoins * $config['bazaar_tax'];
 //    $auction_finalcoins = $getBid['bid'] - $auction_taxacoins;
-    $sellerCoins = $getCoinsVendedor['coins'] + ($getBid['bid'] - (($getBid['bid'] / 100) * $charbazaar_tax));
-    $db->exec("UPDATE `accounts` SET `coins` = {$sellerCoins} WHERE `id` = {$getAuction['account_old']}"); // adicionar os coins ao vendedor
+    $sellerCoins = $getCoinsVendedor[$coinType] + ($getBid['bid'] - (($getBid['bid'] / 100) * $charbazaar_tax));
+    $db->exec("UPDATE `accounts` SET `{$coinType}` = {$sellerCoins} WHERE `id` = {$getAuction['account_old']}"); // adicionar os coins ao vendedor
 
     $account_new = $getBid['account_id'];
 
