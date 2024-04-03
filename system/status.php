@@ -1,4 +1,5 @@
 <?php
+global $TABLE_PREFIX;
 /**
  * Server status
  *
@@ -65,11 +66,9 @@ if ($fetch_from_db) {
   // get info from db
   /** @var OTS_DB_MySQL $db */
   $status_query = $db->query(
-    'SELECT `name`, `value` FROM `' .
-      TABLE_PREFIX .
-      'config` WHERE ' .
-      $db->fieldName('name') .
-      ' LIKE "%status%"'
+    "SELECT `name`, `value` FROM `{$TABLE_PREFIX}config` WHERE {$db->fieldName(
+      'name'
+    )} LIKE '%status%'"
   );
   if ($status_query->rowCount() <= 0) {
     // empty, just insert it
@@ -135,10 +134,14 @@ function updateStatus()
       }
     }
 
-    $status['uptime'] = $serverStatus->getUptime();
-    $h = floor($status['uptime'] / 3600);
-    $m = floor(($status['uptime'] - $h * 3600) / 60);
-    $status['uptimeReadable'] = $h . 'h ' . $m . 'm';
+    $uptime = $status['uptime'] = $serverStatus->getUptime();
+    $m = date('m', $uptime);
+    $m = $m > 1 ? "$m months, " : ($m == 1 ? 'month, ' : '');
+    $d = date('d', $uptime);
+    $d = $d > 1 ? "$d days, " : ($d == 1 ? 'day, ' : '');
+    $h = date('H', $uptime);
+    $min = date('i', $uptime);
+    $status['uptimeReadable'] = "{$m}{$d}{$h}h {$min}m";
 
     $status['monsters'] = $serverStatus->getMonstersCount();
     $status['motd'] = $serverStatus->getMOTD();

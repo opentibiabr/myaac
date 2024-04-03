@@ -1,6 +1,6 @@
 <script>
   var serverSaveTime = new Date({{ serverSaveTime }});
-  var x = setInterval(function () {
+  var x = setInterval(function() {
     var now = new Date().getTime();
     var distance = serverSaveTime - now;
     var hours = Math.floor(distance / (1000 * 60 * 60));
@@ -152,7 +152,10 @@
                                 </td>
                               </tr>
                               <tr bgcolor="#F1E0C6">
-                                <td><b>Level to create guild: </b> {{ config.guild_need_level }}</td>
+                                <td>
+                                  <b>Level to create
+                                    guild:</b>{% if config.guild_need_level > 0 %} {{ config.guild_need_level }} {% else %} no level {% endif %}
+                                </td>
                               </tr>
                               {% if houseLevel %}
                                 <tr bgcolor="#D4C0A1">
