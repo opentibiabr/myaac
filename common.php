@@ -106,6 +106,8 @@ for ($i = 1; $i < $size; $i++)
 $basedir = str_replace(array('/admin', '/install', '/tools'), '', $basedir);
 define('BASE_DIR', $basedir);
 
+$TABLE_PREFIX = TABLE_PREFIX;
+
 if (file_exists(BASE . 'config.local.php') && !defined('MYAAC_INSTALL')) {
     require BASE . 'config.local.php';
 }

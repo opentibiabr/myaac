@@ -1,4 +1,5 @@
 <?php
+global $db, $twig, $template_path, $account_logged, $logged, $template_name, $status;
 /**
  * Project: MyAAC
  *     Automatic Account Creator for Open Tibia Servers
