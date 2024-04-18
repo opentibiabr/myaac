@@ -57,7 +57,7 @@ In any case the name must not violate the naming conventions stated in the <a hr
                                    size="{{ config.character_name_max_length }}"
                                    maxlength="{{ config.character_name_max_length }}">
                           <img id="character_indicator"
-                               src="images/global/general/{% if not save or errors.name is defined %}n{% endif %}ok.gif"/>
+                               src="images/global/general/{% if not save or errors.name is defined %}n{% endif %}ok.gif" />
                           <br>
                           <small>
                             <div
@@ -69,7 +69,7 @@ In any case the name must not violate the naming conventions stated in the <a hr
                             {% set i = i + 1 %}
                             <input type="radio" name="sex" id="sex{{ i }}"
                                    value="{{ id }}"{% if sex is not null and sex == id %} checked="checked"{% endif %}
-                            ><label for="sex{{ i }}">{{ gender|lower }}</label><br/>
+                            ><label for="sex{{ i }}">{{ gender|lower }}</label><br />
                           {% endfor %}
                         </td>
                       </tr>
@@ -108,7 +108,7 @@ In any case the name must not violate the naming conventions stated in the <a hr
                               <tbody>
                               <tr>
                                 <td valign="top" style="border:0px;">
-                                  <script>CreateFilterOption('server_type', 'REG', 'Regular Game World')</script>
+                                  <script>CreateFilterOption("server_type", "REG", "Regular Game World");</script>
                                   <div class="OptionContainer">
                                     <label for="option_server_type_REG" id="option_server_type_REG_label">
                                       <input type="radio" name="server_type" id="option_server_type_REG" checked
@@ -330,36 +330,36 @@ In any case the name must not violate the naming conventions stated in the <a hr
                   </td>
                 </tr>
               {% endif %}
-{% if config.character_towns|length > 1 %}
-<tr>
-  <td>
-    <div class="TableContentContainer">
-      <table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-        <tbody>
-          <tr class="LabelH">
-            <td colspan="2">Select your town</td>
-          </tr>
-          <tr class="Odd">
-            {% for town_id in config.character_towns %}
-            <td>
-              {% set town_name = config.towns[town_id] %}
-              {{ town_id }}: {{ town_name }} <!-- Debugging -->
-              {% if town_name is defined %}
-              <input type="radio" name="town" id="town{{ town_id }}" value="{{ town_id }}"
-                {% if town is not null and town == town_id %} checked="checked"{% endif %}>
-              <label for="town{{ town_id }}">{{ town_name }}</label>
-              {% else %}
-              <label for="town{{ town_id }}">Unknown Town</label>
+              {% if config.character_towns|length > 1 %}
+                <tr>
+                  <td>
+                    <div class="TableContentContainer">
+                      <table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
+                        <tbody>
+                        <tr class="LabelH">
+                          <td colspan="2">Select your town</td>
+                        </tr>
+                        <tr class="Odd">
+                          {% for town_id in config.character_towns %}
+                            <td>
+                              {% set town_name = config.towns[town_id] %}
+                              {{ town_id }}: {{ town_name }} <!-- Debugging -->
+                              {% if town_name is defined %}
+                                <input type="radio" name="town" id="town{{ town_id }}" value="{{ town_id }}"
+                                  {% if town is not null and town == town_id %} checked="checked"{% endif %}>
+                                <label for="town{{ town_id }}">{{ town_name }}</label>
+                              {% else %}
+                                <label for="town{{ town_id }}">Unknown Town</label>
+                              {% endif %}
+                            </td>
+                          {% endfor %}
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
               {% endif %}
-            </td>
-            {% endfor %}
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </td>
-</tr>
-{% endif %}
 
               </tbody>
             </table>
@@ -370,8 +370,7 @@ In any case the name must not violate the naming conventions stated in the <a hr
     </table>
   </div>
 
-
-  <br/>
+  <br />
   <table style="width:100%;">
     <tr align="center">
       <td>
