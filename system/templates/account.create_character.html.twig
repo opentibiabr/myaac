@@ -330,31 +330,36 @@ In any case the name must not violate the naming conventions stated in the <a hr
                   </td>
                 </tr>
               {% endif %}
-
-              {% if config.character_towns|length > 1 %}
-                <tr>
-                  <td>
-                    <div class="TableContentContainer">
-                      <table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
-                        <tbody>
-                        <tr class="LabelH">
-                          <td colspan="2">Select your town</td>
-                        </tr>
-                        <tr class="Odd">
-                          {% for town_id in config.character_towns %}
-                            <td>
-                              <input type="radio" name="town" id="town{{ town_id }}" value="{{ town_id }}"
-                                {% if town is not null and town == town_id %} checked="checked"{% endif %}>
-                              <label for="town{{ town_id }}">{{ config.towns[town_id] }}</label>
-                            </td>
-                          {% endfor %}
-                        </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </td>
-                </tr>
+{% if config.character_towns|length > 1 %}
+<tr>
+  <td>
+    <div class="TableContentContainer">
+      <table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
+        <tbody>
+          <tr class="LabelH">
+            <td colspan="2">Select your town</td>
+          </tr>
+          <tr class="Odd">
+            {% for town_id in config.character_towns %}
+            <td>
+              {% set town_name = config.towns[town_id] %}
+              {{ town_id }}: {{ town_name }} <!-- Debugging -->
+              {% if town_name is defined %}
+              <input type="radio" name="town" id="town{{ town_id }}" value="{{ town_id }}"
+                {% if town is not null and town == town_id %} checked="checked"{% endif %}>
+              <label for="town{{ town_id }}">{{ town_name }}</label>
+              {% else %}
+              <label for="town{{ town_id }}">Unknown Town</label>
               {% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </td>
+</tr>
+{% endif %}
 
               </tbody>
             </table>
