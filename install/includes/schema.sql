@@ -284,7 +284,7 @@ CREATE TABLE `myaac_pages`
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(30) NOT NULL,
 	`title` VARCHAR(30) NOT NULL,
-	`body` TEXT NOT NULL,
+	`body` LONGTEXT NOT NULL,
 	`date` INT(11) NOT NULL DEFAULT 0,
 	`player_id` INT(11) NOT NULL DEFAULT 0,
 	`php` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0 - plain html, 1 - php',
