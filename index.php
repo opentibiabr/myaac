@@ -92,6 +92,7 @@ if (empty($uri) || isset($_REQUEST['template'])) {
             '/^account\/password\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_password'),
             '/^account\/register\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'register'),
             '/^account\/register\/new\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'register_new'),
+            '/^account\/resend\/verify\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'resend_verify'),
             '/^account\/email\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_email'),
             '/^account\/info\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_info'),
             '/^account\/character\/create\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'create_character'),
