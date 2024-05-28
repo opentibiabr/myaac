@@ -18,7 +18,7 @@ require_once SYSTEM . 'init.php';
 
 $request = file_get_contents('php://input');
 $result  = json_decode($request);
-log_append('create_account_service.log', "req: $request");
+//log_append('create_account_service.log', "req: $request");
 
 if ($result === null || (isset($result->Type) && isset($result->type))) {
   log_append('create_account_service.log', 'Request error!');
@@ -99,7 +99,8 @@ switch ($action) {
             //"recaptcha2token" => "",
             //"recaptcha3token" => "",
             //"selectedWorld"   => configLua('serverName'),
-          ])
+          ]),
+          // "Password" => $result->Password
         ]);
       } else {
         throw new Exception('Email invalid!');
@@ -114,7 +115,6 @@ switch ($action) {
       ]);
     }
     break;
-
 }
 log_append('create_account_service.log', "response: $response");
 die($response);
@@ -255,20 +255,20 @@ function createAccount(array $data)
         $new_account->delete();
         throw new Exception('An error occurred while sending email! Account not created. Try again. For Admin: More info can be found in system/logs/mailer-error.log');
       }
-    }
-
-    // character creation
-    require_once LIBS . 'CreateCharacter.php';
-    $createCharacter = new CreateCharacter();
-    $errors = [];
-    if (!$createCharacter->doCreate($data['characterName'], $data['characterSex'], 0, 0, $new_account, $errors)) {
-      throw new Exception('There was an error creating your character. Please create your character later in account management page.');
-    }
-
-    if ($config['mail_enabled'] && $config['account_welcome_mail']) {
+    } else if ($config['mail_enabled'] && $config['account_welcome_mail']) {
       $mailBody = $twig->render('account.welcome_mail.html.twig', ['account' => $account_name]);
       if (!_mail($data['email'], 'Your account on ' . configLua('serverName'), $mailBody)) {
         throw new Exception('An error occurred while sending email. For Admin: More info can be found in system/logs/mailer-error.log');
+      }
+    }
+
+    // character creation only if start in dawnport
+    if (count(config('character_samples')) == 1 && !empty($data['characterName'])) {
+      require_once LIBS . 'CreateCharacter.php';
+      $createCharacter = new CreateCharacter();
+      $errors = [];
+      if (!$createCharacter->doCreate($data['characterName'], $data['characterSex'], 0, 0, $new_account, $errors)) {
+        throw new Exception('There was an error creating your character. Please create your character later in account management page.');
       }
     }
 
@@ -277,18 +277,3 @@ function createAccount(array $data)
     throw new Exception($e->getMessage());
   }
 }
-
-/*
-if($config['recaptcha_enabled'])
-{
-    if(isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response']))
-    {
-        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$config['recaptcha_secret_key'].'&response='.$_POST['g-recaptcha-response']);
-        $responseData = json_decode($verifyResponse);
-        if(!$responseData->success)
-            $errors['verification'] = "Please confirm that you're not a robot.";
-    }
-    else
-        $errors['verification'] = "Please confirm that you're not a robot.";
-}
-*/
