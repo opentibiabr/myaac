@@ -69,7 +69,7 @@ if ($action == '') {
     $acc_coins_transfer = $account_logged->getCustomField('coins_transferable');
     $tournament_coins = $account_logged->getCustomField('tournament_coins');
 
-    $tag = isVipSystemEnabled() ? 'VIP' : "Premium";
+    $tag = isVipSystemEnabled() ? 'VIP' : 'Premium';
     $account_status = $account_logged->isPremium()
         ? "<b><span style='color: green;'>{$tag} Account, {$daysLeft} left</span></b>"
         : (!isVipSystemEnabled() && $freePremium

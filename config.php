@@ -39,7 +39,8 @@ $config = array(
 
 	// what client version are you using on this OT?
 	// used for the Downloads page and some templates as well
-    'client' => 1321, // 1321 = client 13.21
+
+	'client' => 1321, // 1321 = client 13.21
 
 	'session_prefix' => 'myaac_', // must be unique for every site on your server
 	'friendly_urls' => false, // mod_rewrite is required for this, it makes links looks more elegant to eye, and also are SEO friendly (example: https://localhost/guilds/Testing instead of https://localhost?subtopic=guilds&name=Testing). Remember to rename .htaccess.dist to .htaccess
@@ -114,7 +115,7 @@ $config = array(
 	'account_country' => true, // user will be able to set country of origin when registering account, this information will be viewable in others places aswell
 	'account_country_recognize' => true, // should country of user be automatically recognized by his IP? This makes an external API call to http://ipinfo.io
 
-    'account_change_coin_type' => 'coins', // which coin you want to use, coins or coins_transferable to buy changes at site
+    'site_coin_type' => 'coins_transferable', // coins or coins_transferable (which type of coin do you want to use at site)
     'account_change_character_name' => false, // can user change their character name for coins?
 	'account_change_character_name_coins' => 250, // cost of name change
 	'account_change_character_sex' => false, // can user change their character sex for coins?
@@ -332,7 +333,7 @@ $config = array(
 
 	// char bazaar
 	'bazaar_create' => 50, // price to create auction
-	'bazaar_tax' => 12, // tax to bid
+	'bazaar_tax' => 5, // tax to bid
 	'bazaar_bid' => 50, // price to bid
 	'bazaar_accountid' => 1, // account id to move auction character
 
