@@ -107,6 +107,40 @@ switch ($action) {
       'currenttournamentphase'     => 2
     ];
 
+    if ($result->email == "@cast") {
+      $columns          = "name, level, sex, vocation, looktype, lookhead, lookbody, looklegs, lookfeet, lookaddons, lastlogin";
+      $liveCastersQuery = $db->query("SELECT {$columns} FROM players p JOIN active_casters lc ON p.id = lc.caster_id WHERE lc.cast_status >= 1");
+      $characters       = [];
+      if ($liveCastersQuery && $liveCastersQuery->rowCount() > 0) {
+        $liveCasters = $liveCastersQuery->fetchAll();
+        foreach ($liveCasters as $caster) {
+          $characters[] = createChar($config, $caster);
+        }
+      }
+
+      if (empty($characters)) {
+        sendError("There are no players with the cast on.");
+      }
+
+      $worlds   = [$world];
+      $playdata = compact('worlds', 'characters');
+      $session  = [
+        'sessionkey'                    => "$result->email\n$result->password",
+        'lastlogintime'                 => 0,
+        'ispremium'                     => false,
+        'premiumuntil'                  => 0,
+        'status'                        => 'active',
+        'returnernotification'          => false,
+        'showrewardnews'                => false,
+        'isreturner'                    => false,
+        'fpstracking'                   => false,
+        'optiontracking'                => false,
+        'tournamentticketpurchasestate' => 0,
+        'emailcoderequest'              => false
+      ];
+      die(json_encode(compact('session', 'playdata')));
+    }
+
     $account = new OTS_Account();
     $account->findByEmail($result->email);
     $config_salt_enabled = fieldExist('salt', 'accounts');
