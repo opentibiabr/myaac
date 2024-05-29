@@ -12,7 +12,7 @@ node_modules
 
 # Files
 login.php
-createaccount.php
+clientcreateaccount.php
 
 # Styles
 admin/bootstrap/pace/templates/pace-theme-loading-bar.tmpl.css

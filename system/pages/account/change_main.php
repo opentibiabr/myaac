@@ -16,7 +16,7 @@ if (!$config['account_change_character_main']) {
     echo 'Changing main character for coins is disabled on this server.';
     return;
 }
-$coinType = $config['account_change_coin_type'] ?? 'coins';
+$coinType = $config['account_coin_type_usage'] ?? 'coins_transferable';
 $coinName = $coinType == 'coins' ? $coinType : 'transferable coins';
 $needCoins = $config['account_change_character_main_coins'];
 

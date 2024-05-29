@@ -226,19 +226,19 @@ function createAccount(array $data)
 
     $new_account->logAction('Account created.');
 
-    if ($config['account_premium_days'] && $config['account_premium_days'] > 0) {
+    if (($premdays = ($config['account_premium_days'] ?? 0)) > 0) {
       if ($db->hasColumn('accounts', 'premend')) { // othire
-        $new_account->setCustomField('premend', time() + $config['account_premium_days'] * 86400);
+        $new_account->setCustomField('premend', time() + $premdays * 86400);
       } else {
-        $premdays = $config['account_premium_days'];
         $new_account->setCustomField('premdays', $premdays);
-        $lastDay = ($premdays > 0 && $premdays < OTS_Account::GRATIS_PREMIUM_DAYS) ? time() + ($premdays * 86400) : 0;
+        $lastDay = ($premdays < OTS_Account::GRATIS_PREMIUM_DAYS) ? time() + ($premdays * 86400) : 0;
         $new_account->setCustomField('lastday', $lastDay);
       }
     }
 
-    if ($config['account_premium_coins']) {
-      $new_account->setCustomField('coins', $config['account_premium_coins']);
+    if (($welcomeCoins = ($config['account_welcome_coins'] ?? 0)) > 0) {
+      $coinType = $config['account_coin_type_usage'] ?? 'coins_transferable';
+      $new_account->setCustomField($coinType, $welcomeCoins);
     }
 
     if ($config['mail_enabled'] && $config['account_mail_verify']) {
