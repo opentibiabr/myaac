@@ -150,6 +150,10 @@ switch ($action) {
       sendError('Email or password is not correct.');
     }
 
+    if ($config['account_verified_only'] && $config['mail_enabled'] && $config['account_mail_verify'] && $account->getCustomField('email_verified') != '1') {
+      sendError('You need to verify your account, enter in our site and resend verify e-mail!');
+    }
+
     // common columns
     $columns    = 'name, level, sex, vocation, looktype, lookhead, lookbody, looklegs, lookfeet, lookaddons, lastlogin, isreward, istutorial, ismain, hidden';
     $players    = $db->query("SELECT {$columns} FROM players WHERE account_id = {$account->getId()} AND deletion = 0");
