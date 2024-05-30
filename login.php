@@ -119,7 +119,7 @@ switch ($action) {
         $characters[] = createChar($config, $caster);
       }
 
-      die(json_encode(getSessionData($world, $result, $characters, true)));
+      die(json_encode(getSessionData($world, $result, $characters, false)));
     }
 
     $account = new OTS_Account();
@@ -154,7 +154,7 @@ switch ($action) {
       sendError("Error while fetching your account data. Please contact admin.");
     }
 
-    die(json_encode(getSessionData($world, $result, $characters, false, $account, $premU)));
+    die(json_encode(getSessionData($world, $result, $characters, true, $account, $premU)));
 
   default:
     sendError("Unrecognized event {$action}.");
@@ -191,28 +191,28 @@ function createChar($config, $player)
 }
 
 /**
- * Check and return compacted session after checking cast
+ * Check and return session and playdata compacted after checking normal login
  * @param $world
  * @param $result
  * @param $characters
- * @param $isCast
+ * @param bool $login
  * @param $account
- * @param $premU
+ * @param int $premU
  * @return array
  */
-function getSessionData($world, $result, $characters, $isCast = false, $account = null, $premU = null): array
+function getSessionData($world, $result, $characters, bool $login = true, $account = null, int $premU = 0): array
 {
   $worlds   = [$world];
   $playdata = compact('worlds', 'characters');
   $session  = [
     'sessionkey'                    => "$result->email\n$result->password",
-    'lastlogintime'                 => !$isCast && $account ? $account->getLastLogin() : 0,
-    'ispremium'                     => !$isCast ? $account->isPremium() : false,
-    'premiumuntil'                  => !$isCast ? $premU : 0,
+    'lastlogintime'                 => $login && $account ? $account->getLastLogin() : 0,
+    'ispremium'                     => $login ? $account->isPremium() : false,
+    'premiumuntil'                  => $premU,
     'status'                        => 'active', // active, frozen or suspended
     'returnernotification'          => false,
-    'showrewardnews'                => !$isCast,
-    'isreturner'                    => !$isCast,
+    'showrewardnews'                => $login,
+    'isreturner'                    => $login,
     'fpstracking'                   => false,
     'optiontracking'                => false,
     'tournamentticketpurchasestate' => 0,
