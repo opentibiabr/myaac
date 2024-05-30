@@ -119,23 +119,7 @@ switch ($action) {
         $characters[] = createChar($config, $caster);
       }
 
-      $worlds   = [$world];
-      $playdata = compact('worlds', 'characters');
-      $session  = [
-        'sessionkey'                    => "$result->email\n$result->password",
-        'lastlogintime'                 => 0,
-        'ispremium'                     => false,
-        'premiumuntil'                  => 0,
-        'status'                        => 'active',
-        'returnernotification'          => false,
-        'showrewardnews'                => false,
-        'isreturner'                    => false,
-        'fpstracking'                   => false,
-        'optiontracking'                => false,
-        'tournamentticketpurchasestate' => 0,
-        'emailcoderequest'              => false
-      ];
-      die(json_encode(compact('session', 'playdata')));
+      die(json_encode(getSessionData($world, $result, $characters, true)));
     }
 
     $account = new OTS_Account();
@@ -170,23 +154,7 @@ switch ($action) {
       sendError("Error while fetching your account data. Please contact admin.");
     }
 
-    $worlds   = [$world];
-    $playdata = compact('worlds', 'characters');
-    $session  = [
-      'sessionkey'                    => "$result->email\n$result->password",
-      'lastlogintime'                 => $account ? $account->getLastLogin() : 0,
-      'ispremium'                     => $account->isPremium(),
-      'premiumuntil'                  => $premU,
-      'status'                        => 'active', // active, frozen or suspended
-      'returnernotification'          => false,
-      'showrewardnews'                => true,
-      'isreturner'                    => true,
-      'fpstracking'                   => false,
-      'optiontracking'                => false,
-      'tournamentticketpurchasestate' => 0,
-      'emailcoderequest'              => false
-    ];
-    die(json_encode(compact('session', 'playdata')));
+    die(json_encode(getSessionData($world, $result, $characters, false, $account, $premU)));
 
   default:
     sendError("Unrecognized event {$action}.");
@@ -220,6 +188,37 @@ function createChar($config, $player)
     'dailyrewardstate'                 => intval($player['isreward'] ?? 0),
     'remainingdailytournamentplaytime' => 0
   ];
+}
+
+/**
+ * Check and return compacted session after checking cast
+ * @param $world
+ * @param $result
+ * @param $characters
+ * @param $isCast
+ * @param $account
+ * @param $premU
+ * @return array
+ */
+function getSessionData($world, $result, $characters, $isCast = false, $account = null, $premU = null): array
+{
+  $worlds   = [$world];
+  $playdata = compact('worlds', 'characters');
+  $session  = [
+    'sessionkey'                    => "$result->email\n$result->password",
+    'lastlogintime'                 => !$isCast && $account ? $account->getLastLogin() : 0,
+    'ispremium'                     => !$isCast ? $account->isPremium() : false,
+    'premiumuntil'                  => !$isCast ? $premU : 0,
+    'status'                        => 'active', // active, frozen or suspended
+    'returnernotification'          => false,
+    'showrewardnews'                => !$isCast,
+    'isreturner'                    => !$isCast,
+    'fpstracking'                   => false,
+    'optiontracking'                => false,
+    'tournamentticketpurchasestate' => 0,
+    'emailcoderequest'              => false
+  ];
+  return compact('session', 'playdata');
 }
 
 /**
