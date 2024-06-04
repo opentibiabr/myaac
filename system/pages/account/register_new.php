@@ -18,7 +18,7 @@ $reckey = $account_logged->getCustomField('key');
 if ((!$config['generate_new_reckey'] || !$config['mail_enabled']) || empty($reckey))
     echo "You can't get new recovery key";
 else {
-    $coinType = $config['account_change_coin_type'] ?? 'coins';
+    $coinType = $config['account_coin_type_usage'] ?? 'coins_transferable';
     $coinName = $coinType == 'coins' ? $coinType : 'transferable coins';
     $needCoins = $config['generate_new_reckey_price'];
 
