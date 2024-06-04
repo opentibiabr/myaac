@@ -14,7 +14,7 @@ defined('MYAAC') or die('Direct access not allowed!');
 $sex_changed = false;
 $player_id = isset($_POST['player_id']) ? (int)$_POST['player_id'] : NULL;
 $new_sex = isset($_POST['new_sex']) ? (int)$_POST['new_sex'] : NULL;
-$coinType = $config['account_change_coin_type'] ?? 'coins';
+$coinType = $config['account_coin_type_usage'] ?? 'coins_transferable';
 $coinName = $coinType == 'coins' ? $coinType : 'transferable coins';
 $needCoins = $config['account_change_character_sex_coins'];
 
