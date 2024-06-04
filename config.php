@@ -136,7 +136,7 @@ $config = [
   'account_country' => true, // user will be able to set country of origin when registering account, this information will be viewable in others places aswell
   'account_country_recognize' => true, // should country of user be automatically recognized by his IP? This makes an external API call to http://ipinfo.io
 
-  'account_coin_type_usage' => 'coins', // which coin you want to use, coins or coins_transferable to buy changes at site
+  'account_coin_type_usage' => 'coins_transferable', // which coin you want to use, coins or coins_transferable to buy changes at site
   'account_change_character_name' => false, // can user change their character name for coins?
   'account_change_character_name_coins' => 250, // cost of name change
   'account_change_character_sex' => false, // can user change their character sex for coins?
