@@ -61,32 +61,28 @@ if($guild_owner->isLoaded()){
     $guild_owner_name = $guild_owner->getName();
 }
 
-$wars_list = $db->query('SELECT `id`, `guild1`, `guild2`, `name1`, `name2`, `status`, `duration`, `kills`, `price` FROM `guild_wars`');
-$wars_list = $wars_list->fetch();
+$wars_list = $db->query('SELECT `id`, `guild1`, `guild2`, `name1`, `name2`, `status`, `duration_days`, `frags_limit`, `frags`, `price1`, `price2` FROM `guild_wars`')->fetch();
 
-$countkills_list = $db->query('SELECT `id`, `killerguild`, `targetguild`, `warid`, `time` FROM `guildwar_kills`');
-$countkills_list = $countkills_list->fetch();
+$countkills_list = $db->query('SELECT `id`, `killerguild`, `targetguild`, `warid`, `time` FROM `guildwar_kills`')->fetch();
 
+$guild1Kills = 0;
+$guild2Kills = 0;
 
 if($wars_list['status'] == 0){
-	$wars_list_status = 'None';
-	$wars_list_helper = 'None';
-	$wars_list_color = 'red';
-}elseif($wars_list['status'] == 1){
 	$wars_list_status = 'Invited';
 	$wars_list_helper = 'War must be accepted.';
 	$wars_list_color = '#fd8202';
-}elseif($wars_list['status'] == 2){
+}elseif($wars_list['status'] == 1){
 	$wars_list_status = 'Accepted';
-	$wars_list_helper = 'War in progress.';
+	$wars_list_helper = 'War is in progress.';
 	$wars_list_color = 'green';
-}elseif($wars_list['status'] == 3){
-	$wars_list_status = 'Closed';
-	$wars_list_helper = 'War ended.';
+}elseif($wars_list['status'] == 2){
+	$wars_list_status = 'Finalized';
+	$wars_list_helper = 'War has ceased.';
 	$wars_list_color = 'red';
-}elseif($wars_list['status'] == 4){
+}elseif($wars_list['status'] == 3){
 	$wars_list_status = 'Rejected';
-	$wars_list_helper = 'War rejected.';
+	$wars_list_helper = 'War has been rejected.';
 	$wars_list_color = 'red';
 }else{
 	$wars_list_status = 'None';
@@ -94,24 +90,41 @@ if($wars_list['status'] == 0){
 	$wars_list_color = 'red';
 }
 
-if($_POST['war_guild'] == $wars_list['name1']){
+
+
+if(!empty($_POST['war_guild']) && $_POST['war_guild'] == $wars_list['guild1']){
 	$wars_list_name = $wars_list['name2'];
+	$wars_list_name2 = $wars_list['name1'];
 }else{
 	$wars_list_name = $wars_list['name1'];
+	$wars_list_name2 = $wars_list['name2'];
+}
+$kills = $db->query('SELECT * FROM `guildwar_kills` where `warid` = ' . $wars_list['id'])->fetchall(PDO::FETCH_ASSOC);
+
+foreach($kills as $kill){
+	if($kill['killerguild'] == $wars_list['guild1']){
+		$guild1Kills++;
+	}
+	if($kill['killerguild'] == $wars_list['guild2']){
+		$guild2Kills++;
+	}
 }
 
-$wars_list_price = number_format($wars_list['price'], 0, ',', ',');
+$wars_list_price = number_format($wars_list['price1'], 0, ',', ',');
 $wars[] = array('id' => $wars_list['id'],
 				'guild1' => $wars_list['guild1'],
 				'guild2' => $wars_list['guild2'],
 				'name' => $wars_list_name,
+				'name2' => $wars_list_name2,
 				'statusid' => $wars_list['status'],
 				'status' => $wars_list_status,
 				'statushelper' => $wars_list_helper,
 				'statuscolor' => $wars_list_color,
-				'duration' => $wars_list['duration'],
-				'kills' => $wars_list['kills'],
+				'duration' => $wars_list['duration_days'],
+				'kills' => $wars_list['frags_limit'],
 				'price' => $wars_list_price,
+				'guild1kills' => $guild1Kills,
+				'guild2kills' => $guild2Kills,
 			   );
 
 $show = true;
@@ -127,8 +140,8 @@ if(!empty($errors)){
 		'logged' => $logged,
 	));
 }
-$status_acpt = '2';
-$status_rej = '4';
+$status_acpt = '1';
+$status_rej = '2';
 if(isset($_POST['war_acpt']) && !empty($_POST['war_acpt'])){
 	$acpt_war = $db->query('UPDATE guild_wars SET `status` = '.$status_acpt.' WHERE `id` = '.$_POST['war_acpt'].'');
 }
