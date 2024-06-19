@@ -141,7 +141,7 @@ if(!empty($errors)){
 	));
 }
 $status_acpt = '1';
-$status_rej = '2';
+$status_rej = '3';
 if(isset($_POST['war_acpt']) && !empty($_POST['war_acpt'])){
 	$acpt_war = $db->query('UPDATE guild_wars SET `status` = '.$status_acpt.' WHERE `id` = '.$_POST['war_acpt'].'');
 }
