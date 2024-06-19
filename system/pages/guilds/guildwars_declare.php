@@ -13,6 +13,7 @@ if(empty($errors)) {
 }
 
 $guild_name = $guild->getName();
+$my_guild_name = $guild_name;
 $title = $guild_name . ' - ' . $title;
 
 $guild_owner = $guild->getOwner();
@@ -65,13 +66,15 @@ $guilds = array();
 if(count($guilds_list) > 0){
     foreach ($guilds_list as $guild) {
 		if($guild->getName() != $guild_name){ // NO SHOW MY GUILD
-			if($guilds_war_list['guild1'] != $myguild_id && $guilds_war_list['guild2'] != $guild->getId()){
-				if($guilds_war_list['guild1'] != $guild->getId() && $guilds_war_list['guild2'] != $myguild_id){
-					$guildId = $guild->getId();
-					$guildName = $guild->getName();
-					$guilds[] = array('id' => $guildId, 'name' => $guildName);
+			//if($guilds_war_list['guild1'] != null && $guilds_war_list['guild2'] != null) {
+				if($guilds_war_list['guild1'] != $myguild_id && $guilds_war_list['guild2'] != $guild->getId()){
+					if($guilds_war_list['guild1'] != $guild->getId() && $guilds_war_list['guild2'] != $myguild_id){
+						$guildId = $guild->getId();
+						$guildName = $guild->getName();
+						$guilds[] = array('id' => $guildId, 'name' => $guildName);
+					}
 				}
-			}
+			//}
 		}
     }
 };
@@ -120,15 +123,16 @@ else {
 		}
 	}
 		
-	$myguild_id = $guild->getId();
+	//$myguild_id = $guild->getId();
+	$myguild_id = $db->query("SELECT * FROM `guilds` WHERE `name` = \"" . $my_guild_name . "\"")->fetch();
 	$myguild_name = $guild->getName();
 	$war_status = 1;
 	
-	$insert_war = $db->exec("INSERT INTO `guild_wars` (`guild1`, `guild2`, `name1`, `name2`, `status`, `duration`, `kills`, `price`, `comment`) VALUES ('".intval($myguild_id)."', '".intval($opp_id)."', '".$myguild_name."', '".$opp_name."', '1', '".$war_days."', '".$war_kills."', '".$war_price."', '".$war_comment."');");
+	$insert_war = $db->exec("INSERT INTO `guild_wars` (`guild1`, `guild2`, `name1`, `name2`, `status`, `duration_days`, `frags`, `price1`, `comment`) VALUES ('".intval($myguild_id['id'])."', '".intval($opp_id)."', '".$myguild_id['name']."', '".$opp_name."', '0', '".$war_days."', '".$war_kills."', '".$war_price."', '".$war_comment."');");
 
 		$twig->display('success.html.twig', array(
-			'title' => 'Success Declared War',
-			'description' => 'You declared a war against the '.$opp_name.' guild. ',
+			'title' => 'Success! War Has Been Declared',
+			'description' => 'You\'ve declared war against the '.$opp_name.' guild. ',
 			'custom_buttons' => ''
 		));
 		$show = false;
@@ -137,9 +141,4 @@ else {
 		}
 	}
 }
-
-
-
-
-
 ?>
