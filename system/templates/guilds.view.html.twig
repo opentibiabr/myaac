@@ -69,9 +69,11 @@
                         <b><i class="far fa-sack-dollar"></i> Guild Bank Account Balance: {{ guild_balance }}
                           Gold</b><br>
                         {% if guild_house and isVice %}
-                          <i
-                            class="far fa-house-user"></i> Their home on {{ config.lua.serverName }} is {{ guild_house }}
-                          <br>
+                          {% if guild_house is not empty %}
+                            <i
+                              class="far fa-house-user"></i> Their home on {{ config.lua.serverName }} is {{ guild_house }}
+                            <br>
+                          {% endif %}
                         {% endif %}
                       </div>
                     </td>
@@ -131,7 +133,18 @@
                             {% set button_name = 'Change Banner' %}
                             {% include('buttons.base.html.twig') %}
                           </a>
+                          <div style="font-size:1px;height:4px;"></div>
+                          <a href="?subtopic=guilds&guild={{ guild_name }}&action=guildwars_declare"
+                             style="padding:0px;margin:0px;">
+                            {% set button_name = 'Declare War' %}
+                            {% include('buttons.base.html.twig') %}
+                          </a>
                         {% endif %}
+                        <div style="font-size:1px;height:4px;"></div>
+                        <a href="?subtopic=guilds&guild={{ guild_name }}&action=guildwars" style="padding:0px;margin:0px;">
+                            {% set button_name = 'View Active Wars' %}
+                            {% include('buttons.base.html.twig') %}
+                        </a>
                         <div style="font-size:1px;height:4px;"></div>
                       </div>
                     </td>
