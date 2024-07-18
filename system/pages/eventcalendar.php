@@ -167,7 +167,11 @@ function MostreCalendario($mes){
 $verif_date = ''.$mes.'/'.$diacorrente.'/'.date('Y').'';
 
 foreach($xml->event as $event){
-	if($verif_date >= $event['startdate'] and $verif_date <= $event['enddate']){
+	$start_date = strtotime($event['startdate']);
+	$end_date = strtotime($event['enddate']);
+	$current_date = strtotime($verif_date);
+
+	if($current_date >= $start_date && $current_date <= $end_date){
 ?>
 <span style="width: 120px;" class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;><?php echo $event['name'] ?>:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; <?php echo $event->description['description'] ?></div>', '');" onmouseout="$('#HelperDivContainer').hide();">
 <div style="background:<?php echo $event->colors['colordark'] ?>; color:#FFF; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px"><?php echo $event['name'] ?></div>
