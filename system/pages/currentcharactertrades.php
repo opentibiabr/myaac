@@ -601,7 +601,23 @@ if ($getPageAction == 'finish') {
 
     $account_new = $getBid['account_id'];
 
-    $db->exec("UPDATE `players` SET `account_id` = {$account_new} WHERE `id` = {$getAuction['player_id']}"); // muda o player de conta
+    // Asegúrate de que $account_new y $getAuction['player_id'] son enteros
+$account_new = (int)$account_new;
+$player_id = (int)$getAuction['player_id'];
+
+    try {
+    // Preparar la consulta
+    $stmt = $db->prepare("UPDATE `players` SET `account_id` = :account_id WHERE `id` = :player_id");
+    $stmt->bindParam(':account_id', $account_new, PDO::PARAM_INT);
+    $stmt->bindParam(':player_id', $player_id, PDO::PARAM_INT);
+
+    // Ejecutar la consulta
+    $stmt->execute();
+} catch (PDOException $e) {
+    // Manejar el error
+    echo 'Error executing query: ' . $e->getMessage();
+}
+
     $db->exec("UPDATE `myaac_charbazaar` SET `status` = 1, `account_new` = {$account_new} WHERE `id` = {$getAuction['id']}"); // muda status da auction
 
     header('Location: ' . BASE_URL . '?account/manage');
