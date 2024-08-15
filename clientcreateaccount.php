@@ -262,10 +262,11 @@ function createAccount(array $data)
       }
     }
 
-        // Inicia um buffer de saída
+        
+        // Start an output buffer
         ob_start();
 
-        // Criação de personagem se iniciar em dawnport
+        // Character creation starts in dawnport
         if (count(config('character_samples')) == 1 && !empty($data['characterName'])) {
             require_once LIBS . 'CreateCharacter.php';
             $createCharacter = new CreateCharacter();
@@ -276,7 +277,7 @@ function createAccount(array $data)
             }
         }
 
-        // Limpa e fecha o buffer de saída
+        // Clears and closes the output buffer
         ob_end_clean();
 
     return $account_name;
