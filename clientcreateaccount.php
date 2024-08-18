@@ -262,23 +262,21 @@ function createAccount(array $data)
       }
     }
 
-        
-        // Start an output buffer
-        ob_start();
+    // Start an output buffer
+    ob_start();
 
-        // Character creation starts in dawnport
-        if (count(config('character_samples')) == 1 && !empty($data['characterName'])) {
-            require_once LIBS . 'CreateCharacter.php';
-            $createCharacter = new CreateCharacter();
+    // character creation only if start in dawnport
+    if (count(config('character_samples')) == 1 && !empty($data['characterName'])) {
+      require_once LIBS . 'CreateCharacter.php';
+      $createCharacter = new CreateCharacter();
+      $errors = [];
+      if (!$createCharacter->doCreate($data['characterName'], $data['characterSex'], 0, 0, $new_account, $errors)) {
+        throw new Exception('There was an error creating your character. Please create your character later in account management page.');
+      }
+    }
 
-            $errors = [];
-            if (!$createCharacter->doCreate($data['characterName'], $data['characterSex'], 0, 0, $new_account, $errors)) {
-                throw new Exception('There was an error creating your character. Please create your character later in account management page.');
-            }
-        }
-
-        // Clears and closes the output buffer
-        ob_end_clean();
+    // Clear and closes the output buffer
+    ob_end_clean();
 
     return $account_name;
   } catch (Exception $e) {
