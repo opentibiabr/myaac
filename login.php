@@ -137,7 +137,7 @@ switch ($action) {
           'previewstate'               => 0,
           'location'                   => 'BRA', // BRA, EUR, USA
           'anticheatprotection'        => false,
-          'pvptype'                    => array_search($world['worldType'], ['pvp', 'no-pvp', 'pvp-enforced']),
+          'pvptype'                    => array_search($world['type'], ['pvp', 'no-pvp', 'pvp-enforced']),
           'istournamentworld'          => false,
           'restrictedstore'            => false,
           'currenttournamentphase'     => 2
