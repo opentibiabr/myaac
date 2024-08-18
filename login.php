@@ -120,27 +120,56 @@ switch ($action) {
     ]));
 
   case 'login':
-    $ip   = configLua('ip');
-    $port = configLua('gameProtocolPort');
+    $worldsFetched = $db->query("SELECT * FROM worlds");
+    $worlds = [];
+    if ($worldsFetched && $worldsFetched->rowCount() > 0) {
+      $worldsFetched = $worldsFetched->fetchAll();
+      foreach ($worldsFetched as $world) {
+        $worldInfo = [
+          'id'                         => $world['id'],
+          'name'                       => $world['name'],
+          'externaladdress'            => $world['ip'],
+          'externaladdressprotected'   => $world['ip'],
+          'externaladdressunprotected' => $world['ip'],
+          'externalport'               => $world['port'],
+          'externalportprotected'      => $world['port'],
+          'externalportunprotected'    => $world['port'],
+          'previewstate'               => 0,
+          'location'                   => 'BRA', // BRA, EUR, USA
+          'anticheatprotection'        => false,
+          'pvptype'                    => array_search($world['worldType'], ['pvp', 'no-pvp', 'pvp-enforced']),
+          'istournamentworld'          => false,
+          'restrictedstore'            => false,
+          'currenttournamentphase'     => 2
+        ];
+        array_push($worlds, $worldInfo);
+      }
+    } else {
+      // default world
 
-    // default world info
-    $world = [
-      'id'                         => 0,
-      'name'                       => configLua('serverName'),
-      'externaladdress'            => $ip,
-      'externaladdressprotected'   => $ip,
-      'externaladdressunprotected' => $ip,
-      'externalport'               => $port,
-      'externalportprotected'      => $port,
-      'externalportunprotected'    => $port,
-      'previewstate'               => 0,
-      'location'                   => 'BRA', // BRA, EUR, USA
-      'anticheatprotection'        => false,
-      'pvptype'                    => array_search(configLua('worldType'), ['pvp', 'no-pvp', 'pvp-enforced']),
-      'istournamentworld'          => false,
-      'restrictedstore'            => false,
-      'currenttournamentphase'     => 2
-    ];
+      $ip   = configLua('ip');
+      $port = configLua('gameProtocolPort');
+
+      $world = [
+        'id'                         => 0,
+        'name'                       => configLua('serverName'),
+        'externaladdress'            => $ip,
+        'externaladdressprotected'   => $ip,
+        'externaladdressunprotected' => $ip,
+        'externalport'               => $port,
+        'externalportprotected'      => $port,
+        'externalportunprotected'    => $port,
+        'previewstate'               => 0,
+        'location'                   => 'BRA', // BRA, EUR, USA
+        'anticheatprotection'        => false,
+        'pvptype'                    => array_search(configLua('worldType'), ['pvp', 'no-pvp', 'pvp-enforced']),
+        'istournamentworld'          => false,
+        'restrictedstore'            => false,
+        'currenttournamentphase'     => 2
+      ];
+
+      $worlds = [$world];
+    }
 
     $account = new OTS_Account();
     $account->findByEmail($result->email);
@@ -174,7 +203,6 @@ switch ($action) {
       sendError("Error while fetching your account data. Please contact admin.");
     }
 
-    $worlds   = [$world];
     $playdata = compact('worlds', 'characters');
     $session  = [
       'sessionkey'                    => "$result->email\n$result->password",
@@ -206,7 +234,7 @@ switch ($action) {
 function createChar($config, $player)
 {
   return [
-    'worldid'                          => 0,
+    'worldid'                          => $player['worldId'],
     'name'                             => $player['name'],
     'ismale'                           => intval($player['sex']) === 1,
     'tutorial'                         => (bool)$player['istutorial'],
