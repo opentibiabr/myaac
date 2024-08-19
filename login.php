@@ -144,31 +144,6 @@ switch ($action) {
         ];
         array_push($worlds, $worldInfo);
       }
-    } else {
-      // default world
-
-      $ip   = configLua('ip');
-      $port = configLua('gameProtocolPort');
-
-      $world = [
-        'id'                         => 0,
-        'name'                       => configLua('serverName'),
-        'externaladdress'            => $ip,
-        'externaladdressprotected'   => $ip,
-        'externaladdressunprotected' => $ip,
-        'externalport'               => $port,
-        'externalportprotected'      => $port,
-        'externalportunprotected'    => $port,
-        'previewstate'               => 0,
-        'location'                   => 'BRA', // BRA, EUR, USA
-        'anticheatprotection'        => false,
-        'pvptype'                    => array_search(configLua('worldType'), ['pvp', 'no-pvp', 'pvp-enforced']),
-        'istournamentworld'          => false,
-        'restrictedstore'            => false,
-        'currenttournamentphase'     => 2
-      ];
-
-      $worlds = [$world];
     }
 
     $account = new OTS_Account();
@@ -185,7 +160,7 @@ switch ($action) {
     }
 
     // common columns
-    $columns    = 'name, level, sex, vocation, looktype, lookhead, lookbody, looklegs, lookfeet, lookaddons, lastlogin, isreward, istutorial, ismain, hidden';
+    $columns    = 'name, level, sex, vocation, looktype, lookhead, lookbody, looklegs, lookfeet, lookaddons, lastlogin, isreward, istutorial, ismain, hidden, worldId';
     $players    = $db->query("SELECT {$columns} FROM players WHERE account_id = {$account->getId()} AND deletion = 0");
     $characters = [];
     if ($players && $players->rowCount() > 0) {
