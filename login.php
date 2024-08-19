@@ -33,11 +33,46 @@ function parseEvent($table1, $date, $table2)
   }
 }
 
+// compendium function
+function jsonCompendium()
+{
+    $filePath = config('server_path') . 'compendium.json';
+    if (file_exists($filePath)) {
+        $fileContents = file_get_contents($filePath);
+        $jsonData = json_decode($fileContents, true);
+
+        if ($jsonData !== null) {
+            $categoryCounts = $jsonData['categorycounts'];
+            $gamenews = $jsonData['gamenews'];
+
+            $response = [
+                'categorycounts' => $categoryCounts,
+                'gamenews' => $gamenews,
+                'idOfNewestReadEntry' => 0,
+                'isreturner' => false,
+                'lastupdatetimestamp' => 0,
+                'maxeditdate' => 0,
+                'showrewardnews' => true,
+            ];
+            return $response;
+        } else {
+            return ['error' => 'Failed to decode JSON'];
+        }
+    } else {
+        return ['error' => 'File not found'];
+    }
+}
+
 $request = file_get_contents('php://input');
 $result  = json_decode($request);
 $action  = $result->type ?? '';
 
 switch ($action) {
+  case 'news':
+    die(json_encode(
+      jsonCompendium()
+    ));
+
   case 'cacheinfo':
     $playersonline = $db->query("SELECT count(*) FROM `players_online`")->fetchAll();
     die(json_encode([
