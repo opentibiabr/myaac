@@ -55,34 +55,58 @@
     margin-right: 5px;
   }
 
-  td#dia_comum {
+  td#default {
     color: #5f4d41;
-    background-color: #E7D1AF;
+    background-color: #e7d1af;
   }
 
-  td#dia_atual {
+  td#today {
     color: #5f4d41;
     background-color: #f3e5d0;
   }
 
-  td#dia_branco {
+  td#other_day {
     color: #5f4d41;
     background-color: #d4c0a1;
+    border: none;
+  }
+
+  .day {
+    font-weight: bold;
+    margin-left: 3px;
+    margin-bottom: 2px;
+  }
+
+  .activated {
+    font-size: 12pt;
+    font-weight: bold;
+    word-break: break-word;
+  }
+
+  .event_name {
+    color: #fff;
+    width: 100%;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 1% 1% 1% 3px;
+    margin-bottom: 2px;
   }
 </style>
-
 <?php
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Event Schedule';
 
-function showWeeks()
+function showWeeks(): string
 {
+  $out = "";
   $weeks = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  for ($i = 0; $i < 7; $i++)
-    echo "<td>" . $weeks[$i] . "</td>";
+  for ($i = 0; $i < 7; $i++) $out .= "<td>$weeks[$i]</td>";
+  return $out;
 }
 
-function getAmountDays($month): int
+function getAmountDays(string $month): int
 {
   $amountDays = [
     '01' => 31, '02' => 28, '03' => 31, '04' => 30, '05' => 31, '06' => 30,
@@ -105,48 +129,45 @@ function getMonthName($month): string
   return ($month >= 01 && $month <= 12) ? $months[$month] : "Unknown month";
 }
 
-function showCalendar($complete = false, $month = null)
+function generateIndicator($event): string
 {
-  if ($complete) {
-    showCalendarFull();
-    return;
-  }
+  $out = "<span style='width: 120px;' class='HelperDivIndicator'";
+  $div = "<div class='activated'>{$event['name']}:</div><div style='margin-bottom: 20px'>&amp;bull; {$event->description['description']}</div>";
+  $out .= 'onmouseover="ActivateHelperDiv($(this), &quot;&quot;, &quot;' . $div . '&quot;, &quot;&quot;);"';
+  $out .= 'onmouseout="$(&quot;#HelperDivContainer&quot;).hide();">';
+  $out .= "<div class='event_name' style='background: {$event->colors['colordark']};'>{$event['name']}</div></span>";
+  return $out;
+}
 
+function showCalendar($month = null): string
+{
   $month = $month ?: date('m');
-  $amountDays = getAmountDays($month);  // retorna o número de dias que tem o mês desejado
-  $nome_mes = getMonthName($month);
+  $amountDays = getAmountDays(str_pad($month, 2, '0', STR_PAD_LEFT));
   $currentDay = 0;
 
-  $diasemana = jddayofweek(cal_to_jd(CAL_GREGORIAN, $month, "01", date('Y')), 0);  // função que descobre o dia da semana
+  $dayOfWeek = jddayofweek(cal_to_jd(CAL_GREGORIAN, $month, "01", date('Y')), 0);
 
-  echo "<tr style='text-align:center; width:120px; background-color:#5f4d41;'>";
-  showWeeks();  // função que mostra as semanas aqui
-  echo "</tr>";
-  for ($linha = 0; $linha < 5; $linha++) {
-    echo "<tr>";
-    for ($coluna = 0; $coluna < 7; $coluna++) {
-      echo "<td style='height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top;' ";
+  $outDays = "<tr style='text-align:center; width:120px; background-color:#5f4d41;'>" . showWeeks() . "</tr>";
 
+  for ($row = 0; $row < 5; $row++) {
+    $outDays .= "<tr>";
+    for ($column = 0; $column < 7; $column++) {
+      $outDays .= "<td style='height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top;' ";
+      $color = "other_day";
       if (($currentDay == (date('d') - 1) && date('m') == $month)) {
-        echo " id = 'dia_atual' ";
+        $color = "today";
       } else {
         if (($currentDay + 1) <= $amountDays) {
-          if ($coluna < $diasemana && $linha == 0) {
-            echo " id = 'dia_branco' ";
-          } else {
-            echo " id = 'dia_comum' ";
-          }
-        } else {
-          echo " id = 'dia_branco' ";
+          $color = ($column < $dayOfWeek && $row == 0) ? "other_day" : "default";
         }
       }
-      echo ">";
-      if ($currentDay + 1 <= $amountDays) {
-        if ($coluna < $diasemana && $linha == 0) {
-          echo " ";
-        } else {
-          echo "<div style='font-weight: bold; margin-left: 3px; margin-bottom: 2px;'><span style='vertical-align: text-bottom;'>" . ++$currentDay . " <img style='border:0px;' src='https://static.tibia.com/images/global/content/icon-seasonal.png'></span></div>";
+      $outDays .= "id='$color'>";
 
+      if ($currentDay + 1 <= $amountDays) {
+        if ($column < $dayOfWeek && $row == 0) {
+          $outDays .= " ";
+        } else {
+          $outDays .= "<div class='day'><span style='vertical-align: text-bottom;'>" . ++$currentDay . " <img style='border:0;' src='https://static.tibia.com/images/global/content/icon-seasonal.png'></span></div>";
 
           global $config;
           $events_xml = $config['data_path'] . 'XML/events.xml';
@@ -162,42 +183,35 @@ function showCalendar($complete = false, $month = null)
             $current_date = strtotime($verif_date);
 
             if ($current_date >= $start_date && $current_date <= $end_date) {
-              ?>
-              <span style="width: 120px;" class="HelperDivIndicator"
-                    onmouseover="ActivateHelperDiv($(this), '', '<div style = &quot;font-size: 12pt; font-weight: bold; word-break: break-word;&quot;><?= $event['name'] ?>:</div><div style = &quot;margin-bottom: 20px;&quot;>&amp;bull; <?= $event->description['description'] ?></div>', '');"
-                    onmouseout="$('#HelperDivContainer').hide();">
-<div
-  style="background:<?= $event->colors['colordark'] ?>; color:#FFF; width: 100%; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 1%; padding-left: 3px; margin-bottom:2px"><?= $event['name'] ?></div>
-</span>
-              <?php
+              $outDays .= generateIndicator($event);
             }
           }
         }
       } else {
         break;
       }
-      echo "</td>";
+      $outDays .= "</td>";
     }
-    echo "</tr>";
+    $outDays .= "</tr>";
   }
-  echo "";
+
+  return $outDays;
 }
 
-function showCalendarFull()
+function showCalendarFull(): string
 {
-  echo "<table align = 'center'>";
-  $cont = 1;
+  $out = "";
+  $count = 1;
   for ($j = 0; $j < 4; $j++) {
-    echo "<tr>";
+    $out .= "<tr>";
     for ($i = 0; $i < 3; $i++) {
-      echo "<td>";
-      showCalendar(($cont < 10) ? "0" . $cont : $cont);
-      $cont++;
-      echo "</td>";
+      $cal = showCalendar(str_pad($count, 2, '0', STR_PAD_LEFT));
+      $out .= "<td style='border: none'>{$cal}</td>";
+      $count++;
     }
-    echo "</tr>";
+    $out .= "</tr>";
   }
-  echo "</table>";
+  return $out;
 }
 
 ?>
@@ -221,7 +235,7 @@ function showCalendarFull()
                 <div class="eventscheduleheaderdateblock">
                   <span class="eventscheduleheaderleft"></span><?= date('M Y') ?>
                   <span class="eventscheduleheaderright">
-                    <!--<a href="<?= '?eventcalendar&mes=' . $month . '&dia=' . ($currentDay + 1) ?>" style="color:white;">»</a>-->
+                    <?php /*<a href="<?= '?eventcalendar&mes=' . $month . '&dia=' . ($currentDay + 1) ?>" style="color:white;">»</a>*/ ?>
                   </span>
                 </div>
               </div>
@@ -245,7 +259,7 @@ function showCalendarFull()
             <div class="InnerTableContainer" style="padding: 10px;">
               <table style="width:100%;" id="eventscheduletable">
                 <tbody>
-                <?php showCalendar(); ?>
+                <?= showCalendar() ?>
                 </tbody>
               </table>
             </div>
