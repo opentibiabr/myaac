@@ -10,10 +10,19 @@ system/cache
 system/php_sessions
 node_modules
 
+# Tools
+tools/*.css
+tools/fonts
+tools/js
+tools/tinymce
+
 # Files
 login.php
 clientcreateaccount.php
 
 # Styles
-admin/bootstrap/pace/templates/pace-theme-loading-bar.tmpl.css
-admin/bootstrap/pace/templates/pace-theme-mac-osx.tmpl.css
+admin/bootstrap/
+
+# Extensions
+*.min.js"
+*.min.css"
