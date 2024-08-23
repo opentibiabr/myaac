@@ -84,7 +84,6 @@ switch ($action) {
     ]));
 
   case 'eventschedule':
-    $eventlist = [];
     $file_path = config('server_path') . 'data/XML/events.xml';
     if (!file_exists($file_path)) {
       die(json_encode([]));
@@ -93,6 +92,7 @@ switch ($action) {
     $xml->load($file_path);
     $tableevent = $xml->getElementsByTagName('event');
 
+    $eventlist = [];
     foreach ($tableevent as $event) {
       if ($event) {
         $eventlist[] = [
@@ -120,12 +120,11 @@ switch ($action) {
     ]));
 
   case 'login':
-    $worldsFetched = $db->query("SELECT * FROM worlds");
+    $queryW = $db->query("SELECT * FROM worlds");
     $worlds = [];
-    if ($worldsFetched && $worldsFetched->rowCount() > 0) {
-      $worldsFetched = $worldsFetched->fetchAll();
-      foreach ($worldsFetched as $world) {
-        $worldInfo = [
+    if ($queryW && $queryW->rowCount() > 0) {
+      foreach ($queryW->fetchAll() as $world) {
+        $worlds[] = [
           'id'                         => $world['id'],
           'name'                       => $world['name'],
           'externaladdress'            => $world['ip'],
@@ -142,7 +141,6 @@ switch ($action) {
           'restrictedstore'            => false,
           'currenttournamentphase'     => 2
         ];
-        array_push($worlds, $worldInfo);
       }
     }
 
@@ -160,20 +158,20 @@ switch ($action) {
     }
 
     // common columns
+    $accId      = $account->getId();
     $columns    = 'name, level, sex, vocation, looktype, lookhead, lookbody, looklegs, lookfeet, lookaddons, lastlogin, isreward, istutorial, ismain, hidden, worldId';
-    $players    = $db->query("SELECT {$columns} FROM players WHERE account_id = {$account->getId()} AND deletion = 0");
+    $queryP     = $db->query("SELECT {$columns} FROM players WHERE account_id = {$accId} AND deletion = 0");
     $characters = [];
-    if ($players && $players->rowCount() > 0) {
-      $players = $players->fetchAll();
-      foreach ($players as $player) {
+    if ($queryP && $queryP->rowCount() > 0) {
+      foreach ($queryP->fetchAll() as $player) {
         $characters[] = createChar($config, $player);
       }
     }
 
-    $query = $db->query("SELECT `premdays`, `lastday` FROM `accounts` WHERE `id` = {$account->getId()}");
+    $query = $db->query("SELECT `premdays`, `lastday` FROM `accounts` WHERE `id` = {$accId}")->fetch();
     $premU = 0;
-    if ($query->rowCount() > 0) {
-      $premU = checkPremium($db, $query->fetch(), $account);
+    if ($account) {
+      $premU = checkPremium($query, $accId);
     } else {
       sendError("Error while fetching your account data. Please contact admin.");
     }
@@ -231,13 +229,13 @@ function createChar($config, $player)
 
 /**
  * Function to check account has premium time and update days
- * @param $db
- * @param $query
- * @param $account
+ * @param array $query
+ * @param int $accId
  * @return float|int
  */
-function checkPremium($db, $query, $account)
+function checkPremium(array $query, int $accId)
 {
+  global $db;
   $lastDay = (int)$query['lastday'];
   $timeNow = time();
 
@@ -259,6 +257,6 @@ function checkPremium($db, $query, $account)
     }
   }
 
-  $db->query("UPDATE `accounts` SET `premdays` = {$premDays}, `lastday` = {$lastDay} WHERE `id` = {$account->getId()}");
+  $db->query("UPDATE `accounts` SET `premdays` = {$premDays}, `lastday` = {$lastDay} WHERE `id` = {$accId}");
   return $lastDay;
 }
