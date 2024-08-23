@@ -1,5 +1,5 @@
 <?php
-global $config, $db, $account_logged, $logged, $template_path, $page;
+global $config, $db, $account_logged, $logged, $template_path, $page, $status, $content;
 
 $menus = [
   'dashboard' => ['Dashboard', 'dashboard'],
@@ -99,7 +99,7 @@ defined('MYAAC') or die('Direct access not allowed!'); ?>
           $icon = $item[1] ?? 'link';
           if (!$children = $item['children'] ?? null) {
             echo '<li' . ($page == $path ? ' class="active"' : '') . ">";
-            echo "<a href='?p={$path}'><i class='fa fa-{$icon}'></i> <span class='ms-2'>{$item[0]}</span></a></li>";
+            echo "<a href='?p={$path}'><i class='fa fa-{$icon} me-1'></i> {$item[0]}</a></li>";
           }
 
           if ($children) {
@@ -111,12 +111,12 @@ defined('MYAAC') or die('Direct access not allowed!'); ?>
                 $nav_construct = $nav_construct . ' class="active"';
                 $used_menu = true;
               }
-              $nav_construct = "$nav_construct><a href='?p={$_path}'><i class='fa fa-circle-o'></i> {$child}</a></li>";
+              $nav_construct = "$nav_construct><a href='?p={$_path}'><i class='fa fa-circle-o me-1'></i> {$child}</a></li>";
             }
 
             $m = $used_menu ? ' menu-open' : '';
             $m2 = $used_menu ? '  display: block' : ' display: none';
-            echo "<li class='treeview {$m}'><a href='#'><i class='fa fa-{$icon}'></i> <span class='ms-2'>{$item[0]}</span>
+            echo "<li class='treeview {$m}'><a href='#'><i class='fa fa-{$icon} me-1'></i> {$item[0]}
 						              <span class='float-end'><i class='fa fa-angle-left float-end'></i></span></a>
 						              <ul class='treeview-menu' style='$m2'>";
             echo $nav_construct;
@@ -124,12 +124,11 @@ defined('MYAAC') or die('Direct access not allowed!'); ?>
           }
         }
 
-        $query = $db->query('SELECT `name`, `page`, `flags` FROM `' . TABLE_PREFIX . 'admin_menu` ORDER BY `ordering`');
-        $menu_db = $query->fetchAll();
+        $menu_db = $db->query('SELECT `name`, `page`, `flags` FROM `' . TABLE_PREFIX . 'admin_menu` ORDER BY `ordering`')->fetchAll();
         foreach ($menu_db as $item) {
           if ($item['flags'] == 0 || hasFlag($item['flags'])) {
             echo '<li' . ($page == $item['page'] ? ' class="active"' : '') . ">";
-            echo '<a href="?p=' . $item['page'] . '"><i class="fa fa-link"></i> <span>' . $item['name'] . '</span></a></li>';
+            echo "<a href='?p={$item['page']}'><i class='fa fa-link me-1'></i> {$item['name']}</a></li>";
           }
         }
         ?>
