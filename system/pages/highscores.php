@@ -16,8 +16,9 @@ if ($config['account_country'] && $config['highscores_country_box'])
   require SYSTEM . 'countries.conf.php';
 
 $list = $_GET['list'] ?? '';
+$world = $_GET['world'] ?? 0;
+$vocation = $_GET['vocation'] ?? "";
 $_page = $_GET['page'] ?? 0;
-$vocation = $_GET['vocation'] ?? null;
 
 if (!is_numeric($_page) || $_page < 0 || $_page > PHP_INT_MAX) {
   $_page = 0;
@@ -25,25 +26,38 @@ if (!is_numeric($_page) || $_page < 0 || $_page > PHP_INT_MAX) {
 
 $add_sql = '';
 $config_vocations = $config['vocations'];
+$worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `name` ASC;")->fetchAll();
 
 $normalized_vocations = array_map('strtolower', $config_vocations);
-if (!array_search(@strtolower($vocation), $normalized_vocations)) $vocation = "None";
+if (strtolower($vocation) != 'none' && !array_search(strtolower($vocation), $normalized_vocations)) $vocation = "";
 
 if ($config['highscores_vocation_box'] && isset($vocation)) {
-  foreach ($config['vocations'] as $id => $name) {
-    if (strtolower($name) == $vocation) {
-      $add_vocs = array($id);
+  if (strtolower($vocation) == 'none') {
+    $add_sql = ' AND `vocation` = 0 ';
+  } else {
+    foreach ($config_vocations as $id => $name) {
+      if (strtolower($name) == $vocation) {
+        $add_vocs = array($id);
 
-      $i = $id + $config['vocations_amount'];
-      while (isset($config['vocations'][$i])) {
-        $add_vocs[] = $i;
-        $i += $config['vocations_amount'];
+        $i = $id + $config['vocations_amount'];
+        while (isset($config_vocations[$i])) {
+          $add_vocs[] = $i;
+          $i += $config['vocations_amount'];
+        }
+
+        $add_sql = 'AND `vocation` IN (' . implode(', ', $add_vocs) . ')';
+        break;
       }
-
-      $add_sql = 'AND `vocation` IN (' . implode(', ', $add_vocs) . ')';
-      break;
     }
   }
+}
+
+if ($world > 0) {
+  if (!$w = $db->query("SELECT `id` FROM `worlds` WHERE `id` = {$world}")->fetch()['id'] ?? null) {
+    header('Location: ' . "?highscores");
+    return;
+  }
+  $add_sql .= " AND `worldId` = {$world} ";
 }
 
 define('SKILL_FRAGS', -1);
@@ -164,11 +178,30 @@ if ($skill >= POT::SKILL_FIRST && $skill <= POT::SKILL_LAST) { // skills
     $list = 'experience';
   }
 }
+
+$rank_category = $_POST['category'] ?? null;
+$rank_world = $_POST['world'] ?? null;
+$rank_vocation = $_POST['profession'] ?? null;
+
+if ($rank_category) {
+  $url = "?highscores/$rank_category";
+
+  if ($rank_world) {
+    $url .= "/$rank_world";
+  }
+
+  if ($rank_vocation) {
+    $url .= "/$rank_vocation";
+  }
+
+  header('Location: ' . $url);
+}
 ?>
 <div class="TableContainer">
   <div class="CaptionContainer">
-    <div class="CaptionInnerContainer"><span class="CaptionEdgeLeftTop"
-                                             style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
+    <div class="CaptionInnerContainer">
+      <span class="CaptionEdgeLeftTop"
+            style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
       <span class="CaptionEdgeRightTop"
             style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
       <span class="CaptionBorderTop"
@@ -196,15 +229,24 @@ if ($skill >= POT::SKILL_FIRST && $skill <= POT::SKILL_LAST) { // skills
             <form method="post" action="">
               <tr>
                 <td>World:</td>
-                <td><select name="world">
-                    <option value="0" selected>All Worlds</option>
-                  </select></td>
+                <td>
+                  <select name="world">
+                    <option value="0" <?= (int)$rank_world == 0 ? 'selected' : '' ?>>All Worlds</option>
+                    <?php foreach ($worlds as $item) { ?>
+                      <option
+                        value="<?= $item['id'] ?>" <?= $item['id'] == $world ? 'selected' : '' ?>><?= $item['name'] ?></option>
+                    <?php } ?>
+                  </select>
+                </td>
               </tr>
               <tr>
                 <td>Vocation:</td>
                 <td>
                   <select name="profession">
                     <option value="" <?= !$vocation ? 'selected' : '' ?>>(all)</option>
+                    <option value="None" <?= $vocation == 'None' ? 'selected' : '' ?>>
+                      None
+                    </option>
                     <option value="knight" <?= $vocation == 'knight' ? 'selected' : '' ?>>
                       Knights
                     </option>
@@ -267,28 +309,14 @@ if ($skill >= POT::SKILL_FIRST && $skill <= POT::SKILL_LAST) { // skills
     </tbody>
   </table>
 </div>
-<?php
-$rank_world = $_POST['world'] ?? null;
-$rank_category = $_POST['category'] ?? null;
-if (!$rank_vocation = $_POST['profession'] ?? null) {
-  if ($rank_category) {
-    header('Location: ?highscores/' . $rank_category);
-  }
-} else {
-  if ($rank_category) {
-    header('Location: ?highscores/' . $rank_category . '/' . $rank_vocation);
-  }
-}
-?>
 
 <p><i>Skills displayed in the Highscores do not include any bonuses (loyalty, equipment etc.).</i></p>
-
 
 <div class="TableContainer">
   <div class="CaptionContainer">
     <div class="CaptionInnerContainer">
-            <span class="CaptionEdgeLeftTop"
-                  style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
+      <span class="CaptionEdgeLeftTop"
+            style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
       <span class="CaptionEdgeRightTop"
             style="background-image:url(https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
       <span class="CaptionBorderTop"
@@ -367,16 +395,11 @@ if (!$rank_vocation = $_POST['profession'] ?? null) {
                           $player['value'] = $player['maglevel'];
                         else if ($skill == POT::SKILL_LEVEL)
                           $player['value'] = $player['level'];
-                        echo '
-			<tr style="height: 64px;"><td>' . ($offset + $i) . '.</td>';
+                        echo '<tr style="height: 64px;"><td>' . ($offset + $i) . '.</td>';
                         if ($config['highscores_outfit'])
                           echo '<td><img style="position:absolute;margin-top:' . (in_array($player['looktype'], array(75, 266, 302)) ? '-15px;margin-left:5px' : '-45px;margin-left:-25px') . ';" src="' . $config['outfit_images_url'] . '?id=' . $player['looktype'] . ($outfit_addons ? '&addons=' . $player['lookaddons'] : '') . '&head=' . $player['lookhead'] . '&body=' . $player['lookbody'] . '&legs=' . $player['looklegs'] . '&feet=' . $player['lookfeet'] . '" alt="" /></td>';
 
-                        echo '
-			<td>
-				<a href="' . getPlayerLink($player['name'], false) . '">
-					<span style="color: ' . ($player['online'] > 0 ? 'green' : 'red') . '">' . $player['name'] . '</span>
-				</a>';
+                        echo '<td><a href="' . getPlayerLink($player['name'], false) . '"><span style="color: ' . ($player['online'] > 0 ? 'green' : 'red') . '">' . $player['name'] . '</span></a>';
                         if ($config['highscores_vocation']) {
                           if (isset($player['promotion'])) {
                             if ((int)$player['promotion'] > 0)
@@ -384,17 +407,12 @@ if (!$rank_vocation = $_POST['profession'] ?? null) {
                           }
 
                           $tmp = 'Unknown';
-                          if (isset($config['vocations'][$player['vocation']])) {
-                            $tmp = $config['vocations'][$player['vocation']];
+                          if (isset($config_vocations[$player['vocation']])) {
+                            $tmp = $config_vocations[$player['vocation']];
                           }
 
                         }
-                        echo '
-			</td>
-			<td style="text-align:right;">' . $tmp . '</td>
-			<td>
-				<div style="text-align:right;">' . $player['value'] . '</div>
-			</td>';
+                        echo '</td><td style="text-align:right;">' . $tmp . '</td><td><div style="text-align:right;">' . $player['value'] . '</div></td>';
 
                         if ($skill == POT::SKILL_LEVEL)
                           echo '<td><div style="text-align:right">' . number_format($player['experience']) . '</div></td>';
@@ -419,7 +437,7 @@ if (!$rank_vocation = $_POST['profession'] ?? null) {
                       <tr>
                         <td colspan="2" width="100%" align="right" valign="bottom">
                           <a
-                            href="<?= getLink('highscores') . '/' . $list . (isset($vocation) ? '/' . $vocation : '') . '/' . ($_page - 1) ?>"
+                            href="<?= getLink('highscores') . '/' . $list . ($world ? '/' . $world : '') . (isset($vocation) ? '/' . $vocation : '') . '/' . ($_page - 1) ?>"
                             class="size_xxs">Previous Page</a>
                         </td>
                       </tr>
@@ -431,7 +449,7 @@ if (!$rank_vocation = $_POST['profession'] ?? null) {
                       <tr>
                         <td colspan="2" width="100%" align="right" valign="bottom">
                           <a
-                            href="<?= getLink('highscores') . '/' . $list . (isset($vocation) ? '/' . $vocation : '') . '/' . ($_page + 1) ?>"
+                            href="<?= getLink('highscores') . '/' . $list . ($world ? '/' . $world : '') . (isset($vocation) ? '/' . $vocation : '') . '/' . ($_page + 1) ?>"
                             class="size_xxs">Next Page</a>
                         </td>
                       </TR>
