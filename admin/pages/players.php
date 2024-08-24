@@ -895,3 +895,22 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
             console.log(new_outfit);
         }
 	</script>
+<?php 
+// List all players
+$allAccounts = $db->query("SELECT id, name, account_id FROM players ORDER BY id ASC")->fetchAll();
+if ($allAccounts) {
+    echo '<h3>All Accounts:</h3>';
+    echo '<table class="table table-striped">';
+    echo '<thead><tr><th>ID</th><th>Player Name</th><th>Account Name</th></tr></thead>';
+    echo '<tbody>';
+    foreach ($allAccounts as $accountRow) {
+        echo '<tr>';
+        echo '<td>' . $accountRow['id'] . '</td>';
+        echo '<td><a href="' . $base . '&id=' . $accountRow['id'] . '">' . $accountRow['name'] .'</a></td>';
+        echo '<td>' . $accountRow['account_id'] . '</td>';
+        echo '</tr>';
+    }
+    echo '</tbody>';
+    echo '</table>';
+}
+?>

@@ -55,7 +55,7 @@ if ($config['account_country']) {
 }
 ?>
 
-<link rel="stylesheet" type="text/css" href="<?= BASE_URL; ?>tools/css/jquery.datetimepicker.css"/ >
+<link rel="stylesheet" type="text/css" href="<?= BASE_URL; ?>tools/css/jquery.datetimepicker.css"/>
 <script src="<?= BASE_URL; ?>tools/js/jquery.datetimepicker.js"></script>
 
 <?php
@@ -68,18 +68,18 @@ else if ($searchName = $_REQUEST['search_name'] ?? null) {
     } else {
         if (Validator::number($searchName)) {
             $id = $searchName;
-            $query = $db->query("SELECT `id` FROM `accounts` WHERE `name` = {$id}");
+            $query = $db->query("SELECT id FROM accounts WHERE name = {$id}");
             if ($query->rowCount() == 1) {
                 $query = $query->fetch();
                 $id = $query['id'];
             }
         } else {
-            $query = $db->query("SELECT `id` FROM `accounts` WHERE `name` = {$db->quote($searchName)}");
+            $query = $db->query("SELECT id FROM accounts WHERE name = {$db->quote($searchName)}");
             if ($query->rowCount() == 1) {
                 $query = $query->fetch();
                 $id = $query['id'];
             } else {
-                $query = $db->query("SELECT `id`, `name` FROM `accounts` WHERE `name` LIKE {$db->quote("%{$searchName}%")}");
+                $query = $db->query("SELECT id, name FROM accounts WHERE name LIKE {$db->quote("%{$searchName}%")}");
                 if ($query->rowCount() > 0 && $query->rowCount() <= 10) {
                     echo 'Do you mean?<ul>';
                     foreach ($query as $row)
@@ -91,6 +91,8 @@ else if ($searchName = $_REQUEST['search_name'] ?? null) {
         }
     }
 }
+
+
 $groups = new OTS_Groups_List();
 if ($id > 0) {
     $account = new OTS_Account();
@@ -457,7 +459,7 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
     <?php
     if (isset($account) && $account->isLoaded()) {
         $account_players = array();
-        $query = $db->query('SELECT `name`,`level`,`vocation`  FROM `players` WHERE `account_id` = ' . $account->getId() . ' ORDER BY `name`')->fetchAll();
+        $query = $db->query('SELECT name,level,vocation  FROM players WHERE account_id = ' . $account->getId() . ' ORDER BY name')->fetchAll();
         if (isset($query)) {
             ?>
             <div class="box">
@@ -495,7 +497,25 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
     };
     ?>
 </div>
-
+<?php 
+// List all accounts
+$allAccounts = $db->query("SELECT id, name, email FROM accounts ORDER BY id ASC")->fetchAll();
+if ($allAccounts) {
+    echo '<h3>All Accounts:</h3>';
+    echo '<table class="table table-striped">';
+    echo '<thead><tr><th>ID</th><th>Account Name</th><th>Email</th></tr></thead>';
+    echo '<tbody>';
+    foreach ($allAccounts as $accountRow) {
+        echo '<tr>';
+        echo '<td>' . $accountRow['id'] . '</td>';
+        echo '<td><a href="' . $base . '&id=' . $accountRow['id'] . '">' . $accountRow['name'] . '</a></td>';
+        echo '<td>' . $accountRow['email'] . '</td>';
+        echo '</tr>';
+    }
+    echo '</tbody>';
+    echo '</table>';
+}
+?>
 <script type="text/javascript">
     $('#lastlogout').datetimepicker({format: 'unixtime'});
     $('#created').datetimepicker({format: 'unixtime'});
