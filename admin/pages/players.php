@@ -896,21 +896,38 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
         }
 	</script>
 <?php 
-// List all players
-$allAccounts = $db->query("SELECT id, name, account_id FROM players ORDER BY id ASC")->fetchAll();
-if ($allAccounts) {
-    echo '<h3>All Accounts:</h3>';
+// Pagination for accounts listing
+$limit = 10; // Number of accounts per page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$start = ($page - 1) * $limit;
+$total_accounts = $db->query("SELECT COUNT(*) as count FROM accounts")->fetch()['count'];
+$total_pages = ceil($total_accounts / $limit);
+
+// Fetching players with pagination
+$allPlayers = $db->query("SELECT id, name, account_id FROM players ORDER BY id ASC LIMIT $start, $limit")->fetchAll();
+
+if ($allPlayers) {
+    echo '<h3>All Players:</h3>';
     echo '<table class="table table-striped">';
-    echo '<thead><tr><th>ID</th><th>Player Name</th><th>Account Name</th></tr></thead>';
+    echo '<thead><tr><th>ID</th><th>Player Name</th><th>Account ID</th></tr></thead>';
     echo '<tbody>';
-    foreach ($allAccounts as $accountRow) {
+    foreach ($allPlayers as $accountRow) {
         echo '<tr>';
         echo '<td>' . $accountRow['id'] . '</td>';
-        echo '<td><a href="' . $base . '&id=' . $accountRow['id'] . '">' . $accountRow['name'] .'</a></td>';
+        echo '<td><a href="' . $base . '&id=' . $accountRow['id'] . '">' . $accountRow['name'] . '</a></td>';
         echo '<td>' . $accountRow['account_id'] . '</td>';
         echo '</tr>';
     }
     echo '</tbody>';
     echo '</table>';
+
+    // Pagination links
+    if ($total_pages > 1) {
+        echo '<nav aria-label="Page navigation example"><ul class="pagination">';
+        for ($i = 1; $i <= $total_pages; $i++) {
+            echo '<li class="page-item ' . ($i == $page ? 'active' : '') . '"><a class="page-link" href="' . $base . '&page=' . $i . '">' . $i . '</a></li>';
+        }
+        echo '</ul></nav>';
+    }
 }
 ?>
