@@ -92,7 +92,6 @@ else if ($searchName = $_REQUEST['search_name'] ?? null) {
     }
 }
 
-
 $groups = new OTS_Groups_List();
 if ($id > 0) {
     $account = new OTS_Account();
@@ -244,6 +243,7 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
 }
 
 ?>
+
 <div class="row">
     <?php if (isset($account) && $account->isLoaded()) { ?>
 
@@ -497,9 +497,18 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
     };
     ?>
 </div>
+
 <?php 
-// List all accounts
-$allAccounts = $db->query("SELECT id, name, email FROM accounts ORDER BY id ASC")->fetchAll();
+// Pagination for accounts listing
+$limit = 10; // Number of accounts per page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$start = ($page - 1) * $limit;
+$total_accounts = $db->query("SELECT COUNT(*) as count FROM accounts")->fetch()['count'];
+$total_pages = ceil($total_accounts / $limit);
+
+// Fetching accounts with pagination
+$allAccounts = $db->query("SELECT id, name, email FROM accounts ORDER BY id ASC LIMIT $start, $limit")->fetchAll();
+
 if ($allAccounts) {
     echo '<h3>All Accounts:</h3>';
     echo '<table class="table table-striped">';
@@ -514,8 +523,18 @@ if ($allAccounts) {
     }
     echo '</tbody>';
     echo '</table>';
+
+    // Pagination links
+    if ($total_pages > 1) {
+        echo '<nav aria-label="Page navigation example"><ul class="pagination">';
+        for ($i = 1; $i <= $total_pages; $i++) {
+            echo '<li class="page-item ' . ($i == $page ? 'active' : '') . '"><a class="page-link" href="' . $base . '&page=' . $i . '">' . $i . '</a></li>';
+        }
+        echo '</ul></nav>';
+    }
 }
 ?>
+
 <script type="text/javascript">
     $('#lastlogout').datetimepicker({format: 'unixtime'});
     $('#created').datetimepicker({format: 'unixtime'});
