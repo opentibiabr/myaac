@@ -459,7 +459,7 @@ else if ($id > 0 && isset($account) && $account->isLoaded()) {
     <?php
     if (isset($account) && $account->isLoaded()) {
         $account_players = array();
-        $query = $db->query('SELECT name,level,vocation  FROM players WHERE account_id = ' . $account->getId() . ' ORDER BY name')->fetchAll();
+        $query = $db->query('SELECT `name`,`level`,`vocation` FROM `players` WHERE `account_id` = ' . $account->getId() . ' ORDER BY `name`')->fetchAll();      
         if (isset($query)) {
             ?>
             <div class="box">
