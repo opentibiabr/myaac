@@ -1004,14 +1004,22 @@ function get_plugins()
   return $ret;
 }
 
+/**
+ * Returning world name by ID
+ *
+ * @param $id
+ * @return mixed|null
+ */
 function getWorldName($id)
 {
-  global $config;
-  if (isset($config['worlds'][$id])) {
-    return $config['worlds'][$id];
+  global $db;
+  if ($db->hasTable('worlds')) {
+    $world = $db->query("SELECT `name` FROM `worlds` WHERE `id` = {$id}")->fetch();
+    if ($world) {
+      return $world['name'];
+    }
   }
-
-  return $config['lua']['serverName'];
+  return configLua('serverName');
 }
 
 /**
