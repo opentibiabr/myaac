@@ -159,7 +159,7 @@ switch ($action) {
 
     // common columns
     $accId      = $account->getId();
-    $columns    = 'name, level, sex, vocation, looktype, lookhead, lookbody, looklegs, lookfeet, lookaddons, lastlogin, isreward, istutorial, ismain, hidden, worldId';
+    $columns    = 'name, level, sex, vocation, looktype, lookhead, lookbody, looklegs, lookfeet, lookaddons, lastlogin, isreward, istutorial, ismain, hidden, world_id';
     $queryP     = $db->query("SELECT {$columns} FROM players WHERE account_id = {$accId} AND deletion = 0");
     $characters = [];
     if ($queryP && $queryP->rowCount() > 0) {
@@ -207,7 +207,7 @@ switch ($action) {
 function createChar($config, $player)
 {
   return [
-    'worldid'                          => $player['worldId'],
+    'worldid'                          => $player['world_id'],
     'name'                             => $player['name'],
     'ismale'                           => intval($player['sex']) === 1,
     'tutorial'                         => (bool)$player['istutorial'],

@@ -57,7 +57,7 @@ if ($world > 0) {
     header('Location: ' . "?highscores");
     return;
   }
-  $add_sql .= " AND `worldId` = {$world} ";
+  $add_sql .= " AND `world_id` = {$world} ";
 }
 
 define('SKILL_FRAGS', -1);
