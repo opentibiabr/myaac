@@ -120,6 +120,7 @@ if (empty($uri) || isset($_REQUEST['template'])) {
             '/^gallery\/[0-9]+\/?$/' => array('subtopic' => 'gallery', 'image' => '$1'),
             '/^gifts\/history\/?$/' => array('subtopic' => 'gifts', 'action' => 'show_history'),
             '/^guilds\/[A-Za-z0-9-_%+\']+$/' => array('subtopic' => 'guilds', 'action' => 'show', 'guild' => '$1'),
+            '/^online\/[0-9]+\/?$/' => array('subtopic' => 'online', 'world' => '$1'),
             '/^highscores\/[A-Za-z0-9-_]+\/[0-9]+\/[A-Za-z0-9-_]+\/[0-9]+\/?$/' => array('subtopic' => 'highscores', 'list' => '$1', 'world' => '$2', 'vocation' => '$3', 'page' => '$4'),
             '/^highscores\/[A-Za-z0-9-_]+\/[0-9]+\/[0-9]+\/?$/' => array('subtopic' => 'highscores', 'list' => '$1', 'world' => '$2', 'page' => '$3'),
             '/^highscores\/[A-Za-z0-9-_]+\/[0-9]+\/[A-Za-z0-9-_]+\/?$/' => array('subtopic' => 'highscores', 'list' => '$1', 'world' => '$2', 'vocation' => '$3'),
