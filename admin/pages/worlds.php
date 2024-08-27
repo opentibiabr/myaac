@@ -1,5 +1,5 @@
 <?php
-global $db, $action;
+global $db, $action, $account_logged;
 /**
  * Worlds
  *
@@ -63,9 +63,28 @@ if (isset($_POST['save'])) {
       echo_success("World {$name} saved at: " . date('G:i'));
     }
   } else {
+    if ($db->query("SELECT `id` FROM `worlds` WHERE `name` = {$db->quote($name)}")->fetch()) {
+      echo_error("World name is already in use!");
+    } else if ($db->query("SELECT `id` FROM `worlds` WHERE `port` = {$port}")->fetch()) {
+      echo_error("World port is already in use!");
+    }
+
     if (!$error) {
-      $db->exec("INSERT INTO `worlds` (`name`, `type`, `ip`, `port`) VALUES ({$db->quote($name)}, {$db->quote($type)}, {$db->quote($ip)}, {$port});");
-      echo_success("World {$name} created at: " . date('G:i'));
+      try {
+        $db->exec("INSERT INTO `worlds` (`name`, `type`, `ip`, `port`) VALUES ({$db->quote($name)}, {$db->quote($type)}, {$db->quote($ip)}, {$port});");
+        $sql = "INSERT INTO `players` (`name`, `group_id`, `account_id`, `level`, `vocation`, `health`, `healthmax`, `experience`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `maglevel`, `mana`, `manamax`, `manaspent`, `town_id`, `conditions`, `cap`, `sex`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `world_id`) VALUES ('GOD {$name}', 6, {$account_logged->getId()}, 2, 0, 155, 155, 100, 113, 115, 95, 39, 75, 0, 60, 60, 0, 8, '', 410, 1, 10, 0, 10, 0, 10, 0, 10, 0, {$db->lastInsertId()})";
+        $db->query($sql);
+        echo_success("World {$name} and 'GOD {$name}' created at: " . date('G:i'));
+        $action = "list";
+//        header("Location: $base");
+//        $twig->display('success.html.twig', array(
+//          'title' => 'World Created',
+//          'description' => "The world <b>{$name}</b> and character <b>GOD {$name}</b> has been created.",
+//          'custom_buttons' => ''
+//        ));
+      } catch (E_OTS_NotLoaded $e) {
+        echo_error("Can't create world, error: " . $e->getMessage());
+      }
     }
   }
 }
@@ -75,7 +94,8 @@ $id = $_REQUEST['id'] ?? 0;
 if ($id > 0 || $action === 'add') {
   $world = $id > 0 ? $db->query("SELECT * FROM `worlds` WHERE `id` = {$id}")->fetch() : null;
   ?>
-  <form action="<?= $base . '&id=' . $id ?>" method="post" class="form-horizontal">
+  <form action="<?= $base . ($id > 0 ? '&id=' . $id : '') . (!empty($action) ? '&action=' . $action : ''); ?>"
+        method="post" class="form-horizontal">
     <div class="col-12 col-md-8">
       <div class="box box-primary">
         <div class="box-body">
@@ -94,14 +114,16 @@ if ($id > 0 || $action === 'add') {
               <label for="name" class="control-label">Name:</label>
               <input type="text" class="form-control" id="name" name="name"
                      autocomplete="off" style="cursor: auto;" maxlength="50"
-                     value="<?= $world['name'] ?? '' ?>" required />
+                     value="<?= $name ?? ($world['name'] ?? '') ?>" required />
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="type" class="control-label">Server Type:</label>
               <select class="form-control" id="type" name="type" required>
-                <?php foreach (['pvp', 'no-pvp', 'pvp-enforced'] as $item): ?>
+                <?php foreach (['pvp', 'no-pvp', 'pvp-enforced'] as $item):
+                  $type = $type ?? ($world['type'] ?? '')
+                  ?>
                   <option
-                    value="<?= $item ?>" <?= ($world && $world['type'] == $item ? 'selected' : '') ?>><?= mb_strtoupper($item) ?></option>
+                    value="<?= $item ?>" <?= ($type == $item ? 'selected' : '') ?>><?= mb_strtoupper($item) ?></option>
                 <?php endforeach; ?>
               </select>
             </div>
@@ -109,13 +131,13 @@ if ($id > 0 || $action === 'add') {
               <label for="ip" class="control-label">IP:</label>
               <input type="text" class="form-control" id="ip" name="ip"
                      autocomplete="off" style="cursor: auto;" maxlength="12"
-                     value="<?= $world['ip'] ?? '' ?>" required />
+                     value="<?= $ip ?? ($world['ip'] ?? '') ?>" required />
             </div>
             <div class="col-12 col-md-3 mb-3">
               <label for="port" class="control-label">Port:</label>
-              <input type="text" class="form-control" id="port" name="port"
+              <input type="number" class="form-control" id="port" name="port"
                      autocomplete="off" style="cursor: auto;" maxlength="5"
-                     value="<?= $world['port'] ?? '' ?>" required />
+                     value="<?= $port ?? ($world['port'] ?? '') ?>" required />
             </div>
           </div>
           <input type="hidden" name="save" value="yes" />
