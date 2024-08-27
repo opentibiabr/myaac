@@ -1,10 +1,21 @@
+<style>
+  .sup-outfit {
+    position: absolute;
+    margin: -50px 0 0 -28px;
+  }
+
+  .default-outfit {
+    position: absolute;
+    margin: -45px 0 0 -30px;
+  }
+</style>
 <div style="text-align: -webkit-center !important;">
   <table>
     <tbody>
     <tr>
       <td><img src="{{ template_path }}/images/global/content/headline-bracer-left.gif"></td>
-      <td style="text-align:center;vertical-align:middle;horizontal-align:center;font-size:17px;font-weight:bold;">Staff
-        Team
+      <td style="text-align:center;vertical-align:middle;horizontal-align:center;font-size:17px;font-weight:bold;">
+        Our Team
       </td>
       <td><img src="{{ template_path }}/images/global/content/headline-bracer-right.gif"></td>
     </tr>
@@ -68,7 +79,7 @@
                         <tbody>
                         <tr bgcolor="#D4C0A1">
                           {% if config.team_display_outfit %}
-                            <td style="width: 5%;"><b>#</b></td>{% endif %}
+                            <td style="width: 7%;"><b>#</b></td>{% endif %}
                           <td><b>Group</b></td>
                           <td width="30%"><b>Name</b></td>
                           <td><b>Status</b></td>
@@ -83,23 +94,24 @@
                               <tr bgcolor="{{ getStyle(i) }}" style="height: 64px;">
                                 {% if config.team_display_outfit %}
                                   <td><img
-                                      style="position: absolute; margin-top: {% if member.player.looktype in [75, 266, 302] %}-16px;margin-left:-0px;{% else %} -45px; margin-left: -30px;{% endif %}"
+                                      class="{% if member.player.looktype in [75, 266, 302] %}sup{% else %}default{% endif %}-outfit"
                                       src="{{ member.outfit }}" alt="player outfit" /></td>
                                 {% endif %}
 
                                 <td width="20%"><b><font
-                                      style="font-family: Verdana; text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);"
-                                      color="red">Administrator</font><b></td>
+                                      style="font-family: Verdana; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);"
+                                      color="red">Administrator</font></b>
+                                </td>
                                 <td>{{ member.link|raw }}</td>
                                 <td>
                                   {% if member.status %}
-                                  <b><font style="font-family: Verdana; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);"
-                                           color="green"> Online </font><b>
-                                      {% else %}
-                                      <b><font
-                                          style="font-family: Verdana; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);"
-                                          color="red"> Offline </font><b>
-                                          {% endif %}
+                                    <b><font style="font-family: Verdana; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);"
+                                             color="green"> Online </font></b>
+                                  {% else %}
+                                    <b><font
+                                        style="font-family: Verdana; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);"
+                                        color="red"> Offline </font></b>
+                                  {% endif %}
                                 </td>
 
                                 <td style="position: relative; text-align: center;">
@@ -200,7 +212,8 @@
                         <tbody>
                         <tr bgcolor="#D4C0A1">
                           {% if config.team_display_outfit %}
-                            <td style="width: 5%;"><b>#</b></td>{% endif %}
+                            <td style="width: 7%"><b>#</b></td>
+                          {% endif %}
                           <td><b>Group</b></td>
                           <td width="30%"><b>Name</b></td>
                           <td><b>Status</b></td>
@@ -215,7 +228,7 @@
                               <tr bgcolor="{{ getStyle(i) }}" style="height: 64px;">
                                 {% if config.team_display_outfit %}
                                   <td><img
-                                      style="position: absolute; margin-top: {% if member.player.looktype in [75, 266, 302] %}-16px;margin-left:-0px;{% else %} -45px; margin-left: -30px;{% endif %}"
+                                      class="{% if member.player.looktype in [75, 266, 302] %}sup{% else %}default{% endif %}-outfit"
                                       src="{{ member.outfit }}" alt="player outfit" /></td>
                                 {% endif %}
 
@@ -331,7 +344,7 @@
                         <tbody>
                         <tr bgcolor="#D4C0A1">
                           {% if config.team_display_outfit %}
-                            <td style="width: 5%;"><b>#</b></td>{% endif %}
+                            <td style="width: 7%;"><b>#</b></td>{% endif %}
                           <td><b>Group</b></td>
                           <td width="30%"><b>Name</b></td>
                           <td><b>Status</b></td>
@@ -346,7 +359,7 @@
                               <tr bgcolor="{{ getStyle(i) }}" style="height: 64px;">
                                 {% if config.team_display_outfit %}
                                   <td><img
-                                      style="position: absolute; margin-top: {% if member.player.looktype in [75, 266, 302] %}-16px;margin-left:-0px;{% else %} -45px; margin-left: -30px;{% endif %}"
+                                      class="{% if member.player.looktype in [75, 266, 302] %}sup{% else %}default{% endif %}-outfit"
                                       src="{{ member.outfit }}" alt="player outfit" /></td>
                                 {% endif %}
 
@@ -462,7 +475,7 @@
                         <tbody>
                         <tr bgcolor="#D4C0A1">
                           {% if config.team_display_outfit %}
-                            <td style="width: 5%;"><b>#</b></td>{% endif %}
+                            <td style="width: 7%;"><b>#</b></td>{% endif %}
                           <td><b>Group</b></td>
                           <td width="30%"><b>Name</b></td>
                           <td><b>Status</b></td>
@@ -477,7 +490,7 @@
                               <tr bgcolor="{{ getStyle(i) }}" style="height: 64px;">
                                 {% if config.team_display_outfit %}
                                   <td><img
-                                      style="position: absolute; margin-top: {% if member.player.looktype in [75, 266, 302] %}-16px;margin-left:-0px;{% else %} -45px; margin-left: -30px;{% endif %}"
+                                      class="{% if member.player.looktype in [75, 266, 302] %}sup{% else %}default{% endif %}-outfit"
                                       src="{{ member.outfit }}" alt="player outfit" /></td>
                                 {% endif %}
 
@@ -593,7 +606,7 @@
                         <tbody>
                         <tr bgcolor="#D4C0A1">
                           {% if config.team_display_outfit %}
-                            <td style="width: 5%;"><b>#</b></td>{% endif %}
+                            <td style="width: 7%;"><b>#</b></td>{% endif %}
                           <td><b>Group</b></td>
                           <td width="30%"><b>Name</b></td>
                           <td><b>Status</b></td>
@@ -608,7 +621,7 @@
                               <tr bgcolor="{{ getStyle(i) }}" style="height: 64px;">
                                 {% if config.team_display_outfit %}
                                   <td><img
-                                      style="position: absolute; margin-top: {% if member.player.looktype in [75, 266, 302] %}-16px;margin-left:-0px;{% else %} -45px; margin-left: -30px;{% endif %}"
+                                      class="{% if member.player.looktype in [75, 266, 302] %}sup{% else %}default{% endif %}-outfit"
                                       src="{{ member.outfit }}" alt="player outfit" /></td>
                                 {% endif %}
 
