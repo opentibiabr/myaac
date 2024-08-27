@@ -54,10 +54,8 @@
 	$MadGD->addText( 'Level:', $MadGD->textBold )->setPosition( 10, $i * $eachRow );
 	$MadGD->addText( $player->getLevel() )->setPosition( ); $i++;
 	/** WORLD **/
-	if($config['multiworld']) {
-		$MadGD->addText( 'World:', $MadGD->textBold )->setPosition( 10, $i * $eachRow );
-		$MadGD->addText( $config['worlds'][$player->getWorldId()] )->setPosition( ); $i++;
-	}
+  $MadGD->addText( 'World:', $MadGD->textBold )->setPosition( 10, $i * $eachRow );
+  $MadGD->addText( $config['worlds'][$player->getWorldId()] )->setPosition( ); $i++;
 
 	/** RESIDENCE **/
 	$MadGD->addText( 'Residence:', $MadGD->textBold )->setPosition( 10, $i * $eachRow );

@@ -37,10 +37,10 @@
                         <td style="vertical-align:middle;" class="LabelV150">World Name:</td>
                         <td style="width: 100%">
                           <select name="world" style="width: 100%">
-                            <option>(all worlds or select world)</option>
+                            <option value="">(all worlds or select world)</option>
                             {% for item in worlds %}
                               <option
-                                value="{{ item.name }}" {% if item.id == world %} selected="selected"{% endif %}>{{ item.name }}</option>
+                                value="{{ item.name }}" {% if item.id == world.id %} selected="selected"{% endif %}>{{ item.name }}</option>
                             {% endfor %}
                           </select>
                         </td>
