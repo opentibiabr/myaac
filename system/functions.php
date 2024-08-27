@@ -1014,8 +1014,7 @@ function getWorldName($id)
 {
   global $db;
   if ($db->hasTable('worlds')) {
-    $world = $db->query("SELECT `name` FROM `worlds` WHERE `id` = {$id}")->fetch();
-    if ($world) {
+    if ($world = $db->query("SELECT `name` FROM `worlds` WHERE `id` = {$id}")->fetch()) {
       return $world['name'];
     }
   }

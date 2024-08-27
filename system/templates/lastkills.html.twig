@@ -1,63 +1,136 @@
-<div class="TableContainer" >
-	<table class="Table3">
-		<div class="CaptionContainer" >
-			<div class="CaptionInnerContainer" >
-				<span class="CaptionEdgeLeftTop" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);" ></span>
-				<span class="CaptionEdgeRightTop" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);" ></span>
-				<span class="CaptionBorderTop" style="background-image:url({{ template_path }}/images/content/table-headline-border.gif);" ></span>
-				<span class="CaptionVerticalLeft" style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);" ></span>
-				<div class="Text" >Last Kills</div>
-				<span class="CaptionVerticalRight" style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);" ></span>
-				<span class="CaptionBorderBottom" style="background-image:url({{ template_path }}/images/content/table-headline-border.gif);" ></span>
-				<span class="CaptionEdgeLeftBottom" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);" ></span>
-				<span class="CaptionEdgeRightBottom" style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);" ></span>
-			</div>
-		</div>
-		<tr>
-			<td>
-				<div class="InnerTableContainer" >
-					<table style="width:100%;">
-						<tbody>
-						<tr>
-							<td>
-								
-									<div class="TableContentContainer">
-										<table class="TableContent" width="100%">
-											{% if lastkills|length <= 0 %}
-												<tr>
-													<td>
-														No one died on {{ config.lua.serverName }}
-													</td>
-												</tr>
-											{% else %}
-												{% for lastkill in lastkills %}
-												<tr bgcolor="{{ getStyle(lastkill.id) }}">
-													<td class="centralizeContent" width="30">
-														{{ lastkill.id }}.
-													</td>
-													<td width="125">
-														<small>{{ lastkill.time|date("j.m.Y, G:i:s") }}</small>
-													</td>
-													<td>
-														{{ lastkill.killers_string|raw }}
-													</td>
-													{% if config.multiworld %}
-														<td>
-															{{ lastkill.world_id }}
-														</td>
-													{% endif %}
-												</tr>
-												{% endfor %}
-											{% endif %}
-										</table>
-									</div>
-									
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</td>
-		</tr>
-	</table>
+{% if worlds|length  > 1 %}
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tbody>
+    <tr>
+      <td>
+        <div class="TableContainer">
+          <div class="CaptionContainer">
+            <div class="CaptionInnerContainer">
+              <span class="CaptionEdgeLeftTop"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              <span class="CaptionEdgeRightTop"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              <span class="CaptionBorderTop"
+                    style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+              <span class="CaptionVerticalLeft"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+              <div class="Text">World Selection</div>
+              <span class="CaptionVerticalRight"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+              <span class="CaptionBorderBottom"
+                    style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+              <span class="CaptionEdgeLeftBottom"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              <span class="CaptionEdgeRightBottom"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+            </div>
+          </div>
+          <table class="Table1" cellpadding="0" cellspacing="0">
+            <tbody>
+            <tr>
+              <td>
+                <div class="InnerTableContainer">
+                  <table style="width: 100%">
+                    <tbody>
+                    <tr>
+                      <form action="{{ getLink('lastkills') }}" method="post">
+                        <td style="vertical-align:middle;" class="LabelV150">World Name:</td>
+                        <td style="width: 100%">
+                          <select name="world" style="width: 100%">
+                            <option>(all worlds or select world)</option>
+                            {% for item in worlds %}
+                              <option
+                                value="{{ item.name }}" {% if item.id == world %} selected="selected"{% endif %}>{{ item.name }}</option>
+                            {% endfor %}
+                          </select>
+                        </td>
+                        <td>{% set button_name = 'Submit' %}
+                          {% include('buttons.base.html.twig') %}</td>
+                      </form>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+{% endif %}
+
+<div class="TableContainer">
+  <table class="Table3">
+    <div class="CaptionContainer">
+      <div class="CaptionInnerContainer">
+        <span class="CaptionEdgeLeftTop"
+              style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
+        <span class="CaptionEdgeRightTop"
+              style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
+        <span class="CaptionBorderTop"
+              style="background-image:url({{ template_path }}/images/content/table-headline-border.gif);"></span>
+        <span class="CaptionVerticalLeft"
+              style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></span>
+        <div class="Text">Last Kills</div>
+        <span class="CaptionVerticalRight"
+              style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></span>
+        <span class="CaptionBorderBottom"
+              style="background-image:url({{ template_path }}/images/content/table-headline-border.gif);"></span>
+        <span class="CaptionEdgeLeftBottom"
+              style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
+        <span class="CaptionEdgeRightBottom"
+              style="background-image:url({{ template_path }}/images/content/box-frame-edge.gif);"></span>
+      </div>
+    </div>
+    <tr>
+      <td>
+        <div class="InnerTableContainer">
+          {% if lastkills|length <= 0 %}
+            <table style="width:100%;">
+              <tbody>
+              <tr>
+                <td>
+                  No one died on {{ world.name }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          {% else %}
+            <table style="width:100%;">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Time</th>
+                <th>Description</th>
+                <th>World</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for lastkill in lastkills %}
+                <tr bgcolor="{{ getStyle(lastkill.id) }}">
+                  <td class="centralizeContent" width="30">
+                    {{ lastkill.id }}.
+                  </td>
+                  <td width="125">
+                    <small>{{ lastkill.time|date("j.m.Y, G:i:s") }}</small>
+                  </td>
+                  <td>
+                    {{ lastkill.killers_string|raw }}
+                  </td>
+                  <td>
+                    {{ lastkill.world }}
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+        </div>
+      </td>
+    </tr>
+  </table>
 </div>

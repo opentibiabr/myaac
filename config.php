@@ -79,13 +79,6 @@ $config = array(
 	'database_socket' => '', // set if you want to connect to database through socket (example: /var/run/mysqld/mysqld.sock)
 	'database_persistent' => false, // use database permanent connection (like server), may speed up your site
 
-	// multiworld system (only TFS 0.3)
-	'multiworld' => false, // use multiworld system?
-	'worlds' => array( // list of worlds
-		//'1' => 'Your World Name',
-		//'2' => 'Your Second World Name'
-	),
-
 	// images
 	'outfit_images_url' => './outfit/animoutfit.php', // set to animoutfit.php for animated outfit
 	'item_images_url' => 'images/items/', // set to images/items if you host your own items in images folder
@@ -240,7 +233,6 @@ $config = array(
 	'team_style' => 2, // 1/2 (1 - normal table, 2 - in boxes, grouped by group id)
 	'team_display_status' => true,
 	'team_display_lastlogin' => true,
-	'team_display_world' => false,
 	'team_display_outfit' => true,
 
 	// bans page
