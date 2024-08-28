@@ -103,6 +103,7 @@ if (!isset($config['database_socket'])) {
 try {
   $ots->connect([
     'host' => $config['database_host'],
+    'port' => $config['database_port'],
     'user' => $config['database_user'],
     'password' => $config['database_password'],
     'database' => $config['database_name'],
