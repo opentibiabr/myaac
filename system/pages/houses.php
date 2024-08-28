@@ -1,4 +1,4 @@
-<?php
+<?php global $db, $config, $twig;
 /**
  * Houses
  *
@@ -13,6 +13,8 @@
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Houses';
 
+$worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `name` ASC")->fetchAll();
+
 $errors = array();
 if (!$db->hasColumn('houses', 'name')) {
   $errors[] = 'Houses list is not available on this server.';
@@ -23,9 +25,10 @@ if (!$db->hasColumn('houses', 'name')) {
   return;
 }
 
-$rentType = trim(strtolower($config['lua']['houseRentPeriod']));
-if ($rentType != 'yearly' && $rentType != 'monthly' && $rentType != 'weekly' && $rentType != 'daily')
+$rentType = trim(strtolower(configLua('houseRentPeriod')));
+if (!in_array($rentType, ['yearly', 'monthly', 'weekly', 'daily'])) {
   $rentType = 'never';
+}
 
 $state = '';
 $order = '';
@@ -35,7 +38,7 @@ if (isset($_GET['page']) && $_GET['page'] == 'view' && isset($_REQUEST['house'])
   $beds = array("", "one", "two", "three", "fourth", "fifth");
   $houseName = $_REQUEST['house'];
   $houseId = (Validator::number($_REQUEST['house']) ? $_REQUEST['house'] : -1);
-  $selectHouse = $db->query('SELECT * FROM ' . $db->tableName('houses') . ' WHERE ' . $db->fieldName('name') . ' LIKE ' . $db->quote($houseName) . ' OR `id` = ' . $db->quote($houseId));
+  $selectHouse = $db->query("SELECT * FROM {$db->tableName('houses')} WHERE {$db->fieldName('name')} LIKE {$db->quote($houseName)} OR `id` = {$houseId}");
 
   $house = array();
   if ($selectHouse->rowCount() > 0) {
@@ -52,7 +55,7 @@ if (isset($_GET['page']) && $_GET['page'] == 'view' && isset($_REQUEST['house'])
     $bedsMessage = null;
     $houseBeds = $house['beds'];
     if ($houseBeds > 0)
-      $bedsMessage = 'House have ' . (isset($beds[$houseBeds]) ? $beds[$houseBeds] : $houseBeds) . ' bed' . ($houseBeds > 1 ? 's' : '');
+      $bedsMessage = 'House have ' . ($beds[$houseBeds] ?? $houseBeds) . ' bed' . ($houseBeds > 1 ? 's' : '');
     else
       $bedsMessage = 'This house dont have any beds';
 
@@ -87,13 +90,14 @@ if (isset($_GET['page']) && $_GET['page'] == 'view' && isset($_REQUEST['house'])
 
   $twig->display('houses.view.html.twig', array(
     'errors' => $errors,
-    'imgPath' => isset($imgPath) ? $imgPath : null,
-    'houseName' => isset($house['name']) ? $house['name'] : null,
-    'bedsMessage' => isset($bedsMessage) ? $bedsMessage : null,
-    'houseSize' => isset($house['size']) ? $house['size'] : null,
-    'houseRent' => isset($house['rent']) ? $house['rent'] : null,
-    'owner' => isset($owner) ? $owner : null,
-    'rentType' => isset($rentType) ? $rentType : null
+    'imgPath' => $imgPath ?? null,
+    'houseName' => $house['name'] ?? null,
+    'bedsMessage' => $bedsMessage ?? null,
+    'houseSize' => $house['size'] ?? null,
+    'houseRent' => $house['rent'] ?? null,
+    'owner' => $owner ?? null,
+    'rentType' => $rentType ?? null,
+    'worlds' => $worlds,
   ));
 
   if (count($errors) > 0) {
@@ -101,21 +105,26 @@ if (isset($_GET['page']) && $_GET['page'] == 'view' && isset($_REQUEST['house'])
   }
 }
 
-$cleanOldHouse = null;
-if (isset($config['lua']['houseCleanOld'])) {
-  $cleanOldHouse = (int)(eval('return ' . $config['lua']['houseCleanOld'] . ';') / (24 * 60 * 60));
+if ($cleanOldHouse = configLua('houseLoseAfterInactivity')) {
+  $days = 0;
+  if (in_array($rentType, ['yearly', 'monthly', 'weekly', 'daily'])) {
+    $days = ['yearly' => 360, 'monthly' => 30, 'weekly' => 7, 'daily' => 1];
+    $cleanOldHouse = (int)$cleanOldHouse * $days[$rentType];
+  }
 }
 
 $housesSearch = false;
-if (isset($_POST['town']) && isset($_POST['state']) && isset($_POST['order']) && (isset($_POST['type']) || !$db->hasColumn('houses', 'guild'))) {
-  $townName = $config['towns'][$_POST['town']];
+$houses = [];
+if (!empty($_POST['world']) && isset($_POST['town']) && isset($_POST['state']) && isset($_POST['order']) && (isset($_POST['type']) || !$db->hasColumn('houses', 'guild'))) {
+  $townName = $db->query("SELECT `id`, `name` FROM `towns` WHERE `id` = {$_POST['town']};")->fetch()['name'];
+
   $order = $_POST['order'];
-  $orderby = '`name`';
+  $orderBy = '`name`';
   if (!empty($order)) {
     if ($order == 'size')
-      $orderby = '`size`';
+      $orderBy = '`size`';
     else if ($order == 'rent')
-      $orderby = '`rent`';
+      $orderBy = '`rent`';
   }
 
   $town = 'town';
@@ -124,12 +133,14 @@ if (isset($_POST['town']) && isset($_POST['state']) && isset($_POST['order']) &&
   else if ($db->hasColumn('houses', 'townid'))
     $town = 'townid';
 
-  $whereby = '`' . $town . '` = ' . (int)$_POST['town'];
+  $worldName = $db->query("SELECT `name` FROM `worlds` WHERE id = {$_POST['world']}")->fetch()['name'];
+
+  $whereby = "`world_id` = {$_POST['world']} AND `$town` = {$_POST['town']}";
   $state = $_POST['state'];
   if (!empty($state))
     $whereby .= ' AND `owner` ' . ($state == 'free' ? '' : '!') . '= 0';
 
-  $type = isset($_POST['type']) ? $_POST['type'] : NULL;
+  $type = $_POST['type'] ?? NULL;
   if ($type == 'guildhalls' && !$db->hasColumn('houses', 'guild'))
     $type = 'all';
 
@@ -146,16 +157,15 @@ if (isset($_POST['town']) && isset($_POST['state']) && isset($_POST['order']) &&
     }
   }
 
-  $houses_info = $db->query('SELECT * FROM `houses` WHERE ' . $whereby . ' ORDER BY ' . $orderby);
+  $houses_info = $db->query('SELECT * FROM `houses` WHERE ' . $whereby . ' ORDER BY ' . $orderBy);
 
   $players_info = $db->query("SELECT `houses`.`id` AS `houseid` , `players`.`name` AS `ownername` FROM `houses` , `players` , `accounts` WHERE `players`.`id` = `houses`.`owner` AND `accounts`.`id` = `players`.`account_id`");
   $players = array();
   foreach ($players_info->fetchAll() as $player)
     $players[$player['houseid']] = array('name' => $player['ownername']);
 
-  $houses = array();
   foreach ($houses_info->fetchAll() as $house) {
-    $owner = isset($players[$house['id']]) ? $players[$house['id']] : array();
+    $owner = $players[$house['id']] ?? array();
 
     $houseRent = null;
     if ($db->hasColumn('houses', 'guild') && $house['guild'] == 1 && $house['owner'] != 0) {
@@ -181,10 +191,13 @@ $twig->display('houses.html.twig', array(
   'order' => $order,
   'type' => $type,
   'houseType' => $type == 'guildhalls' ? 'Guildhalls' : 'Houses and Flats',
-  'townName' => isset($townName) ? $townName : null,
-  'townId' => isset($_POST['town']) ? $_POST['town'] : null,
+  'townName' => $townName ?? null,
+  'townId' => $_POST['town'] ?? null,
   'guild' => $guild,
-  'cleanOldHouse' => isset($cleanOld) ? $cleanOld : null,
+  'rentType' => $rentType ?? null,
+  'cleanOldHouse' => $cleanOldHouse,
+  'houses' => $houses ?? [],
   'housesSearch' => $housesSearch,
-  'houses' => isset($houses) ? $houses : null
+  'worlds' => $worlds,
+  'worldName' => $worldName ?? null,
 ));
