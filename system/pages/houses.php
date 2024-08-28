@@ -40,7 +40,7 @@ if (isset($_GET['page']) && $_GET['page'] == 'view' && isset($_REQUEST['house'])
   $houseId = (Validator::number($_REQUEST['house']) ? $_REQUEST['house'] : -1);
   $selectHouse = $db->query("SELECT * FROM {$db->tableName('houses')} WHERE {$db->fieldName('name')} LIKE {$db->quote($houseName)} OR `id` = {$houseId}");
 
-  $house = array();
+  $house = [];
   if ($selectHouse->rowCount() > 0) {
     $house = $selectHouse->fetch();
     $houseId = $house['id'];
@@ -55,9 +55,9 @@ if (isset($_GET['page']) && $_GET['page'] == 'view' && isset($_REQUEST['house'])
     $bedsMessage = null;
     $houseBeds = $house['beds'];
     if ($houseBeds > 0)
-      $bedsMessage = 'House have ' . ($beds[$houseBeds] ?? $houseBeds) . ' bed' . ($houseBeds > 1 ? 's' : '');
+      $bedsMessage = 'House have ' . ($beds[$houseBeds] ?? $houseBeds) . ' bed' . ($houseBeds > 1 ? 's' : '') . ".";
     else
-      $bedsMessage = 'This house dont have any beds';
+      $bedsMessage = 'This house dont have any beds.';
 
     $houseOwner = $house['owner'];
     if ($houseOwner > 0) {
@@ -94,15 +94,14 @@ if (isset($_GET['page']) && $_GET['page'] == 'view' && isset($_REQUEST['house'])
     'houseName' => $house['name'] ?? null,
     'bedsMessage' => $bedsMessage ?? null,
     'houseSize' => $house['size'] ?? null,
-    'houseRent' => $house['rent'] ?? null,
+    'houseRent' => isset($house['rent']) ? $house['rent'] / 1000 : 0,
     'owner' => $owner ?? null,
     'rentType' => $rentType ?? null,
     'worlds' => $worlds,
+    'worldName' => getWorldName($house['world_id']),
   ));
 
-  if (count($errors) > 0) {
-    return;
-  }
+  return;
 }
 
 if ($cleanOldHouse = configLua('houseLoseAfterInactivity')) {
@@ -132,8 +131,6 @@ if (!empty($_POST['world']) && isset($_POST['town']) && isset($_POST['state']) &
     $town = 'town_id';
   else if ($db->hasColumn('houses', 'townid'))
     $town = 'townid';
-
-  $worldName = $db->query("SELECT `name` FROM `worlds` WHERE id = {$_POST['world']}")->fetch()['name'];
 
   $whereby = "`world_id` = {$_POST['world']} AND `$town` = {$_POST['town']}";
   $state = $_POST['state'];
@@ -199,5 +196,5 @@ $twig->display('houses.html.twig', array(
   'houses' => $houses ?? [],
   'housesSearch' => $housesSearch,
   'worlds' => $worlds,
-  'worldName' => $worldName ?? null,
+  'worldName' => getWorldName($_POST['world'] ?? 0),
 ));
