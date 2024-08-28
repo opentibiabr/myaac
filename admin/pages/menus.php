@@ -25,8 +25,15 @@ if (isset($_REQUEST['template'])) {
         $post_menu_blank = $_REQUEST['menu_blank'];
         $post_menu_color = $_REQUEST['menu_color'];
         if (count($post_menu) != count($post_menu_link)) {
-            echo 'Menu count is not equal menu links. Something went wrong when sending form.';
+            echo 'Menu count is not equal to menu links. Something went wrong when sending form.';
             return;
+        }
+
+        // Process removed menus
+        if (isset($_POST['removed_menus'])) {
+            foreach ($_POST['removed_menus'] as $removed_menu_name) {
+                $db->query('DELETE FROM `' . TABLE_PREFIX . 'menu` WHERE `name` = ' . $db->quote($removed_menu_name) . ' AND `template` = ' . $db->quote($template));
+            }
         }
 
         $db->query('DELETE FROM `' . TABLE_PREFIX . 'menu` WHERE `template` = ' . $db->quote($template));
@@ -120,6 +127,29 @@ if (isset($_REQUEST['template'])) {
         'menus' => $menus,
         'last_id' => $last_id
     ));
+
+    // Adding JavaScript to handle item removal
+    echo <<<EOT
+    <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Add click event for all remove buttons
+        document.querySelectorAll('a.btn.btn-danger').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                let li = this.closest('li');
+                li.remove(); // Remove the item from the list
+
+                // Optional: Add a hidden field to the form to indicate that this item was removed
+                let input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'removed_menus[]';
+                input.value = li.querySelector('input[name^="menu["]').value; // Capture the menu name value
+                document.getElementById('menus-form').appendChild(input);
+            });
+        });
+    });
+    </script>
+EOT;
     ?>
 
     <?php
@@ -136,3 +166,4 @@ if (isset($_REQUEST['template'])) {
         'templates' => $templates
     ));
 }
+?>
