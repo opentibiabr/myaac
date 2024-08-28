@@ -77,6 +77,11 @@ $function = new TwigFunction('getCustomPage', function ($name) {
 });
 $twig->addFunction($function);
 
+$function = new TwigFunction('getWorldType', function ($type) {
+  return getWorldType($type);
+});
+$twig->addFunction($function);
+
 $filter = new TwigFilter('urlencode', function ($s) {
   return urlencode($s);
 });

@@ -14,7 +14,7 @@ defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Last Kills';
 
 if ($w = $_POST['world'] ?? null) {
-  header("Location: ?p=lastkills&world=$w");
+  header("Location: ?lastkills/$w");
 }
 
 $worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `id` ASC")->fetchAll();

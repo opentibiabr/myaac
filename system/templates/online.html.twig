@@ -110,15 +110,19 @@
                         <td width="25%" class="LabelV150">Players Online:</td>
                         <td>{{ players|length }} Players Online</td>
                       </tr>
-                      <tr>
-                        <td class="LabelV150">Online Record:</td>
-                        <td>{{ record|raw }}</td>
-                      </tr>
-                      <tr>
-                        <td class="LabelV150">Location:</td>
-                        <td>Brasil<br><small>(Server Date: UTC - {{ current_date }})</small></td>
-                      </tr>
                     {% endif %}
+                    <tr>
+                      <td class="LabelV150">Online Record:</td>
+                      <td>{{ record|raw }}</td>
+                    </tr>
+                    <tr>
+                      <td class="LabelV150">Location:</td>
+                      <td>{{ config.lua.location }}</td>
+                    </tr>
+                    <tr>
+                      <td class="LabelV150">PvP Type:</td>
+                      <td>{{ getWorldType(world.type) }}</td>
+                    </tr>
                     <tr>
                       <td width="25%" class="LabelV150">Frags:</td>
                       <td>
@@ -296,7 +300,7 @@
                             <tbody>
                             {% if players|length == 0 %}
                               <tr style="text-align: center">
-                                <td>Currently, no one is playing on {{ config.lua.serverName }}.</td>
+                                <td>Currently, no one is playing on {{ world.name }} Server.</td>
                               </tr>
                             {% else %}
                               <tr bgcolor="#D4C0A1">

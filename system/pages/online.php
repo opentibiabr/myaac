@@ -13,11 +13,11 @@ defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Who is online?';
 
 if ($w = $_POST['world'] ?? null) {
-  header("Location: ?p=online&world=$w");
+  header("Location: ?online/$w");
 }
 $worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `id` ASC")->fetchAll();
 if ($world = $_GET['world'] ?? null) {
-  $world = $db->query("SELECT `id`, `name` FROM `worlds` WHERE `name` = {$db->quote(escapeHtml($world))}")->fetch() ?? null;
+  $world = $db->query("SELECT * FROM `worlds` WHERE `name` = {$db->quote(escapeHtml($world))}")->fetch() ?? null;
 } else {
   $world = count($worlds) == 1 ? $worlds[0]['id'] : $world;
 }
@@ -103,14 +103,14 @@ if ($config['online_record']) {
 
   if ($query && $query->rowCount() > 0) {
     $result = $query->fetch();
-    $record = "{$result['record']} players<br><small>" . date('d/m/Y, H:i:s', strtotime($result['timestamp'])) . '</small>';
+    $d = date('M d Y, H:i:s', strtotime($result['timestamp']));
+    $record = number_format($result['record'] ?? 0) . " players (on $d)";
   }
 }
 
 $twig->display('online.html.twig', array(
   'players' => $players_data,
   'record' => $record,
-  'current_date' => date('d/m/Y'),
   'vocations' => $vocations,
   'worlds' => $worlds,
   'world' => $world,

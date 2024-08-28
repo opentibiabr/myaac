@@ -1022,6 +1022,27 @@ function getWorldName($id)
 }
 
 /**
+ * @param string $type
+ * @return string
+ */
+function getWorldType(string $type): string
+{
+  $retro = configLua('toggleServerIsRetroPVP') ? 'Retro ' : '';
+  switch ($type) {
+    case 'pvp':
+      return "{$retro}Open PvP";
+    case 'no-pvp':
+    case 'non-pvp':
+      return 'Optional PvP';
+    case 'pvp-enforced':
+    case 'enforced':
+      return "{$retro}Hardcore PvP";
+    default:
+      return $type;
+  }
+}
+
+/**
  * Mailing users.
  * $config['mail_enabled'] have to be enabled.
  *
