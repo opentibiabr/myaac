@@ -1,4 +1,5 @@
 <?php
+global $db;
 /**
  * Guilds
  *
@@ -12,25 +13,28 @@
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Guilds';
 
-if($db->hasTable('guild_members'))
-	define('GUILD_MEMBERS_TABLE', 'guild_members');
+if ($db->hasTable('guild_members'))
+  define('GUILD_MEMBERS_TABLE', 'guild_members');
 else
-	define('GUILD_MEMBERS_TABLE', 'guild_membership');
+  define('GUILD_MEMBERS_TABLE', 'guild_membership');
 
 define('MOTD_EXISTS', $db->hasColumn('guilds', 'motd'));
 
-//show list of guilds
-if(empty($action)) {
-	require PAGES . 'guilds/list_of_guilds.php';
+$world = null;
+$worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `name` ASC")->fetchAll();
+if ($worldId = $_POST['world'] ?? null) {
+  $world = $db->query("SELECT `id`, `name` FROM `worlds` WHERE `id` = $worldId")->fetch();
 }
-else {
-	if(!ctype_alnum(str_replace(array('-', '_'), '', $action))) {
-		error('Error: Action contains illegal characters.');
-	}
-	else if(file_exists(PAGES . 'guilds/' . $action . '.php')) {
-		require PAGES . 'guilds/' . $action . '.php';
-	}
-	else {
-		error('This page does not exists.');
-	}
+
+//show list of guilds
+if (empty($action)) {
+  require PAGES . 'guilds/list_of_guilds.php';
+} else {
+  if (!ctype_alnum(str_replace(array('-', '_'), '', $action))) {
+    error('Error: Action contains illegal characters.');
+  } else if (file_exists(PAGES . "guilds/{$action}.php")) {
+    require PAGES . "guilds/{$action}.php";
+  } else {
+    error('This page does not exists.');
+  }
 }
