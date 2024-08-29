@@ -1,5 +1,4 @@
-<?php
-global $db;
+<?php global $db, $world;
 /**
  * Guilds
  *
@@ -22,8 +21,13 @@ define('MOTD_EXISTS', $db->hasColumn('guilds', 'motd'));
 
 $world = null;
 $worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `name` ASC")->fetchAll();
-if ($worldId = $_POST['world'] ?? null) {
+if ($worldId = $_POST['world_id'] ?? null) {
   $world = $db->query("SELECT `id`, `name` FROM `worlds` WHERE `id` = $worldId")->fetch();
+}
+
+if (!empty($action) && in_array($action, ['create']) && !$world) {
+  header('Location: ' . BASE_URL . '?subtopic=guilds');
+  return;
 }
 
 //show list of guilds

@@ -271,9 +271,8 @@
                       {% set showedRank, i = false, 0 %}
                       {% for rank in guild_members if rank.members|length > 0 %}
                         {% set rankStyle, i = getStyle(i), i + 1 %}
-
                         {% for player in rank.members %}
-                          <tr bgcolor="{{ rankStyle }}">
+                          <tr bgcolor="{{ rankStyle }}" style="height: 30px">
                             <td>
                               {% if not showedRank %}{{ rank.rank_name }}{% endif %}
                               {% set showedRank = true %}
@@ -283,7 +282,7 @@
                               {% set playerName = player.getName() %}
                               <form
                                 action="?subtopic=guilds&action=change_nick&name={{ playerName }}&guild={{ guild_name }}"
-                                method="post">
+                                method="post" style="margin-bottom: 0;">
                                 {{ getPlayerLink(playerName, true)|raw }}
 
                                 {% set showGuildNick = false %}
@@ -498,11 +497,14 @@
                             border="0<BR"></td>
     <td align="center">
       <form action="{{ getLink('guilds') }}" method="post">
+        <input type="hidden" name="world_id" value="{{ world_id }}">
         {{ include('buttons.back.html.twig') }}
       </form>
     </td>
-    <td align="center"><img src="{{ template_path }}/images/global/general/blank.gif" width="80" height="1"
-                            border="0<BR"></td>
+    <td align="center">
+      <img src="{{ template_path }}/images/global/general/blank.gif" width="80" height="1"
+           border="0<BR">
+    </td>
   </tr>
   </tbody>
 </table>

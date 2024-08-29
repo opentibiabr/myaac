@@ -1,22 +1,23 @@
-{% set title = 'Created guild' %}
+{% set title = 'Created guild on ' ~ world.name ~ ' world' %}
 
 {% set motd = '' %}
 {% if constant('MOTD_EXISTS') %}
-{% set motd = ' and motd' %}
+  {% set motd = ' and motd' %}
 {% endif %}
 
-{% set description = '<b>Congratulations!</b><br/>You have created guild <b>' ~ guild_name ~ '</b>. <b>' ~ leader_name ~ '</b> is leader of this guild. Now you can invite players, change picture, description' ~ motd ~ ' of guild. Press submit to open guild manager.' %}
+{% set description = '<b>Congratulations!</b><br/>You have created guild <b>' ~ guild_name ~ '</b> on <b>' ~ world.name ~'</b> world. <b>' ~ leader_name ~ '</b> is leader of this guild. Now you can invite players, change picture, description' ~ motd ~ ' of guild. Press submit to open guild manager.' %}
 {% set custom_buttons = '' %}
 {{ include('success.html.twig') }}
-<br/>
+<br />
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
-	<tr>
-		<td>
-			<div style="text-align:center">
-				<form action="{{ getLink('guilds') ~ '/' ~ guild_name }}" method="post">
-				{{ include('buttons.submit.html.twig') }}
-				</form>
-			</div>
-		</td>
-	</tr>
+  <tr>
+    <td>
+      <div style="text-align:center">
+        <form action="{{ getLink('guilds') ~ '/' ~ guild_name }}" method="post">
+          <input type="hidden" name="world_id" value="{{ world.id }}">
+          {{ include('buttons.submit.html.twig') }}
+        </form>
+      </div>
+    </td>
+  </tr>
 </table>

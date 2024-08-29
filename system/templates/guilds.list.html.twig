@@ -40,7 +40,7 @@ Please select the game world of your choice to see the list of all existing guil
                       <form action="{{ getLink('guilds') }}" method="post">
                         <td style="vertical-align:middle;" class="LabelV150">World Name:</td>
                         <td style="width: 100%">
-                          <select name="world" style="width: 100%">
+                          <select name="world_id" style="width: 100%">
                             <option value="">(select world)</option>
                             {% for item in worlds %}
                               <option
@@ -79,7 +79,7 @@ Please select the game world of your choice to see the list of all existing guil
               style="background-image:url({{ template_path }}/images/content/table-headline-border.gif);"></span>
         <span class="CaptionVerticalLeft"
               style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></span>
-        <div class="Text">Active Guilds on {{ world.name }}</div>
+        <div class="Text">Active Guilds on {{ world.name }} World</div>
         <span class="CaptionVerticalRight"
               style="background-image:url({{ template_path }}/images/content/box-frame-vertical.gif);"></span>
         <span class="CaptionBorderBottom"
@@ -159,11 +159,10 @@ Please select the game world of your choice to see the list of all existing guil
                               <td>
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                   <form action="?subtopic=guilds&action=create" method="post">
-                                    <form action="?subtopic=guilds&action=create" method="post">
-                                      {% set button_name = 'Found Guild' %}
-                                      {% set button_image = '_sbutton_foundguild' %}
-                                      {% include('buttons.base.html.twig') %}
-                                    </form>
+                                    <input type="hidden" name="world_id" value="{{ world.id }}">
+                                    {% set button_name = 'Found Guild' %}
+                                    {% set button_image = '_sbutton_foundguild' %}
+                                    {% include('buttons.base.html.twig') %}
                                   </form>
                                 </table>
                               </td>
@@ -201,6 +200,7 @@ Please select the game world of your choice to see the list of all existing guil
             No guild found that suits your needs?
             <br />
             <form action="?subtopic=guilds&action=create" method="post">
+              <input type="hidden" name="world_id" value="{{ world.id }}">
               {% set button_name = 'Found Guild' %}
               {% set button_image = '_sbutton_foundguild' %}
               {% include('buttons.base.html.twig') %}

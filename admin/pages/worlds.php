@@ -71,10 +71,11 @@ if (isset($_POST['save'])) {
 
     if (!$error) {
       try {
+        $godName = "GOD on {$name}";
         $db->exec("INSERT INTO `worlds` (`name`, `type`, `ip`, `port`) VALUES ({$db->quote($name)}, {$db->quote($type)}, {$db->quote($ip)}, {$port});");
-        $sql = "INSERT INTO `players` (`name`, `group_id`, `account_id`, `level`, `vocation`, `health`, `healthmax`, `experience`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `maglevel`, `mana`, `manamax`, `manaspent`, `town_id`, `conditions`, `cap`, `sex`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `world_id`) VALUES ('GOD {$name}', 6, {$account_logged->getId()}, 2, 0, 155, 155, 100, 113, 115, 95, 39, 75, 0, 60, 60, 0, 8, '', 410, 1, 10, 0, 10, 0, 10, 0, 10, 0, {$db->lastInsertId()})";
+        $sql = "INSERT INTO `players` (`name`, `group_id`, `account_id`, `level`, `vocation`, `health`, `healthmax`, `experience`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `maglevel`, `mana`, `manamax`, `manaspent`, `town_id`, `conditions`, `cap`, `sex`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `world_id`) VALUES ('{$godName}', 6, {$account_logged->getId()}, 2, 0, 155, 155, 100, 113, 115, 95, 39, 75, 0, 60, 60, 0, 8, '', 410, 1, 10, 0, 10, 0, 10, 0, 10, 0, {$db->lastInsertId()})";
         $db->query($sql);
-        echo_success("World {$name} and 'GOD {$name}' created at: " . date('G:i'));
+        echo_success("World {$name} and '{$godName}' created at: " . date('G:i'));
         $action = "list";
 //        header("Location: $base");
 //        $twig->display('success.html.twig', array(

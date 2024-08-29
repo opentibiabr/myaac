@@ -1,3 +1,6 @@
 {% set button_name = 'Back' %}
 {% set button_image = '_sbutton_back' %}
+{% if world_id is not empty %}
+  {% set world_id = world_id %}
+{% endif %}
 {% include('buttons.base.html.twig') %}
