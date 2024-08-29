@@ -41,7 +41,7 @@ Please select the game world of your choice to see the list of all existing guil
                         <td style="vertical-align:middle;" class="LabelV150">World Name:</td>
                         <td style="width: 100%">
                           <select name="world_id" style="width: 100%">
-                            <option value="">(select world)</option>
+                            <option value="">(choose world)</option>
                             {% for item in worlds %}
                               <option
                                 value="{{ item.id }}" {% if item.id == world.id %} selected="selected"{% endif %}>{{ item.name }}</option>

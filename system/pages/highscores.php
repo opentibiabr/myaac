@@ -16,7 +16,7 @@ if ($config['account_country'] && $config['highscores_country_box'])
   require SYSTEM . 'countries.conf.php';
 
 $list = $_GET['list'] ?? '';
-$world = $_GET['world'] ?? 0;
+$world = $_GET['world'] ?? '';
 $vocation = $_GET['vocation'] ?? "";
 $_page = $_GET['page'] ?? 0;
 
@@ -52,12 +52,12 @@ if ($config['highscores_vocation_box'] && isset($vocation)) {
   }
 }
 
-if ($world > 0) {
-  if (!$w = $db->query("SELECT `id` FROM `worlds` WHERE `id` = {$world}")->fetch()['id'] ?? null) {
+if (!empty($world)) {
+  if (!$world = $db->query("SELECT * FROM `worlds` WHERE `name` = {$db->quote(escapeHtml($world))}")->fetch() ?? null) {
     header('Location: ' . "?highscores");
     return;
   }
-  $add_sql .= " AND `world_id` = {$world} ";
+  $add_sql .= " AND `world_id` = {$world['id']} ";
 }
 
 define('SKILL_FRAGS', -1);
@@ -231,10 +231,10 @@ if ($rank_category) {
                 <td>World:</td>
                 <td>
                   <select name="world">
-                    <option value="0" <?= (int)$rank_world == 0 ? 'selected' : '' ?>>All Worlds</option>
+                    <option value="" <?= (int)$rank_world == 0 ? 'selected' : '' ?>>All Worlds</option>
                     <?php foreach ($worlds as $item) { ?>
                       <option
-                        value="<?= $item['id'] ?>" <?= $item['id'] == $world ? 'selected' : '' ?>><?= $item['name'] ?></option>
+                        value="<?= $item['name'] ?>" <?= $world && $item['id'] == $world['id'] ? 'selected' : '' ?>><?= $item['name'] ?></option>
                     <?php } ?>
                   </select>
                 </td>
