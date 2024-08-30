@@ -17,7 +17,7 @@ if ($w = $_POST['world'] ?? null) {
 }
 $worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `id` ASC")->fetchAll();
 if ($world = $_GET['world'] ?? null) {
-  $world = $db->query("SELECT * FROM `worlds` WHERE `name` = {$db->quote(escapeHtml($world))}")->fetch() ?? null;
+  $world = $db->query("SELECT * FROM `worlds` WHERE `name` = {$db->quote($world)}")->fetch() ?? null;
 } else {
   $world = count($worlds) == 1 ? $worlds[0]['id'] : $world;
 }

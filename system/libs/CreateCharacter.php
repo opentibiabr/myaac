@@ -107,6 +107,7 @@ class CreateCharacter
     }
 
     /**
+     * @param string $worldName
      * @param string $name
      * @param int $sex
      * @param int $vocation
@@ -119,10 +120,16 @@ class CreateCharacter
      * @throws Twig_Error_Runtime
      * @throws Twig_Error_Syntax
      */
-    public function doCreate($name, $sex, $vocation, $town, $account, &$errors)
+    public function doCreate($worldName, $name, $sex, $vocation, $town, $account, &$errors)
     {
+        global $db;
+
         if (!$this->check($name, $sex, $vocation, $town, $errors)) {
             return false;
+        }
+
+        if (!$worldId = $db->query("SELECT `id` FROM `worlds` WHERE `name` = {$db->quote($worldName)}")->fetch()['id'] ?? null) {
+          return false;
         }
 
         if (empty($errors)) {
@@ -142,8 +149,6 @@ class CreateCharacter
         if (!empty($errors)) {
             return false;
         }
-
-        global $db;
 
         if ($sex == "0")
             $char_to_copy->setLookType(136);
@@ -213,6 +218,7 @@ class CreateCharacter
             $player->setMain($number_of_players_on_account == 0);
         }
 
+        $player->setWorldId($worldId);
         $player->save();
         $player->setCustomField('created', time());
 
@@ -241,15 +247,15 @@ class CreateCharacter
             }
         }
 
-        global $twig;
-        $twig->display('success.html.twig', array(
-            'title' => 'Character Created',
-            'description' => 'The character <b>' . $name . '</b> has been created.<br/>
+      global $twig;
+      $twig->display('success.html.twig', array(
+        'title' => 'Character Created',
+        'description' => "The character <b>{$name}</b> has been created on <b>{$worldName}</b> world.<br/>
 					Please select the outfit when you log in for the first time.<br/><br/>
-					<b>See you on ' . configLua('serverName') . '!</b>'
-        ));
+					<b>See you on {$worldName}!</b>"
+      ));
 
-        $account->logAction('Created character <b>' . $name . '</b>.');
+        $account->logAction("Created character <b>$name</b> on <b>$worldName</b> world.");
         return true;
     }
 }

@@ -98,8 +98,10 @@ if ($action == '') {
             $welcome_message = '<span style="color: red">Your account is banished until ' . date("j F Y, G:i:s", $account_logged->getBanTime()) . '!</span>';
         else
             $welcome_message = '<span style="color: red">Your account is banished FOREVER!</span>';
-    else
-        $welcome_message = 'Welcome to your ' . configLua('serverName') . ' account!';
+    else {
+      $first_name = $account_rlname ? ucwords(strtolower(@explode(" ", $account_rlname)[0])) : "";
+      $welcome_message = "Welcome to your account {$first_name}!";
+    }
 
     $verify_message = "";
     if ($config['mail_enabled'] && $config['account_mail_verify'] && $account_logged->getCustomField('email_verified') != '1') {

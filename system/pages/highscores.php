@@ -53,7 +53,7 @@ if ($config['highscores_vocation_box'] && isset($vocation)) {
 }
 
 if (!empty($world)) {
-  if (!$world = $db->query("SELECT * FROM `worlds` WHERE `name` = {$db->quote(escapeHtml($world))}")->fetch() ?? null) {
+  if (!$world = $db->query("SELECT * FROM `worlds` WHERE `name` = {$db->quote($world)}")->fetch() ?? null) {
     header('Location: ' . "?highscores");
     return;
   }

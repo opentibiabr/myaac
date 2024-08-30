@@ -351,28 +351,39 @@
 										        <br>
                             <small>
                               <span
-                                id="CharacterNameOf_0">{{ config.vocations[player.getVocation()] }} - Level {{ player.getLevel() }} - On {{ config['lua']['serverName'] }}
-                              <span style="position: relative; top: 3px; margin-left: 5px;">
-                                <span class="HelperDivIndicator"
-                                      onmouseover="ActivateHelperDiv($(this), 'BattlEye Protected Game World', '<p>This character lives on a game world which has been protected by BattleEye since April 19, 2018.</p>', '');"
-                                      onmouseout="$('#HelperDivContainer').hide();">
-                                  <img style="border:0px;"
-                                       src="{{ template_path }}/images/global/content/icon_battleye.gif">
+                                id="CharacterNameOf_0">{{ config.vocations[player.getVocation()] }} - Level {{ player.getLevel() }} - On {{ getWorldName(player.getWorldId()) }}
+                                <span style="position: relative; top: 3px; margin-left: 5px;">
+                                  <span class="HelperDivIndicator"
+                                        onmouseover="ActivateHelperDiv($(this), 'BattlEye Protected Game World', '<p>This character lives on a game world which has been protected by BattleEye since this start.</p>', '');"
+                                        onmouseout="$('#HelperDivContainer').hide();">
+                                    <img style="border:0px;"
+                                         src="{{ template_path }}/images/global/content/icon_battleye.gif">
+                                  </span>
                                 </span>
-                              </span>
-                              {% if guild.rank is not null %}
-                                <br>
-                                <span>Guild Membership: {{ guild.rank }} of the <a
-                                    href="">{{ guild.link|raw }}</a></span>
-                              {% endif %}
+                                {% if guild.rank is not null %}
+                                  <br>
+                                  <span>Guild Membership: {{ guild.rank }} of the <a
+                                      href="">{{ guild.link|raw }}</a></span>
+                                {% endif %}
                               </span>
                             </small>
                           </span>
                         </td>
                         <td>
-                          <img id="DailyReawardState"
-                               src="{{ template_path }}/images/global/content/icon-status-dailyreward-collected.png"
-                               alt="Daily Reward collected" title="Daily Reward collected">
+                          {% if player.rewardCollected() %}
+                            <img id="DailyReawardState"
+                                 src="{{ template_path }}/images/global/content/icon-status-dailyreward-collected.png"
+                                 alt="Daily Reward collected" title="Daily Reward collected">
+                          {% else %}
+                            <img id="DailyReawardState"
+                                 src="{{ template_path }}/images/global/content/icon-status-dailyreward-notcollected.png"
+                                 alt="Daily Reward not collected" title="Daily Reward not collected">
+                          {% endif %}
+                          {% if player.isHidden() %}
+                            <img id="DailyReawardState"
+                                 src="{{ template_path }}/images/global/content/icon-status-hidden.png"
+                                 alt="hidden" title="hidden">
+                          {% endif %}
                           {% if player.isOnline() %}
                             <img src="templates/tibiacom/images/on.gif" title="Online">
                           {% else %}

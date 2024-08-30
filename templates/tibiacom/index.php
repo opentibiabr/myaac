@@ -13,6 +13,7 @@ if (isset($config['boxes']))
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL; ?>images/favicon.ico"/>
     <link rel="shortcut icon" type="image/x-icon" href="<?= BASE_URL; ?>images/favicon.ico"/>
     <link href="<?= $template_path; ?>/basic.css" rel="stylesheet" type="text/css"/>
+    <link href="<?= BASE_URL ?>tools/css/custom.css" rel="stylesheet" type="text/css"/>
 
     <script type="text/javascript" src="tools/basic.js"></script>
     <script type="text/javascript" src="<?= $template_path; ?>/ticker.js"></script>

@@ -42,6 +42,8 @@ if (isset($_POST['save'])) {
   if (!$name = $_POST['name']) {
     echo_error("World name is required!");
   }
+  $name = stripslashes(ucwords(strtolower($name)));
+
   if (!$type = $_POST['type']) {
     echo_error("Server type is required!");
   }

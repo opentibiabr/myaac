@@ -194,7 +194,7 @@ class OTS_Guild extends OTS_Row_DAO implements IteratorAggregate, Countable
     else {
       // INSERT query on database
       $this->db->exec("INSERT INTO `guilds` (`name`, `$ownerid`, `$creationdata`, `description`, `world_id`) VALUES ({$this->db->quote($this->data['name'])}, {$this->data['ownerid']}, {$this->data['creationdata']}, '', {$this->data['world_id']})");
-      // ID of new group
+      // ID of new guild
       $this->data['id'] = $this->db->lastInsertId();
     }
   }
