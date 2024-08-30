@@ -53,6 +53,10 @@ if (isset($_POST['save'])) {
   if (!$port = $_POST['port']) {
     echo_error("Port is required!");
   }
+  if (!$location = $_POST['location']) {
+    echo_error("Location is required!");
+  }
+  $motd = $_POST['motd'] ?? '';
 
   if ($id = $_POST['world_id'] ?? null) {
     $world = $id > 0 ? $db->query("SELECT * FROM `worlds` WHERE `id` = {$id}")->fetch() : null;
@@ -61,23 +65,34 @@ if (isset($_POST['save'])) {
     }
 
     if (!$error) {
-      $db->exec("UPDATE `worlds` SET `name` = {$db->quote($name)}, `type` = {$db->quote($type)}, `ip` = {$db->quote($ip)}, `port` = {$port} WHERE `id` = {$id}");
+      $db->exec("UPDATE `worlds` SET `name` = {$db->quote($name)}, `type` = {$db->quote($type)}, `motd` = {$db->quote($motd)}, `location` = {$db->quote($location)}, `ip` = {$db->quote($ip)}, `port` = {$port} WHERE `id` = {$id}");
       echo_success("World {$name} saved at: " . date('G:i'));
     }
   } else {
     if ($db->query("SELECT `id` FROM `worlds` WHERE `name` = {$db->quote($name)}")->fetch()) {
       echo_error("World name is already in use!");
+    } else if ($port == 7171) {
+      echo_error("World port is unavailable!");
     } else if ($db->query("SELECT `id` FROM `worlds` WHERE `port` = {$port}")->fetch()) {
       echo_error("World port is already in use!");
     }
 
     if (!$error) {
       try {
-        $godName = "GOD on {$name}";
-        $db->exec("INSERT INTO `worlds` (`name`, `type`, `ip`, `port`) VALUES ({$db->quote($name)}, {$db->quote($type)}, {$db->quote($ip)}, {$port});");
-        $sql = "INSERT INTO `players` (`name`, `group_id`, `account_id`, `level`, `vocation`, `health`, `healthmax`, `experience`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `maglevel`, `mana`, `manamax`, `manaspent`, `town_id`, `conditions`, `cap`, `sex`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `world_id`) VALUES ('{$godName}', 6, {$account_logged->getId()}, 2, 0, 155, 155, 100, 113, 115, 95, 39, 75, 0, 60, 60, 0, 8, '', 410, 1, 10, 0, 10, 0, 10, 0, 10, 0, {$db->lastInsertId()})";
-        $db->query($sql);
-        echo_success("World {$name} and '{$godName}' created at: " . date('G:i'));
+        generateQueryBuild('worlds', [
+          'name' => $db->quote($name), 'type' => $db->quote($type), 'ip' => $db->quote($ip),
+          'port' => $port, 'location' => $location, 'motd' => $motd, 'creation' => time()
+        ]);
+
+        generateQueryBuild('players', [
+          'name' => $godName = "GOD on {$name}", 'group_id' => 6, 'account_id' => $account_logged->getId(),
+          'level' => 2, 'vocation' => 0, 'health' => 155, 'healthmax' => 155, 'experience' => 100, 'lookbody' => 113,
+          'lookfeet' => 115, 'lookhead' => 95, 'looklegs' => 39, 'looktype' => 75, 'maglevel' => 0, 'mana' => 60,
+          'manamax' => 60, 'manaspent' => 0, 'town_id' => 8, 'conditions' => '', 'cap' => 410, 'sex' => 1,
+          'skill_club' => 10, 'skill_club_tries' => 0, 'skill_sword' => 10, 'skill_sword_tries' => 0, 'skill_axe' => 10,
+          'skill_axe_tries' => 0, 'skill_dist' => 10, 'skill_dist_tries' => 0, 'world_id' => $db->lastInsertId()
+        ]);
+        echo_success("World {$name} and '{$godName}' created at: " . date('H:i'));
         $action = "list";
 //        header("Location: $base");
 //        $twig->display('success.html.twig', array(
@@ -122,11 +137,11 @@ if ($id > 0 || $action === 'add') {
             <div class="col-12 col-md-3 mb-3">
               <label for="type" class="control-label">Server Type:</label>
               <select class="form-control" id="type" name="type" required>
-                <?php foreach (['pvp', 'no-pvp', 'pvp-enforced'] as $item):
+                <?php foreach (['pvp', 'no-pvp', 'pvp-enforced', 'retro-pvp', 'retro-pvp-enforced'] as $item):
                   $type = $type ?? ($world['type'] ?? '')
                   ?>
                   <option
-                    value="<?= $item ?>" <?= ($type == $item ? 'selected' : '') ?>><?= mb_strtoupper($item) ?></option>
+                    value="<?= $item ?>" <?= ($type == $item ? 'selected' : '') ?>><?= getWorldType($item) ?></option>
                 <?php endforeach; ?>
               </select>
             </div>
@@ -141,6 +156,24 @@ if ($id > 0 || $action === 'add') {
               <input type="number" class="form-control" id="port" name="port"
                      autocomplete="off" style="cursor: auto;" maxlength="5"
                      value="<?= $port ?? ($world['port'] ?? '') ?>" required />
+            </div>
+            <div class="col-12 col-md-3 mb-3">
+              <label for="location" class="control-label">Location:</label>
+              <select class="form-control" id="location" name="location" required>
+                <?php foreach (['Europe', 'North America', 'South America', 'Oceania'] as $k => $item):
+                  $location = $location ?? ($world['location'] ?? '');
+                  $locId = $k + 1;
+                  ?>
+                  <option
+                    value="<?= $locId ?>" <?= ($location == $locId ? 'selected' : '') ?>><?= $item ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            <div class="col-12 col-md-9 mb-3">
+              <label for="motd" class="control-label">Motd:</label>
+              <input type="text" class="form-control" id="motd" name="motd"
+                     autocomplete="off" style="cursor: auto;" maxlength="200"
+                     value="<?= $motd ?? ($world['motd'] ?? '') ?>" />
             </div>
           </div>
           <input type="hidden" name="save" value="yes" />
@@ -161,7 +194,7 @@ if ($id > 0 || $action === 'add') {
   $worlds = $db->query("SELECT * FROM `worlds` ORDER BY `id` ASC")->fetchAll();
   ?>
   <div class="row">
-    <div class="col-12 col-md-8">
+    <div class="col-12 col-md-9">
       <div class="box">
         <div class="box-header mb-1">
           <h3 class="box-title">Worlds found on your server</h3>
@@ -176,18 +209,22 @@ if ($id > 0 || $action === 'add') {
             <tr>
               <th style="width: 100px; text-align: center">ID</th>
               <th>Name</th>
-              <th style="width: 120px; text-align: center">Server Type</th>
+              <th style="width: 150px; text-align: center">Server Type</th>
+              <th style="width: 150px; text-align: center">Location</th>
               <th style="width: 100px; text-align: center">IP</th>
               <th style="width: 100px; text-align: center">Port</th>
+              <th style="width: 220px; text-align: center">Created at</th>
               <th style="width: 40px;"></th>
             </tr>
             <?php foreach ($worlds as $world) { ?>
               <tr>
                 <td style="text-align: center"><?= $world['id'] ?></td>
                 <td><?= $world['name'] ?></td>
-                <td style="text-align: center"><?= $world['type'] ?></td>
+                <td style="text-align: center"><?= getWorldType($world['type']) ?></td>
+                <td style="text-align: center"><?= $world['location'] ?></td>
                 <td style="text-align: center"><?= $world['ip'] ?></td>
                 <td style="text-align: center"><?= $world['port'] ?></td>
+                <td style="text-align: center"><?= date("j F Y, H:i:s", $world['creation']) ?></td>
                 <td>
                   <a href="?p=worlds&id=<?= $world['id'] ?>">
                     <span class="btn btn-success btn-sm edit"><i class="fa fa-edit"></i></span>

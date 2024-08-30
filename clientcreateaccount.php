@@ -30,9 +30,10 @@ $response = null;
 
 switch ($action) {
   case 'getaccountcreationstatus':
+    $data     = getWorldsData();
     $response = json_encode([
-      "Worlds"               => getWorlds(),
-      "RecommendedWorld"     => configLua('serverName'),
+      "Worlds"               => $data['data'],
+      "RecommendedWorld"     => $data['recommended'],
       "IsCaptchaDeactivated" => true
     ]);
     break;
@@ -124,7 +125,7 @@ die($response);
  *
  * @return array
  */
-function getWorlds()
+function getWorldsData(): array
 {
   global $db;
   $response = [];
@@ -134,15 +135,15 @@ function getWorlds()
       "Name"                        => $world['name'],
       "PlayersOnline"               => intval($playersOnline),
       "CreationDate"                => intval($world['creation'] ?? 0),
-      "Region"                      => $world['location'] ?? "America",
+      "Region"                      => $world['location'],
       "PvPType"                     => getWorldType($world['type']),
       "PremiumOnly"                 => configLua('onlyPremiumAccount'),
-      "TransferType"                => "Blocked",
+      "TransferType"                => "Blocked", //or "Available"
       "BattlEyeActivationTimestamp" => intval($world['creation'] ?? 0),
-      "BattlEyeInitiallyActive"     => 0
+      "BattlEyeInitiallyActive"     => 1
     ];
   }
-  return $response;
+  return ['data' => $response, 'recommended' => $response[array_rand($response)]['Name']];
 }
 
 /**
@@ -171,7 +172,7 @@ function validatePassword($password): array
  * Function to create account
  *
  * @param array $data
- * @return false|string
+ * @return string
  * @throws Exception
  */
 function createAccount(array $data)
@@ -238,13 +239,13 @@ function createAccount(array $data)
         'verify_url' => generateLink($verify_url, $verify_url, true)
       ));
 
-      if (!_mail($data['email'], 'New account on ' . configLua('serverName'), $body_html)) {
+      if (!_mail($data['email'], 'New account on ' . $data['selectedWorld'], $body_html)) {
         $new_account->delete();
         throw new Exception('An error occurred while sending email! Account not created. Try again. For Admin: More info can be found in system/logs/mailer-error.log');
       }
     } else if ($config['mail_enabled'] && $config['account_welcome_mail']) {
       $mailBody = $twig->render('account.welcome_mail.html.twig', ['account' => $account_name]);
-      if (!_mail($data['email'], 'Your account on ' . configLua('serverName'), $mailBody)) {
+      if (!_mail($data['email'], 'Your account on ' . $data['selectedWorld'], $mailBody)) {
         throw new Exception('An error occurred while sending email. For Admin: More info can be found in system/logs/mailer-error.log');
       }
     }

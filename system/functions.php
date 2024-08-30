@@ -1027,16 +1027,17 @@ function getWorldName($id): string
  */
 function getWorldType(string $type): string
 {
-  $retro = configLua('toggleServerIsRetroPVP') ? 'Retro ' : '';
   switch ($type) {
     case 'pvp':
-      return "{$retro}Open PvP";
+      return "Open PvP";
     case 'no-pvp':
-    case 'non-pvp':
       return 'Optional PvP';
     case 'pvp-enforced':
-    case 'enforced':
-      return "{$retro}Hardcore PvP";
+      return "Hardcore PvP";
+    case 'retro-pvp':
+      return "Retro Open PvP";
+    case 'retro-pvp-enforced':
+      return "Retro Hardcore PvP";
     default:
       return $type;
   }
@@ -1772,6 +1773,29 @@ function getPlayerNameByAccount($id, $name = null, $only = true, $orderBy = 'id'
     }
   }
   return '';
+}
+
+function generateQueryBuild(string $tableName, array $fields = [], $exec = true, $update = false)
+{
+  global $db;
+
+  $columns = implode(', ', array_keys($fields));
+  $values = implode(', ', array_map(function ($value) use ($db) {
+    if (is_string($value)) {
+      return preg_match('/^\'[^\']*\'$/', $value) || preg_match('/^\"[^\"]*\"$/', $value) ?
+        $value : $db->quote($value);
+    }
+    return $value;
+  }, array_values($fields)));
+
+  // INSERT query on database
+  $sql = "INSERT INTO `$tableName` ($columns) VALUES ($values)";
+  try {
+    if (!$exec) return $sql;
+    $db->exec($sql);
+  } catch (Exception $e) {
+    log_append('query_build.log', "Error on query: ['$sql'] -> {$e->getMessage()}");
+  }
 }
 
 // validator functions

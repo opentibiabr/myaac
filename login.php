@@ -115,8 +115,8 @@ switch ($action) {
     $bossBoost     = $db->query("SELECT * FROM " . $db->tableName('boosted_boss'))->fetchAll();
     die(json_encode([
       'boostedcreature' => true,
-      'creatureraceid'  => intval($creatureBoost[0]['raceid']),
-      'bossraceid'      => intval($bossBoost[0]['raceid'])
+      'creatureraceid'  => intval($creatureBoost[0]['raceid'] ?? 0),
+      'bossraceid'      => intval($bossBoost[0]['raceid'] ?? 0)
     ]));
 
   case 'login':
@@ -133,13 +133,13 @@ switch ($action) {
           'externalport'               => $world['port'],
           'externalportprotected'      => $world['port'],
           'externalportunprotected'    => $world['port'],
-          'previewstate'               => 0,
-          'location'                   => 'BRA', // BRA, EUR, USA
+          'previewstate'               => 0, // 0 => regular or 1 => experimental
+          'location'                   => $world['location'],
           'anticheatprotection'        => false,
-          'pvptype'                    => array_search($world['type'], ['pvp', 'no-pvp', 'pvp-enforced']),
+          'pvptype'                    => array_search($world['type'], ['pvp', 'no-pvp', 'pvp-enforced', 'retro-pvp', 'retro-pvp-enforced']),
           'istournamentworld'          => false,
           'restrictedstore'            => false,
-          'currenttournamentphase'     => 2
+          'currenttournamentphase'     => 0
         ];
       }
     }

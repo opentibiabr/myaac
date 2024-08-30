@@ -468,13 +468,8 @@ class OTS_Player extends OTS_Row_DAO
         }
       }
 
-      $columns = implode(', ', array_keys($fields));
-      $values = implode(', ', array_values($fields));
-
       // INSERT query on database
-      log_append('test.log', "query: INSERT INTO `players` ($columns) VALUES ($values)");
-
-      $this->db->query("INSERT INTO `players` ($columns) VALUES ($values)");
+      $this->db->query(generateQueryBuild('players', $fields, false));
       // ID of new player
       $this->data['id'] = $this->db->lastInsertId();
     }
