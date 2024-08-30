@@ -160,12 +160,11 @@ if ($id > 0 || $action === 'add') {
             <div class="col-12 col-md-3 mb-3">
               <label for="location" class="control-label">Location:</label>
               <select class="form-control" id="location" name="location" required>
-                <?php foreach (['Europe', 'North America', 'South America', 'Oceania'] as $k => $item):
+                <?php foreach (['Europe', 'North America', 'South America', 'Oceania'] as $item):
                   $location = $location ?? ($world['location'] ?? '');
-                  $locId = $k + 1;
                   ?>
                   <option
-                    value="<?= $locId ?>" <?= ($location == $locId ? 'selected' : '') ?>><?= $item ?></option>
+                    value="<?= $item ?>" <?= ($location == $item ? 'selected' : '') ?>><?= $item ?></option>
                 <?php endforeach; ?>
               </select>
             </div>
