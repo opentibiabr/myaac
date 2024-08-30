@@ -31,7 +31,7 @@ $response = null;
 switch ($action) {
   case 'getaccountcreationstatus':
     $response = json_encode([
-      "Worlds"               => [getServerStatus()],
+      "Worlds"               => getWorlds(),
       "RecommendedWorld"     => configLua('serverName'),
       "IsCaptchaDeactivated" => true
     ]);
@@ -95,10 +95,10 @@ switch ($action) {
             "password"      => $result->Password,
             "characterName" => stripslashes(ucwords(strtolower($result->CharacterName))),
             "characterSex"  => $result->CharacterSex == 'male' ? 1 : 0,
-            //"clientType"      => "Client",
-            //"recaptcha2token" => "",
+            "selectedWorld" => stripslashes(ucwords(strtolower($result->SelectedWorld))),
             //"recaptcha3token" => "",
-            //"selectedWorld"   => configLua('serverName'),
+            //"recaptcha2token" => "",
+            //"clientType"      => "Client",
           ]),
           // "Password" => $result->Password
         ]);
@@ -124,38 +124,25 @@ die($response);
  *
  * @return array
  */
-function getServerStatus(): array
+function getWorlds()
 {
   global $db;
-  $playersOnline = $db->query("SELECT COUNT(*) FROM `players_online`")->fetchAll()[0][0] ?? 0;
-  $date          = $db->query("SELECT `date` FROM `myaac_changelog`")->fetch()['date'] ?? 0;
-  switch (configLua('worldType')) {
-    default:
-    case 'pvp':
-      $pvpType = "Open PVP";
-      break;
-    case 'no-pvp':
-      $pvpType = 'Optional PVP';
-      break;
-    case 'pvp-enforced':
-      $pvpType = 'PVP';
-      break;
-    case 'retro-pvp':
-      $pvpType = 'Retro PvP';
-      break;
+  $response = [];
+  foreach ($db->query("SELECT * from `worlds`")->fetchAll() as $world) {
+    $playersOnline = $db->query("SELECT COUNT(*) FROM `players_online` WHERE `world_id` = {$world['id']}")->fetchAll()[0][0] ?? 0;
+    $response[] = [
+      "Name"                        => $world['name'],
+      "PlayersOnline"               => intval($playersOnline),
+      "CreationDate"                => intval($world['creation'] ?? 0),
+      "Region"                      => $world['location'] ?? "America",
+      "PvPType"                     => getWorldType($world['type']),
+      "PremiumOnly"                 => configLua('onlyPremiumAccount'),
+      "TransferType"                => "Blocked",
+      "BattlEyeActivationTimestamp" => intval($world['creation'] ?? 0),
+      "BattlEyeInitiallyActive"     => 0
+    ];
   }
-  return [
-    "Name"                        => configLua('serverName'),
-    "PlayersOnline"               => intval($playersOnline),
-    "CreationDate"                => intval($date),
-    "Region"                      => "America",
-    "PvPType"                     => $pvpType,
-    "PremiumOnly"                 => configLua('onlyPremiumAccount'),
-    "TransferType"                => "Blocked",
-    "BattlEyeActivationTimestamp" => intval($date),
-    "BattlEyeInitiallyActive"     => 0
-  ];
-
+  return $response;
 }
 
 /**
@@ -172,7 +159,7 @@ function validatePassword($password): array
 
   if (strlen($password) < $minLength) $checks = [0];
   foreach ($invalids as $char) {
-    if (strpos($password, $char) !== false) $checks = array_merge($checks, [1]);
+    if (str_contains($password, $char)) $checks = array_merge($checks, [1]);
   }
   if (!preg_match('/[a-z]/', $password)) $checks = array_merge($checks, [2]);
   if (!preg_match('/[A-Z]/', $password)) $checks = array_merge($checks, [3]);
@@ -270,7 +257,7 @@ function createAccount(array $data)
       require_once LIBS . 'CreateCharacter.php';
       $createCharacter = new CreateCharacter();
       $errors = [];
-      if (!$createCharacter->doCreate($data['characterName'], $data['characterSex'], 0, 0, $new_account, $errors)) {
+      if (!$createCharacter->doCreate($data['selectedWorld'], $data['characterName'], $data['characterSex'], 0, 0, $new_account, $errors)) {
         throw new Exception('There was an error creating your character. Please create your character later in account management page.');
       }
     }

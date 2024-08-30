@@ -157,6 +157,8 @@ $config = array(
 		1 => 'Male'
 	),
 
+  'show_filters' => true,
+
 	// vocations
 	'vocations' => array(
 		0 => 'None',
@@ -172,11 +174,11 @@ $config = array(
 
 	// new character config
 	'character_samples' => array( // vocations, format: ID_of_vocation => 'Name of Character to copy'
-		//0 => 'Rook Sample',
-		1 => 'Sorcerer Sample',
-		2 => 'Druid Sample',
-		3 => 'Paladin Sample',
-		4 => 'Knight Sample'
+		0 => 'Rook Sample',
+		//1 => 'Sorcerer Sample',
+		//2 => 'Druid Sample',
+		//3 => 'Paladin Sample',
+		//4 => 'Knight Sample'
 	),
 
     'use_character_sample_skills' => false,

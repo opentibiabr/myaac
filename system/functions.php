@@ -1008,9 +1008,9 @@ function get_plugins()
  * Returning world name by ID
  *
  * @param $id
- * @return mixed|null
+ * @return string
  */
-function getWorldName($id)
+function getWorldName($id): string
 {
   global $db;
   if ($db->hasTable('worlds')) {

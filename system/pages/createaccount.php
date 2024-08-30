@@ -187,6 +187,7 @@ if ($save) {
     if (config('account_create_character_create')) {
         $character_name = isset($_POST['name']) ? stripslashes(ucwords(strtolower($_POST['name']))) : null;
         $character_sex = isset($_POST['sex']) ? (int)$_POST['sex'] : null;
+        $character_world = isset($_POST['world']) ? stripslashes(ucwords(strtolower($_POST['world']))) : null;
         $character_vocation = isset($_POST['vocation']) ? (int)$_POST['vocation'] : null;
         $character_town = isset($_POST['town']) ? (int)$_POST['town'] : null;
         $createCharacter->check($character_name, $character_sex, $character_vocation, $character_town, $errors);
@@ -262,7 +263,7 @@ if ($save) {
         } else {
             if (config('account_create_character_create')) {
                 // character creation
-                $character_created = $createCharacter->doCreate($character_name, $character_sex, $character_vocation, $character_town, $new_account, $errors);
+                $character_created = $createCharacter->doCreate($character_world, $character_name, $character_sex, $character_vocation, $character_town, $new_account, $errors);
                 if (!$character_created) {
                     error('There was an error creating your character. Please create your character later in account management page.');
                     error(implode(' ', $errors));
