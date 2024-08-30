@@ -1029,15 +1029,15 @@ function getWorldType(string $type): string
 {
   switch ($type) {
     case 'pvp':
-      return "Open PvP";
+      return 'Open PvP';
     case 'no-pvp':
       return 'Optional PvP';
     case 'pvp-enforced':
-      return "Hardcore PvP";
+      return 'Hardcore PvP';
     case 'retro-pvp':
-      return "Retro Open PvP";
+      return 'Retro Open PvP';
     case 'retro-pvp-enforced':
-      return "Retro Hardcore PvP";
+      return 'Retro Hardcore PvP';
     default:
       return $type;
   }
@@ -1780,18 +1780,24 @@ function generateQueryBuild(string $tableName, array $fields = [], $exec = true,
   global $db;
 
   $columns = implode(', ', array_keys($fields));
-  $values = implode(', ', array_map(function ($value) use ($db) {
-    if (is_string($value)) {
-      return preg_match('/^\'[^\']*\'$/', $value) || preg_match('/^\"[^\"]*\"$/', $value) ?
-        $value : $db->quote($value);
-    }
-    return $value;
-  }, array_values($fields)));
+  $values = implode(
+    ', ',
+    array_map(function ($value) use ($db) {
+      if (is_string($value)) {
+        return preg_match('/^\'[^\']*\'$/', $value) || preg_match('/^\"[^\"]*\"$/', $value)
+          ? $value
+          : $db->quote($value);
+      }
+      return $value;
+    }, array_values($fields))
+  );
 
   // INSERT query on database
   $sql = "INSERT INTO `$tableName` ($columns) VALUES ($values)";
   try {
-    if (!$exec) return $sql;
+    if (!$exec) {
+      return $sql;
+    }
     $db->exec($sql);
   } catch (Exception $e) {
     log_append('query_build.log', "Error on query: ['$sql'] -> {$e->getMessage()}");
