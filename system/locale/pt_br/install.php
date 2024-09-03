@@ -20,7 +20,8 @@ $locale['not_loaded'] = 'Não carregado';
 $locale['loading_spinner'] = 'Por favor aguarde, instalando...';
 $locale['importing_spinner'] = 'Por favor, aguarde, importando dados...';
 $locale['please_fill_all'] = 'Por favor, preencha todas as entradas!';
-$locale['already_installed'] = 'MyAAC já foi instalado. Por favor, apague o diretório <b> install/ </b>. Se você quiser reinstalar o MyAAC - exclua o arquivo <strong> config.local.php </strong> do diretório principal e atualize a página.';
+$locale['already_installed'] =
+  'MyAAC já foi instalado. Por favor, apague o diretório <b> install/ </b>. Se você quiser reinstalar o MyAAC - exclua o arquivo <strong> config.local.php </strong> do diretório principal e atualize a página.';
 
 // welcome
 $locale['step_welcome'] = 'Bem vindo';
@@ -36,7 +37,8 @@ $locale['step_requirements'] = 'Requisitos';
 $locale['step_requirements_title'] = 'Verificação de requisitos';
 $locale['step_requirements_php_version'] = 'Versão do PHP';
 $locale['step_requirements_write_perms'] = 'Permissões de gravação';
-$locale['step_requirements_failed'] = 'A instalação será desativada até que esses requisitos sejam aprovados..</b><br/>Para mais informações veja o arquivo <b>README</b>.';
+$locale['step_requirements_failed'] =
+  'A instalação será desativada até que esses requisitos sejam aprovados..</b><br/>Para mais informações veja o arquivo <b>README</b>.';
 $locale['step_requirements_extension'] = 'Extensão PHP $EXTENSION$ ';
 
 // config
@@ -63,9 +65,12 @@ $locale['step_database_title'] = 'Importar MySQL schema';
 $locale['step_database_importing'] = 'Seu banco de dados é o MySQL. O nome do banco de dados é: "$DATABASE_NAME$". Importando schema agora...';
 $locale['step_database_config_saved'] = 'A configuração local foi salva no arquivo: config.local.php';
 $locale['step_database_error_path'] = 'Por favor, especifique o caminho da pasta do servidor.';
-$locale['step_database_error_config'] = 'Não é possível encontrar o arquivo config.lua. O caminho da pasta do seu servidor está correto? Volte e verifique novamente.';
-$locale['step_database_error_database_empty'] = 'Não é possível determinar o tipo de banco de dados a partir do config.lua. Seu OTS não é suportado por este AAC.';
-$locale['step_database_error_only_mysql'] = 'Este AAC suporta apenas o MySQL. A partir do seu arquivo de configuração, parece que o seu OTS está usando: $DATABASE_TYPE$ database. Por favor, mude seu banco de dados para o MySQL e siga a instalação novamente.';
+$locale['step_database_error_config'] =
+  'Não é possível encontrar o arquivo config.lua. O caminho da pasta do seu servidor está correto? Volte e verifique novamente.';
+$locale['step_database_error_database_empty'] =
+  'Não é possível determinar o tipo de banco de dados a partir do config.lua. Seu OTS não é suportado por este AAC.';
+$locale['step_database_error_only_mysql'] =
+  'Este AAC suporta apenas o MySQL. A partir do seu arquivo de configuração, parece que o seu OTS está usando: $DATABASE_TYPE$ database. Por favor, mude seu banco de dados para o MySQL e siga a instalação novamente.';
 $locale['step_database_error_table'] = 'A tabela $TABLE$ não existe. Por favor, importe seu schema de banco de dados OTS primeiro.';
 $locale['step_database_error_table_exist'] = 'A tabela $TABLE$ já existe. Parece que o AAC já está instalado. Ignorando importando o schema MySQL.';
 $locale['step_database_error_mysql_connect'] = 'Não é possível conectar-se ao banco de dados MySQL.';
@@ -82,7 +87,8 @@ $locale['step_database_imported_players'] = 'Player samples foram importadas...'
 $locale['step_database_loaded_items'] = 'Items foram carregados...';
 $locale['step_database_loaded_weapons'] = 'Weapons foram carregadas...';
 $locale['step_database_loaded_monsters'] = 'Monsters foram carregados...';
-$locale['step_database_error_monsters'] = 'Houve alguns problemas ao carregar seu arquivo monsters.xml. Por favor, verifique $LOG$ para mais informações.';
+$locale['step_database_error_monsters'] =
+  'Houve alguns problemas ao carregar seu arquivo monsters.xml. Por favor, verifique $LOG$ para mais informações.';
 $locale['step_database_loaded_spells'] = 'Spells foram carregadas...';
 $locale['step_database_created_account'] = 'Conta de administrador criada...';
 $locale['step_database_created_news'] = 'Notícias foram criadas...';
@@ -102,7 +108,8 @@ $locale['step_admin_account_error_same'] = 'A senha pode não ser o mesmo que o 
 $locale['step_admin_account_id'] = 'Número da conta de administrador';
 $locale['step_admin_account_id_desc'] = 'Número da sua conta de administrador, que será usada para acessar o site e o servidor.';
 $locale['step_admin_account_id_error_empty'] = 'Por favor, insira o número da conta.';
-$locale['step_admin_account_id_error_format'] = 'Formato de número de conta inválido. Por favor, use apenas números 0-9. Mínimo 6, máximo 10 caracteres.';
+$locale['step_admin_account_id_error_format'] =
+  'Formato de número de conta inválido. Por favor, use apenas números 0-9. Mínimo 6, máximo 10 caracteres.';
 $locale['step_admin_account_id_error_same'] = 'A senha pode não ser o mesmo que o número da conta.';
 $locale['step_admin_password'] = 'Senha da conta de administrador';
 $locale['step_admin_password_desc'] = 'Senha para sua conta de administrador.';
@@ -118,6 +125,8 @@ $locale['step_finish_admin_panel'] = 'Painel de administração';
 $locale['step_finish_homepage'] = 'pagina inicial';
 $locale['step_finish'] = 'Finalizar';
 $locale['step_finish_title'] = 'Instalação terminada!';
-$locale['step_finish_desc'] = 'Parabéns! <b>MyAAC</b> está pronto para uso!<br/>Agora você pode fazer login em $ADMIN_PANEL$ ou visitar $HOMEPAGE$.<br/><br/>
+$locale[
+  'step_finish_desc'
+] = 'Parabéns! <b>MyAAC</b> está pronto para uso!<br/>Agora você pode fazer login em $ADMIN_PANEL$ ou visitar $HOMEPAGE$.<br/><br/>
 <span style = "color: red">Por favor remova a pasta install/.</span><br/><br/>Postar bugs e sugestões em $LINK$, obrigado!';
 ?>

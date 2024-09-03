@@ -19,11 +19,7 @@ require_once SYSTEM . 'init.php';
 require_once PLUGINS . 'pagseguro/config.php';
 require_once LIBS . 'PagSeguroLibrary/PagSeguroLibrary.php';
 
-if (
-  !isset($config['pagSeguro']) ||
-  !count($config['pagSeguro']) ||
-  !count($config['pagSeguro']['boxes'])
-) {
+if (!isset($config['pagSeguro']) || !count($config['pagSeguro']) || !count($config['pagSeguro']['boxes'])) {
   echo "PagSeguro is disabled. If you're an admin please configure this script in config.local.php.";
   return;
 }
@@ -39,10 +35,7 @@ if ('post' == strtolower($method)) {
   if ($type === 'transaction') {
     try {
       $credentials = PagSeguroConfig::getAccountCredentials();
-      $transaction = PagSeguroNotificationService::checkTransaction(
-        $credentials,
-        $notificationCode
-      );
+      $transaction = PagSeguroNotificationService::checkTransaction($credentials, $notificationCode);
 
       $transaction_code = $transaction->getCode();
       $account_id = (int) $transaction->getReference();
@@ -51,17 +44,10 @@ if ('post' == strtolower($method)) {
       $request = json_encode($_POST);
 
       $transactionDB = $db
-        ->query(
-          "SELECT * FROM `{$table}` WHERE `transaction_code` = {$db->quote(
-            $transaction_code
-          )} AND `account_id` = {$account_id}"
-        )
+        ->query("SELECT * FROM `{$table}` WHERE `transaction_code` = {$db->quote($transaction_code)} AND `account_id` = {$account_id}")
         ->fetch();
 
-      if (
-        !($boxSelected =
-          $config['pagSeguro']['boxes'][$transaction->getItems()[0]->getId()] ?? null)
-      ) {
+      if (!($boxSelected = $config['pagSeguro']['boxes'][$transaction->getItems()[0]->getId()] ?? null)) {
         return false;
       }
 
@@ -69,15 +55,11 @@ if ('post' == strtolower($method)) {
         $createdAt = date('Y-m-d H:i:s');
         $values = "{$db->quote($transaction_code)}, {$db->quote($boxSelected['id'])}, {$db->quote(
           $boxSelected['name']
-        )}, 1, {$account_id}, {$db->quote($payment_method)}, {$db->quote(
-          $payment_status
-        )}, {$db->quote($request)}, {$db->quote($createdAt)}";
+        )}, 1, {$account_id}, {$db->quote($payment_method)}, {$db->quote($payment_status)}, {$db->quote($request)}, {$db->quote($createdAt)}";
         $db->exec(
           "INSERT INTO `{$table}` (`transaction_code`, `item_id`, `item_name`, `item_count`, `account_id`, `payment_method`, `payment_status`, `request`, `created_at`) VALUES ({$values})"
         );
-        $transactionDB = $db
-          ->query("SELECT * FROM `{$table}` WHERE `id` = {$db->lastInsertId()}")
-          ->fetch();
+        $transactionDB = $db->query("SELECT * FROM `{$table}` WHERE `id` = {$db->lastInsertId()}")->fetch();
         $id = $transactionDB['id'];
       }
 
@@ -86,31 +68,18 @@ if ('post' == strtolower($method)) {
 
       if (
         $transactionDB['status'] == '0' &&
-        (($payment_method == 'CREDIT_CARD' && $payment_status == 'PAID') ||
-          ($payment_method == 'PIX' && $payment_status == 'AVAILABLE'))
+        (($payment_method == 'CREDIT_CARD' && $payment_status == 'PAID') || ($payment_method == 'PIX' && $payment_status == 'AVAILABLE'))
       ) {
         $db->exec(
-          "UPDATE `{$table}` SET `status` = '1', `request` = {$db->quote(
-            $request
-          )}, `updated_at` = {$db->quote($updateAt)} WHERE `id` = {$id}"
+          "UPDATE `{$table}` SET `status` = '1', `request` = {$db->quote($request)}, `updated_at` = {$db->quote($updateAt)} WHERE `id` = {$id}"
         );
       } else {
-        $db->exec(
-          "UPDATE `{$table}` SET `request` = {$db->quote($request)}, `updated_at` = {$db->quote(
-            $updateAt
-          )} WHERE `id` = {$id}"
-        );
-        if (
-          in_array($transactionDB['status'], ['1', '2']) &&
-          $payment_method != 'PIX' &&
-          $payment_status == 'CANCELLED'
-        ) {
+        $db->exec("UPDATE `{$table}` SET `request` = {$db->quote($request)}, `updated_at` = {$db->quote($updateAt)} WHERE `id` = {$id}");
+        if (in_array($transactionDB['status'], ['1', '2']) && $payment_method != 'PIX' && $payment_status == 'CANCELLED') {
           $now = time();
           $banAt = $now + 86400 * 30;
           $values = "({$account_id}, 3, 22, {$now}, {$banAt}, {$account_id})";
-          $db->exec(
-            "INSERT INTO `account_bans` (`account_id`, `type`, `reason`, `banned_at`, `expired_at`, `banned_by`) VALUES {$values};"
-          );
+          $db->exec("INSERT INTO `account_bans` (`account_id`, `type`, `reason`, `banned_at`, `expired_at`, `banned_by`) VALUES {$values};");
         }
       }
     } catch (PagSeguroServiceException | \Exception $e) {

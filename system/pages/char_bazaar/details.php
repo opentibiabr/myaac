@@ -4,65 +4,93 @@ global $config, $db, $template_path;
 $auction_iddetails = $getPageDetails;
 
 /* GET INFO AUCTION */
-$getAuction = $db->query("SELECT `id`, `account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price`, `status` FROM `myaac_charbazaar` WHERE `id` = {$db->quote($auction_iddetails)}");
-if (!$getAuction = $getAuction->fetch()) {
-    echo "We can not find auction with this id!";
-    return;
+$getAuction = $db->query(
+  "SELECT `id`, `account_old`, `account_new`, `player_id`, `price`, `date_end`, `date_start`, `bid_account`, `bid_price`, `status` FROM `myaac_charbazaar` WHERE `id` = {$db->quote(
+    $auction_iddetails
+  )}"
+);
+if (!($getAuction = $getAuction->fetch())) {
+  echo 'We can not find auction with this id!';
+  return;
 }
 /* GET INFO AUCTION END */
 
 /* GET INFO CHARACTER */
-$getCharacter = $db->query("SELECT `name`, `vocation`, `level`, `sex`, `looktype`, `lookaddons`, `lookhead`, `lookbody`, `looklegs`, `lookfeet`, `health`, `healthmax`, `mana`, `manamax`, `maglevel`, `manaspent`, `balance`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `skill_shielding`, `skill_shielding_tries`, `cap`, `soul`, `created`, `experience`, `blessings1`, `blessings2`, `blessings3`, `blessings4`, `blessings5`, `blessings6`, `blessings7`, `blessings8` FROM `players` WHERE `id` = {$getAuction['player_id']}");
+$getCharacter = $db->query(
+  "SELECT `name`, `vocation`, `level`, `sex`, `looktype`, `lookaddons`, `lookhead`, `lookbody`, `looklegs`, `lookfeet`, `health`, `healthmax`, `mana`, `manamax`, `maglevel`, `manaspent`, `balance`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `skill_shielding`, `skill_shielding_tries`, `cap`, `soul`, `created`, `experience`, `blessings1`, `blessings2`, `blessings3`, `blessings4`, `blessings5`, `blessings6`, `blessings7`, `blessings8` FROM `players` WHERE `id` = {$getAuction['player_id']}"
+);
 $character = $getCharacter->fetch();
 /* GET INFO CHARACTER END */
 
 /* GET ITEMS DEPOT */
-$getDepotItems = $db->query("SELECT `sid`, `pid`, `itemtype`, `count`, `attributes` FROM `player_depotitems` WHERE `player_id` = {$getAuction['player_id']}");
+$getDepotItems = $db->query(
+  "SELECT `sid`, `pid`, `itemtype`, `count`, `attributes` FROM `player_depotitems` WHERE `player_id` = {$getAuction['player_id']}"
+);
 $getDepotItems = $getDepotItems->fetch();
 /* GET ITEMS DEPOT END */
 
 /* GET BLESS */
 $BlessCount = 0;
 for ($b = 1; $b < 8; $b++) {
-    if ($character["blessings$b"] >= 1) {
-        $BlessCount = $BlessCount++;
-    }
+  if ($character["blessings$b"] >= 1) {
+    $BlessCount = $BlessCount++;
+  }
 }
-$BlessTwist = ($character['blessings8'] >= 1) ? 'yes' : 'no';
+$BlessTwist = $character['blessings8'] >= 1 ? 'yes' : 'no';
 /* GET BLESS END */
 
 /* GET CHARM CHARACTER */
-$getCharm = $db->query("SELECT `player_guid`, `charm_points`, `charm_expansion`, `rune_wound`, `rune_enflame`, `rune_poison`, `rune_freeze`, `rune_zap`, `rune_curse`, `rune_cripple`, `rune_parry`, `rune_dodge`, `rune_adrenaline`, `rune_numb`, `rune_cleanse`, `rune_bless`, `rune_scavenge`, `rune_gut`, `rune_low_blow`, `rune_divine`, `rune_vamp`, `rune_void`, `UsedRunesBit` FROM `player_charms` WHERE `player_guid` = {$getAuction['player_id']}");
+$getCharm = $db->query(
+  "SELECT `player_guid`, `charm_points`, `charm_expansion`, `rune_wound`, `rune_enflame`, `rune_poison`, `rune_freeze`, `rune_zap`, `rune_curse`, `rune_cripple`, `rune_parry`, `rune_dodge`, `rune_adrenaline`, `rune_numb`, `rune_cleanse`, `rune_bless`, `rune_scavenge`, `rune_gut`, `rune_low_blow`, `rune_divine`, `rune_vamp`, `rune_void`, `UsedRunesBit` FROM `player_charms` WHERE `player_guid` = {$getAuction['player_id']}"
+);
 $getCharm = $getCharm->fetch();
 
 $Charm_Points = $getCharm['charm_points'] ?? '0';
 $Charm_UsedPoints = $getCharm['UsedRunesBit'] ?? '0';
-$Charm_Expansion = isset($getCharm['charm_expansion']) && $getCharm['charm_expansion'] == 1
+$Charm_Expansion =
+  isset($getCharm['charm_expansion']) && $getCharm['charm_expansion'] == 1
     ? "<img src='{$template_path}/images/premiumfeatures/icon_yes.png'> yes"
     : "<img src='{$template_path}/images/premiumfeatures/icon_no.png'> no";
 /* GET CHARM CHARACTER END */
 
 /* OUTFIT CHARACTER */
-$outfit_url = "{$config['outfit_images_url']}?id={$character['looktype']}" . (!empty($character['lookaddons']) ? "&addons={$character['lookaddons']}" : '') . "&head={$character['lookhead']}&body={$character['lookbody']}&legs={$character['looklegs']}&feet={$character['lookfeet']}";
+$outfit_url =
+  "{$config['outfit_images_url']}?id={$character['looktype']}" .
+  (!empty($character['lookaddons']) ? "&addons={$character['lookaddons']}" : '') .
+  "&head={$character['lookhead']}&body={$character['lookbody']}&legs={$character['looklegs']}&feet={$character['lookfeet']}";
 /* OUTFIT CHARACTER */
 
 /* EQUIPAMENT CHARACTER */
 global $db;
 $eq_sql = $db->query("SELECT `pid`, `itemtype` FROM player_items WHERE player_id = {$getAuction['player_id']} AND (`pid` >= 1 and `pid` <= 10)");
 $equipment = [];
-foreach ($eq_sql as $eq)
-    $equipment[$eq['pid']] = $eq['itemtype'];
+foreach ($eq_sql as $eq) {
+  $equipment[$eq['pid']] = $eq['itemtype'];
+}
 
-$empty_slots = ["", "no_helmet", "no_necklace", "no_backpack", "no_armor", "no_handleft", "no_handright", "no_legs", "no_boots", "no_ring", "no_ammo"];
+$empty_slots = [
+  '',
+  'no_helmet',
+  'no_necklace',
+  'no_backpack',
+  'no_armor',
+  'no_handleft',
+  'no_handright',
+  'no_legs',
+  'no_boots',
+  'no_ring',
+  'no_ammo',
+];
 for ($i = 0; $i <= 10; $i++) {
-    if (!isset($equipment[$i]) || $equipment[$i] == 0)
-        $equipment[$i] = $empty_slots[$i];
+  if (!isset($equipment[$i]) || $equipment[$i] == 0) {
+    $equipment[$i] = $empty_slots[$i];
+  }
 }
 
 for ($i = 1; $i < 11; $i++) {
-    $equipment[$i] = Validator::number($equipment[$i])
-        ? getItemImage($equipment[$i])
-        : "<img src='images/items/{$equipment[$i]}.gif' width='32' height='32' border='0' alt='{$equipment[$i]}' />";
+  $equipment[$i] = Validator::number($equipment[$i])
+    ? getItemImage($equipment[$i])
+    : "<img src='images/items/{$equipment[$i]}.gif' width='32' height='32' border='0' alt='{$equipment[$i]}' />";
 }
 /* EQUIPAMENT CHARACTER END */
 
@@ -73,42 +101,42 @@ $character_sex = $config['genders'][$character['sex']] ?? ($character['sex'] == 
 /* CONVERT VOCATION */
 $character_voc = $config['vocations'][$character['vocation']] ?? null;
 if (!$character_voc) {
-    $vocationId = $character['vocation'];
-    $character_voc = '';
-    switch ($vocationId) {
-        default:
-        case 0:
-            $character_voc = 'None';
-            break;
-        case 1:
-        case 5:
-            if ($vocationId == 5) {
-                $character_voc = 'Master ';
-            }
-            $character_voc .= 'Sorcerer';
-            break;
-        case 2:
-        case 6:
-            if ($vocationId == 6) {
-                $character_voc = 'Elder ';
-            }
-            $character_voc .= 'Druid';
-            break;
-        case 3:
-        case 7:
-            if ($vocationId == 7) {
-                $character_voc = 'Royal ';
-            }
-            $character_voc .= 'Paladin';
-            break;
-        case 4:
-        case 8:
-            if ($vocationId == 8) {
-                $character_voc = 'Elite ';
-            }
-            $character_voc .= 'Knight';
-            break;
-    }
+  $vocationId = $character['vocation'];
+  $character_voc = '';
+  switch ($vocationId) {
+    default:
+    case 0:
+      $character_voc = 'None';
+      break;
+    case 1:
+    case 5:
+      if ($vocationId == 5) {
+        $character_voc = 'Master ';
+      }
+      $character_voc .= 'Sorcerer';
+      break;
+    case 2:
+    case 6:
+      if ($vocationId == 6) {
+        $character_voc = 'Elder ';
+      }
+      $character_voc .= 'Druid';
+      break;
+    case 3:
+    case 7:
+      if ($vocationId == 7) {
+        $character_voc = 'Royal ';
+      }
+      $character_voc .= 'Paladin';
+      break;
+    case 4:
+    case 8:
+      if ($vocationId == 8) {
+        $character_voc = 'Elite ';
+      }
+      $character_voc .= 'Knight';
+      break;
+  }
 }
 /* CONVERT VOCATION END */
 
@@ -117,19 +145,23 @@ $quests = $config['quests'];
 $sql_query_in = '';
 $i = 0;
 foreach ($quests as $quest_name => $quest_storage) {
-    if ($i != 0)
-        $sql_query_in .= ', ';
+  if ($i != 0) {
+    $sql_query_in .= ', ';
+  }
 
-    $sql_query_in .= $quest_storage;
-    $i++;
+  $sql_query_in .= $quest_storage;
+  $i++;
 }
-$storage_sql = $db->query("SELECT `key`, `value` FROM `player_storage` WHERE `player_id` = {$getAuction['player_id']} AND `key` IN ({$sql_query_in})");
+$storage_sql = $db->query(
+  "SELECT `key`, `value` FROM `player_storage` WHERE `player_id` = {$getAuction['player_id']} AND `key` IN ({$sql_query_in})"
+);
 $player_storage = [];
-foreach ($storage_sql as $storage)
-    $player_storage[$storage['key']] = $storage['value'];
+foreach ($storage_sql as $storage) {
+  $player_storage[$storage['key']] = $storage['value'];
+}
 
 foreach ($quests as &$storage) {
-    $storage = isset($player_storage[$storage]) && $player_storage[$storage] > 0;
+  $storage = isset($player_storage[$storage]) && $player_storage[$storage] > 0;
 }
 /* GET QUESTS END */
 
@@ -139,14 +171,15 @@ $getAuctionBid = $getAuctionBid->fetch();
 
 $My_Bid = '<img src="' . $template_path . '/images/premiumfeatures/icon_no.png">';
 if ($logged && isset($getAuctionBid['account_id']) && $account_logged == $getAuctionBid['account_id']) {
-    $val = number_format($getAuctionBid['bid'], 0, ',', ',');
-    $My_Bid = "<b>{$val}</b> <img src='{$template_path}/images/account/icon-tibiacointrusted.png' class='VSCCoinImages' title='Transferable Tibia Coins'>";
+  $val = number_format($getAuctionBid['bid'], 0, ',', ',');
+  $My_Bid = "<b>{$val}</b> <img src='{$template_path}/images/account/icon-tibiacointrusted.png' class='VSCCoinImages' title='Transferable Tibia Coins'>";
 }
 /* GET MY BID END */
 
 /* VERIFY DATE */
 $Hoje = date('Y-m-d H:i:s');
 $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
+
 /* VERIFY DATE END */
 ?>
 
@@ -154,22 +187,22 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
     <div class="CaptionContainer">
         <div class="CaptionInnerContainer">
             <span class="CaptionEdgeLeftTop"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             <span class="CaptionEdgeRightTop"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             <span class="CaptionBorderTop"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
             <span class="CaptionVerticalLeft"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
             <div class="Text">Auction Details</div>
             <span class="CaptionVerticalRight"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
             <span class="CaptionBorderBottom"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
             <span class="CaptionEdgeLeftBottom"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             <span class="CaptionEdgeRightBottom"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
         </div>
     </div>
     <table class="Table5" cellspacing="0" cellpadding="0">
@@ -206,27 +239,36 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                             class="AuctionBodyBlock AuctionDisplay AuctionItemsViewBox">
                                                             <?php foreach ([2, 1, 3, 6, 4, 5, 9, 7, 10] as $i) { ?>
                                                                 <div class="CVIcon CVIconObject">
-                                                                    <?= $equipment[$i]; ?></div>
+                                                                    <?= $equipment[$i] ?></div>
                                                             <?php } ?>
                                                             <div class="CVIcon CVIconObject NoEquipment" title="soul">
                                                                 <p>Soul<br><?= $character['soul'] ?></p></div>
                                                             <div class="CVIcon CVIconObject"
-                                                                 title="boots"><?= $equipment[8]; ?></div>
+                                                                 title="boots"><?= $equipment[8] ?></div>
                                                             <div class="CVIcon CVIconObject NoEquipment" title="cap">
                                                                 <p>Cap<br><?= $character['cap'] ?></p></div>
                                                         </div>
                                                         <div class="AuctionBodyBlock ShortAuctionData">
-                                                            <?php $dateFormat = $subtopic == 'currentcharactertrades' ? 'M d Y, H:i:s' : 'd M Y' ?>
+                                                            <?php $dateFormat = $subtopic == 'currentcharactertrades' ? 'M d Y, H:i:s' : 'd M Y'; ?>
                                                             <div class="ShortAuctionDataLabel">Auction Start:</div>
                                                             <div
-                                                                class="ShortAuctionDataValue"><?= date($dateFormat, strtotime($getAuction['date_start'])) ?></div>
+                                                                class="ShortAuctionDataValue"><?= date(
+                                                                  $dateFormat,
+                                                                  strtotime($getAuction['date_start'])
+                                                                ) ?></div>
                                                             <div class="ShortAuctionDataLabel">Auction End:</div>
-                                                            <?php
-                                                            if ($subtopic == 'currentcharactertrades') {
-                                                                $dateTimer = date('Y-m-d', strtotime($getAuction['date_end']));
-                                                                if ($showCounter ?? (date('Y-m-d', strtotime($dateTimer . ' - 1 days')) == date('Y-m-d'))) { ?>
+                                                            <?php if ($subtopic == 'currentcharactertrades') {
+
+                                                              $dateTimer = date('Y-m-d', strtotime($getAuction['date_end']));
+                                                              if (
+                                                                $showCounter ??
+                                                                date('Y-m-d', strtotime($dateTimer . ' - 1 days')) == date('Y-m-d')
+                                                              ) { ?>
                                                                     <script>
-                                                                        const countDownDate = new Date("<?= date($dateFormat, strtotime($getAuction['date_end'])) ?>").getTime();
+                                                                        const countDownDate = new Date("<?= date(
+                                                                          $dateFormat,
+                                                                          strtotime($getAuction['date_end'])
+                                                                        ) ?>").getTime();
                                                                         const x = setInterval(function () {
                                                                             const now = new Date().getTime();
                                                                             const distance = countDownDate - now;
@@ -245,7 +287,8 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                                             }
                                                                         }, 1000);
                                                                     </script>
-                                                            <?php } ?>
+                                                            <?php }
+                                                              ?>
                                                                 <div id="timeAuction" class="ShortAuctionDataValue">
                                                                     <?= date($dateFormat, strtotime($getAuction['date_end'])) ?>
                                                                 </div>
@@ -255,12 +298,14 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                                     <div class="ShortAuctionDataValue">
                                                                         <b><?= number_format($getAuction['price'], 0, ',', ',') ?></b>
                                                                         <img
-                                                                            src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png"
+                                                                            src="<?= $template_path ?>/images/account/icon-tibiacointrusted.png"
                                                                             class="VSCCoinImages"
                                                                             title="Transferable Tibia Coins">
                                                                     </div>
                                                                 </div>
-                                                            <?php } else { ?>
+                                                            <?php
+                                                            } else {
+                                                               ?>
                                                                 <div class="ShortAuctionDataValue">
                                                                     <?= date($dateFormat, strtotime($getAuction['date_end'])) ?></div>
                                                                 <div class="ShortAuctionDataBidRow">
@@ -269,12 +314,17 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                                     <div class="ShortAuctionDataValue">
                                                                         <b><?= number_format($getAuction['bid_price'], 0, ',', ',') ?></b>
                                                                         <img
-                                                                            src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png"
+                                                                            src="<?= $template_path ?>/images/account/icon-tibiacointrusted.png"
                                                                             class="VSCCoinImages"
                                                                             title="Transferable Tibia Coins"></div>
                                                                 </div>
-                                                            <?php } ?>
-                                                            <?php if ($logged && isset($getAuctionBid['account_id']) && $account_logged == $getAuctionBid['account_id']) { ?>
+                                                            <?php
+                                                            } ?>
+                                                            <?php if (
+                                                              $logged &&
+                                                              isset($getAuctionBid['account_id']) &&
+                                                              $account_logged == $getAuctionBid['account_id']
+                                                            ) { ?>
                                                                 <div class="ShortAuctionDataBidRow"
                                                                      style="background-color: #d4c0a1; padding: 5px; border: 1px solid #f0e8da; box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 50%);">
                                                                     <div class="ShortAuctionDataLabel">My Bid:</div>
@@ -284,7 +334,10 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                             <?php } ?>
                                                         </div>
                                                         <?php if ($logged && $getAuction['status'] == 0) { ?>
-                                                            <?php if (strtotime($End) > strtotime($Hoje) && $account_logged != $getAuction['account_old']) { ?>
+                                                            <?php if (
+                                                              strtotime($End) > strtotime($Hoje) &&
+                                                              $account_logged != $getAuction['account_old']
+                                                            ) { ?>
                                                                 <div class="AuctionBodyBlock CurrentBid">
                                                                     <div class="Container">
                                                                         <div class="MyMaxBidLabel">My Bid Limit
@@ -297,12 +350,12 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                                             <input class="MyMaxBidInput" type="text"
                                                                                    name="maxbid">
                                                                             <div class="BigButton"
-                                                                                 style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_green.gif)">
+                                                                                 style="background-image:url(<?= $template_path ?>/images/global/buttons/sbutton_green.gif)">
                                                                                 <div
                                                                                     onmouseover="MouseOverBigButton(this);"
                                                                                     onmouseout="MouseOutBigButton(this);">
                                                                                     <div class="BigButtonOver"
-                                                                                         style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
+                                                                                         style="background-image: url(<?= $template_path ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
                                                                                     <input name="auction_confirm"
                                                                                            class="BigButtonText"
                                                                                            type="submit"
@@ -313,7 +366,10 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                                     </div>
                                                                 </div>
                                                             <?php } ?>
-                                                            <?php if (strtotime($End) > strtotime($Hoje) && $account_logged == $getAuction['account_old']) { ?>
+                                                            <?php if (
+                                                              strtotime($End) > strtotime($Hoje) &&
+                                                              $account_logged == $getAuction['account_old']
+                                                            ) { ?>
                                                                 <div class="AuctionBodyBlock CurrentBid">
                                                                     <div class="Container">
                                                                         <div class="MyMaxBidLabel"
@@ -322,10 +378,13 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                                     </div>
                                                                 </div>
                                                             <?php } ?>
-                                                            <?php if (strtotime($End) < strtotime($Hoje) && (
-                                                                    ($account_logged == $getAuction['account_old'] && $account_logged != $getAuction['bid_account']) ||
-                                                                    ($account_logged != $getAuction['account_old'] && $account_logged == $getAuction['bid_account'])
-                                                                )) { ?>
+                                                            <?php if (
+                                                              strtotime($End) < strtotime($Hoje) &&
+                                                              (($account_logged == $getAuction['account_old'] &&
+                                                                $account_logged != $getAuction['bid_account']) ||
+                                                                ($account_logged != $getAuction['account_old'] &&
+                                                                  $account_logged == $getAuction['bid_account']))
+                                                            ) { ?>
                                                                 <div class="AuctionBodyBlock CurrentBid">
                                                                     <div class="Container">
                                                                         <div class="MyMaxBidLabel"
@@ -336,12 +395,12 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                                                        name="auction_iden"
                                                                                        value="<?= $getAuction['id'] ?>">
                                                                                 <div class="BigButton"
-                                                                                     style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_green.gif)">
+                                                                                     style="background-image:url(<?= $template_path ?>/images/global/buttons/sbutton_green.gif)">
                                                                                     <div
                                                                                         onmouseover="MouseOverBigButton(this);"
                                                                                         onmouseout="MouseOutBigButton(this);">
                                                                                         <div class="BigButtonOver"
-                                                                                             style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
+                                                                                             style="background-image: url(<?= $template_path ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
                                                                                         <input name="auction_finish"
                                                                                                class="BigButtonText"
                                                                                                type="submit"
@@ -353,7 +412,11 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                                     </div>
                                                                 </div>
                                                             <?php } ?>
-                                                            <?php if (strtotime($End) < strtotime($Hoje) && $account_logged != $getAuction['account_old'] && $account_logged != $getAuction['bid_account']) { ?>
+                                                            <?php if (
+                                                              strtotime($End) < strtotime($Hoje) &&
+                                                              $account_logged != $getAuction['account_old'] &&
+                                                              $account_logged != $getAuction['bid_account']
+                                                            ) { ?>
                                                                 <div class="AuctionBodyBlock CurrentBid">
                                                                     <div class="Container">
                                                                         <div class="MyMaxBidLabel"
@@ -388,24 +451,24 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                         <div class="AuctionBodyBlock SpecialCharacterFeatures">
                                                             <div class="Entry">
                                                                 <img class="CharacterFeatureCategory"
-                                                                     src="<?= $template_path; ?>/images/charactertrade/usp-category-3.png">Blessings
+                                                                     src="<?= $template_path ?>/images/charactertrade/usp-category-3.png">Blessings
                                                                 active: <?= $BlessCount ?>/7, Twist of Fate
                                                                 active: <?= $BlessTwist ?>
                                                             </div>
                                                             <div class="Entry">
                                                                 <img class="CharacterFeatureCategory"
-                                                                     src="<?= $template_path; ?>/images/charactertrade/usp-category-7.png">Total
+                                                                     src="<?= $template_path ?>/images/charactertrade/usp-category-7.png">Total
                                                                 Charm Points <?= $Charm_Points ?>, Unused
                                                                 Charm Points: <?= $Charm_UsedPoints ?>
                                                             </div>
                                                             <div class="Entry">
                                                                 <img class="CharacterFeatureCategory"
-                                                                     src="<?= $template_path; ?>/images/charactertrade/usp-category-0.png">10
+                                                                     src="<?= $template_path ?>/images/charactertrade/usp-category-0.png">10
                                                                 Distance Fighting (Loyalty bonus not included)
                                                             </div>
                                                             <div class="Entry">
                                                                 <img class="CharacterFeatureCategory"
-                                                                     src="<?= $template_path; ?>/images/charactertrade/usp-category-0.png">10
+                                                                     src="<?= $template_path ?>/images/charactertrade/usp-category-0.png">10
                                                                 Shielding (Loyalty bonus not included)
                                                             </div>
 
@@ -431,10 +494,10 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
 <center>
     <a href="?subtopic=<?= $subtopic == 'currentcharactertrades' ? 'currentcharactertrades' : 'pastcharactertrades' ?>">
         <div class="BigButton"
-             style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton.gif)">
+             style="background-image:url(<?= $template_path ?>/images/global/buttons/sbutton.gif)">
             <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
                 <div class="BigButtonOver"
-                     style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div>
+                     style="background-image: url(<?= $template_path ?>/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div>
                 <input name="auction_confirm" class="BigButtonText" type="button" value="Back"></div>
         </div>
     </a>
@@ -443,7 +506,7 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
 <div class="TopButtonContainer">
     <div class="TopButton" style="">
         <a href="#top">
-            <img style="border:0px;" src="<?= $template_path; ?>/images/content/back-to-top.gif">
+            <img style="border:0px;" src="<?= $template_path ?>/images/content/back-to-top.gif">
         </a>
     </div>
 </div>
@@ -451,22 +514,22 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
     <div class="CaptionContainer">
         <div class="CaptionInnerContainer">
             <span class="CaptionEdgeLeftTop"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             <span class="CaptionEdgeRightTop"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             <span class="CaptionBorderTop"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
             <span class="CaptionVerticalLeft"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
             <div class="Text">General</div>
             <span class="CaptionVerticalRight"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
             <span class="CaptionBorderBottom"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
             <span class="CaptionEdgeLeftBottom"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             <span class="CaptionEdgeRightBottom"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
         </div>
     </div>
     <table class="Table5" cellspacing="0" cellpadding="0">
@@ -673,7 +736,12 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                         <tr class="Odd">
                                             <td><span class="LabelV">Experience:</span>
                                                 <div
-                                                    style="float:right; text-align: right;"><?= number_format($character['experience'], 0, ',', ',') ?></div>
+                                                    style="float:right; text-align: right;"><?= number_format(
+                                                      $character['experience'],
+                                                      0,
+                                                      ',',
+                                                      ','
+                                                    ) ?></div>
                                             </td>
                                         </tr>
                                         <tr class="Even">
@@ -721,7 +789,7 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
 <div class="TopButtonContainer">
     <div class="TopButton" style="">
         <a href="#top">
-            <img style="border:0px;" src="<?= $template_path; ?>/images/content/back-to-top.gif">
+            <img style="border:0px;" src="<?= $template_path ?>/images/content/back-to-top.gif">
         </a>
     </div>
 </div>
@@ -729,22 +797,22 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
     <div class="CaptionContainer">
         <div class="CaptionInnerContainer">
             <span class="CaptionEdgeLeftTop"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             <span class="CaptionEdgeRightTop"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             <span class="CaptionBorderTop"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
             <span class="CaptionVerticalLeft"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
             <div class="Text">Item Summary</div>
             <span class="CaptionVerticalRight"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
             <span class="CaptionBorderBottom"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
             <span class="CaptionEdgeLeftBottom"
-                  style="background-image:url(<?= $template_path; ?>https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>https://static.tibia.com/images/global/content/box-frame-edge.gif);"></span>
             <span class="CaptionEdgeRightBottom"
-                  style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                  style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
         </div>
     </div>
     <table class="Table3" cellspacing="0" cellpadding="0">
@@ -766,21 +834,25 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
 
                                                     <div class="BlockPage BlockPageObject">
                                                         <?php
-                                                        $getDepotItems = $db->query("SELECT `sid`, `pid`, `itemtype`, `count`, `attributes` FROM `player_depotitems` WHERE `player_id` = {$getAuction['player_id']}");
+                                                        $getDepotItems = $db->query(
+                                                          "SELECT `sid`, `pid`, `itemtype`, `count`, `attributes` FROM `player_depotitems` WHERE `player_id` = {$getAuction['player_id']}"
+                                                        );
                                                         $getDepotItems = $getDepotItems->fetch();
                                                         if ($getDepotItems) {
-                                                            foreach ($getDepotItems as $DepotItem) {
-                                                                ?>
+                                                          foreach ($getDepotItems as $DepotItem) { ?>
                                                                 <div class="CVIcon CVIconObject">
                                                                     <img
-                                                                        src="<?= $template_path; ?>/images/charactertrade/objects/<?= $DepotItem['sid'] ?>.gif">
+                                                                        src="<?= $template_path ?>/images/charactertrade/objects/<?= $DepotItem[
+  'sid'
+] ?>.gif">
                                                                     <?php if ($DepotItem['count'] > 1) { ?>
                                                                         <div
                                                                             class="ObjectAmount"><?= $DepotItem['count'] ?></div>
                                                                     <?php } ?>
                                                                 </div>
                                                             <?php }
-                                                        } ?>
+                                                        }
+                                                        ?>
                                                     </div>
                                                     <?php if (!$getDepotItems || count($getDepotItems) == 0) { ?>
                                                         <div style="text-align: center;">No items.</div>
@@ -805,42 +877,62 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
 <div class="CharacterDetailsBlock " id="Charms"><a name="Charms"></a>
     <div class="TopButtonContainer"><a name="Charms"></a>
         <div class="TopButton"><a name="Charms"></a><a onclick="ScrollToAnchor('top');">
-                <img style="border: 0px;" src="<?= $template_path; ?>/images/global/content/back-to-top.gif"></a>
+                <img style="border: 0px;" src="<?= $template_path ?>/images/global/content/back-to-top.gif"></a>
         </div>
     </div>
     <div class="TableContainer">
         <div class="CaptionContainer">
             <div class="CaptionInnerContainer">
                     <span class="CaptionEdgeLeftTop"
-                          style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                          style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionBorderTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionVerticalLeft"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <div class="Text">Charms</div>
                 <span class="CaptionVerticalRight"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <span class="CaptionBorderBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionEdgeLeftBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             </div>
         </div>
         <?php
         $Charm_CountRunes = 0;
-        $charmNames = ['wound', 'enflame', 'poison', 'freeze', 'zap', 'curse', 'cripple', 'parry', 'dodge', 'adrenaline', 'numb', 'cleanse', 'bless', 'scavenge', 'gut', 'low_blow', 'divine', 'vamp', 'void'];
+        $charmNames = [
+          'wound',
+          'enflame',
+          'poison',
+          'freeze',
+          'zap',
+          'curse',
+          'cripple',
+          'parry',
+          'dodge',
+          'adrenaline',
+          'numb',
+          'cleanse',
+          'bless',
+          'scavenge',
+          'gut',
+          'low_blow',
+          'divine',
+          'vamp',
+          'void',
+        ];
         $runes = [];
         foreach ($charmNames as $charm) {
-            if (!$getCharm || $charm < 1) {
-                $runes["rune_$charm"] = '<img src="' . $template_path . '/images/premiumfeatures/icon_no.png">';
-                continue;
-            }
-            $Charm_CountRunes++;
-            $runes["rune_$charm"] = '<img src="' . $template_path . '/images/premiumfeatures/icon_yes.png">';
+          if (!$getCharm || $charm < 1) {
+            $runes["rune_$charm"] = '<img src="' . $template_path . '/images/premiumfeatures/icon_no.png">';
+            continue;
+          }
+          $Charm_CountRunes++;
+          $runes["rune_$charm"] = '<img src="' . $template_path . '/images/premiumfeatures/icon_yes.png">';
         }
         ?>
         <table class="Table3" cellspacing="0" cellpadding="0">
@@ -882,28 +974,28 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
 <div class="CharacterDetailsBlock " id="CompletedQuestLines"><a name="Completed Quest Lines"></a>
     <div class="TopButtonContainer"><a name="Completed Quest Lines"></a>
         <div class="TopButton"><a name="Completed Quest Lines"></a><a onclick="ScrollToAnchor('top');"><img
-                    style="border: 0px;" src="<?= $template_path; ?>/images/global/content/back-to-top.gif"></a>
+                    style="border: 0px;" src="<?= $template_path ?>/images/global/content/back-to-top.gif"></a>
         </div>
     </div>
     <div class="TableContainer">
         <div class="CaptionContainer">
             <div class="CaptionInnerContainer"><span class="CaptionEdgeLeftTop"
-                                                     style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                                                     style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionBorderTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionVerticalLeft"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <div class="Text">Completed Quest Lines</div>
                 <span class="CaptionVerticalRight"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <span class="CaptionBorderBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionEdgeLeftBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             </div>
         </div>
         <table class="Table3" cellspacing="0" cellpadding="0">
@@ -924,12 +1016,13 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                             <?php
                                             $i_bg = 0;
                                             foreach ($quests as $quest_name => $quest_storage) {
-                                                $i_bg = $i_bg + 1;
-                                                ?>
+                                              $i_bg = $i_bg + 1; ?>
                                                 <tr bgcolor="<?= getStyle($i_bg) ?>">
-                                                    <td> <?= $quest_name; ?></td>
+                                                    <td> <?= $quest_name ?></td>
                                                 </tr>
-                                            <?php } ?>
+                                            <?php
+                                            }
+                                            ?>
                                             </tbody>
                                         </table>
                                     </div>

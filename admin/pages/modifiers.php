@@ -10,7 +10,6 @@
  */
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Global Modifiers';
-
 ?>
     <!--
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -215,30 +214,31 @@ $title = 'Global Modifiers';
     </div>
 <?php
 if (isset($_POST['btn_pos'])) {
-    $posx = $_POST['inp_posx'];
-    $posy = $_POST['inp_posy'];
-    $posz = $_POST['inp_posz'];
-    $db->exec("UPDATE `players` SET `posx` = {$posx}, `posy` = {$posy}, `posz` = {$posz}");
-    success('Character position reset successfully.');
+  $posx = $_POST['inp_posx'];
+  $posy = $_POST['inp_posy'];
+  $posz = $_POST['inp_posz'];
+  $db->exec("UPDATE `players` SET `posx` = {$posx}, `posy` = {$posy}, `posz` = {$posz}");
+  success('Character position reset successfully.');
 }
 if (isset($_POST['btn_town'])) {
-    $inp_town = $_POST['inp_town'];
-    $db->exec("UPDATE `players` SET `town_id` = {$inp_town}");
-    success('City of characters successfully reset.');
+  $inp_town = $_POST['inp_town'];
+  $db->exec("UPDATE `players` SET `town_id` = {$inp_town}");
+  success('City of characters successfully reset.');
 }
 if (isset($_POST['btn_prem'])) {
-    $inp_prem = $_POST['inp_prem'];
-    $lastDay = ($inp_prem > 0 && $inp_prem < OTS_Account::GRATIS_PREMIUM_DAYS) ? time() + ($inp_prem * 86400) : 0;
-    $db->exec("UPDATE `accounts` SET `premdays` = {$inp_prem}, `lastday` = {$lastDay}");
-    success('Premium days reset successfully.');
+  $inp_prem = $_POST['inp_prem'];
+  $lastDay = $inp_prem > 0 && $inp_prem < OTS_Account::GRATIS_PREMIUM_DAYS ? time() + $inp_prem * 86400 : 0;
+  $db->exec("UPDATE `accounts` SET `premdays` = {$inp_prem}, `lastday` = {$lastDay}");
+  success('Premium days reset successfully.');
 }
 if (isset($_POST['btn_coins'])) {
-    $inp_coins = $_POST['inp_coins'];
-    $db->exec("UPDATE `accounts` SET `coins` = {$inp_coins}");
-    success('Coins reset successfully.');
+  $inp_coins = $_POST['inp_coins'];
+  $db->exec("UPDATE `accounts` SET `coins` = {$inp_coins}");
+  success('Coins reset successfully.');
 }
 if (isset($_POST['btn_coins_transferable'])) {
-    $inp_coins_transferable = $_POST['inp_coins_transferable'];
-    $db->exec("UPDATE `accounts` SET `coins_transferable` = {$inp_coins_transferable}");
-    success('Coins Transferable reset successfully.');
+  $inp_coins_transferable = $_POST['inp_coins_transferable'];
+  $db->exec("UPDATE `accounts` SET `coins_transferable` = {$inp_coins_transferable}");
+  success('Coins Transferable reset successfully.');
 }
+

@@ -27,12 +27,7 @@ do {
     error_('');
   }
 
-  $query = $db->query(
-    'SELECT `id` FROM `accounts` WHERE `' .
-      ($hasNumberColumn ? 'number' : 'id') .
-      '` = ' .
-      $db->quote($number)
-  );
+  $query = $db->query('SELECT `id` FROM `accounts` WHERE `' . ($hasNumberColumn ? 'number' : 'id') . '` = ' . $db->quote($number));
 } while ($query->rowCount() >= 1);
 
 success_($number);

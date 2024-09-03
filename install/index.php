@@ -117,11 +117,7 @@ if ($step == 'database') {
     $step = 'config';
   }
 } elseif ($step == 'admin') {
-  if (
-    !file_exists(BASE . 'config.local.php') ||
-    !isset($config['installed']) ||
-    !$config['installed']
-  ) {
+  if (!file_exists(BASE . 'config.local.php') || !isset($config['installed']) || !$config['installed']) {
     $step = 'database';
   } else {
     $_SESSION['saved'] = true;

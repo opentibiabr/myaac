@@ -16,16 +16,16 @@ require_once LIBS . 'weapons.php';
 
 $twig->display('admin.items.html.twig');
 
-$reload = isset($_REQUEST['reload']) && (int)$_REQUEST['reload'] === 1;
+$reload = isset($_REQUEST['reload']) && (int) $_REQUEST['reload'] === 1;
 if ($reload) {
-    $items_start_time = microtime(true);
-    if (Items::loadFromXML(true)) {
-        success('Successfully loaded items (in ' . round(microtime(true) - $items_start_time, 4) . ' seconds).');
-    } else {
-        error(Items::getError());
-    }
+  $items_start_time = microtime(true);
+  if (Items::loadFromXML(true)) {
+    success('Successfully loaded items (in ' . round(microtime(true) - $items_start_time, 4) . ' seconds).');
+  } else {
+    error(Items::getError());
+  }
 
-    /*$weapons_start_time = microtime(true);
+  /*$weapons_start_time = microtime(true);
     if (Weapons::loadFromXML(true)) {
         success('Successfully loaded weapons (in ' . round(microtime(true) - $weapons_start_time, 4) . ' seconds).');
     } else {

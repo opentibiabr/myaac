@@ -58,7 +58,7 @@
         border: 0;
     }
 </style>
-<form method="post" action="<?php echo BASE_URL ?>?characters" style="margin-bottom: 0;">
+<form method="post" action="<?php echo BASE_URL; ?>?characters" style="margin-bottom: 0;">
 <div class="searchchar">
     <div class="searchchar_header">Search Char</div>
     <div class="searchchar_content">

@@ -16,59 +16,61 @@ $now = time();
 
 function echo_success($message)
 {
-    echo '<p class="success">' . $message . '</p>';
+  echo '<p class="success">' . $message . '</p>';
 }
 
 function echo_error($message)
 {
-    global $error;
-    echo '<p class="error">' . $message . '</p>';
-    $error = true;
+  global $error;
+  echo '<p class="error">' . $message . '</p>';
+  $error = true;
 }
 
 function getNewValue($acc, $column)
 {
-    $days = $acc['premdays'];
-    $lastDay = $acc['lastday'];
-    global $now;
+  $days = $acc['premdays'];
+  $lastDay = $acc['lastday'];
+  global $now;
 
-    if ($lastDay <= $now && $days > 0) {
-        $timeLeft = $lastDay + ($days * 86400);
-        if ($timeLeft > $now) {
-            if ($column == 'premdays') {
-                return (int)(($now - $lastDay) / 86400);
-            }
+  if ($lastDay <= $now && $days > 0) {
+    $timeLeft = $lastDay + $days * 86400;
+    if ($timeLeft > $now) {
+      if ($column == 'premdays') {
+        return (int) (($now - $lastDay) / 86400);
+      }
 
-            $lastDay += ($days * 86400);
-            $d = date('M d Y, G:i:s', $lastDay);
-            return [$lastDay, "{$lastDay} ({$d})"];
-        } else {
-            return 0;
-        }
+      $lastDay += $days * 86400;
+      $d = date('M d Y, G:i:s', $lastDay);
+      return [$lastDay, "{$lastDay} ({$d})"];
+    } else {
+      return 0;
     }
-    return $column == 'premdays' ? $days : [$lastDay, "{$lastDay} (" . date('M d Y, G:i:s', $lastDay) . ")"];
+  }
+  return $column == 'premdays' ? $days : [$lastDay, "{$lastDay} (" . date('M d Y, G:i:s', $lastDay) . ')'];
 }
 
 $query = $db->query("SELECT `id`, `premdays`, `lastday` FROM `accounts` WHERE (`premdays` > 0 OR `lastday` > 0) AND `lastday` <= {$now};");
 $accounts = [];
 if ($query->rowCount() > 0) {
-    $accounts = $query->fetchAll();
+  $accounts = $query->fetchAll();
 }
 
 if (isset($_POST['update_all']) && $account_logged->isSuperAdmin()) {
-    if ($query->rowCount() > 0) {
-        try {
-            foreach ($accounts as $acc) {
-                $premDays = getNewValue($acc, 'premdays');
-                $lastDay = getNewValue($acc, 'lastday')[0] ?? 0;
-                $db->exec("UPDATE `accounts` SET `premdays` = {$premDays}, `lastday` = {$lastDay} WHERE `id` = {$acc['id']}");
-            }
-            echo_success('Accounts premdays and lastday updated successfully at: ' . date('G:i'));
-            $accounts = $db->query("SELECT `id`, `premdays`, `lastday` FROM `accounts` WHERE (`premdays` > 0 OR `lastday` > 0) AND `lastday` <= {$now};")->fetchAll();
-        } catch (PDOException $error) {
-            echo_error($error->getMessage());
-        }
+  if ($query->rowCount() > 0) {
+    try {
+      foreach ($accounts as $acc) {
+        $premDays = getNewValue($acc, 'premdays');
+        $lastDay = getNewValue($acc, 'lastday')[0] ?? 0;
+        $db->exec("UPDATE `accounts` SET `premdays` = {$premDays}, `lastday` = {$lastDay} WHERE `id` = {$acc['id']}");
+      }
+      echo_success('Accounts premdays and lastday updated successfully at: ' . date('G:i'));
+      $accounts = $db
+        ->query("SELECT `id`, `premdays`, `lastday` FROM `accounts` WHERE (`premdays` > 0 OR `lastday` > 0) AND `lastday` <= {$now};")
+        ->fetchAll();
+    } catch (PDOException $error) {
+      echo_error($error->getMessage());
     }
+  }
 }
 ?>
 <div class="row">
@@ -96,18 +98,19 @@ if (isset($_POST['update_all']) && $account_logged->isSuperAdmin()) {
                         <th style="width: 120px; text-align: left">after run (until)</th>
                     </tr>
                     <?php foreach ($accounts as $k => $acc) {
-                        $i = $k + 1; ?>
+                      $i = $k + 1; ?>
                         <tr>
                             <td><?= $i ?></td>
                             <td><?= $acc['id'] ?></td>
                             <td style="text-align: right"><?= $acc['premdays'] ?></td>
                             <td style="text-align: left"><?= getNewValue($acc, 'premdays') ?></td>
                             <td style="text-align: right"><?= $acc['lastday'] ?>
-                                (<?= date("M d Y, G:i:s", $acc['lastday']) ?>)
+                                (<?= date('M d Y, G:i:s', $acc['lastday']) ?>)
                             </td>
                             <td style="text-align: left"><?= getNewValue($acc, 'lastday')[1] ?? 0 ?></td>
                         </tr>
-                    <?php } ?>
+                    <?php
+                    } ?>
                     </tbody>
                 </table>
             </div>

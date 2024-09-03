@@ -12,49 +12,49 @@ defined('MYAAC') or die('Direct access not allowed!');
 
 $title = 'Premium/VIP Updater';
 $base = BASE_URL . 'admin/?p=premiumvipupdater';
-$addTitle = isVipSystemEnabled() ? 'VIP' : "Premium";
+$addTitle = isVipSystemEnabled() ? 'VIP' : 'Premium';
 $now = time();
 
 function echo_success($message)
 {
-    echo '<p class="success">' . $message . '</p>';
+  echo '<p class="success">' . $message . '</p>';
 }
 
 function echo_error($message)
 {
-    global $error;
-    echo '<p class="error">' . $message . '</p>';
-    $error = true;
+  global $error;
+  echo '<p class="error">' . $message . '</p>';
+  $error = true;
 }
 
-$query = $db->query("SELECT `id`, `name`, `email`, `premdays`, `lastday` FROM `accounts` WHERE ID > 1;");
+$query = $db->query('SELECT `id`, `name`, `email`, `premdays`, `lastday` FROM `accounts` WHERE ID > 1;');
 $accounts = [];
 if ($query->rowCount() > 0) {
-    $accounts = $query->fetchAll();
+  $accounts = $query->fetchAll();
 }
 
 if (isset($_POST['add_days']) && $account_logged->isSuperAdmin()) {
-    $daysToAdd = (int)$_POST['days_'] ?? 0;
-    if ($daysToAdd < 1) {
-        echo_error("You need add 1 or more days!");
-    } else {
-        if ($query->rowCount() > 0) {
-            try {
-                foreach ($accounts as $acc) {
-                    $days = (int)$acc['premdays'] + $daysToAdd;
-                    $lastDay = (int)$acc['lastday'] > 0 ? (int)$acc['lastday'] : $now;
-                    $newLastDay = $lastDay + ($daysToAdd * 86400);
-                    $db->exec("UPDATE `accounts` SET `premdays` = {$days}, `lastday` = {$newLastDay} WHERE `id` = {$acc['id']}");
-                }
-                echo_success("You have added {$daysToAdd} {$addTitle} days to all accounts at: " . date('G:i'));
-                $accounts = $db->query("SELECT `id`, `name`, `email`, `premdays`, `lastday` FROM `accounts` WHERE ID > 1;")->fetchAll();
-            } catch (PDOException $error) {
-                echo_error($error->getMessage());
-            }
-        } else {
-            echo_error("You don't have accounts to update!");
+  $daysToAdd = (int) $_POST['days_'] ?? 0;
+  if ($daysToAdd < 1) {
+    echo_error('You need add 1 or more days!');
+  } else {
+    if ($query->rowCount() > 0) {
+      try {
+        foreach ($accounts as $acc) {
+          $days = (int) $acc['premdays'] + $daysToAdd;
+          $lastDay = (int) $acc['lastday'] > 0 ? (int) $acc['lastday'] : $now;
+          $newLastDay = $lastDay + $daysToAdd * 86400;
+          $db->exec("UPDATE `accounts` SET `premdays` = {$days}, `lastday` = {$newLastDay} WHERE `id` = {$acc['id']}");
         }
+        echo_success("You have added {$daysToAdd} {$addTitle} days to all accounts at: " . date('G:i'));
+        $accounts = $db->query('SELECT `id`, `name`, `email`, `premdays`, `lastday` FROM `accounts` WHERE ID > 1;')->fetchAll();
+      } catch (PDOException $error) {
+        echo_error($error->getMessage());
+      }
+    } else {
+      echo_error("You don't have accounts to update!");
     }
+  }
 }
 ?>
 <div class="row">
@@ -112,7 +112,7 @@ if (isset($_POST['add_days']) && $account_logged->isSuperAdmin()) {
                             <td><?= $acc['email'] ?></td>
                             <td style="text-align: right"><?= $acc['premdays'] ?></td>
                             <td><?= $acc['lastday'] ?>
-                                (<?= date("M d Y, G:i:s", $acc['lastday']) ?>)
+                                (<?= date('M d Y, G:i:s', $acc['lastday']) ?>)
                             </td>
                         </tr>
                     <?php } ?>

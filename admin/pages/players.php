@@ -15,36 +15,37 @@ $base = BASE_URL . 'admin/?p=players';
 
 function echo_success($message)
 {
-	echo '<p class="success">' . $message . '</p>';
+  echo '<p class="success">' . $message . '</p>';
 }
 
 function echo_error($message)
 {
-	global $error;
-	echo '<p class="error">' . $message . '</p>';
-	$error = true;
+  global $error;
+  echo '<p class="error">' . $message . '</p>';
+  $error = true;
 }
 
 function verify_number($number, $name, $max_length)
 {
-	if (!Validator::number($number))
-		echo_error($name . ' can contain only numbers.');
+  if (!Validator::number($number)) {
+    echo_error($name . ' can contain only numbers.');
+  }
 
-	$number_length = strlen($number);
-	if ($number_length <= 0 || $number_length > $max_length)
-		echo_error($name . ' cannot be longer than ' . $max_length . ' digits.');
+  $number_length = strlen($number);
+  if ($number_length <= 0 || $number_length > $max_length) {
+    echo_error($name . ' cannot be longer than ' . $max_length . ' digits.');
+  }
 }
 
-$skills = array(
-	POT::SKILL_FIST => array('Fist fighting', 'fist'),
-	POT::SKILL_CLUB => array('Club fighting', 'club'),
-	POT::SKILL_SWORD => array('Sword fighting', 'sword'),
-	POT::SKILL_AXE => array('Axe fighting', 'axe'),
-	POT::SKILL_DIST => array('Distance fighting', 'dist'),
-	POT::SKILL_SHIELD => array('Shielding', 'shield'),
-	POT::SKILL_FISH => array('Fishing', 'fish')
-);
-
+$skills = [
+  POT::SKILL_FIST => ['Fist fighting', 'fist'],
+  POT::SKILL_CLUB => ['Club fighting', 'club'],
+  POT::SKILL_SWORD => ['Sword fighting', 'sword'],
+  POT::SKILL_AXE => ['Axe fighting', 'axe'],
+  POT::SKILL_DIST => ['Distance fighting', 'dist'],
+  POT::SKILL_SHIELD => ['Shielding', 'shield'],
+  POT::SKILL_FISH => ['Fishing', 'fish'],
+];
 
 $hasBlessingsColumn = $db->hasColumn('players', 'blessings');
 $hasBlessingColumn = $db->hasColumn('players', 'blessings1');
@@ -56,280 +57,294 @@ $hasLookAddons = $db->hasColumn('players', 'lookaddons');
 
 <?php
 $id = 0;
-if (isset($_REQUEST['id']))
-	$id = (int)$_REQUEST['id'];
-else if (isset($_REQUEST['search_name'])) {
-	if (strlen($_REQUEST['search_name']) < 3 && !Validator::number($_REQUEST['search_name'])) {
-		echo 'Player name is too short.';
-	} else {
-		if (Validator::number($_REQUEST['search_name']))
-			$id = $_REQUEST['search_name'];
-		else {
-			$query = $db->query('SELECT `id` FROM `players` WHERE `name` = ' . $db->quote($_REQUEST['search_name']));
-			if ($query->rowCount() == 1) {
-				$query = $query->fetch();
-				$id = $query['id'];
-			} else {
-				$query = $db->query('SELECT `id`, `name` FROM `players` WHERE `name` LIKE ' . $db->quote('%' . $_REQUEST['search_name'] . '%'));
-				if ($query->rowCount() > 0 && $query->rowCount() <= 10) {
-					echo 'Do you mean?<ul>';
-					foreach ($query as $row)
-						echo '<li><a href="' . $base . '&id=' . $row['id'] . '">' . $row['name'] . '</a></li>';
-					echo '</ul>';
-				} else if ($query->rowCount() > 10)
-					echo 'Specified name resulted with too many players.';
-			}
-		}
-	}
+if (isset($_REQUEST['id'])) {
+  $id = (int) $_REQUEST['id'];
+} elseif (isset($_REQUEST['search_name'])) {
+  if (strlen($_REQUEST['search_name']) < 3 && !Validator::number($_REQUEST['search_name'])) {
+    echo 'Player name is too short.';
+  } else {
+    if (Validator::number($_REQUEST['search_name'])) {
+      $id = $_REQUEST['search_name'];
+    } else {
+      $query = $db->query('SELECT `id` FROM `players` WHERE `name` = ' . $db->quote($_REQUEST['search_name']));
+      if ($query->rowCount() == 1) {
+        $query = $query->fetch();
+        $id = $query['id'];
+      } else {
+        $query = $db->query('SELECT `id`, `name` FROM `players` WHERE `name` LIKE ' . $db->quote('%' . $_REQUEST['search_name'] . '%'));
+        if ($query->rowCount() > 0 && $query->rowCount() <= 10) {
+          echo 'Do you mean?<ul>';
+          foreach ($query as $row) {
+            echo '<li><a href="' . $base . '&id=' . $row['id'] . '">' . $row['name'] . '</a></li>';
+          }
+          echo '</ul>';
+        } elseif ($query->rowCount() > 10) {
+          echo 'Specified name resulted with too many players.';
+        }
+      }
+    }
+  }
 }
 
 $groups = new OTS_Groups_List();
 if ($id > 0) {
-	$player = new OTS_Player();
-	$player->load($id);
+  $player = new OTS_Player();
+  $player->load($id);
 
-	if (isset($player) && $player->isLoaded() && isset($_POST['save'])) {// we want to save
-		$error = false;
+  if (isset($player) && $player->isLoaded() && isset($_POST['save'])) {
+    // we want to save
+    $error = false;
 
-		if ($player->isOnline())
-			echo_error('This player is actually online. You can\'t edit online players.');
+    if ($player->isOnline()) {
+      echo_error('This player is actually online. You can\'t edit online players.');
+    }
 
-		$name = $_POST['name'];
-		$_error = '';
-		if (!Validator::characterName($name))
-			echo_error(Validator::getLastError());
+    $name = $_POST['name'];
+    $_error = '';
+    if (!Validator::characterName($name)) {
+      echo_error(Validator::getLastError());
+    }
 
-		//if(!Validator::newCharacterName($name)
-		//	echo_error(Validator::getLastError());
+    //if(!Validator::newCharacterName($name)
+    //	echo_error(Validator::getLastError());
 
-		$player_db = new OTS_Player();
-		$player_db->find($name);
-		if ($player_db->isLoaded() && $player->getName() != $name)
-			echo_error('This name is already used. Please choose another name!');
+    $player_db = new OTS_Player();
+    $player_db->find($name);
+    if ($player_db->isLoaded() && $player->getName() != $name) {
+      echo_error('This name is already used. Please choose another name!');
+    }
 
-		$account_id = $_POST['account_id'];
-		verify_number($account_id, 'Account id', 11);
+    $account_id = $_POST['account_id'];
+    verify_number($account_id, 'Account id', 11);
 
-		$account_db = new OTS_Account();
-		$account_db->load($account_id);
-		if (!$account_db->isLoaded())
-			echo_error('Account with this id doesn\'t exist.');
+    $account_db = new OTS_Account();
+    $account_db->load($account_id);
+    if (!$account_db->isLoaded()) {
+      echo_error('Account with this id doesn\'t exist.');
+    }
 
-		$group = $_POST['group'];
-		if ($groups->getGroup($group) == false)
-			echo_error('Group with this id doesn\'t exist');
+    $group = $_POST['group'];
+    if ($groups->getGroup($group) == false) {
+      echo_error('Group with this id doesn\'t exist');
+    }
 
-		$level = $_POST['level'];
-		verify_number($level, 'Level', 11);
+    $level = $_POST['level'];
+    verify_number($level, 'Level', 11);
 
-		$experience = $_POST['experience'];
-		verify_number($experience, 'Experience', 20);
+    $experience = $_POST['experience'];
+    verify_number($experience, 'Experience', 20);
 
-		$vocation = $_POST['vocation'];
-		verify_number($vocation, 'Vocation id', 11);
+    $vocation = $_POST['vocation'];
+    verify_number($vocation, 'Vocation id', 11);
 
-		if (!isset($config['vocations'][$vocation])) {
-			echo_error("Vocation with this id doesn't exist.");
-		}
+    if (!isset($config['vocations'][$vocation])) {
+      echo_error("Vocation with this id doesn't exist.");
+    }
 
-		// health
-		$health = $_POST['health'];
-		verify_number($health, 'Health', 11);
-		$health_max = $_POST['health_max'];
-		verify_number($health_max, 'Health max', 11);
+    // health
+    $health = $_POST['health'];
+    verify_number($health, 'Health', 11);
+    $health_max = $_POST['health_max'];
+    verify_number($health_max, 'Health max', 11);
 
-		// mana
-		$magic_level = $_POST['magic_level'];
-		verify_number($magic_level, 'Magic_level', 11);
-		$mana = $_POST['mana'];
-		verify_number($mana, 'Mana', 11);
-		$mana_max = $_POST['mana_max'];
-		verify_number($mana_max, 'Mana max', 11);
-		$mana_spent = $_POST['mana_spent'];
-		verify_number($mana_spent, 'Mana spent', 11);
+    // mana
+    $magic_level = $_POST['magic_level'];
+    verify_number($magic_level, 'Magic_level', 11);
+    $mana = $_POST['mana'];
+    verify_number($mana, 'Mana', 11);
+    $mana_max = $_POST['mana_max'];
+    verify_number($mana_max, 'Mana max', 11);
+    $mana_spent = $_POST['mana_spent'];
+    verify_number($mana_spent, 'Mana spent', 11);
 
-		// look
-		$look_body = $_POST['look_body'];
-		verify_number($look_body, 'Look body', 11);
-		$look_feet = $_POST['look_feet'];
-		verify_number($look_feet, 'Look feet', 11);
-		$look_head = $_POST['look_head'];
-		verify_number($look_head, 'Look head', 11);
-		$look_legs = $_POST['look_legs'];
-		verify_number($look_legs, 'Look legs', 11);
-		$look_type = $_POST['look_type'];
-		verify_number($look_type, 'Look type', 11);
-		if ($hasLookAddons) {
-			$look_addons = $_POST['look_addons'];
-			verify_number($look_addons, 'Look addons', 11);
-		}
+    // look
+    $look_body = $_POST['look_body'];
+    verify_number($look_body, 'Look body', 11);
+    $look_feet = $_POST['look_feet'];
+    verify_number($look_feet, 'Look feet', 11);
+    $look_head = $_POST['look_head'];
+    verify_number($look_head, 'Look head', 11);
+    $look_legs = $_POST['look_legs'];
+    verify_number($look_legs, 'Look legs', 11);
+    $look_type = $_POST['look_type'];
+    verify_number($look_type, 'Look type', 11);
+    if ($hasLookAddons) {
+      $look_addons = $_POST['look_addons'];
+      verify_number($look_addons, 'Look addons', 11);
+    }
 
-		// pos
-		$pos_x = $_POST['pos_x'];
-		verify_number($pos_x, 'Position x', 11);
-		$pos_y = $_POST['pos_y'];
-		verify_number($pos_y, 'Position y', 11);
-		$pos_z = $_POST['pos_z'];
-		verify_number($pos_z, 'Position z', 11);
+    // pos
+    $pos_x = $_POST['pos_x'];
+    verify_number($pos_x, 'Position x', 11);
+    $pos_y = $_POST['pos_y'];
+    verify_number($pos_y, 'Position y', 11);
+    $pos_z = $_POST['pos_z'];
+    verify_number($pos_z, 'Position z', 11);
 
-		$soul = $_POST['soul'];
-		verify_number($soul, 'Soul', 10);
-		$town = $_POST['town'];
-		verify_number($town, 'Town', 11);
+    $soul = $_POST['soul'];
+    verify_number($soul, 'Soul', 10);
+    $town = $_POST['town'];
+    verify_number($town, 'Town', 11);
 
-		$capacity = $_POST['capacity'];
-		verify_number($capacity, 'Capacity', 11);
-		$sex = $_POST['sex'];
-		verify_number($sex, 'Sex', 1);
+    $capacity = $_POST['capacity'];
+    verify_number($capacity, 'Capacity', 11);
+    $sex = $_POST['sex'];
+    verify_number($sex, 'Sex', 1);
 
-		$lastlogin = $_POST['lastlogin'];
-		verify_number($lastlogin, 'Last login', 20);
-		$lastlogout = $_POST['lastlogout'];
-		verify_number($lastlogout, 'Last logout', 20);
+    $lastlogin = $_POST['lastlogin'];
+    verify_number($lastlogin, 'Last login', 20);
+    $lastlogout = $_POST['lastlogout'];
+    verify_number($lastlogout, 'Last logout', 20);
 
-		$skull = $_POST['skull'];
-		verify_number($skull, 'Skull', 1);
-		$skull_time = $_POST['skull_time'];
-		verify_number($skull_time, 'Skull time', 11);
+    $skull = $_POST['skull'];
+    verify_number($skull, 'Skull', 1);
+    $skull_time = $_POST['skull_time'];
+    verify_number($skull_time, 'Skull time', 11);
 
-		if ($db->hasColumn('players', 'loss_experience')) {
-			$loss_experience = $_POST['loss_experience'];
-			verify_number($loss_experience, 'Loss experience', 11);
-			$loss_mana = $_POST['loss_mana'];
-			verify_number($loss_mana, 'Loss mana', 11);
-			$loss_skills = $_POST['loss_skills'];
-			verify_number($loss_skills, 'Loss skills', 11);
-			$loss_containers = $_POST['loss_containers'];
-			verify_number($loss_containers, 'Loss loss_containers', 11);
-			$loss_items = $_POST['loss_items'];
-			verify_number($loss_items, 'Loss items', 11);
-		}
-		if ($db->hasColumn('players', 'offlinetraining_time')) {
-			$offlinetraining = $_POST['offlinetraining'];
-			verify_number($offlinetraining, 'Offline Training time', 11);
-		}
+    if ($db->hasColumn('players', 'loss_experience')) {
+      $loss_experience = $_POST['loss_experience'];
+      verify_number($loss_experience, 'Loss experience', 11);
+      $loss_mana = $_POST['loss_mana'];
+      verify_number($loss_mana, 'Loss mana', 11);
+      $loss_skills = $_POST['loss_skills'];
+      verify_number($loss_skills, 'Loss skills', 11);
+      $loss_containers = $_POST['loss_containers'];
+      verify_number($loss_containers, 'Loss loss_containers', 11);
+      $loss_items = $_POST['loss_items'];
+      verify_number($loss_items, 'Loss items', 11);
+    }
+    if ($db->hasColumn('players', 'offlinetraining_time')) {
+      $offlinetraining = $_POST['offlinetraining'];
+      verify_number($offlinetraining, 'Offline Training time', 11);
+    }
 
-		if ($hasBlessingsColumn) {
-			$blessings = $_POST['blessings'];
-			verify_number($blessings, 'Blessings', 2);
-		}
+    if ($hasBlessingsColumn) {
+      $blessings = $_POST['blessings'];
+      verify_number($blessings, 'Blessings', 2);
+    }
 
-		$balance = $_POST['balance'];
-		verify_number($balance, 'Balance', 20);
-		if ($db->hasColumn('players', 'stamina')) {
-			$stamina = $_POST['stamina'];
-			verify_number($stamina, 'Stamina', 20);
-		}
+    $balance = $_POST['balance'];
+    verify_number($balance, 'Balance', 20);
+    if ($db->hasColumn('players', 'stamina')) {
+      $stamina = $_POST['stamina'];
+      verify_number($stamina, 'Stamina', 20);
+    }
 
-		$deleted = (isset($_POST['deleted']) && $_POST['deleted'] == 'true');
-		$hidden = (isset($_POST['hidden']) && $_POST['hidden'] == 'true');
+    $deleted = isset($_POST['deleted']) && $_POST['deleted'] == 'true';
+    $hidden = isset($_POST['hidden']) && $_POST['hidden'] == 'true';
 
-		$created = $_POST['created'];
-		verify_number($created, 'Created', 11);
+    $created = $_POST['created'];
+    verify_number($created, 'Created', 11);
 
-		$comment = isset($_POST['comment']) ? htmlspecialchars(stripslashes(substr($_POST['comment'], 0, 2000))) : NULL;
+    $comment = isset($_POST['comment']) ? htmlspecialchars(stripslashes(substr($_POST['comment'], 0, 2000))) : null;
 
-		foreach ($_POST['skills'] as $skill => $value)
-			verify_number($value, $skills[$skill][0], 10);
-		foreach ($_POST['skills_tries'] as $skill => $value)
-			verify_number($value, $skills[$skill][0] . ' tries', 10);
+    foreach ($_POST['skills'] as $skill => $value) {
+      verify_number($value, $skills[$skill][0], 10);
+    }
+    foreach ($_POST['skills_tries'] as $skill => $value) {
+      verify_number($value, $skills[$skill][0] . ' tries', 10);
+    }
 
-		if ($hasBlessingColumn) {
-		$bless_count = $_POST['blesscount'];
-			for ($i = 1; $i <= $bless_count; $i++) {
-				$a = 'blessing' . $i;
-				${'blessing' . $i} = (isset($_POST[$a]) && $_POST[$a] == 'true');
-			}
-		}
+    if ($hasBlessingColumn) {
+      $bless_count = $_POST['blesscount'];
+      for ($i = 1; $i <= $bless_count; $i++) {
+        $a = 'blessing' . $i;
+        ${'blessing' . $i} = isset($_POST[$a]) && $_POST[$a] == 'true';
+      }
+    }
 
-		if (!$error) {
-			$player->setName($name);
-			$player->setAccount($account_db);
-			$player->setGroup($groups->getGroup($group));
-			$player->setLevel($level);
-			$player->setExperience($experience);
-			$player->setVocation($vocation);
-			$player->setHealth($health);
-			$player->setHealthMax($health_max);
-			$player->setMagLevel($magic_level);
-			$player->setMana($mana);
-			$player->setManaMax($mana_max);
-			$player->setManaSpent($mana_spent);
-			$player->setLookBody($look_body);
-			$player->setLookFeet($look_feet);
-			$player->setLookHead($look_head);
-			$player->setLookLegs($look_legs);
-			$player->setLookType($look_type);
-			if ($hasLookAddons)
-				$player->setLookAddons($look_addons);
-			if ($db->hasColumn('players', 'offlinetraining_time'))
-				$player->setCustomField('offlinetraining_time', $offlinetraining);
-			$player->setPosX($pos_x);
-			$player->setPosY($pos_y);
-			$player->setPosZ($pos_z);
-			$player->setSoul($soul);
-			$player->setTownId($town);
-			$player->setCap($capacity);
-			$player->setSex($sex);
-			$player->setLastLogin($lastlogin);
-			$player->setLastLogout($lastlogout);
-			//$player->setLastIP(ip2long($lastip));
-			$player->setSkull($skull);
-			$player->setSkullTime($skull_time);
-			if ($db->hasColumn('players', 'loss_experience')) {
-				$player->setLossExperience($loss_experience);
-				$player->setLossMana($loss_mana);
-				$player->setLossSkills($loss_skills);
-				$player->setLossContainers($loss_containers);
-				$player->setLossItems($loss_items);
-			}
-			if ($db->hasColumn('players', 'blessings'))
-				$player->setBlessings($blessings);
+    if (!$error) {
+      $player->setName($name);
+      $player->setAccount($account_db);
+      $player->setGroup($groups->getGroup($group));
+      $player->setLevel($level);
+      $player->setExperience($experience);
+      $player->setVocation($vocation);
+      $player->setHealth($health);
+      $player->setHealthMax($health_max);
+      $player->setMagLevel($magic_level);
+      $player->setMana($mana);
+      $player->setManaMax($mana_max);
+      $player->setManaSpent($mana_spent);
+      $player->setLookBody($look_body);
+      $player->setLookFeet($look_feet);
+      $player->setLookHead($look_head);
+      $player->setLookLegs($look_legs);
+      $player->setLookType($look_type);
+      if ($hasLookAddons) {
+        $player->setLookAddons($look_addons);
+      }
+      if ($db->hasColumn('players', 'offlinetraining_time')) {
+        $player->setCustomField('offlinetraining_time', $offlinetraining);
+      }
+      $player->setPosX($pos_x);
+      $player->setPosY($pos_y);
+      $player->setPosZ($pos_z);
+      $player->setSoul($soul);
+      $player->setTownId($town);
+      $player->setCap($capacity);
+      $player->setSex($sex);
+      $player->setLastLogin($lastlogin);
+      $player->setLastLogout($lastlogout);
+      //$player->setLastIP(ip2long($lastip));
+      $player->setSkull($skull);
+      $player->setSkullTime($skull_time);
+      if ($db->hasColumn('players', 'loss_experience')) {
+        $player->setLossExperience($loss_experience);
+        $player->setLossMana($loss_mana);
+        $player->setLossSkills($loss_skills);
+        $player->setLossContainers($loss_containers);
+        $player->setLossItems($loss_items);
+      }
+      if ($db->hasColumn('players', 'blessings')) {
+        $player->setBlessings($blessings);
+      }
 
-			if ($hasBlessingColumn) {
-				for ($i = 1; $i <= $bless_count; $i++) {
-					$a = 'blessing' . $i;
-					$player->setCustomField('blessings' . $i, ${'blessing' . $i} ? '1' : '0');
-				}
-			}
-			$player->setBalance($balance);
-			if ($db->hasColumn('players', 'stamina'))
-				$player->setStamina($stamina);
-			if ($db->hasColumn('players', 'deletion'))
-				$player->setCustomField('deletion', $deleted ? '1' : '0');
-			else
-				$player->setCustomField('deleted', $deleted ? '1' : '0');
-			$player->setCustomField('hidden', $hidden ? '1' : '0');
-			$player->setCustomField('created', $created);
-			if (isset($comment))
-				$player->setCustomField('comment', $comment);
+      if ($hasBlessingColumn) {
+        for ($i = 1; $i <= $bless_count; $i++) {
+          $a = 'blessing' . $i;
+          $player->setCustomField('blessings' . $i, ${'blessing' . $i} ? '1' : '0');
+        }
+      }
+      $player->setBalance($balance);
+      if ($db->hasColumn('players', 'stamina')) {
+        $player->setStamina($stamina);
+      }
+      if ($db->hasColumn('players', 'deletion')) {
+        $player->setCustomField('deletion', $deleted ? '1' : '0');
+      } else {
+        $player->setCustomField('deleted', $deleted ? '1' : '0');
+      }
+      $player->setCustomField('hidden', $hidden ? '1' : '0');
+      $player->setCustomField('created', $created);
+      if (isset($comment)) {
+        $player->setCustomField('comment', $comment);
+      }
 
-			foreach ($_POST['skills'] as $skill => $value) {
-				$player->setSkill($skill, $value);
-			}
-			foreach ($_POST['skills_tries'] as $skill => $value) {
-				$player->setSkillTries($skill, $value);
-			}
-			$player->save();
-			echo_success('Player saved at: ' . date('G:i'));
-		}
-	}
+      foreach ($_POST['skills'] as $skill => $value) {
+        $player->setSkill($skill, $value);
+      }
+      foreach ($_POST['skills_tries'] as $skill => $value) {
+        $player->setSkillTries($skill, $value);
+      }
+      $player->save();
+      echo_success('Player saved at: ' . date('G:i'));
+    }
+  }
 }
 
 $search_name = '';
-if (isset($_REQUEST['search_name']))
-	$search_name = $_REQUEST['search_name'];
-else if ($id > 0 && isset($player) && $player->isLoaded())
-	$search_name = $player->getName();
-
+if (isset($_REQUEST['search_name'])) {
+  $search_name = $_REQUEST['search_name'];
+} elseif ($id > 0 && isset($player) && $player->isLoaded()) {
+  $search_name = $player->getName();
+}
 ?>
 <div class="row">
 
-	<?php
-	if (isset($player) && $player->isLoaded()) {
-		$account = $player->getAccount();
-		?>
-		<form action="<?php echo $base . ((isset($id) && $id > 0) ? '&id=' . $id : ''); ?>" method="post" class="form-horizontal col-8">
+	<?php if (isset($player) && $player->isLoaded()) {
+   $account = $player->getAccount(); ?>
+		<form action="<?php echo $base . (isset($id) && $id > 0 ? '&id=' . $id : ''); ?>" method="post" class="form-horizontal col-8">
 			<div class="">
 				<div class="box box-primary">
 					<div class="box-body">
@@ -367,18 +382,16 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 											<label for="group" class="control-label">Group:</label>
 											<select name="group" id="group" class="form-control">
 												<?php foreach ($groups->getGroups() as $id => $group): ?>
-													<option value="<?php echo $id; ?>" <?php echo($player->getGroup()->getId() == $id ? 'selected' : ''); ?>><?php echo $group->getName(); ?></option>
+													<option value="<?php echo $id; ?>" <?php echo $player->getGroup()->getId() == $id ? 'selected' : ''; ?>><?php echo $group->getName(); ?></option>
 												<?php endforeach; ?>
 											</select>
 										</div>
 										<div class="col-6">
 											<label for="vocation" class="control-label">Vocation</label>
 											<select name="vocation" id="vocation" class="form-control">
-												<?php
-												foreach ($config['vocations'] as $id => $name) {
-													echo '<option value=' . $id . ($id == $player->getVocation() ? ' selected' : '') . '>' . $name . '</option>';
-												}
-												?>
+												<?php foreach ($config['vocations'] as $id => $name) {
+              echo '<option value=' . $id . ($id == $player->getVocation() ? ' selected' : '') . '>' . $name . '</option>';
+            } ?>
 											</select>
 										</div>
 									</div>
@@ -388,7 +401,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 											<label for="sex" class="control-label">Sex:</label>
 											<select name="sex" id="sex" class="form-control">>
 												<?php foreach ($config['genders'] as $id => $sex): ?>
-													<option value="<?php echo $id; ?>" <?php echo($player->getSex() == $id ? 'selected' : ''); ?>><?php echo strtolower($sex); ?></option>
+													<option value="<?php echo $id; ?>" <?php echo $player->getSex() == $id ? 'selected' : ''; ?>><?php echo strtolower($sex); ?></option>
 												<?php endforeach; ?>
 											</select>
 										</div>
@@ -396,7 +409,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 											<label for="town" class="control-label">Town:</label>
 											<select name="town" id="town" class="form-control">
 												<?php foreach ($config['towns'] as $id => $town): ?>
-													<option value="<?php echo $id; ?>" <?php echo($player->getTownId() == $id ? 'selected' : ''); ?>><?php echo $town; ?></option>
+													<option value="<?php echo $id; ?>" <?php echo $player->getTownId() == $id ? 'selected' : ''; ?>><?php echo $town; ?></option>
 												<?php endforeach; ?>
 											</select>
 										</div>
@@ -407,11 +420,11 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 											<label for="skull" class="control-label">Skull:</label>
 											<select name="skull" id="skull" class="form-control">
 												<?php
-												$skull_type = array("None", "Yellow", "Green", "White", "Red", "Black", "Orange");
-												foreach ($skull_type as $id => $s_name) {
-													echo '<option value=' . $id . ($id == $player->getSkull() ? ' selected' : '') . '>' . $s_name . '</option>';
-												}
-												?>
+            $skull_type = ['None', 'Yellow', 'Green', 'White', 'Red', 'Black', 'Orange'];
+            foreach ($skull_type as $id => $s_name) {
+              echo '<option value=' . $id . ($id == $player->getSkull() ? ' selected' : '') . '>' . $s_name . '</option>';
+            }
+            ?>
 											</select>
 										</div>
 										<div class="col-6">
@@ -423,22 +436,30 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 									</div>
 									<div class="row">
 										<?php if ($hasBlessingColumn):
-											$blesscount = $player->countBlessings();
-											$bless = $player->checkBlessings($blesscount);
-											?>
+
+            $blesscount = $player->countBlessings();
+            $bless = $player->checkBlessings($blesscount);
+            ?>
 											<input type="hidden" name="blesscount" value="<?php echo $blesscount; ?>"/>
 											<div class="col-6">
 												<label for="blessings" class="control-label">Blessings:</label>
 												<div class="checkbox">
-													<?php
-													for ($i = 1; $i <= $blesscount; $i++) {
-														echo '<label style="margin-left: 5px;"><input type="checkbox" name="blessing' . $i . '" id="blessing' . $i . '"
-																  value="true" ' . (($bless[$i - 1] == 1) ? ' checked' : '') . '/> ' . $i . '</label>';
-													}
-													?>
+													<?php for ($i = 1; $i <= $blesscount; $i++) {
+               echo '<label style="margin-left: 5px;"><input type="checkbox" name="blessing' .
+                 $i .
+                 '" id="blessing' .
+                 $i .
+                 '"
+																  value="true" ' .
+                 ($bless[$i - 1] == 1 ? ' checked' : '') .
+                 '/> ' .
+                 $i .
+                 '</label>';
+             } ?>
 												</div>
 											</div>
-										<?php endif; ?>
+										<?php
+          endif; ?>
 										<?php if ($hasBlessingsColumn): ?>
 											<div class="col-6">
 												<label for="blessings" class="control-label">Blessings:</label>
@@ -459,12 +480,12 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 										<div class="col-6">
 											<label for="deleted" class="control-label">Deleted:</label>
 											<input type="checkbox" name="deleted" id="deleted"
-												   value="true" <?php echo($player->getCustomField($db->hasColumn('players', 'deletion') ? 'deletion' : 'deleted') == '1' ? ' checked' : ''); ?>/>
+												   value="true" <?php echo $player->getCustomField($db->hasColumn('players', 'deletion') ? 'deletion' : 'deleted') == '1' ? ' checked' : ''; ?>/>
 										</div>
 										<div class="col-6">
 											<label for="hidden" class="control-label">Hidden:</label>
 											<input type="checkbox" name="hidden" id="hidden"
-												   value="true" <?php echo($player->isHidden() ? ' checked' : ''); ?>/>
+												   value="true" <?php echo $player->isHidden() ? ' checked' : ''; ?>/>
 										</div>
 
 									</div>
@@ -572,35 +593,68 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 								</div>
 								<div class="tab-pane fade" id="nav-skills" role="tabpanel" aria-labelledby="nav-skills-tab">
 									<?php
-									$i = 0;
-				echo '<div class="row">';
-									foreach ($skills as $id => $info) {
-										if ($i == 0 || $i++ == 2) {
-											$i = 0;
-										}
-										echo '
+         $i = 0;
+         echo '<div class="row">';
+         foreach ($skills as $id => $info) {
+           if ($i == 0 || $i++ == 2) {
+             $i = 0;
+           }
+           echo '
                     <div class="col-3">
-                        <label for="skills[' . $id . ']" class="control-label">' . $info[0] . '</label>
-                        <input type="text" class="form-control" id="skills[' . $id . ']" name="skills[' . $id . ']" maxlength="10" autocomplete="off" style="cursor: auto;" value="' . $player->getSkill($id) . '"/>
+                        <label for="skills[' .
+             $id .
+             ']" class="control-label">' .
+             $info[0] .
+             '</label>
+                        <input type="text" class="form-control" id="skills[' .
+             $id .
+             ']" name="skills[' .
+             $id .
+             ']" maxlength="10" autocomplete="off" style="cursor: auto;" value="' .
+             $player->getSkill($id) .
+             '"/>
                     </div>
                     <div class="col-3">
-                      <label for="skills_tries[' . $id . ']" class="control-label">' . $info[0] . ' tries</label>
-                        <input type="text" class="form-control" id="skills_tries[' . $id . ']" name="skills_tries[' . $id . ']" maxlength="10" autocomplete="off" style="cursor: auto;" value="' . $player->getSkillTries($id) . '"/>
+                      <label for="skills_tries[' .
+             $id .
+             ']" class="control-label">' .
+             $info[0] .
+             ' tries</label>
+                        <input type="text" class="form-control" id="skills_tries[' .
+             $id .
+             ']" name="skills_tries[' .
+             $id .
+             ']" maxlength="10" autocomplete="off" style="cursor: auto;" value="' .
+             $player->getSkillTries($id) .
+             '"/>
                     </div>';
-										if ($i == 0)
-											echo '';
-									}
-				echo '</div>';
-									?>
+           if ($i == 0) {
+             echo '';
+           }
+         }
+         echo '</div>';
+         ?>
 								</div>
 								<div class="tab-pane fade" id="nav-poslook" role="tabpanel" aria-labelledby="nav-poslook-tab">
-									<?php $outfit = $config['outfit_images_url'] . '?id=' . $player->getLookType() . ($hasLookAddons ? '&addons=' . $player->getLookAddons() : '') . '&head=' . $player->getLookHead() . '&body=' . $player->getLookBody() . '&legs=' . $player->getLookLegs() . '&feet=' . $player->getLookFeet(); ?>
+									<?php $outfit =
+           $config['outfit_images_url'] .
+           '?id=' .
+           $player->getLookType() .
+           ($hasLookAddons ? '&addons=' . $player->getLookAddons() : '') .
+           '&head=' .
+           $player->getLookHead() .
+           '&body=' .
+           $player->getLookBody() .
+           '&legs=' .
+           $player->getLookLegs() .
+           '&feet=' .
+           $player->getLookFeet(); ?>
 									<div id="imgchar"
 										 style="width:64px;height:64px;position:absolute; top:30px; right:30px"><img id="player_outfit"
 												style="margin-left:0;margin-top:0px;width:64px;height:64px;"
 												src="<?php echo $outfit; ?>"
 												alt="player outfit"/></div>
-									<?php ?>
+									<?php  ?>
 									<td>Position:</td>
 									<div class="row">
 										<div class="col-4">
@@ -698,7 +752,9 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
                                             <input type="text" class="form-control" id="lastip" name="lastip"
                                                    autocomplete="off"
                                                    maxlength="10"
-                                                   value="<?= (strlen($player->getLastIP()) > 11) ? inet_ntop($player->getLastIP()) : longToIp($player->getLastIP()); ?>"
+                                                   value="<?= strlen($player->getLastIP()) > 11
+                                                     ? inet_ntop($player->getLastIP())
+                                                     : longToIp($player->getLastIP()) ?>"
                                                    readonly/>
                                         </div>
 									</div>
@@ -744,7 +800,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 										<div class="col-12">
 											<label for="comment" class="control-label">Comment:</label>
 											<textarea class="form-control" name="comment" rows="10" cols="50"
-													  wrap="virtual"><?php echo $player->getCustomField("comment"); ?></textarea>
+													  wrap="virtual"><?php echo $player->getCustomField('comment'); ?></textarea>
 											<small>[max.
 												length: 2000 chars, 50 lines (ENTERs)]
 											</small>
@@ -763,7 +819,8 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 				</div>
 			</div>
 		</form>
-	<?php } ?>
+	<?php
+ } ?>
 	<div class="col-4">
 		<div class="box box-primary">
 			<div class="box-header with-border">
@@ -786,12 +843,12 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 				</form>
 			</div>
 		</div>
-		<?php
-		if (isset($account) && $account->isLoaded()) {
-			$account_players = array();
-			$query = $db->query('SELECT `name`,`level`,`vocation`  FROM `players` WHERE `account_id` = ' . $account->getId() . ' ORDER BY `name`')->fetchAll();
-			if (isset($query)) {
-				?>
+		<?php if (isset($account) && $account->isLoaded()) {
+    $account_players = [];
+    $query = $db
+      ->query('SELECT `name`,`level`,`vocation`  FROM `players` WHERE `account_id` = ' . $account->getId() . ' ORDER BY `name`')
+      ->fetchAll();
+    if (isset($query)) { ?>
 				<div class="box">
 					<div class="box-header">
 						<h3 class="box-title">Character List:</h3>
@@ -806,25 +863,32 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
 								<th style="width: 40px">Edit</th>
 							</tr>
 							<?php
-							$i = 1;
-							foreach ($query as $p) {
-								$account_players[] = $p;
-								echo '<tr>
-                            <td>' . $i . '.</td>
-                            <td>' . $p['name'] . '</td>
-                            <td>' . $p['level'] . '</td>
-                            <td><a href="?p=players&search_name=' . $p['name'] . '"><span class="btn btn-success btn-sm edit btn-flat"><i class="fa fa-edit"></i></span></a></span></td>
+       $i = 1;
+       foreach ($query as $p) {
+         $account_players[] = $p;
+         echo '<tr>
+                            <td>' .
+           $i .
+           '.</td>
+                            <td>' .
+           $p['name'] .
+           '</td>
+                            <td>' .
+           $p['level'] .
+           '</td>
+                            <td><a href="?p=players&search_name=' .
+           $p['name'] .
+           '"><span class="btn btn-success btn-sm edit btn-flat"><i class="fa fa-edit"></i></span></a></span></td>
                         </tr>';
-								$i++;
-							} ?>
+         $i++;
+       }
+       ?>
 							</tbody>
 						</table>
 					</div>
 				</div>
-				<?php
-			};
-		};
-		?>
+				<?php }
+  } ?>
 	</div>
 
 
@@ -873,7 +937,7 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
         $('#look_legs').change(function() {updateOutfit()});
         $('#look_feet').change(function() {updateOutfit()});
         $('#look_type').change(function() {updateOutfit()});
-		<?php if($hasLookAddons): ?>
+		<?php if ($hasLookAddons): ?>
         $('#look_addons').change(function() {updateOutfit()});
 		<?php endif; ?>
 
@@ -886,11 +950,13 @@ else if ($id > 0 && isset($player) && $player->isLoaded())
             var look_type = $('#look_type').val();
 
             var look_addons = '';
-            <?php if($hasLookAddons): ?>
+            <?php if ($hasLookAddons): ?>
                 look_addons = '&addons=' + $('#look_addons').val();
 	        <?php endif; ?>
 
-            new_outfit = '<?= $config['outfit_images_url']; ?>?id=' + look_type + look_addons + '&head=' + look_head + '&body=' + look_body + '&legs=' + look_legs + '&feet=' + look_feet;
+            new_outfit = '<?= $config[
+              'outfit_images_url'
+            ] ?>?id=' + look_type + look_addons + '&head=' + look_head + '&body=' + look_body + '&legs=' + look_legs + '&feet=' + look_feet;
             $("#player_outfit").attr("src", new_outfit);
             console.log(new_outfit);
         }

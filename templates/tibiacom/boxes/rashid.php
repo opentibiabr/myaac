@@ -1,28 +1,28 @@
 <?php
-$diasemana = array('domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sabado');
+$diasemana = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sabado'];
 $data = date('Y-m-d');
 $diasemana_numero = date('w', strtotime($data));
-		
-if($diasemana[$diasemana_numero] == 'domingo'){
-	$rashid_city = 'Carlin';
+
+if ($diasemana[$diasemana_numero] == 'domingo') {
+  $rashid_city = 'Carlin';
 }
-if($diasemana[$diasemana_numero] == 'segunda'){
-	$rashid_city = 'Svargrond';
+if ($diasemana[$diasemana_numero] == 'segunda') {
+  $rashid_city = 'Svargrond';
 }
-if($diasemana[$diasemana_numero] == 'terça'){
-	$rashid_city = 'Liberty Bay';
+if ($diasemana[$diasemana_numero] == 'terça') {
+  $rashid_city = 'Liberty Bay';
 }
-if($diasemana[$diasemana_numero] == 'quarta'){
-	$rashid_city = 'Port Hope';
+if ($diasemana[$diasemana_numero] == 'quarta') {
+  $rashid_city = 'Port Hope';
 }
-if($diasemana[$diasemana_numero] == 'quinta'){
-	$rashid_city = 'Ankrahmun';
+if ($diasemana[$diasemana_numero] == 'quinta') {
+  $rashid_city = 'Ankrahmun';
 }
-if($diasemana[$diasemana_numero] == 'sexta'){
-	$rashid_city = 'Darashia';
+if ($diasemana[$diasemana_numero] == 'sexta') {
+  $rashid_city = 'Darashia';
 }
-if($diasemana[$diasemana_numero] == 'sabado'){
-	$rashid_city = 'Edron';
+if ($diasemana[$diasemana_numero] == 'sabado') {
+  $rashid_city = 'Edron';
 }
 ?>
 <style>
@@ -72,10 +72,10 @@ if($diasemana[$diasemana_numero] == 'sabado'){
 <div class="rashid">
     <div class="rashid_header">Rashid</div>
     <div class="rashid_content">
-        <div class="rashid_outfit" style="background-image: url('<?php echo $template_path ?>/images/themeboxes/rashid/Rashid.gif')"></div>
+        <div class="rashid_outfit" style="background-image: url('<?php echo $template_path; ?>/images/themeboxes/rashid/Rashid.gif')"></div>
         <div class="rashid_text">
             <b>City:</b><br>
-            <small><?php echo $rashid_city ?></small>
+            <small><?php echo $rashid_city; ?></small>
         </div>
     </div>
     <div class="rashid_bottom"></div>

@@ -1,7 +1,7 @@
 <?php
 
-if(!$db->hasTable('myaac_menu')) {
-	$db->query("
+if (!$db->hasTable('myaac_menu')) {
+  $db->query("
 CREATE TABLE `myaac_menu`
 (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -15,7 +15,7 @@ CREATE TABLE `myaac_menu`
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 ");
 
-	$db->query("
+  $db->query("
 /* MENU_CATEGORY_NEWS kathrine */
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('kathrine', 'Latest News', 'news', 1, 0);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('kathrine', 'News Archive', 'news/archive', 1, 1);

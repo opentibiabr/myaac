@@ -18,9 +18,7 @@ if (file_exists(BASE . 'config.local.php')) {
 }
 
 if (!isset($config['installed']) || !$config['installed']) {
-  throw new RuntimeException(
-    'MyAAC has not been installed yet or there was error during installation. Please install again.'
-  );
+  throw new RuntimeException('MyAAC has not been installed yet or there was error during installation. Please install again.');
 }
 
 date_default_timezone_set($config['date_timezone']);
@@ -131,9 +129,7 @@ if (!isset($config['highscores_ids_hidden']) || count($config['highscores_ids_hi
   $config['highscores_ids_hidden'] = [0];
 }
 
-$config['account_create_character_create'] =
-  config('account_create_character_create') &&
-  (!config('mail_enabled') || !config('account_mail_verify'));
+$config['account_create_character_create'] = config('account_create_character_create') && (!config('mail_enabled') || !config('account_mail_verify'));
 
 // POT
 require_once SYSTEM . 'libs/pot/OTS.php';
@@ -162,9 +158,7 @@ if ($cache->enabled() && $cache->fetch('vocations', $tmp)) {
   }
 
   if (!$vocations->load($file)) {
-    throw new RuntimeException(
-      'ERROR: Cannot load <i>vocations.xml</i> - the file is malformed. Check the file with xml syntax validator.'
-    );
+    throw new RuntimeException('ERROR: Cannot load <i>vocations.xml</i> - the file is malformed. Check the file with xml syntax validator.');
   }
 
   $config['vocations'] = [];

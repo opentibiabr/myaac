@@ -20,7 +20,8 @@ $locale['not_loaded'] = 'Not loaded';
 $locale['loading_spinner'] = 'Please wait, installing...';
 $locale['importing_spinner'] = 'Please wait, importing data...';
 $locale['please_fill_all'] = 'Please fill all inputs!';
-$locale['already_installed'] = 'MyAAC has been already installed. Please delete <b>install/</b> directory. If you want to reinstall MyAAC - please delete <strong>config.local.php</strong> file from the main directory and refresh the page.';
+$locale['already_installed'] =
+  'MyAAC has been already installed. Please delete <b>install/</b> directory. If you want to reinstall MyAAC - please delete <strong>config.local.php</strong> file from the main directory and refresh the page.';
 
 // welcome
 $locale['step_welcome'] = 'Welcome';
@@ -36,7 +37,8 @@ $locale['step_requirements'] = 'Requirements';
 $locale['step_requirements_title'] = 'Requirements check';
 $locale['step_requirements_php_version'] = 'PHP Version';
 $locale['step_requirements_write_perms'] = 'Write permissions';
-$locale['step_requirements_failed'] = 'Installation will be disabled until these requirements will be passed.</b><br/>For more informations see <b>README</b> file.';
+$locale['step_requirements_failed'] =
+  'Installation will be disabled until these requirements will be passed.</b><br/>For more informations see <b>README</b> file.';
 $locale['step_requirements_extension'] = '$EXTENSION$ PHP extension';
 
 // config
@@ -65,7 +67,8 @@ $locale['step_database_config_saved'] = 'Local configuration has been saved into
 $locale['step_database_error_path'] = 'Please specify server path.';
 $locale['step_database_error_config'] = 'Cannot find config.lua file. Is your server path correct? Go back and check again.';
 $locale['step_database_error_database_empty'] = 'Cannot determine database type from config.lua. Your OTS is unsupported by this AAC.';
-$locale['step_database_error_only_mysql'] = 'This AAC supports only MySQL. From your config file it seems that your OTS is using: $DATABASE_TYPE$ database. Please change your database to MySQL and then follow the installation again.';
+$locale['step_database_error_only_mysql'] =
+  'This AAC supports only MySQL. From your config file it seems that your OTS is using: $DATABASE_TYPE$ database. Please change your database to MySQL and then follow the installation again.';
 $locale['step_database_error_table'] = 'Table $TABLE$ doesn\'t exist. Please import your OTS database schema first.';
 $locale['step_database_error_table_exist'] = 'Table $TABLE$ already exist. Seems AAC is already installed. Skipping importing MySQL schema..';
 $locale['step_database_error_mysql_connect'] = 'Cannot connect to the MySQL database.';

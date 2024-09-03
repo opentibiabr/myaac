@@ -2,30 +2,28 @@
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Download Client';
 
-
 $getpage_download = $_GET['step'] ?? '';
-if (empty($getpage_download)) {
-    ?>
+if (empty($getpage_download)) { ?>
     <div class="TableContainer">
         <div class="CaptionContainer">
             <div class="CaptionInnerContainer">
                 <span class="CaptionEdgeLeftTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionBorderTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionVerticalLeft"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <div class="Text">Download Client</div>
                 <span class="CaptionVerticalRight"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <span class="CaptionBorderBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionEdgeLeftBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             </div>
         </div>
         <table class="Table5" cellpadding="0" cellspacing="0">
@@ -90,11 +88,9 @@ if (empty($getpage_download)) {
             </tbody>
         </table>
     </div>
-    <?php
-}
+    <?php }
 
-if ($_GET['subtopic'] == 'downloadclient' and $getpage_download == 'downloadagreement') {
-    ?>
+if ($_GET['subtopic'] == 'downloadclient' and $getpage_download == 'downloadagreement') { ?>
     <p>Before you can download the client program please read the Tibia Service Agreement and state if you agree to it
         by clicking on the appropriate button below.</p>
 
@@ -102,22 +98,22 @@ if ($_GET['subtopic'] == 'downloadclient' and $getpage_download == 'downloadagre
         <div class="CaptionContainer">
             <div class="CaptionInnerContainer">
                 <span class="CaptionEdgeLeftTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionBorderTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionVerticalLeft"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <div class="Text">Tibia Service Agreement</div>
                 <span class="CaptionVerticalRight"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <span class="CaptionBorderBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionEdgeLeftBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             </div>
         </div>
         <table class="Table1" cellpadding="0" cellspacing="0">
@@ -157,13 +153,12 @@ if ($_GET['subtopic'] == 'downloadclient' and $getpage_download == 'downloadagre
     <center>
         <form action="?subtopic=downloadclient" method="post" style="padding:0px;margin:0px;">
             <div class="BigButton"
-                 style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton.gif)">
+                 style="background-image:url(<?= $template_path ?>/images/global/buttons/sbutton.gif)">
                 <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
                     <div class="BigButtonOver"
-                         style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_over.gif);"></div>
+                         style="background-image:url(<?= $template_path ?>/images/global/buttons/sbutton_over.gif);"></div>
                     <input class="BigButtonText" type="submit" value="I agree"></div>
             </div>
         </form>
     </center>
-    <?php
-}
+    <?php }

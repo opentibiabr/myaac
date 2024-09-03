@@ -1,8 +1,8 @@
 <?php
 
-$query = $db->query("SELECT `id` FROM `" . TABLE_PREFIX . "pages` WHERE `name` LIKE " . $db->quote('downloads') . " LIMIT 1;");
-if($query->rowCount() === 0) {
-	$db->exec("INSERT INTO `myaac_pages` (`id`, `name`, `title`, `body`, `date`, `player_id`, `php`, `access`, `hidden`) VALUES
+$query = $db->query('SELECT `id` FROM `' . TABLE_PREFIX . 'pages` WHERE `name` LIKE ' . $db->quote('downloads') . ' LIMIT 1;');
+if ($query->rowCount() === 0) {
+  $db->exec("INSERT INTO `myaac_pages` (`id`, `name`, `title`, `body`, `date`, `player_id`, `php`, `access`, `hidden`) VALUES
 	(null, 'downloads', 'Downloads', '<p>&nbsp;</p>
 <p>&nbsp;</p>
 <div style=\"text-align: center;\">We''re using official Tibia Client <strong>{{ config.client / 100 }}</strong><br />
@@ -11,9 +11,9 @@ if($query->rowCount() === 0) {
 <a href=\"https://static.otland.net/ipchanger.exe\" target=\"_blank\" rel=\"noopener\">HERE</a></div>', 0, 1, 0, 1, 0);");
 }
 
-$query = $db->query("SELECT `id` FROM `" . TABLE_PREFIX . "pages` WHERE `name` LIKE " . $db->quote('commands') . " LIMIT 1;");
-if($query->rowCount() === 0) {
-	$db->exec("INSERT INTO `myaac_pages` (`id`, `name`, `title`, `body`, `date`, `player_id`, `php`, `access`, `hidden`) VALUES
+$query = $db->query('SELECT `id` FROM `' . TABLE_PREFIX . 'pages` WHERE `name` LIKE ' . $db->quote('commands') . ' LIMIT 1;');
+if ($query->rowCount() === 0) {
+  $db->exec("INSERT INTO `myaac_pages` (`id`, `name`, `title`, `body`, `date`, `player_id`, `php`, `access`, `hidden`) VALUES
 (null, 'commands', 'Commands', '<table style=\"border-collapse: collapse; width: 87.8471%; height: 57px;\" border=\"1\">
 <tbody>
 <tr style=\"height: 18px;\">

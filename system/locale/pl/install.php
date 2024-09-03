@@ -20,7 +20,8 @@ $locale['not_loaded'] = 'Nie załadowane';
 $locale['loading_spinner'] = 'Proszę czekać, trwa instalacja...';
 $locale['importing_spinner'] = 'Proszę czekać, trwa importowanie danych...';
 $locale['please_fill_all'] = 'Proszę wypełnić wszystkie pola!';
-$locale['already_installed'] = 'MyAAC został już zainstalowany. Proszę usunąć katalog <b>install/</b>. Jeśli chcesz zainstalować MyAAC od nowa - proszę usuń plik <strong>config.local.php</strong> z katalogu głównego i odśwież stronę.';
+$locale['already_installed'] =
+  'MyAAC został już zainstalowany. Proszę usunąć katalog <b>install/</b>. Jeśli chcesz zainstalować MyAAC od nowa - proszę usuń plik <strong>config.local.php</strong> z katalogu głównego i odśwież stronę.';
 
 // welcome
 $locale['step_welcome'] = 'Witamy';
@@ -36,7 +37,8 @@ $locale['step_requirements'] = 'Wymagania';
 $locale['step_requirements_title'] = 'Sprawdzanie wymagań';
 $locale['step_requirements_php_version'] = 'Wersja PHP';
 $locale['step_requirements_write_perms'] = 'Uprawnienia do zapisu';
-$locale['step_requirements_failed'] = 'Instalacja zostanie zablokowana dopóki te wymagania nie zostaną spełnione.</b><br/>Po więcej informacji zasięgnij do pliku <b>README</b>.';
+$locale['step_requirements_failed'] =
+  'Instalacja zostanie zablokowana dopóki te wymagania nie zostaną spełnione.</b><br/>Po więcej informacji zasięgnij do pliku <b>README</b>.';
 $locale['step_requirements_extension'] = 'Rozszerzenie PHP - $EXTENSION$';
 
 // config
@@ -48,7 +50,8 @@ $locale['step_config_mail_admin'] = 'E-Mail admina';
 $locale['step_config_mail_admin_desc'] = 'Na ten adres będą dostarczane E-Maile z formularza kontaktowego , przykładowo admin@gmail.com';
 $locale['step_config_mail_admin_error'] = 'E-Mail admina jest niepoprawny.';
 $locale['step_config_mail_address'] = 'E-Mail serwera';
-$locale['step_config_mail_address_desc'] = 'Ten adres będzie używany do wysyłanych wiadomości z serwera (from:), przykładowo no-reply@twój-serwer.org';
+$locale['step_config_mail_address_desc'] =
+  'Ten adres będzie używany do wysyłanych wiadomości z serwera (from:), przykładowo no-reply@twój-serwer.org';
 $locale['step_config_mail_address_error'] = 'E-Mail serwera jest niepoprawny.';
 $locale['step_config_client'] = 'Wersja klienta';
 $locale['step_config_client_desc'] = 'Używana do strony pobieranie klienta oraz kilku szablonów';
@@ -59,11 +62,15 @@ $locale['step_database_title'] = 'Baza MySQL';
 $locale['step_database_importing'] = 'Twoja baza to MySQL. Nazwa bazy danych to: "$DATABASE_NAME$". Importowanie schematu...';
 $locale['step_database_config_saved'] = 'Lokalna konfiguracja została zapisana do pliku: config.local.php';
 $locale['step_database_error_path'] = 'Proszę podać ścieżkę do serwera.';
-$locale['step_database_error_config'] = 'Nie można znaleźć pliku config.lua. Czy ścieżka do katalogu serwera jest poprawna? Wróć się i sprawdź ponownie.';
-$locale['step_database_error_database_empty'] = 'Nie można wykryć typu bazy danych z pliku config.lua. Prawdopodobnie Twój OTS nie jest wspierany przez ten AAC.';
-$locale['step_database_error_only_mysql'] = 'Ten AAC wspiera tylko bazy danych MySQL. Z Twojego pliku config wynika, że Twój serwera używa bazy: $DATABASE_TYPE$. Proszę zmienić typ bazy na MySQL i ponownie przystąpić do instalacji.';
+$locale['step_database_error_config'] =
+  'Nie można znaleźć pliku config.lua. Czy ścieżka do katalogu serwera jest poprawna? Wróć się i sprawdź ponownie.';
+$locale['step_database_error_database_empty'] =
+  'Nie można wykryć typu bazy danych z pliku config.lua. Prawdopodobnie Twój OTS nie jest wspierany przez ten AAC.';
+$locale['step_database_error_only_mysql'] =
+  'Ten AAC wspiera tylko bazy danych MySQL. Z Twojego pliku config wynika, że Twój serwera używa bazy: $DATABASE_TYPE$. Proszę zmienić typ bazy na MySQL i ponownie przystąpić do instalacji.';
 $locale['step_database_error_table'] = 'Tabela $TABLE$ nie istnieje. Proszę najpierw zaimportować schemat bazy danych serwera OTS.';
-$locale['step_database_error_table_exist'] = 'Tabela $TABLE$ już istnieje. Wygląda na to, że AAC został już zainstalowany. Schemat MySQL nie zostanie zaimportowany..';
+$locale['step_database_error_table_exist'] =
+  'Tabela $TABLE$ już istnieje. Wygląda na to, że AAC został już zainstalowany. Schemat MySQL nie zostanie zaimportowany..';
 $locale['step_database_error_mysql_connect'] = 'Nie udało się połączyć z bazą danych MySQL.';
 $locale['step_database_error_mysql_connect_2'] = 'Możliwe przyczyny:';
 $locale['step_database_error_mysql_connect_3'] = 'MySQL nie jest poprawnie skonfigurowane w <i>config.lua</i>.';
@@ -93,7 +100,8 @@ $locale['step_admin_email_error_format'] = 'Niepoprawny format adresu E-Mail.';
 $locale['step_admin_account'] = 'Nazwa Konta Admina';
 $locale['step_admin_account_desc'] = 'Nazwa Twojego konta admina, która będzie używana do logowania na stronę i do serwera.';
 $locale['step_admin_account_error_empty'] = 'Proszę podać nazwę konta.';
-$locale['step_admin_account_error_format'] = 'Nieprawidłowy format nazwy konta. Używaj tylko znaków a-Z oraz liczb 0-9. Minimum 3, maksimum 32 znaków.';
+$locale['step_admin_account_error_format'] =
+  'Nieprawidłowy format nazwy konta. Używaj tylko znaków a-Z oraz liczb 0-9. Minimum 3, maksimum 32 znaków.';
 $locale['step_admin_account_error_same'] = 'Hasło nie może być takie same jak nazwa konta.';
 $locale['step_admin_account_id'] = 'Numer Konta Admina';
 $locale['step_admin_account_id_desc'] = 'Numer Twojego Konta Admina, który będzie używany do logowania do strony i na serwer.';
@@ -107,14 +115,17 @@ $locale['step_admin_password_error_format'] = 'Nieprawidłowy format hasła. Uż
 $locale['step_admin_player_name'] = 'Nazwa postaci';
 $locale['step_admin_player_name_desc'] = 'Nazwa postaci Konta Admina.';
 $locale['step_admin_player_name_error_empty'] = 'Proszę podać nazwę postaci.';
-$locale['step_admin_player_name_error_format'] = 'Niepoprawny format nazwy postaci. Używaj tylko znaków A-Z, spacji oraz \'. Minimum 3, maksimum 25 znaków.';
+$locale['step_admin_player_name_error_format'] =
+  'Niepoprawny format nazwy postaci. Używaj tylko znaków A-Z, spacji oraz \'. Minimum 3, maksimum 25 znaków.';
 
 // finish
 $locale['step_finish_admin_panel'] = 'Panelu Admina';
 $locale['step_finish_homepage'] = 'stronę główną';
 $locale['step_finish'] = 'Koniec';
 $locale['step_finish_title'] = 'Instalacja zakończona!';
-$locale['step_finish_desc'] = 'Gratulacje! <b>MyAAC</b> jest gotowy do użycia!<br/>Możesz się teraz zalogować do $ADMIN_PANEL$, albo odwiedzić $HOMEPAGE$.<br/><br/>
+$locale[
+  'step_finish_desc'
+] = 'Gratulacje! <b>MyAAC</b> jest gotowy do użycia!<br/>Możesz się teraz zalogować do $ADMIN_PANEL$, albo odwiedzić $HOMEPAGE$.<br/><br/>
 <span style="color: red">Proszę usunąć katalog <b>install/</b>.</span><br/><br/>
 Wrzuć błędy i sugestie na $LINK$, dzięki!';
 ?>

@@ -129,21 +129,13 @@ function internalLayoutLink($page, $action = null)
 function getForumThreadLink($thread_id, $page = null)
 {
   global $config;
-  return BASE_URL .
-    ($config['friendly_urls'] ? '' : '?') .
-    'forum/thread/' .
-    (int) $thread_id .
-    (isset($page) ? '/' . $page : '');
+  return BASE_URL . ($config['friendly_urls'] ? '' : '?') . 'forum/thread/' . (int) $thread_id . (isset($page) ? '/' . $page : '');
 }
 
 function getForumBoardLink($board_id, $page = null)
 {
   global $config;
-  return BASE_URL .
-    ($config['friendly_urls'] ? '' : '?') .
-    'forum/board/' .
-    (int) $board_id .
-    (isset($page) ? '/' . $page : '');
+  return BASE_URL . ($config['friendly_urls'] ? '' : '?') . 'forum/board/' . (int) $board_id . (isset($page) ? '/' . $page : '');
 }
 
 function getPlayerLink($name, $generate = true, $blank = false)
@@ -226,14 +218,7 @@ function getItemImage($id, $count = 1)
   }
 
   global $config;
-  return '<img src="' .
-    $config['item_images_url'] .
-    $file_name .
-    '.gif"' .
-    $tooltip .
-    ' width="32" height="32" border="0" alt="' .
-    $id .
-    '" />';
+  return '<img src="' . $config['item_images_url'] . $file_name . '.gif"' . $tooltip . ' width="32" height="32" border="0" alt="' . $id . '" />';
 }
 
 function getFlagImage($country)
@@ -251,11 +236,7 @@ function getFlagImage($country)
     return '';
   }
 
-  return '<img src="images/flags/' .
-    $country .
-    '.gif" title="' .
-    $config['countries'][$country] .
-    '"/>';
+  return '<img src="images/flags/' . $country . '.gif" title="' . $config['countries'][$country] . '"/>';
 }
 
 /**
@@ -288,13 +269,8 @@ function getBoolean($v)
  * @param bool $special Should special characters by used?
  * @return string Generated string.
  */
-function generateRandomString(
-  $length,
-  $lowCase = true,
-  $upCase = false,
-  $numeric = false,
-  $special = false
-) {
+function generateRandomString($length, $lowCase = true, $upCase = false, $numeric = false, $special = false)
+{
   $characters = '';
   if ($lowCase) {
     $characters .= 'abcdefghijklmnopqrstuxyvwz';
@@ -360,9 +336,7 @@ function fetchDatabaseConfig($name, &$value)
 {
   global $db;
 
-  $query = $db->query(
-    'SELECT `value` FROM `' . TABLE_PREFIX . 'config` WHERE `name` = ' . $db->quote($name)
-  );
+  $query = $db->query('SELECT `value` FROM `' . TABLE_PREFIX . 'config` WHERE `name` = ' . $db->quote($name));
   if ($query->rowCount() <= 0) {
     return false;
   }
@@ -532,11 +506,7 @@ function delete_guild($id)
             ' AND `players`.`id` = `guild_membership`.`player_id` ORDER BY `name`;'
         );
       } else {
-        $players_with_rank = $db->query(
-          'SELECT `id`, `rank_id` FROM `players` WHERE `rank_id` = ' .
-            $rank_in_guild->getId() .
-            ' AND `deleted` = 0;'
-        );
+        $players_with_rank = $db->query('SELECT `id`, `rank_id` FROM `players` WHERE `rank_id` = ' . $rank_in_guild->getId() . ' AND `deleted` = 0;');
       }
 
       $players_with_rank_number = $players_with_rank->rowCount();
@@ -595,10 +565,7 @@ function template_place_holder($type)
   global $twig, $template_place_holders;
   $ret = '';
 
-  if (
-    array_key_exists($type, $template_place_holders) &&
-    is_array($template_place_holders[$type])
-  ) {
+  if (array_key_exists($type, $template_place_holders) && is_array($template_place_holders[$type])) {
     $ret = implode($template_place_holders[$type]);
   }
 
@@ -684,14 +651,7 @@ function template_footer()
   if ($config['visitors_counter']) {
     global $visitors;
     $amount = $visitors->getAmountVisitors();
-    $ret .=
-      '<br/>Currently there ' .
-      ($amount > 1 ? 'are' : 'is') .
-      ' ' .
-      $amount .
-      ' visitor' .
-      ($amount > 1 ? 's' : '') .
-      '. • ';
+    $ret .= '<br/>Currently there ' . ($amount > 1 ? 'are' : 'is') . ' ' . $amount . ' visitor' . ($amount > 1 ? 's' : '') . '. • ';
   }
 
   if ($config['views_counter']) {
@@ -707,11 +667,7 @@ function template_footer()
   }
 
   // please respect my work and help spreading the word, thanks!
-  return $ret .
-    '<br/>' .
-    base64_decode(
-      'Q29weXJpZ2h0IGJ5IE15YWFjIDxzdHJvbmc+JmNvcHk7IE9wZW5UaWJpYUJSPC9zdHJvbmc+LiBBbGwgcmlnaHRzIHJlc2VydmVkLg=='
-    );
+  return $ret . '<br/>' . base64_decode('Q29weXJpZ2h0IGJ5IE15YWFjIDxzdHJvbmc+JmNvcHk7IE9wZW5UaWJpYUJSPC9zdHJvbmc+LiBBbGwgcmlnaHRzIHJlc2VydmVkLg==');
 }
 
 function template_ga_code()
@@ -743,8 +699,7 @@ function template_form()
 
   $options = '';
   foreach ($templates as $key => $value) {
-    $options .=
-      '<option ' . ($template_name == $value ? 'SELECTED' : '') . '>' . $value . '</option>';
+    $options .= '<option ' . ($template_name == $value ? 'SELECTED' : '') . '>' . $value . '</option>';
   }
 
   return '<form method="get" action="' .
@@ -781,12 +736,7 @@ function getCreatureName($killer, $showStatus = false, $extendedInfo = false)
         return $str . '<b>' . $player->getName() . '</b></a>';
       }
 
-      $str .=
-        '<span style="color: ' .
-        ($player->isOnline() ? 'green' : 'red') .
-        '">' .
-        $player->getName() .
-        '</span></b></a>';
+      $str .= '<span style="color: ' . ($player->isOnline() ? 'green' : 'red') . '">' . $player->getName() . '</span></b></a>';
       if ($extendedInfo) {
         $str .= '<br><small>' . $player->getLevel() . ' ' . $player->getVocationName() . '</small>';
       }
@@ -987,14 +937,7 @@ function get_plugins()
   foreach (scandir($path, SCANDIR_SORT_ASCENDING) as $file) {
     $file_ext = pathinfo($file, PATHINFO_EXTENSION);
     $file_name = pathinfo($file, PATHINFO_FILENAME);
-    if (
-      $file === '.' ||
-      $file === '..' ||
-      $file === 'disabled' ||
-      $file === 'example.json' ||
-      $file_ext !== 'json' ||
-      is_dir($path . $file)
-    ) {
+    if ($file === '.' || $file === '..' || $file === 'disabled' || $file === 'example.json' || $file_ext !== 'json' || is_dir($path . $file)) {
       continue;
     }
 
@@ -1042,8 +985,7 @@ function _mail($to, $subject, $body, $altBody = '', $add_html_tags = true)
   }
 
   if ($add_html_tags && isset($body[0])) {
-    $tmp_body =
-      '<html><head></head><body>' . $body . '<br/><br/>' . $signature_html . '</body></html>';
+    $tmp_body = '<html><head></head><body>' . $body . '<br/><br/>' . $signature_html . '</body></html>';
   } else {
     $tmp_body = $body . '<br/><br/>' . $signature_html;
   }
@@ -1083,10 +1025,7 @@ function _mail($to, $subject, $body, $altBody = '', $add_html_tags = true)
     $mailer->AltBody = $altBody . $signature_plain;
   } else {
     // automatically generate plain html
-    $mailer->AltBody =
-      strip_tags(preg_replace('/<a(.*)href="([^"]*)"(.*)>/', '$2', $body)) .
-      "\n" .
-      $signature_plain;
+    $mailer->AltBody = strip_tags(preg_replace('/<a(.*)href="([^"]*)"(.*)>/', '$2', $body)) . "\n" . $signature_plain;
   }
 
   ob_start();
@@ -1157,10 +1096,7 @@ function load_config_lua($filename)
 
           if (is_numeric($value)) {
             $result[$key] = (float) $value;
-          } elseif (
-            in_array(@$value[0], ["'", '"']) &&
-            in_array(@$value[strlen($value) - 1], ["'", '"'])
-          ) {
+          } elseif (in_array(@$value[0], ["'", '"']) && in_array(@$value[strlen($value) - 1], ["'", '"'])) {
             $result[$key] = (string) substr(substr($value, 1), 0, -1);
           } elseif (in_array($value, ['true', 'false'])) {
             $result[$key] = $value === 'true';
@@ -1180,11 +1116,7 @@ function load_config_lua($filename)
             if ((string) $ret == '' && trim($value) !== '""') {
               // = parser error
               throw new RuntimeException(
-                'ERROR: Loading config.lua file. Line <b>' .
-                  ($ln + 1) .
-                  '</b> of LUA config file is not valid [key: <b>' .
-                  $key .
-                  '</b>]'
+                'ERROR: Loading config.lua file. Line <b>' . ($ln + 1) . '</b> of LUA config file is not valid [key: <b>' . $key . '</b>]'
               );
             }
             $result[$key] = $ret;
@@ -1279,9 +1211,7 @@ function getTopPlayers($limit = 5)
 
     if ($is_tfs10) {
       foreach ($players as &$player) {
-        $query = $db->query(
-          'SELECT `player_id` FROM `players_online` WHERE `player_id` = ' . $player['id']
-        );
+        $query = $db->query('SELECT `player_id` FROM `players_online` WHERE `player_id` = ' . $player['id']);
         $player['online'] = $query->rowCount() > 0 ? 1 : 0;
       }
       unset($player);
@@ -1561,12 +1491,7 @@ function getDatabasePages($withHidden = false): array
   }
 
   $pages = $db->query(
-    'SELECT `name` FROM ' .
-      TABLE_PREFIX .
-      'pages WHERE ' .
-      ($withHidden ? '' : '`hidden` != 1 AND ') .
-      '`access` <= ' .
-      $db->quote($logged_access)
+    'SELECT `name` FROM ' . TABLE_PREFIX . 'pages WHERE ' . ($withHidden ? '' : '`hidden` != 1 AND ') . '`access` <= ' . $db->quote($logged_access)
   );
   if ($pages->rowCount() < 1) {
     return [];
@@ -1630,15 +1555,8 @@ function loadStagesData($configFile)
           'max' => @explode('=', $lines[$ln + 2]),
           'mul' => @explode('=', $lines[$ln + 3]),
         ];
-        $minlevel =
-          isset($checks['min'][0]) && trim($checks['min'][0]) == 'minlevel'
-            ? $checks['min'][1]
-            : null;
-        $maxlevel = !isset($checks['mul'][1])
-          ? null
-          : (trim($checks['max'][0]) == 'maxlevel'
-            ? $checks['max'][1]
-            : null);
+        $minlevel = isset($checks['min'][0]) && trim($checks['min'][0]) == 'minlevel' ? $checks['min'][1] : null;
+        $maxlevel = !isset($checks['mul'][1]) ? null : (trim($checks['max'][0]) == 'maxlevel' ? $checks['max'][1] : null);
         $multiplier =
           isset($checks['mul'][0]) && trim($checks['mul'][0]) == 'multiplier'
             ? $checks['mul'][1]
@@ -1666,11 +1584,7 @@ function getPlayerByAccountId($accountId, $orderBy = 'id')
   global $db;
   if (is_numeric($accountId)) {
     $players = [];
-    $playersQuery = $db
-      ->query(
-        "SELECT `id`, `lastlogin` FROM `players` WHERE `account_id` = {$accountId} ORDER BY `{$orderBy}` DESC;"
-      )
-      ->fetchAll();
+    $playersQuery = $db->query("SELECT `id`, `lastlogin` FROM `players` WHERE `account_id` = {$accountId} ORDER BY `{$orderBy}` DESC;")->fetchAll();
     foreach ($playersQuery as $q) {
       $player = new OTS_Player();
       $player->load($q['id']);
@@ -1695,11 +1609,7 @@ function getPlayerNameByAccount($id, $name = null, $only = true, $orderBy = 'id'
       $account = new OTS_Account();
       $account->load($id);
       if ($account->isLoaded()) {
-        $playerQuery = $db
-          ->query(
-            "SELECT `id` FROM `players` WHERE `account_id` = {$id} ORDER BY `lastlogin` DESC LIMIT 1;"
-          )
-          ->fetch();
+        $playerQuery = $db->query("SELECT `id` FROM `players` WHERE `account_id` = {$id} ORDER BY `lastlogin` DESC LIMIT 1;")->fetch();
       }
 
       $player = new OTS_Player();
@@ -1707,28 +1617,15 @@ function getPlayerNameByAccount($id, $name = null, $only = true, $orderBy = 'id'
       return $player->isLoaded() ? $player->getName() : '';
     }
   } elseif (is_string($name)) {
-    if (
-      $id =
-        $db
-          ->query("SELECT `id` FROM `accounts` WHERE `name` = {$db->quote($name)} LIMIT 1;")
-          ->fetch()['id'] ?? null
-    ) {
+    if ($id = $db->query("SELECT `id` FROM `accounts` WHERE `name` = {$db->quote($name)} LIMIT 1;")->fetch()['id'] ?? null) {
       if ($only) {
-        $playerQuery = $db
-          ->query(
-            "SELECT `id` FROM `players` WHERE `account_id` = {$id} ORDER BY `lastlogin` DESC LIMIT 1;"
-          )
-          ->fetch();
+        $playerQuery = $db->query("SELECT `id` FROM `players` WHERE `account_id` = {$id} ORDER BY `lastlogin` DESC LIMIT 1;")->fetch();
         $player = new OTS_Player();
         $player->load($playerQuery['id']);
         return $player->isLoaded() ? $player->getName() : '';
       } else {
         $players = [];
-        $playersQuery = $db
-          ->query(
-            "SELECT `id`, `lastlogin` FROM `players` WHERE `account_id` = {$id} ORDER BY `{$orderBy}` DESC;"
-          )
-          ->fetchAll();
+        $playersQuery = $db->query("SELECT `id`, `lastlogin` FROM `players` WHERE `account_id` = {$id} ORDER BY `{$orderBy}` DESC;")->fetchAll();
         foreach ($playersQuery as $q) {
           $player = new OTS_Player();
           $player->load($q['id']);

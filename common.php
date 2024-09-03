@@ -25,7 +25,9 @@ global $config;
  * @copyright 2023 MyAAC
  * @link      https://github.com/opentibiabr/myaac
  */
-if (version_compare(phpversion(), '7.4', '<')) die('PHP version 7.4 or higher is required.');
+if (version_compare(phpversion(), '7.4', '<')) {
+  die('PHP version 7.4 or higher is required.');
+}
 
 define('MYAAC', true);
 define('MYAAC_VERSION', '0.8.16');
@@ -89,48 +91,49 @@ define('TFS_FIRST', TFS_02);
 define('TFS_LAST', TFS_03);
 
 if (!IS_CLI) {
-    session_save_path(SYSTEM . 'php_sessions');
-    session_set_cookie_params([
-        "httponly" => true
-    ]);
-    session_start();
+  session_save_path(SYSTEM . 'php_sessions');
+  session_set_cookie_params([
+    'httponly' => true,
+  ]);
+  session_start();
 }
 
 // basedir
 $basedir = '';
 $tmp = explode('/', $_SERVER['SCRIPT_NAME']);
 $size = count($tmp) - 1;
-for ($i = 1; $i < $size; $i++)
-    $basedir .= '/' . $tmp[$i];
+for ($i = 1; $i < $size; $i++) {
+  $basedir .= '/' . $tmp[$i];
+}
 
-$basedir = str_replace(array('/admin', '/install', '/tools'), '', $basedir);
+$basedir = str_replace(['/admin', '/install', '/tools'], '', $basedir);
 define('BASE_DIR', $basedir);
 
 $TABLE_PREFIX = TABLE_PREFIX;
 
 if (file_exists(BASE . 'config.local.php') && !defined('MYAAC_INSTALL')) {
-    require BASE . 'config.local.php';
+  require BASE . 'config.local.php';
 }
 
 if (!IS_CLI) {
-    if (isset($_SERVER['HTTP_HOST'][0])) {
-        $baseHost = $_SERVER['HTTP_HOST'];
+  if (isset($_SERVER['HTTP_HOST'][0])) {
+    $baseHost = $_SERVER['HTTP_HOST'];
+  } else {
+    if (isset($_SERVER['SERVER_NAME'][0])) {
+      $baseHost = $_SERVER['SERVER_NAME'];
     } else {
-        if (isset($_SERVER['SERVER_NAME'][0])) {
-            $baseHost = $_SERVER['SERVER_NAME'];
-        } else {
-            $baseHost = $_SERVER['SERVER_ADDR'];
-        }
+      $baseHost = $_SERVER['SERVER_ADDR'];
     }
+  }
 
-    define('SERVER_URL', 'http' . (isset($_SERVER['HTTPS'][0]) && strtolower($_SERVER['HTTPS']) === 'on' ? 's' : '') . '://' . $baseHost);
-    define('BASE_URL', SERVER_URL . BASE_DIR . '/');
-    define('ADMIN_URL', SERVER_URL . BASE_DIR . '/admin/');
+  define('SERVER_URL', 'http' . (isset($_SERVER['HTTPS'][0]) && strtolower($_SERVER['HTTPS']) === 'on' ? 's' : '') . '://' . $baseHost);
+  define('BASE_URL', SERVER_URL . BASE_DIR . '/');
+  define('ADMIN_URL', SERVER_URL . BASE_DIR . '/admin/');
 
-    //define('CURRENT_URL', BASE_URL . $_SERVER['REQUEST_URI']);
+  //define('CURRENT_URL', BASE_URL . $_SERVER['REQUEST_URI']);
 
-    if (@$config['env'] === 'dev') {
-        require SYSTEM . 'exception.php';
-    }
+  if (@$config['env'] === 'dev') {
+    require SYSTEM . 'exception.php';
+  }
 }
 require SYSTEM . 'autoload.php';

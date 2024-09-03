@@ -65,11 +65,7 @@ if ($cache->enabled()) {
 if ($fetch_from_db) {
   // get info from db
   /** @var OTS_DB_MySQL $db */
-  $status_query = $db->query(
-    "SELECT `name`, `value` FROM `{$TABLE_PREFIX}config` WHERE {$db->fieldName(
-      'name'
-    )} LIKE '%status%'"
-  );
+  $status_query = $db->query("SELECT `name`, `value` FROM `{$TABLE_PREFIX}config` WHERE {$db->fieldName('name')} LIKE '%status%'");
   if ($status_query->rowCount() <= 0) {
     // empty, just insert it
     foreach ($status as $key => $value) {
@@ -122,9 +118,7 @@ function updateStatus()
         // tfs 1.x
         $query = $db->query('SELECT COUNT(`player_id`) AS `playersTotal` FROM `players_online`;');
       } else {
-        $query = $db->query(
-          'SELECT COUNT(`id`) AS `playersTotal` FROM `players` WHERE `online` > 0'
-        );
+        $query = $db->query('SELECT COUNT(`id`) AS `playersTotal` FROM `players` WHERE `online` > 0');
       }
 
       $status['playersTotal'] = 0;

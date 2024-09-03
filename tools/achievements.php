@@ -33,8 +33,7 @@ $achievements = [
     'name' => 'Annihilator',
     'grade' => 2,
     'points' => 5,
-    'description' =>
-      "You've daringly jumped into the infamous Annihilator and survived - taking home fame, glory and your reward.",
+    'description' => "You've daringly jumped into the infamous Annihilator and survived - taking home fame, glory and your reward.",
   ],
   '6' => [
     'name' => 'Archpostman',
@@ -189,8 +188,7 @@ $achievements = [
     'grade' => 1,
     'points' => 2,
     'secret' => true,
-    'description' =>
-      "You love the moment right before your rocket takes off and explodes into beautiful colours - not only on new year's eve!",
+    'description' => "You love the moment right before your rocket takes off and explodes into beautiful colours - not only on new year's eve!",
   ],
   '27' => [
     'name' => 'Follower of Azerus',
@@ -533,8 +531,7 @@ $achievements = [
     'name' => 'Ruthless',
     'grade' => 2,
     'points' => 5,
-    'description' =>
-      "You've touched all thrones of The Ruthless Seven and absorbed some of their evil spirit. It may have changed you forever.",
+    'description' => "You've touched all thrones of The Ruthless Seven and absorbed some of their evil spirit. It may have changed you forever.",
   ],
   '73' => [
     'name' => 'Scrapper',
@@ -712,8 +709,7 @@ $achievements = [
     'grade' => 1,
     'points' => 2,
     'secret' => true,
-    'description' =>
-      "Your world is lucky to have you!You don't hesitate to jump in and help when brave heroes are called to save the world.",
+    'description' => "Your world is lucky to have you!You don't hesitate to jump in and help when brave heroes are called to save the world.",
   ],
   '97' => [
     'name' => 'Notorious Worldsaver',
@@ -728,24 +724,21 @@ $achievements = [
     'grade' => 1,
     'points' => 2,
     'secret' => true,
-    'description' =>
-      'Souls are like butterflies . The black soul of a living weapon yearning to strike lies shattered beneath your feet.',
+    'description' => 'Souls are like butterflies . The black soul of a living weapon yearning to strike lies shattered beneath your feet.',
   ],
   '99' => [
     'name' => 'Slayer of Chikhaton',
     'grade' => 1,
     'points' => 2,
     'secret' => true,
-    'description' =>
-      'Power lies in the will of her who commands it . You fought it with full force - and were stronger.',
+    'description' => 'Power lies in the will of her who commands it . You fought it with full force - and were stronger.',
   ],
   '100' => [
     'name' => 'Slayer of Irahsae',
     'grade' => 1,
     'points' => 2,
     'secret' => true,
-    'description' =>
-      'Few things equal the wild fury of a trapped and riven creature . You were a worthy opponent.',
+    'description' => 'Few things equal the wild fury of a trapped and riven creature . You were a worthy opponent.',
   ],
   '101' => [
     'name' => 'Slayer of Phrodomo',
@@ -760,8 +753,7 @@ $achievements = [
     'grade' => 1,
     'points' => 2,
     'secret' => true,
-    'description' =>
-      'The forbidden knowledge of aeons was never meant to invade this world . You silenced its voice before it could be made heard.',
+    'description' => 'The forbidden knowledge of aeons was never meant to invade this world . You silenced its voice before it could be made heard.',
   ],
   '103' => [
     'name' => 'Teamplayer',
@@ -812,8 +804,7 @@ $achievements = [
     'name' => 'Brutal Politeness',
     'grade' => 2,
     'points' => 6,
-    'description' =>
-      'What is best in life ? To crush your enemies . To see them driven before you . and to maybe have a nice cup of tea afterwards.',
+    'description' => 'What is best in life ? To crush your enemies . To see them driven before you . and to maybe have a nice cup of tea afterwards.',
   ],
   '110' => [
     'name' => 'Commitment Phobic',
@@ -872,8 +863,7 @@ $achievements = [
     'name' => 'Fool at Heart',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      ' and remember: Never try to teach a pig to sing . It wastes your time and annoys the pig.',
+    'description' => ' and remember: Never try to teach a pig to sing . It wastes your time and annoys the pig.',
   ],
   '119' => [
     'name' => 'Free Items!',
@@ -948,8 +938,7 @@ $achievements = [
     'grade' => 1,
     'points' => 1,
     'secret' => true,
-    'description' =>
-      "Well - the contents of that present weren't quite what you expected. With friends like these, who needs enemies?",
+    'description' => "Well - the contents of that present weren't quite what you expected. With friends like these, who needs enemies?",
   ],
   '129' => [
     'name' => 'Keeper of the Flame',
@@ -979,8 +968,7 @@ $achievements = [
     'grade' => 1,
     'points' => 1,
     'secret' => true,
-    'description' =>
-      "But close your eyes and don't tell anyone what you wished for, or it won't come true!",
+    'description' => "But close your eyes and don't tell anyone what you wished for, or it won't come true!",
   ],
   '133' => [
     'name' => 'Master of War',
@@ -1001,8 +989,7 @@ $achievements = [
     'grade' => 1,
     'points' => 2,
     'secret' => true,
-    'description' =>
-      'Tired... so tired... curling up in a warm and cosy bed seems like the perfect thing to do right now . Sweet dreams!',
+    'description' => 'Tired... so tired... curling up in a warm and cosy bed seems like the perfect thing to do right now . Sweet dreams!',
   ],
   '136' => [
     'name' => 'Modest Guest',
@@ -1297,8 +1284,7 @@ $achievements = [
     'name' => 'Cake Conqueror',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'You have bravely stepped onto the cake isle . Is there any more beautiful, tasty place to be in the whole world ? ',
+    'description' => 'You have bravely stepped onto the cake isle . Is there any more beautiful, tasty place to be in the whole world ? ',
   ],
   '176' => [
     'name' => 'Dark Voodoo Priest',
@@ -1329,8 +1315,7 @@ $achievements = [
     'grade' => 1,
     'points' => 1,
     'secret' => true,
-    'description' =>
-      "You have helped to keep the witches fire burning. Just watch your fingers, it's hot!",
+    'description' => "You have helped to keep the witches fire burning. Just watch your fingers, it's hot!",
   ],
   '180' => [
     'name' => 'Ghost Sailor',
@@ -1351,8 +1336,7 @@ $achievements = [
     'name' => 'Hidden Powers',
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      "You've discovered the Ancients' hidden powers - from now on, they will aid you in your adventures.",
+    'description' => "You've discovered the Ancients' hidden powers - from now on, they will aid you in your adventures.",
   ],
   '183' => [
     'name' => 'Honorary Witch',
@@ -1367,8 +1351,7 @@ $achievements = [
     'grade' => 1,
     'points' => 1,
     'secret' => true,
-    'description' =>
-      'You definitely know how to bring out the best in your furniture and decoration pieces . Beautiful.',
+    'description' => 'You definitely know how to bring out the best in your furniture and decoration pieces . Beautiful.',
   ],
   '185' => [
     'name' => 'Master Shapeshifter',
@@ -1605,22 +1588,19 @@ $achievements = [
     'grade' => 1,
     'points' => 1,
     'secret' => true,
-    'description' =>
-      'With the assistance of your friendly little helper, you gobbled more than 500 chunks of slime. Well done, Slimer.',
+    'description' => 'With the assistance of your friendly little helper, you gobbled more than 500 chunks of slime. Well done, Slimer.',
   ],
   '216' => [
     'name' => 'Arachnoise',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "You've shattered each of Bloodweb's eight frozen legs. As they say: break a leg, and then some more.",
+    'description' => "You've shattered each of Bloodweb's eight frozen legs. As they say: break a leg, and then some more.",
   ],
   '217' => [
     'name' => 'Back into the Abyss',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "You've cut off a whole lot of tentacles today . Thul was driven back to where he belongs.",
+    'description' => "You've cut off a whole lot of tentacles today . Thul was driven back to where he belongs.",
   ],
   '218' => [
     'name' => 'Beautiful Agony',
@@ -1639,8 +1619,7 @@ $achievements = [
     'name' => 'Breaking the Ice',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'You almost made friends with Shardhead... before he died. Poor guy only seems to attract violence with his frosty attitude.',
+    'description' => 'You almost made friends with Shardhead... before he died. Poor guy only seems to attract violence with his frosty attitude.',
   ],
   '221' => [
     'name' => 'Choking on Her Venom',
@@ -1652,8 +1631,7 @@ $achievements = [
     'name' => 'Crawling Death',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "You ripped the ancient scarab Fleshcrawler apart and made sure he didn't get under your skin.",
+    'description' => "You ripped the ancient scarab Fleshcrawler apart and made sure he didn't get under your skin.",
   ],
   '223' => [
     'name' => 'Hissing Downfall',
@@ -1677,8 +1655,7 @@ $achievements = [
     'name' => 'No More Hiding',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "You've found a well - hidden spider queen and caught her off guard in the middle of her meal.",
+    'description' => "You've found a well - hidden spider queen and caught her off guard in the middle of her meal.",
   ],
   '227' => [
     'name' => 'One Less',
@@ -1698,22 +1675,19 @@ $achievements = [
     'name' => 'Rootless Behaviour',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "You've descended into the swampy depths of Deathbine's lair and made quick work of it.",
+    'description' => "You've descended into the swampy depths of Deathbine's lair and made quick work of it.",
   ],
   '230' => [
     'name' => 'Scorched Flames',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "A mighty blaze went out today. It's Flameborn's turn to wait for his rebirth in the eternal cycle of life and death.",
+    'description' => "A mighty blaze went out today. It's Flameborn's turn to wait for his rebirth in the eternal cycle of life and death.",
   ],
   '231' => [
     'name' => 'Something Smells',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "You've exinguished the Sulphur Scuttler's gas clouds and made the air in his cave a little better... at least for a while.",
+    'description' => "You've exinguished the Sulphur Scuttler's gas clouds and made the air in his cave a little better... at least for a while.",
   ],
   '232' => [
     'name' => 'Spareribs for Dinner',
@@ -1725,8 +1699,7 @@ $achievements = [
     'name' => 'The Drowned Sea God',
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      'As the killer of Leviathan, the giant sea serpent, his underwater kingdom is now under your reign.',
+    'description' => 'As the killer of Leviathan, the giant sea serpent, his underwater kingdom is now under your reign.',
   ],
   '234' => [
     'name' => 'The Gates of Hell',
@@ -1760,8 +1733,7 @@ $achievements = [
     'name' => 'Chest Robber',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "You've discovered three nomad camps and stole their supplies. Well, you can probably use them better then they can.",
+    'description' => "You've discovered three nomad camps and stole their supplies. Well, you can probably use them better then they can.",
   ],
   '239' => [
     'name' => 'Chitin Bane',
@@ -1788,15 +1760,13 @@ $achievements = [
     'name' => 'Death Song',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      'You hushed the songs of war in the black depths by sliencing more than three hundred Deepling Spellsingers.',
+    'description' => 'You hushed the songs of war in the black depths by sliencing more than three hundred Deepling Spellsingers.',
   ],
   '243' => [
     'name' => 'Depth Dwellers',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      'By eliminating at least three hundred Deepling Warriors you delivered quite a blow to the amassing armies of the deep.',
+    'description' => 'By eliminating at least three hundred Deepling Warriors you delivered quite a blow to the amassing armies of the deep.',
   ],
   '244' => [
     'name' => 'Desert Fisher',
@@ -1816,8 +1786,7 @@ $achievements = [
     'name' => 'Down the Drain',
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      "You've found a secret dungeon in the flooded plains and killed several of its inhabitants . and now you have wet feet.",
+    'description' => "You've found a secret dungeon in the flooded plains and killed several of its inhabitants . and now you have wet feet.",
   ],
   '247' => [
     'name' => 'Exterminator',
@@ -1860,15 +1829,13 @@ $achievements = [
     'name' => 'Guard Killer',
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      'You have proven that you can beat the best of the hive . You have caused first promising breaches in the defence of the hive',
+    'description' => 'You have proven that you can beat the best of the hive . You have caused first promising breaches in the defence of the hive',
   ],
   '253' => [
     'name' => 'Guardian Downfall',
     'grade' => 2,
     'points' => 4,
-    'description' =>
-      'You ended the life of over three hundred Deepling Guards . Not quite the guardian of the Deeplings, are you ? ',
+    'description' => 'You ended the life of over three hundred Deepling Guards . Not quite the guardian of the Deeplings, are you ? ',
   ],
   '254' => [
     'name' => 'Headache',
@@ -1923,22 +1890,19 @@ $achievements = [
     'name' => 'Honest Finder',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "You've stopped the bank robber and returned the bag full of gold. Good to know there are still lawful Tibians like you around.",
+    'description' => "You've stopped the bank robber and returned the bag full of gold. Good to know there are still lawful Tibians like you around.",
   ],
   '262' => [
     'name' => 'Ice Harvester',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'You witnessed the thawing of Svargrond and harvested rare seeds from some strange icy plants. They must be good for something.',
+    'description' => 'You witnessed the thawing of Svargrond and harvested rare seeds from some strange icy plants. They must be good for something.',
   ],
   '263' => [
     'name' => 'Loyal Subject',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'You joined the Kingsday festivities and payed King Tibianus your respects. Now, off to party!',
+    'description' => 'You joined the Kingsday festivities and payed King Tibianus your respects. Now, off to party!',
   ],
   '264' => [
     'name' => 'Manic',
@@ -1951,8 +1915,7 @@ $achievements = [
     'name' => 'Minor Disturbance',
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      'Your actions start to make a difference. You have blinded the antennae of the hive often enough to become an annoyance to it.',
+    'description' => 'Your actions start to make a difference. You have blinded the antennae of the hive often enough to become an annoyance to it.',
   ],
   '266' => [
     'name' => 'Navigational Error',
@@ -1987,8 +1950,7 @@ $achievements = [
     'name' => 'Si, Ariki!',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "You've found the oriental traveller Yasir and were able to trade with him - even if you didn't really understand his language.",
+    'description' => "You've found the oriental traveller Yasir and were able to trade with him - even if you didn't really understand his language.",
   ],
   '271' => [
     'name' => "Someone's Bored",
@@ -2053,15 +2015,13 @@ $achievements = [
     'name' => 'Back from the Dead',
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      'You overcame the undead Zanakeph and sent him back into the darkness that spawned him.',
+    'description' => 'You overcame the undead Zanakeph and sent him back into the darkness that spawned him.',
   ],
   '280' => [
     'name' => "Dream's Over",
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'No more fear and bad dreams . You stabbed Tormentor to death with its scythe leg.',
+    'description' => 'No more fear and bad dreams . You stabbed Tormentor to death with its scythe leg.',
   ],
   '281' => [
     'name' => 'Enter zze Draken!',
@@ -2085,8 +2045,7 @@ $achievements = [
     'name' => 'King of the Ring',
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      "Bretzecutioner's body just got slammed away. You are a true king of the ring!",
+    'description' => "Bretzecutioner's body just got slammed away. You are a true king of the ring!",
   ],
   '285' => [
     'name' => 'Pwned All Fur',
@@ -2134,8 +2093,7 @@ $achievements = [
     'name' => 'Crystal Clear',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      'If the gnomes had told you that crystal armor is see-through you had probably changed your underwear in time.',
+    'description' => 'If the gnomes had told you that crystal armor is see-through you had probably changed your underwear in time.',
   ],
   '292' => [
     'name' => 'Crystal Keeper',
@@ -2164,8 +2122,7 @@ $achievements = [
     'grade' => 2,
     'points' => 4,
     'secret' => true,
-    'description' =>
-      "Again and again Deathstrike has fallen to your prowess . Perhaps it's time for people calling YOU Deathstrike from now on.",
+    'description' => "Again and again Deathstrike has fallen to your prowess . Perhaps it's time for people calling YOU Deathstrike from now on.",
   ],
   '296' => [
     'name' => 'Diplomatic Immunity',
@@ -2188,23 +2145,20 @@ $achievements = [
     'grade' => 2,
     'points' => 4,
     'secret' => true,
-    'description' =>
-      'Have you ever wondered how he reappears again and again? You only care for the loot, do you? Gotcha!',
+    'description' => 'Have you ever wondered how he reappears again and again? You only care for the loot, do you? Gotcha!',
   ],
   '299' => [
     'name' => 'Final Strike',
     'grade' => 1,
     'points' => 2,
     'secret' => true,
-    'description' =>
-      "The mighty Deathstrike is dead! One legend is dead and you're on your way to become one yourself.",
+    'description' => "The mighty Deathstrike is dead! One legend is dead and you're on your way to become one yourself.",
   ],
   '300' => [
     'name' => 'Funghitastic',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      'finally your dream to become a walking mushroom has come true ... No, wait a minute!',
+    'description' => 'finally your dream to become a walking mushroom has come true ... No, wait a minute!',
   ],
   '301' => [
     'name' => 'Gnome Friend',
@@ -2217,8 +2171,7 @@ $achievements = [
     'name' => 'Gnome Little Helper',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'You think the gnomes start to like you. A little step for a Bigfoot but a big step for humanity.',
+    'description' => 'You think the gnomes start to like you. A little step for a Bigfoot but a big step for humanity.',
   ],
   '303' => [
     'name' => "Gnomebane's Bane",
@@ -2247,8 +2200,7 @@ $achievements = [
     'grade' => 1,
     'points' => 1,
     'secret' => true,
-    'description' =>
-      "Seeing a mucus plug makes your heart dance and you can't resist to see what it hides . Goo goo away!",
+    'description' => "Seeing a mucus plug makes your heart dance and you can't resist to see what it hides . Goo goo away!",
   ],
   '307' => [
     'name' => 'Grinding Again',
@@ -2275,8 +2227,7 @@ $achievements = [
     'name' => 'One Foot Vs. Many',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'One Bigfoot won over thousands of tiny feet. Perhaps the gnomes are wrong and size matters?',
+    'description' => 'One Bigfoot won over thousands of tiny feet. Perhaps the gnomes are wrong and size matters?',
   ],
   '311' => [
     'name' => 'Spore Hunter',
@@ -2312,8 +2263,7 @@ $achievements = [
     'grade' => 2,
     'points' => 5,
     'secret' => true,
-    'description' =>
-      'You conquered the demon challenge and prevailed... now show off your success in style!',
+    'description' => 'You conquered the demon challenge and prevailed... now show off your success in style!',
   ],
   '316' => [
     'name' => 'Gravedigger',
@@ -2348,15 +2298,13 @@ $achievements = [
     'name' => 'Dream Wright',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'You have mended many a broken dream and so, the dream of Roshamuul is safely being told over and over again.',
+    'description' => 'You have mended many a broken dream and so, the dream of Roshamuul is safely being told over and over again.',
   ],
   '321' => [
     'name' => 'Ending the Horror',
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      "You have cleansed the lands of many retching horrors. You sure know how to end a bad dream: forcefully, that's how!",
+    'description' => "You have cleansed the lands of many retching horrors. You sure know how to end a bad dream: forcefully, that's how!",
   ],
   '322' => [
     'name' => 'Luring Silence',
@@ -2390,15 +2338,13 @@ $achievements = [
     'name' => 'Prison break',
     'grade' => 3,
     'points' => 8,
-    'description' =>
-      "Gaz'haragoth... a day to remember!Your world accomplished someting really big - and you have been part of it!",
+    'description' => "Gaz'haragoth... a day to remember!Your world accomplished someting really big - and you have been part of it!",
   ],
   '327' => [
     'name' => 'Sleepwalking',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'You know your way, in dream and waking . and how to make tea that transcends the boundaries of conscience.',
+    'description' => 'You know your way, in dream and waking . and how to make tea that transcends the boundaries of conscience.',
   ],
   '328' => [
     'name' => 'Umbral Archer',
@@ -2482,8 +2428,7 @@ $achievements = [
     'name' => 'Elementary, My Dear',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'Through the spirit of science and exploration, you have discovered how to enter the secret hideout of the renowned Dr Merlay.',
+    'description' => 'Through the spirit of science and exploration, you have discovered how to enter the secret hideout of the renowned Dr Merlay.',
   ],
   '340' => [
     'name' => 'Glooth Engineer',
@@ -2496,22 +2441,19 @@ $achievements = [
     'name' => 'Rathleton Citizen',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'By having rendered numerous services to the city of Rathleton you have been promoted to the rank of Citizen.',
+    'description' => 'By having rendered numerous services to the city of Rathleton you have been promoted to the rank of Citizen.',
   ],
   '342' => [
     'name' => 'Rathleton Commoner',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'By having rendered numerous services to the city of Rathleton you have been promoted to the rank of Commoner.',
+    'description' => 'By having rendered numerous services to the city of Rathleton you have been promoted to the rank of Commoner.',
   ],
   '343' => [
     'name' => 'Rathleton Inhabitant',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'By having rendered numerous services to the city of Rathleton you have been promoted to the rank of Inhabitant.',
+    'description' => 'By having rendered numerous services to the city of Rathleton you have been promoted to the rank of Inhabitant.',
   ],
   '344' => [
     'name' => 'Seasoned Adventurer',
@@ -2525,8 +2467,7 @@ $achievements = [
     'grade' => 1,
     'points' => 1,
     'secret' => true,
-    'description' =>
-      'You escaped the glowing hot lava death trap, Professor Maxxen has set for you - Captain Caveworm is indeed proud!',
+    'description' => 'You escaped the glowing hot lava death trap, Professor Maxxen has set for you - Captain Caveworm is indeed proud!',
   ],
   '346' => [
     'name' => "Lion's Den Explorer",
@@ -2561,24 +2502,21 @@ $achievements = [
     'name' => 'Rathleton Squire',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'By having rendered numerous services to the city of Rathleton you have been promoted to the rank of Squire.',
+    'description' => 'By having rendered numerous services to the city of Rathleton you have been promoted to the rank of Squire.',
   ],
   '351' => [
     'name' => 'Robo Chop',
     'grade' => 1,
     'points' => 4,
     'secret' => true,
-    'description' =>
-      'You have defeated the glooth bomb and chopped down a lot of metal monsters on your way.',
+    'description' => 'You have defeated the glooth bomb and chopped down a lot of metal monsters on your way.',
   ],
   '352' => [
     'name' => 'Rumble in the Plant',
     'grade' => 2,
     'points' => 4,
     'secret' => true,
-    'description' =>
-      "You have defeated the tremor worm - and wonder what kind of fish you'd be able to catch with such a bait.",
+    'description' => "You have defeated the tremor worm - and wonder what kind of fish you'd be able to catch with such a bait.",
   ],
   '353' => [
     'name' => 'Snake Charmer',
@@ -2612,8 +2550,7 @@ $achievements = [
     'name' => 'Beneath the Sea',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      'Not really twenty thousand miles, but you had to dive a fair way beneath the sea to find your personal Manta Ray.',
+    'description' => 'Not really twenty thousand miles, but you had to dive a fair way beneath the sea to find your personal Manta Ray.',
   ],
   '358' => [
     'name' => 'Blacknailed',
@@ -2640,8 +2577,7 @@ $achievements = [
     'name' => 'Dragon Mimicry',
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      "It's not really a dragon, but rather a kind of chimera . Nonetheless a decent mount to impress any passer - by.",
+    'description' => "It's not really a dragon, but rather a kind of chimera . Nonetheless a decent mount to impress any passer - by.",
   ],
   '362' => [
     'name' => 'Fabled Construction',
@@ -2682,16 +2618,14 @@ $achievements = [
     'name' => 'Golden Sands',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      'Counting ten thousand grains of sand could not have been harder than gaining this impressive mount.',
+    'description' => 'Counting ten thousand grains of sand could not have been harder than gaining this impressive mount.',
   ],
   '368' => [
     'name' => 'Hoard of the Dragon',
     'grade' => 1,
     'points' => 1,
     'secret' => true,
-    'description' =>
-      'Your adventurous way through countless dragon lairs earned you a pretty treasure - and surely the enmity of many a dragon.',
+    'description' => 'Your adventurous way through countless dragon lairs earned you a pretty treasure - and surely the enmity of many a dragon.',
   ],
   '369' => [
     'name' => 'Icy Glare',
@@ -2718,8 +2652,7 @@ $achievements = [
     'name' => 'Little Ball of Wool',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "You found a lost sheep and thus a steady source of black wool . But careful: don't get entangled.",
+    'description' => "You found a lost sheep and thus a steady source of black wool . But careful: don't get entangled.",
   ],
   '373' => [
     'name' => 'Lost Palace Raider',
@@ -2740,8 +2673,7 @@ $achievements = [
     'name' => 'Loyal Lad',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'Having a loyal friend alongside is comforting to every adventurer . if only this lad was not so stubborn...',
+    'description' => 'Having a loyal friend alongside is comforting to every adventurer . if only this lad was not so stubborn...',
   ],
   '376' => [
     'name' => 'Lucky Horseshoe',
@@ -2754,8 +2686,7 @@ $achievements = [
     'name' => 'Luminous Kitty',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      'You made some efforts to bring a little more light into the world . and what a nice present you got in return !',
+    'description' => 'You made some efforts to bring a little more light into the world . and what a nice present you got in return !',
   ],
   '378' => [
     'name' => 'Magnetised',
@@ -2859,8 +2790,7 @@ $achievements = [
     'name' => 'Way to Hell',
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      'This fiery beast really tried to give you hell. But not even a magma crawler can resist a mug of spicy, hot glow wine. Skol!',
+    'description' => 'This fiery beast really tried to give you hell. But not even a magma crawler can resist a mug of spicy, hot glow wine. Skol!',
   ],
   '393' => [
     'name' => 'Hat Hunter',
@@ -2873,8 +2803,7 @@ $achievements = [
     'name' => 'Ogre Chef',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "You didn't manage to become an ogre chief. But at least you are, beyond doubt, a worthy ogre chef.",
+    'description' => "You didn't manage to become an ogre chief. But at least you are, beyond doubt, a worthy ogre chef.",
   ],
   '395' => [
     'name' => 'Rift Warrior',
@@ -2924,15 +2853,13 @@ $achievements = [
     'name' => 'Rhino Rider',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "Don't forget, even your rhino sometimes needs a hug. A careful one in this case.",
+    'description' => "Don't forget, even your rhino sometimes needs a hug. A careful one in this case.",
   ],
   '402' => [
     'name' => 'Treasure Hunter',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      "You wandered the world of Tibia in search of the ancient dragons' hoards . You are sure, you found them all.",
+    'description' => "You wandered the world of Tibia in search of the ancient dragons' hoards . You are sure, you found them all.",
   ],
   '403' => [
     'name' => 'Corruption Contained',
@@ -2953,8 +2880,7 @@ $achievements = [
     'name' => 'Toothfairy Assistant',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'You assisted a very prominent fae and you fought tooth and nail to earn this title.',
+    'description' => 'You assisted a very prominent fae and you fought tooth and nail to earn this title.',
   ],
   '406' => [
     'name' => 'Buried the Baron',
@@ -2972,8 +2898,7 @@ $achievements = [
     'name' => 'Death in the Depths',
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      'The Baron from Below, Duke of the Depths and the Count of the Core are no more!',
+    'description' => 'The Baron from Below, Duke of the Depths and the Count of the Core are no more!',
   ],
   '409' => [
     'name' => 'Duked It Out',
@@ -3043,15 +2968,13 @@ $achievements = [
     'name' => 'All Hail the King',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "Old temples, a meadowy countryside and the splendour of Thais - you really know every corner of King Tibianus' realm now.",
+    'description' => "Old temples, a meadowy countryside and the splendour of Thais - you really know every corner of King Tibianus' realm now.",
   ],
   '420' => [
     'name' => 'Ancient Splendor',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "You've braved the perils of Yalahar and learned of its gloomy shadows of long gone greatness.",
+    'description' => "You've braved the perils of Yalahar and learned of its gloomy shadows of long gone greatness.",
   ],
   '421' => [
     'name' => 'Battle Mage',
@@ -3071,22 +2994,19 @@ $achievements = [
     'name' => "Daraman's Footsteps",
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'You journeyed through Darashia and the sea of sand around it, while fighting the perils of the desert.',
+    'description' => 'You journeyed through Darashia and the sea of sand around it, while fighting the perils of the desert.',
   ],
   '424' => [
     'name' => 'Dwarven Mines',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'Vast mines, an orc fortress and the magnificence of Kazordoon - you really know every corner of North - Eastern Mainland now.',
+    'description' => 'Vast mines, an orc fortress and the magnificence of Kazordoon - you really know every corner of North - Eastern Mainland now.',
   ],
   '425' => [
     'name' => 'Elven Woods',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "Tall trees, deep forests and and the beauty of Ab'Dendriel - you really know every corner of the elven lands now.",
+    'description' => "Tall trees, deep forests and and the beauty of Ab'Dendriel - you really know every corner of the elven lands now.",
   ],
   '426' => [
     'name' => 'Glooth Punk',
@@ -3106,22 +3026,19 @@ $achievements = [
     'name' => 'Jewel in the Swamp',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'Damp swamps, a dry desert and the opulence of Venore - you really know every corner of Eastern Mainland now.',
+    'description' => 'Damp swamps, a dry desert and the opulence of Venore - you really know every corner of Eastern Mainland now.',
   ],
   '429' => [
     'name' => 'King of the Jungle',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'You have searched Port Hope and the jungle that thoroughly, that you are up to adoption by a friendly ape family.',
+    'description' => 'You have searched Port Hope and the jungle that thoroughly, that you are up to adoption by a friendly ape family.',
   ],
   '430' => [
     'name' => 'Liberty Bay Watch',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "A pirate's haven and a burglar's hideout . You found your way around Liberty Bay and its surroundings - land, ho!",
+    'description' => "A pirate's haven and a burglar's hideout . You found your way around Liberty Bay and its surroundings - land, ho!",
   ],
   '431' => [
     'name' => 'Library Liberator',
@@ -3141,8 +3058,7 @@ $achievements = [
     'name' => 'Long Live the Queen',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      "Ancient battlefields, amazons and the glory of Carlin - you really know every corner of Queen Eloise's realm now.",
+    'description' => "Ancient battlefields, amazons and the glory of Carlin - you really know every corner of Queen Eloise's realm now.",
   ],
   '434' => [
     'name' => 'Master Debater',
@@ -3157,8 +3073,7 @@ $achievements = [
     'grade' => 1,
     'points' => 3,
     'secret' => true,
-    'description' =>
-      'You defeated Grand Master Oberon and the remnants of the Order of the Falcon, no matter the odds.',
+    'description' => 'You defeated Grand Master Oberon and the remnants of the Order of the Falcon, no matter the odds.',
   ],
   '436' => [
     'name' => "Mummy's Dearest",
@@ -3177,8 +3092,7 @@ $achievements = [
     'name' => 'Realms of Dreams',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'Lush meadows, colourful fairies and sentient stones - you really know every corner of Feyrist now.',
+    'description' => 'Lush meadows, colourful fairies and sentient stones - you really know every corner of Feyrist now.',
   ],
   '439' => [
     'name' => 'Spectulation',
@@ -3192,15 +3106,13 @@ $achievements = [
     'name' => 'Stronghold of Edron',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'Strong fortresses, sprawling woods and ivory towers - you really know every corner of Edron now.',
+    'description' => 'Strong fortresses, sprawling woods and ivory towers - you really know every corner of Edron now.',
   ],
   '441' => [
     'name' => 'The Ogre Steppe',
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'A vast steppe, voracious ogres and dried out salt seas - you really know every corner of Krailos now.',
+    'description' => 'A vast steppe, voracious ogres and dried out salt seas - you really know every corner of Krailos now.',
   ],
   '442' => [
     'name' => 'Trip to the Beach',
@@ -3220,8 +3132,7 @@ $achievements = [
     'name' => 'Widely Travelled',
     'grade' => 3,
     'points' => 7,
-    'description' =>
-      'as a true globetrotter you can now show your colours proudly with this extraordinary outfit.',
+    'description' => 'as a true globetrotter you can now show your colours proudly with this extraordinary outfit.',
   ],
   '445' => [
     'name' => 'Exalted Battle Mage',
@@ -3234,31 +3145,27 @@ $achievements = [
     'name' => 'Running the Rift',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      "You don't just have a permission to ride a rift runner, you literally went through hell and earned it!",
+    'description' => "You don't just have a permission to ride a rift runner, you literally went through hell and earned it!",
   ],
   '447' => [
     'name' => 'Champion of Summer',
     'grade' => 1,
     'points' => 2,
     'secret' => true,
-    'description' =>
-      'You have vanquished numerous arena champions in the name of the Summer Court.',
+    'description' => 'You have vanquished numerous arena champions in the name of the Summer Court.',
   ],
   '448' => [
     'name' => 'Champion of Winter',
     'grade' => 1,
     'points' => 2,
     'secret' => true,
-    'description' =>
-      'You have vanquished numerous arena champions in the name of the Winter Court.',
+    'description' => 'You have vanquished numerous arena champions in the name of the Winter Court.',
   ],
   '449' => [
     'name' => 'Dream Catcher',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      'You are the slayer of the ancient nightmare beast and prevented the nightmare to spread its madness.',
+    'description' => 'You are the slayer of the ancient nightmare beast and prevented the nightmare to spread its madness.',
   ],
   '450' => [
     'name' => 'Dream Warrior',
@@ -3271,8 +3178,7 @@ $achievements = [
     'name' => 'Keeper of the 7 Keys',
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      'You found the Seven Keys to unlock ... no, not the seven seas . But at least seven doors in the realm of dreams.',
+    'description' => 'You found the Seven Keys to unlock ... no, not the seven seas . But at least seven doors in the realm of dreams.',
   ],
   '452' => [
     'name' => 'Lacewing Catcher',
@@ -3285,23 +3191,20 @@ $achievements = [
     'name' => 'Moth Whisperer',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      "Your lantern was too bewitching for a hibernal moth . It couldn't withstand and follows you, the bearer of the lantern, now.",
+    'description' => "Your lantern was too bewitching for a hibernal moth . It couldn't withstand and follows you, the bearer of the lantern, now.",
   ],
   '454' => [
     'name' => 'Tied the Knot',
     'grade' => 1,
     'points' => 1,
     'secret' => true,
-    'description' =>
-      'You figured out the right order of spells in the buried cathedral, how enchanting!',
+    'description' => 'You figured out the right order of spells in the buried cathedral, how enchanting!',
   ],
   '455' => [
     'name' => 'No Horse Open Sleigh',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      'This sleigh is not driven by magic but pushed by a percht . Hopefully you two get along well together...!',
+    'description' => 'This sleigh is not driven by magic but pushed by a percht . Hopefully you two get along well together...!',
   ],
   '456' => [
     'name' => 'Raider in the Dark',
@@ -3337,16 +3240,14 @@ $achievements = [
     'grade' => 1,
     'points' => 1,
     'secret' => true,
-    'description' =>
-      'You did the hippo population of Kilmaresh a great favour . A well - fed hippo is a happy hippo.',
+    'description' => 'You did the hippo population of Kilmaresh a great favour . A well - fed hippo is a happy hippo.',
   ],
   '461' => [
     'name' => "Inquisition's Hand",
     'grade' => 1,
     'points' => 3,
     'secret' => true,
-    'description' =>
-      'You defeated the Lich Knights and became the hand of the Inquisition, allowed to wear their special garb.',
+    'description' => 'You defeated the Lich Knights and became the hand of the Inquisition, allowed to wear their special garb.',
   ],
   '462' => [
     'name' => 'Sculptor Apprentice',
@@ -3360,22 +3261,19 @@ $achievements = [
     'name' => 'Sun and Sea',
     'grade' => 2,
     'points' => 5,
-    'description' =>
-      "You made sure that the balance of sun and sea is preserved in Kilmaresh . The Golden City of Issavi won't forget your favour.",
+    'description' => "You made sure that the balance of sun and sea is preserved in Kilmaresh . The Golden City of Issavi won't forget your favour.",
   ],
   '464' => [
     'name' => "The Empire's Glory",
     'grade' => 1,
     'points' => 1,
-    'description' =>
-      'Mythical creatures, forgotten catacombs and the Golden City - you really know every corner of Kilmaresh now.',
+    'description' => 'Mythical creatures, forgotten catacombs and the Golden City - you really know every corner of Kilmaresh now.',
   ],
   '465' => [
     'name' => 'do a Barrel Roll!',
     'grade' => 1,
     'points' => 3,
-    'description' =>
-      'Riding a traditional beer barrel from the Orcsoberfest is a once - in - a - lifetime experience . Beer sold separately.',
+    'description' => 'Riding a traditional beer barrel from the Orcsoberfest is a once - in - a - lifetime experience . Beer sold separately.',
   ],
   '466' => [
     'name' => 'Orcsoberfest Welcome',
@@ -3389,8 +3287,7 @@ $achievements = [
     'name' => 'Traditionalist',
     'grade' => 2,
     'points' => 0,
-    'description' =>
-      'You proudly wear the traditional Orcsoberfest garb, same as it ever was and as it always will be.',
+    'description' => 'You proudly wear the traditional Orcsoberfest garb, same as it ever was and as it always will be.',
   ],
   '468' => [
     'name' => 'Beyonder',
@@ -3410,8 +3307,7 @@ $achievements = [
     'name' => 'Mainstreet Nightmare',
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      'Now you are able to wander around Tibia wearing an angst - inducing vestment.',
+    'description' => 'Now you are able to wander around Tibia wearing an angst - inducing vestment.',
   ],
   '471' => [
     'name' => 'Monsterhunter',
@@ -3469,8 +3365,7 @@ $achievements = [
     'name' => "Inquisition's Arm",
     'grade' => 1,
     'points' => 2,
-    'description' =>
-      'Your special outfit, bestowed exclusively on a dedicated hand of the Inquisition, is now complete.',
+    'description' => 'Your special outfit, bestowed exclusively on a dedicated hand of the Inquisition, is now complete.',
   ],
   '480' => [
     'name' => 'Honorary Rascoohan',

@@ -9,10 +9,7 @@ function exception_handler($exception)
 {
   $message = $exception->getMessage();
   if ($exception instanceof SensitiveException) {
-    $message =
-      'This error is sensitive and has been logged into ' .
-      LOGS .
-      'error.log.<br/>View this file for more information.';
+    $message = 'This error is sensitive and has been logged into ' . LOGS . 'error.log.<br/>View this file for more information.';
 
     // log error to file
     $f = fopen(LOGS . 'error.log', 'ab');
@@ -47,13 +44,7 @@ function exception_handler($exception)
   // cause in case Twig throws exception, we can show it too
   $content = file_get_contents($template_file);
   $content = str_replace(
-    [
-      '{{ BASE_URL }}',
-      '{{ exceptionClass }}',
-      '{{ message }}',
-      '{{ backtrace }}',
-      '{{ powered_by }}',
-    ],
+    ['{{ BASE_URL }}', '{{ exceptionClass }}', '{{ message }}', '{{ backtrace }}', '{{ powered_by }}'],
     [
       BASE_URL,
       get_class($exception),

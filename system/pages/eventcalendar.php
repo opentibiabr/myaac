@@ -100,20 +100,32 @@ $title = 'Event Schedule';
 
 function showWeeks(): string
 {
-  $out = "";
+  $out = '';
   $weeks = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  for ($i = 0; $i < 7; $i++) $out .= "<td>$weeks[$i]</td>";
+  for ($i = 0; $i < 7; $i++) {
+    $out .= "<td>$weeks[$i]</td>";
+  }
   return $out;
 }
 
 function getAmountDays(string $month): int
 {
   $amountDays = [
-    '01' => 31, '02' => 28, '03' => 31, '04' => 30, '05' => 31, '06' => 30,
-    '07' => 31, '08' => 31, '09' => 30, '10' => 31, '11' => 30, '12' => 31
+    '01' => 31,
+    '02' => 28,
+    '03' => 31,
+    '04' => 30,
+    '05' => 31,
+    '06' => 30,
+    '07' => 31,
+    '08' => 31,
+    '09' => 30,
+    '10' => 31,
+    '11' => 30,
+    '12' => 31,
   ];
-  if (((date('Y') % 4) == 0 and (date('Y') % 100) != 0) or (date('Y') % 400) == 0) {
-    $amountDays['02'] = 29;  // altera o numero de dias de fevereiro se o ano for bissexto
+  if (date('Y') % 4 == 0 and date('Y') % 100 != 0 or date('Y') % 400 == 0) {
+    $amountDays['02'] = 29; // altera o numero de dias de fevereiro se o ano for bissexto
   }
   return $amountDays[$month];
 }
@@ -121,12 +133,20 @@ function getAmountDays(string $month): int
 function getMonthName($month): string
 {
   $months = [
-    '01' => "January", '02' => "February", '03' => "March",
-    '04' => "April", '05' => "May", '06' => "June",
-    '07' => "July", '08' => "August", '09' => "September",
-    '10' => "October", '11' => "November", '12' => "December"
+    '01' => 'January',
+    '02' => 'February',
+    '03' => 'March',
+    '04' => 'April',
+    '05' => 'May',
+    '06' => 'June',
+    '07' => 'July',
+    '08' => 'August',
+    '09' => 'September',
+    '10' => 'October',
+    '11' => 'November',
+    '12' => 'December',
   ];
-  return ($month >= 01 && $month <= 12) ? $months[$month] : "Unknown month";
+  return $month >= 01 && $month <= 12 ? $months[$month] : 'Unknown month';
 }
 
 function generateIndicator($event): string
@@ -145,29 +165,32 @@ function showCalendar($month = null): string
   $amountDays = getAmountDays(str_pad($month, 2, '0', STR_PAD_LEFT));
   $currentDay = 0;
 
-  $dayOfWeek = jddayofweek(cal_to_jd(CAL_GREGORIAN, $month, "01", date('Y')), 0);
+  $dayOfWeek = jddayofweek(cal_to_jd(CAL_GREGORIAN, $month, '01', date('Y')), 0);
 
-  $outDays = "<tr style='text-align:center; width:120px; background-color:#5f4d41;'>" . showWeeks() . "</tr>";
+  $outDays = "<tr style='text-align:center; width:120px; background-color:#5f4d41;'>" . showWeeks() . '</tr>';
 
   for ($row = 0; $row < 5; $row++) {
-    $outDays .= "<tr>";
+    $outDays .= '<tr>';
     for ($column = 0; $column < 7; $column++) {
       $outDays .= "<td style='height:82px; background-clip: padding-box; overflow: hidden; vertical-align:top;' ";
-      $color = "other_day";
-      if (($currentDay == (date('d') - 1) && date('m') == $month)) {
-        $color = "today";
+      $color = 'other_day';
+      if ($currentDay == date('d') - 1 && date('m') == $month) {
+        $color = 'today';
       } else {
-        if (($currentDay + 1) <= $amountDays) {
-          $color = ($column < $dayOfWeek && $row == 0) ? "other_day" : "default";
+        if ($currentDay + 1 <= $amountDays) {
+          $color = $column < $dayOfWeek && $row == 0 ? 'other_day' : 'default';
         }
       }
       $outDays .= "id='$color'>";
 
       if ($currentDay + 1 <= $amountDays) {
         if ($column < $dayOfWeek && $row == 0) {
-          $outDays .= " ";
+          $outDays .= ' ';
         } else {
-          $outDays .= "<div class='day'><span style='vertical-align: text-bottom;'>" . ++$currentDay . " <img style='border:0;' src='https://static.tibia.com/images/global/content/icon-seasonal.png'></span></div>";
+          $outDays .=
+            "<div class='day'><span style='vertical-align: text-bottom;'>" .
+            ++$currentDay .
+            " <img style='border:0;' src='https://static.tibia.com/images/global/content/icon-seasonal.png'></span></div>";
 
           global $config;
           $events_xml = $config['data_path'] . 'XML/events.xml';
@@ -190,9 +213,9 @@ function showCalendar($month = null): string
       } else {
         break;
       }
-      $outDays .= "</td>";
+      $outDays .= '</td>';
     }
-    $outDays .= "</tr>";
+    $outDays .= '</tr>';
   }
 
   return $outDays;
@@ -200,20 +223,19 @@ function showCalendar($month = null): string
 
 function showCalendarFull(): string
 {
-  $out = "";
+  $out = '';
   $count = 1;
   for ($j = 0; $j < 4; $j++) {
-    $out .= "<tr>";
+    $out .= '<tr>';
     for ($i = 0; $i < 3; $i++) {
       $cal = showCalendar(str_pad($count, 2, '0', STR_PAD_LEFT));
       $out .= "<td style='border: none'>{$cal}</td>";
       $count++;
     }
-    $out .= "</tr>";
+    $out .= '</tr>';
   }
   return $out;
 }
-
 ?>
 
 <div class="BoxContent" style="background-image:url(https://static.tibia.com/images/global/content/scroll.gif);">
@@ -235,7 +257,9 @@ function showCalendarFull(): string
                 <div class="eventscheduleheaderdateblock">
                   <span class="eventscheduleheaderleft"></span><?= date('M Y') ?>
                   <span class="eventscheduleheaderright">
-                    <?php /*<a href="<?= '?eventcalendar&mes=' . $month . '&dia=' . ($currentDay + 1) ?>" style="color:white;">»</a>*/ ?>
+                    <?php
+/*<a href="<?= '?eventcalendar&mes=' . $month . '&dia=' . ($currentDay + 1) ?>" style="color:white;">»</a>*/
+?>
                   </span>
                 </div>
               </div>

@@ -1,91 +1,92 @@
 <?php
 
 if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
-    $selectCharacter = $_POST['auction_character'];
 
+  $selectCharacter = $_POST['auction_character'];
 
-    /* PLAYERS */
-    $getCharacter = $db->query('SELECT `id`, `account_id`, `name`, `level`, `vocation`, `sex`, `health`, `healthmax`, `mana`, `manamax`, `maglevel`, `manaspent`, `balance`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `skill_shielding`, `skill_shielding_tries`, `cap`, `experience`, `created`, `soul`, `blessings` FROM `players`' . 'WHERE `id` = ' . $db->quote($selectCharacter) . '');
-    $getCharacter = $getCharacter->fetch();
-    /* PLAYERS END */
+  /* PLAYERS */
+  $getCharacter = $db->query(
+    'SELECT `id`, `account_id`, `name`, `level`, `vocation`, `sex`, `health`, `healthmax`, `mana`, `manamax`, `maglevel`, `manaspent`, `balance`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `skill_shielding`, `skill_shielding_tries`, `cap`, `experience`, `created`, `soul`, `blessings` FROM `players`' .
+      'WHERE `id` = ' .
+      $db->quote($selectCharacter) .
+      ''
+  );
+  $getCharacter = $getCharacter->fetch();
+  /* PLAYERS END */
 
+  /* ACCOUNT BY PLAYER */
+  $getAccount = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $getCharacter['account_id'] . '');
+  $getAccount = $getAccount->fetch();
+  if ($getAccount['premdays'] > 0) {
+    $character_prem = '<b>Premium Account</b>';
+  } else {
+    $character_prem = '<b>Free Account</b>';
+  }
+  /* ACCOUNT BY PLAYER END */
 
-    /* ACCOUNT BY PLAYER */
-    $getAccount = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $getCharacter['account_id'] . '');
-    $getAccount = $getAccount->fetch();
-    if ($getAccount['premdays'] > 0) {
-        $character_prem = '<b>Premium Account</b>';
-    } else {
-        $character_prem = '<b>Free Account</b>';
-    }
-    /* ACCOUNT BY PLAYER END */
+  if ($getCharacter['sex'] == 0) {
+    $character_sex = 'Female';
+  } else {
+    $character_sex = 'Male';
+  }
 
+  if ($getCharacter['vocation'] == 0) {
+    $character_voc = 'None';
+  } elseif ($getCharacter['vocation'] == 1) {
+    $character_voc = 'Sorcerer';
+  } elseif ($getCharacter['vocation'] == 2) {
+    $character_voc = 'Druid';
+  } elseif ($getCharacter['vocation'] == 3) {
+    $character_voc = 'Paladin';
+  } elseif ($getCharacter['vocation'] == 4) {
+    $character_voc = 'Knight';
+  } elseif ($getCharacter['vocation'] == 5) {
+    $character_voc = 'Master Sorcerer';
+  } elseif ($getCharacter['vocation'] == 6) {
+    $character_voc = 'Elder Druid';
+  } elseif ($getCharacter['vocation'] == 7) {
+    $character_voc = 'Royal Paladin';
+  } elseif ($getCharacter['vocation'] == 8) {
+    $character_voc = 'Elite Knight';
+  } else {
+    $character_voc = 'None';
+  }
 
-    if ($getCharacter['sex'] == 0) {
-        $character_sex = 'Female';
-    } else {
-        $character_sex = 'Male';
-    }
+  $getAccount = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $account_logged->getId() . '');
+  $getAccount = $getAccount->fetch();
 
+  $auction_inputdays = $_POST['auction_days'];
+  $auction_end = date('d M Y', strtotime('+' . $auction_inputdays . ' days'));
 
-    if ($getCharacter['vocation'] == 0) {
-        $character_voc = 'None';
-    } elseif ($getCharacter['vocation'] == 1) {
-        $character_voc = 'Sorcerer';
-    } elseif ($getCharacter['vocation'] == 2) {
-        $character_voc = 'Druid';
-    } elseif ($getCharacter['vocation'] == 3) {
-        $character_voc = 'Paladin';
-    } elseif ($getCharacter['vocation'] == 4) {
-        $character_voc = 'Knight';
-    } elseif ($getCharacter['vocation'] == 5) {
-        $character_voc = 'Master Sorcerer';
-    } elseif ($getCharacter['vocation'] == 6) {
-        $character_voc = 'Elder Druid';
-    } elseif ($getCharacter['vocation'] == 7) {
-        $character_voc = 'Royal Paladin';
-    } elseif ($getCharacter['vocation'] == 8) {
-        $character_voc = 'Elite Knight';
-    } else {
-        $character_voc = 'None';
-    }
-
-
-    $getAccount = $db->query('SELECT `id`, `premdays`, `coins`' . 'FROM `accounts`' . 'WHERE `id` = ' . $account_logged->getId() . '');
-    $getAccount = $getAccount->fetch();
-
-    $auction_inputdays = $_POST['auction_days'];
-    $auction_end = date('d M Y', strtotime('+' . $auction_inputdays . ' days'));
-
-    if (isset($_POST['auction_price'])) {
-        $auction_pricetaxone = $_POST['auction_price'] / 100;
-        $auction_pricetaxtwo = $auction_pricetaxone * 12;
-        $auction_pricetaxtwo = number_format($auction_pricetaxtwo, 0, ',', ',');
-        $auction_finalprice = $_POST['auction_price'] - $auction_pricetaxtwo;
-        $auction_finalprice = number_format($auction_finalprice, 0, ',', ',');
-    }
-    ?>
+  if (isset($_POST['auction_price'])) {
+    $auction_pricetaxone = $_POST['auction_price'] / 100;
+    $auction_pricetaxtwo = $auction_pricetaxone * 12;
+    $auction_pricetaxtwo = number_format($auction_pricetaxtwo, 0, ',', ',');
+    $auction_finalprice = $_POST['auction_price'] - $auction_pricetaxtwo;
+    $auction_finalprice = number_format($auction_finalprice, 0, ',', ',');
+  }
+  ?>
 
 
     <div id="ProgressBar">
         <div id="MainContainer">
             <div id="BackgroundContainer">
                 <img id="BackgroundContainerLeftEnd"
-                     src="<?= $template_path; ?>/images/global/content/stonebar-left-end.gif">
+                     src="<?= $template_path ?>/images/global/content/stonebar-left-end.gif">
                 <div id="BackgroundContainerCenter">
                     <div id="BackgroundContainerCenterImage"
-                         style="background-image:url(<?= $template_path; ?>/images/global/content/stonebar-center.gif);"></div>
+                         style="background-image:url(<?= $template_path ?>/images/global/content/stonebar-center.gif);"></div>
                 </div>
                 <img id="BackgroundContainerRightEnd"
-                     src="<?= $template_path; ?>/images/global/content/stonebar-right-end.gif"></div>
+                     src="<?= $template_path ?>/images/global/content/stonebar-right-end.gif"></div>
             <img id="TubeLeftEnd"
-                 src="<?= $template_path; ?>/images/global/content/progressbar/progress-bar-tube-left-green.gif">
+                 src="<?= $template_path ?>/images/global/content/progressbar/progress-bar-tube-left-green.gif">
             <img id="TubeRightEnd"
-                 src="<?= $template_path; ?>/images/global/content/progressbar/progress-bar-tube-right-green.gif">
+                 src="<?= $template_path ?>/images/global/content/progressbar/progress-bar-tube-right-green.gif">
             <div id="FirstStep" class="Steps">
                 <div class="SingleStepContainer">
                     <img class="StepIcon"
-                         src="<?= $template_path; ?>/images/global/content/progressbar/progress-bar-icon-1-green.gif">
+                         src="<?= $template_path ?>/images/global/content/progressbar/progress-bar-icon-1-green.gif">
                     <div class="StepText" style="font-weight:normal;">Select character</div>
                 </div>
             </div>
@@ -94,33 +95,33 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
                     <div class="Steps" style="width:33%">
                         <div class="TubeContainer">
                             <img class="Tube"
-                                 src="<?= $template_path; ?>/images/global/content/progressbar/progress-bar-tube-green.gif">
+                                 src="<?= $template_path ?>/images/global/content/progressbar/progress-bar-tube-green.gif">
                         </div>
                         <div class="SingleStepContainer">
                             <img class="StepIcon"
-                                 src="<?= $template_path; ?>/images/global/content/progressbar/progress-bar-icon-2-green.gif">
+                                 src="<?= $template_path ?>/images/global/content/progressbar/progress-bar-icon-2-green.gif">
                             <div class="StepText" style="font-weight:normal;">Check character</div>
                         </div>
                     </div>
                     <div class="Steps" style="width:33%">
                         <div class="TubeContainer">
                             <img class="Tube"
-                                 src="<?= $template_path; ?>/images/global/content/progressbar/progress-bar-tube-green.gif">
+                                 src="<?= $template_path ?>/images/global/content/progressbar/progress-bar-tube-green.gif">
                         </div>
                         <div class="SingleStepContainer">
                             <img class="StepIcon"
-                                 src="<?= $template_path; ?>/images/global/content/progressbar/progress-bar-icon-3-green.gif">
+                                 src="<?= $template_path ?>/images/global/content/progressbar/progress-bar-icon-3-green.gif">
                             <div class="StepText" style="font-weight:normal;">Set up auction</div>
                         </div>
                     </div>
                     <div class="Steps" style="width:33%">
                         <div class="TubeContainer">
                             <img class="Tube"
-                                 src="<?= $template_path; ?>/images/global/content/progressbar/progress-bar-tube-green.gif">
+                                 src="<?= $template_path ?>/images/global/content/progressbar/progress-bar-tube-green.gif">
                         </div>
                         <div class="SingleStepContainer">
                             <img class="StepIcon"
-                                 src="<?= $template_path; ?>/images/global/content/progressbar/progress-bar-icon-4-green.gif">
+                                 src="<?= $template_path ?>/images/global/content/progressbar/progress-bar-icon-4-green.gif">
                             <div class="StepText" style="font-weight:bold;">Confirm auction</div>
                         </div>
                     </div>
@@ -132,22 +133,22 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
         <div class="CaptionContainer">
             <div class="CaptionInnerContainer">
                 <span class="CaptionEdgeLeftTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionBorderTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionVerticalLeft"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <div class="Text">You account</div>
                 <span class="CaptionVerticalRight"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <span class="CaptionBorderBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionEdgeLeftBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             </div>
         </div>
         <table class="Table5" cellspacing="0" cellpadding="0">
@@ -164,12 +165,12 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
                                             <tbody>
                                             <tr>
                                                 <td style="font-weight:normal;"><?= $getAccount['coins'] ?> <img
-                                                        src="<?= $template_path; ?>/images/account/icon-tibiacoin.png">
+                                                        src="<?= $template_path ?>/images/account/icon-tibiacoin.png">
                                                     (<?= $getAccount['coins'] ?> <img
-                                                        src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">)
+                                                        src="<?= $template_path ?>/images/account/icon-tibiacointrusted.png">)
                                                 </td>
                                                 <td style="font-weight:normal;"><?= $charbazaar_create ?> <img
-                                                        src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">
+                                                        src="<?= $template_path ?>/images/account/icon-tibiacointrusted.png">
                                                     to create an auction.
                                                 </td>
                                                 <td style="font-weight:normal;"><?= $charbazaar_tax ?>% fee on
@@ -194,22 +195,22 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
         <div class="CaptionContainer">
             <div class="CaptionInnerContainer">
                 <span class="CaptionEdgeLeftTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionBorderTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionVerticalLeft"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <div class="Text">Confirm Auction (4/4)</div>
                 <span class="CaptionVerticalRight"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <span class="CaptionBorderBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionEdgeLeftBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             </div>
         </div>
         <table class="Table3" cellspacing="0" cellpadding="0">
@@ -227,7 +228,7 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
                                             <tr>
                                                 <td style="font-weight:bold;">Auction Start Price:</td>
                                                 <td style="font-weight:normal;"><?= $_POST['auction_price'] ?> <img
-                                                        src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">
+                                                        src="<?= $template_path ?>/images/account/icon-tibiacointrusted.png">
                                                 </td>
                                             </tr>
                                             <tr>
@@ -235,13 +236,13 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
                                                     Auction Tax (<?= $charbazaar_tax ?>%):
                                                 </td>
                                                 <td style="font-weight:normal;"><?= $auction_pricetaxtwo ?> <img
-                                                        src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">
+                                                        src="<?= $template_path ?>/images/account/icon-tibiacointrusted.png">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td style="font-weight:bold;">Total:</td>
                                                 <td style="font-weight:normal;"><?= $auction_finalprice ?> <img
-                                                        src="<?= $template_path; ?>/images/account/icon-tibiacointrusted.png">
+                                                        src="<?= $template_path ?>/images/account/icon-tibiacointrusted.png">
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -296,22 +297,22 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
         <div class="CaptionContainer">
             <div class="CaptionInnerContainer">
                 <span class="CaptionEdgeLeftTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionBorderTop"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionVerticalLeft"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <div class="Text">Selected character</div>
                 <span class="CaptionVerticalRight"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-vertical.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-vertical.gif);"></span>
                 <span class="CaptionBorderBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/table-headline-border.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/table-headline-border.gif);"></span>
                 <span class="CaptionEdgeLeftBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
                 <span class="CaptionEdgeRightBottom"
-                      style="background-image:url(<?= $template_path; ?>/images/global/content/box-frame-edge.gif);"></span>
+                      style="background-image:url(<?= $template_path ?>/images/global/content/box-frame-edge.gif);"></span>
             </div>
         </div>
         <table class="Table5" cellspacing="0" cellpadding="0">
@@ -498,7 +499,9 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
                                                                     <div class="PercentageBarSpacer"></div>
                                                                 </div>
                                                                 <div class="PercentageStringContainer"><span
-                                                                        class="PercentageString"><?= $getCharacter['skill_shielding_tries'] ?> %</span>
+                                                                        class="PercentageString"><?= $getCharacter[
+                                                                          'skill_shielding_tries'
+                                                                        ] ?> %</span>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -532,13 +535,21 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
                                             <tr class="Even">
                                                 <td><span class="LabelV">Creation Date:</span>
                                                     <div
-                                                        style="float:right; text-align: right;"><?= date('M d Y, H:i:s', $getCharacter['created']) ?></div>
+                                                        style="float:right; text-align: right;"><?= date(
+                                                          'M d Y, H:i:s',
+                                                          $getCharacter['created']
+                                                        ) ?></div>
                                                 </td>
                                             </tr>
                                             <tr class="Odd">
                                                 <td><span class="LabelV">Experience:</span>
                                                     <div
-                                                        style="float:right; text-align: right;"><?= number_format($getCharacter['experience'], 0, ',', ',') ?></div>
+                                                        style="float:right; text-align: right;"><?= number_format(
+                                                          $getCharacter['experience'],
+                                                          0,
+                                                          ',',
+                                                          ','
+                                                        ) ?></div>
                                                 </td>
                                             </tr>
                                             <tr class="Even">
@@ -573,10 +584,10 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
                     <div style="float: right;">
                         <a href="?subtopic=createcharacterauction&step=1">
                             <div class="BigButton"
-                                 style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_red.gif)">
+                                 style="background-image:url(<?= $template_path ?>/images/global/buttons/sbutton_red.gif)">
                                 <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
                                     <div class="BigButtonOver"
-                                         style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_red_over.gif); visibility: hidden;"></div>
+                                         style="background-image: url(<?= $template_path ?>/images/global/buttons/sbutton_red_over.gif); visibility: hidden;"></div>
                                     <input class="BigButtonText" type="button" value="Cancel"></div>
                             </div>
                         </a>
@@ -585,10 +596,10 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
                 <td>
                     <div style="float: left;">
                         <div class="BigButton"
-                             style="background-image:url(<?= $template_path; ?>/images/global/buttons/sbutton_green.gif)">
+                             style="background-image:url(<?= $template_path ?>/images/global/buttons/sbutton_green.gif)">
                             <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
                                 <div class="BigButtonOver"
-                                     style="background-image: url(<?= $template_path; ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
+                                     style="background-image: url(<?= $template_path ?>/images/global/buttons/sbutton_green_over.gif); visibility: hidden;"></div>
                                 <input name="auction_confirm" class="BigButtonText" type="submit" value="Confirm">
                             </div>
                         </div>
@@ -603,5 +614,5 @@ if (!empty($_POST['auction_price']) && !empty($_POST['auction_days'])) {
 
     <?php
 } else {
-    header('Location: ' . BASE_URL . '?subtopic=createcharacterauction&step=1');
+  header('Location: ' . BASE_URL . '?subtopic=createcharacterauction&step=1');
 }

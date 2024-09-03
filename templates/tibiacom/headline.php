@@ -14,8 +14,10 @@ if(!@file_exists($page_file))
 //$file = 'images/header/headline-' . PAGE . '.gif';
 //if(!file_exists($file))
 //{
-if (strlen($_GET['t']) > 100) // max limit
-    $_GET['t'] = '';
+if (strlen($_GET['t']) > 100) {
+  // max limit
+  $_GET['t'] = '';
+}
 
 // set font path
 putenv('GDFONTPATH=' . __DIR__);
@@ -34,7 +36,7 @@ imagettftext($image, 18, 0, 4, 20, imagecolorallocate($image, 240, 209, 164), $f
 header('Content-type: image/gif');
 
 // save image
-imagegif($image/*, $file*/);
+imagegif($image /*, $file*/);
 //}
 
 // output image

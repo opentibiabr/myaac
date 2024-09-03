@@ -1,6 +1,6 @@
 <?php
 global $db, $config;
-require_once(PLUGINS . 'pagseguro/config.php');
+require_once PLUGINS . 'pagseguro/config.php';
 
 /**
  * Lista de donates
@@ -13,13 +13,13 @@ require_once(PLUGINS . 'pagseguro/config.php');
  */
 defined('MYAAC') or die('Direct access not allowed!');
 if (!$db->hasTable('pagseguro_transactions')) {
-    die("pagseguro_transactions table doesn't exists!");
+  die("pagseguro_transactions table doesn't exists!");
 }
 
 $count = $db->query("SELECT `id` FROM `pagseguro_transactions` WHERE `payment_status` <> 'CANCELLED'")->rowCount();
 $title = "$count donates até o momento";
 $base = BASE_URL . 'admin/?p=pag_transactions';
-$donates = $db->query("SELECT * FROM `pagseguro_transactions` ORDER BY `id` DESC")->fetchAll();
+$donates = $db->query('SELECT * FROM `pagseguro_transactions` ORDER BY `id` DESC')->fetchAll();
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -40,9 +40,10 @@ $donates = $db->query("SELECT * FROM `pagseguro_transactions` ORDER BY `id` DESC
                         <th style="width: 160px;">Donatado em</th>
                     </tr>
                     <?php foreach ($donates as $k => $donate) {
-                        $account = $db->query("SELECT `id`, `email` FROM `accounts` WHERE `id` = {$donate['account_id']} LIMIT 1;")->fetch();
-                        $players = getPlayerByAccountId($donate['account_id']);
-                        ?>
+
+                      $account = $db->query("SELECT `id`, `email` FROM `accounts` WHERE `id` = {$donate['account_id']} LIMIT 1;")->fetch();
+                      $players = getPlayerByAccountId($donate['account_id']);
+                      ?>
                         <tr style="background-color: <?= $donate['payment_status'] == 'CANCELLED' ? '#502a2a' : '' ?>">
                             <td><?= $k + 1 ?></td>
                             <td><?= $donate['id'] ?></td>
@@ -56,9 +57,10 @@ $donates = $db->query("SELECT * FROM `pagseguro_transactions` ORDER BY `id` DESC
                             <td style="text-align: center"><?= $donate['in_double'] ? 'Sim' : 'Não' ?></td>
                             <td style="text-align: center"><?= $donate['payment_status'] ?></td>
                             <td style="text-align: center"><?= $donate['delivered'] ? 'Sim' : 'Não' ?></td>
-                            <td><?= date("d/m/Y H:i:s", strtotime($donate['created_at'])) ?></td>
+                            <td><?= date('d/m/Y H:i:s', strtotime($donate['created_at'])) ?></td>
                         </tr>
-                    <?php } ?>
+                    <?php
+                    } ?>
                     </tbody>
                 </table>
             </div>

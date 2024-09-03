@@ -10,9 +10,7 @@
  */
 defined('MYAAC') or die('Direct access not allowed!');
 
-if (
-  !isset($config['database_user'][0], $config['database_password'][0], $config['database_name'][0])
-) {
+if (!isset($config['database_user'][0], $config['database_password'][0], $config['database_name'][0])) {
   if (isset($config['lua']['sqlType'])) {
     // tfs 0.3
     if (isset($config['lua']['mysqlHost'])) {
@@ -50,9 +48,7 @@ if (
     $config['database_password'] = $config['lua']['mysqlPass'];
     $config['database_name'] = $config['lua']['mysqlDatabase'];
     if (!isset($config['database_socket'][0])) {
-      $config['database_socket'] = isset($config['lua']['mysqlSock'])
-        ? trim($config['lua']['mysqlSock'])
-        : '';
+      $config['database_socket'] = isset($config['lua']['mysqlSock']) ? trim($config['lua']['mysqlSock']) : '';
     }
     $config['database_encryption'] = 'sha1';
   } elseif (isset($config['lua']['database_type'])) {
@@ -64,12 +60,8 @@ if (
     $config['database_user'] = $config['lua']['database_username'];
     $config['database_password'] = $config['lua']['database_password'];
     $config['database_name'] = $config['lua']['database_schema'];
-    $config['database_encryption'] = isset($config['lua']['passwordtype'])
-      ? $config['lua']['passwordtype']
-      : $config['lua']['password_type'];
-    $config['database_salt'] = isset($config['lua']['passwordsalt'])
-      ? $config['lua']['passwordsalt']
-      : $config['lua']['password_salt'];
+    $config['database_encryption'] = isset($config['lua']['passwordtype']) ? $config['lua']['passwordtype'] : $config['lua']['password_type'];
+    $config['database_salt'] = isset($config['lua']['passwordsalt']) ? $config['lua']['passwordsalt'] : $config['lua']['password_salt'];
   } elseif (isset($config['lua']['sql_host'])) {
     // otserv 0.6.3 / 0.6.4
     $config['otserv_version'] = OTSERV_06;
@@ -79,12 +71,8 @@ if (
     $config['database_user'] = $config['lua']['sql_user'];
     $config['database_password'] = $config['lua']['sql_pass'];
     $config['database_name'] = $config['lua']['sql_db'];
-    $config['database_encryption'] = isset($config['lua']['passwordtype'])
-      ? $config['lua']['passwordtype']
-      : $config['lua']['password_type'];
-    $config['database_salt'] = isset($config['lua']['passwordsalt'])
-      ? $config['lua']['passwordsalt']
-      : $config['lua']['password_salt'];
+    $config['database_encryption'] = isset($config['lua']['passwordtype']) ? $config['lua']['passwordtype'] : $config['lua']['password_type'];
+    $config['database_salt'] = isset($config['lua']['passwordsalt']) ? $config['lua']['passwordsalt'] : $config['lua']['password_salt'];
   }
 }
 

@@ -17,24 +17,9 @@ require_once SYSTEM . 'init.php';
 require_once SYSTEM . 'template.php';
 
 $error = '';
-if (
-  isset(
-    $_GET['title'],
-    $_GET['body'],
-    $_GET['player_id'],
-    $_GET['category'],
-    $_GET['forum_section'],
-    $_GET['template_path'],
-    $_GET['type']
-  )
-) {
+if (isset($_GET['title'], $_GET['body'], $_GET['player_id'], $_GET['category'], $_GET['forum_section'], $_GET['template_path'], $_GET['type'])) {
   $categories = [];
-  foreach (
-    $db->query(
-      'SELECT id, name, icon_id FROM ' . TABLE_PREFIX . 'news_categories WHERE hidden != 1'
-    )
-    as $cat
-  ) {
+  foreach ($db->query('SELECT id, name, icon_id FROM ' . TABLE_PREFIX . 'news_categories WHERE hidden != 1') as $cat) {
     $categories[$cat['id']] = [
       'name' => $cat['name'],
       'icon_id' => $cat['icon_id'],
@@ -75,9 +60,7 @@ if (
     success_($featured_article);
   } elseif ($_GET['type'] == 2) {
     // TICKER
-    $tickers = [
-      ['id' => 1, 'date' => time(), 'body' => $_GET['body'], 'category' => $_GET['category']],
-    ];
+    $tickers = [['id' => 1, 'date' => time(), 'body' => $_GET['body'], 'category' => $_GET['category']]];
 
     foreach ($tickers as &$ticker) {
       $ticker['icon'] = $categories[$ticker['category']]['icon_id'];

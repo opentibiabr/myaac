@@ -18,7 +18,8 @@ $locale['loaded'] = 'Laddad';
 $locale['not_loaded'] = 'Inte Laddad';
 
 $locale['please_fill_all'] = 'Vänligen fyll i allt!';
-$locale['already_installed'] = 'MyAAC är redan installerat. Vänligen ta bort <b>install/</b> mappen. Om du vill installera MyAAC igen - ta bort filen <strong>config.local.php</strong> från huvudkatalogen och uppdatera sidan.';
+$locale['already_installed'] =
+  'MyAAC är redan installerat. Vänligen ta bort <b>install/</b> mappen. Om du vill installera MyAAC igen - ta bort filen <strong>config.local.php</strong> från huvudkatalogen och uppdatera sidan.';
 
 // welcome
 $locale['step_welcome'] = 'Välkommen';
@@ -34,7 +35,8 @@ $locale['step_requirements'] = 'Krav';
 $locale['step_requirements_title'] = 'Kravskontroll';
 $locale['step_requirements_php_version'] = 'PHP Version';
 $locale['step_requirements_write_perms'] = 'Skriv behörigheter';
-$locale['step_requirements_failed'] = 'Installation kommer att inaktiveras tills dessa krav följts. </ B> <br/> Mer information finns i filen <b>README</b>.';
+$locale['step_requirements_failed'] =
+  'Installation kommer att inaktiveras tills dessa krav följts. </ B> <br/> Mer information finns i filen <b>README</b>.';
 $locale['step_requirements_extension'] = '$EXTENSION$ PHP extension';
 
 // config
@@ -61,9 +63,11 @@ $locale['step_database_config_saved'] = 'Lokal konfiguration har sparats i filen
 $locale['step_database_error_path'] = 'Ange server mapp.';
 $locale['step_database_error_config'] = 'Kan inte hitta konfigurations fil. Är din server mapp korrekt? Gå tillbaka och kolla igen.';
 $locale['step_database_error_database_empty'] = 'Kan inte bestämma databas typ från config.lua. Din OTS stöds inte av MyAAC.';
-$locale['step_database_error_only_mysql'] = 'Denna AAC stöder endast MySQL. Från din konfigurationsfil verkar det som att din OTS använder: $DATABASE_TYPE$ databastypen. Var vänligen ändra din databas till MySQL och följ instruktionerna i installationen igen.';
+$locale['step_database_error_only_mysql'] =
+  'Denna AAC stöder endast MySQL. Från din konfigurationsfil verkar det som att din OTS använder: $DATABASE_TYPE$ databastypen. Var vänligen ändra din databas till MySQL och följ instruktionerna i installationen igen.';
 $locale['step_database_error_table'] = 'Tabell $TABLE$ finns inte. Importera din OTS databas schema först.';
-$locale['step_database_error_table_exist'] = 'Tabell $TABLE$ finns redan. Ser ut som att din AAC redan är installerad. Hoppar över importering av MySQL schema.';
+$locale['step_database_error_table_exist'] =
+  'Tabell $TABLE$ finns redan. Ser ut som att din AAC redan är installerad. Hoppar över importering av MySQL schema.';
 $locale['step_database_error_schema'] = 'Fel vid import av schema:';
 $locale['step_database_success_schema'] = 'Lyckades installera $PREFIX$ tabeller.';
 $locale['step_database_error_file'] = '$FILE$ kunde inte öppnas. Kopiera innehållet och klistra in här:';
@@ -88,7 +92,9 @@ $locale['step_finish_admin_panel'] = 'Admin Panelen';
 $locale['step_finish_homepage'] = 'hemsida';
 $locale['step_finish'] = 'Klar';
 $locale['step_finish_title'] = 'Installationen klar!';
-$locale['step_finish_desc'] = 'Grattis! <b>MyAAC</b> är redo att användas!<br/>Du kan logga in på $ADMIN_PANEL$, eller titta till $HOMEPAGE$.<br/><br/>
+$locale[
+  'step_finish_desc'
+] = 'Grattis! <b>MyAAC</b> är redo att användas!<br/>Du kan logga in på $ADMIN_PANEL$, eller titta till $HOMEPAGE$.<br/><br/>
 <span style="color: red">Var vänligen ta bort installations mappen.</span><br/><br/>
 Var vänligen rapportera buggar och förslag på $LINK$, tack!';
 ?>

@@ -10,14 +10,14 @@ global $account_logged, $twig, $config;
  */
 defined('MYAAC') or die('Direct access not allowed!');
 
-if (!$config['mail_enabled'])
+if (!$config['mail_enabled']) {
   echo "You can't resend email to verify your account";
-else {
+} else {
   $accName = $account_logged->getName();
   $accEmail = $account_logged->getEMail();
 
   if ($account_logged->getCustomField('email_verified') == '1') {
-    echo "You account is already verified!";
+    echo 'You account is already verified!';
     return;
   }
 
@@ -26,10 +26,10 @@ else {
     $account_logged->setCustomField('email_hash', $hash);
 
     $verify_url = getLink('account/confirm_email/' . $hash);
-    $body_html = $twig->render('mail.account.verify.html.twig', array(
+    $body_html = $twig->render('mail.account.verify.html.twig', [
       'account' => $accName,
-      'verify_url' => generateLink($verify_url, $verify_url, true)
-    ));
+      'verify_url' => generateLink($verify_url, $verify_url, true),
+    ]);
 
     if (_mail($accEmail, configLua('serverName') . ' - Verify Account', $body_html)) {
       $message = "<br />Your request was sent on email address <b>{$accEmail}</b>";
@@ -38,21 +38,21 @@ else {
       $message = "<br /><p class='error'>An error occurred while sending email ( <b>{$accEmail}</b> )! Try again later. For Admin: More info can be found in system/logs/mailer-error.log</p>";
     }
 
-    $twig->display('success.html.twig', array(
+    $twig->display('success.html.twig', [
       'title' => 'Verify Email Sent',
-      'description' => "<ul>{$message}</ul>"
-    ));
+      'description' => "<ul>{$message}</ul>",
+    ]);
   }
 
   //show errors if not empty
   if (!empty($errors)) {
-    $twig->display('error_box.html.twig', array('errors' => $errors));
+    $twig->display('error_box.html.twig', ['errors' => $errors]);
   }
 
   if ($show_form) {
-    $twig->display('account.resend_verify_email.html.twig', array(
+    $twig->display('account.resend_verify_email.html.twig', [
       'name' => $accName,
       'email' => $accEmail,
-    ));
+    ]);
   }
 }

@@ -63,7 +63,7 @@
         <div>
             <img src="templates/tibiacom/images/themeboxes/donate/donate.png">
         </div>
-        <a href="<?php echo BASE_URL ?>?donate">
+        <a href="<?php echo BASE_URL; ?>?donate">
             <button type="button" class="donate_button">Donate Now</button>
         </a>
     </div>
