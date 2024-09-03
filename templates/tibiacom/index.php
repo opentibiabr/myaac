@@ -31,14 +31,13 @@ function getImageMenuRandom($menu): string
     'shops' => ['name' => 'icon-shops', 'last' => '04'],
     'charactertrade' => ['name' => 'icon-bazaar', 'last' => '02'],
   ];
-  if (!$cfg = $images[$menu] ?? null) {
+  if (!($cfg = $images[$menu] ?? null)) {
     return "/images/menu/icon-{$menu}.gif";
   }
-  $randomNum = str_pad((string)rand(1, (int)$cfg['last']), strlen($cfg['last']), '0', STR_PAD_LEFT);
+  $randomNum = str_pad((string) rand(1, (int) $cfg['last']), strlen($cfg['last']), '0', STR_PAD_LEFT);
   $img = isset($cfg['name']) ? "{$cfg['name']}{$randomNum}.gif" : "{$randomNum}.jpg";
   return $template_path . ($menu !== 'bgs' ? "/images/menu/anim/{$img}" : "/images/header/bgs/{$img}");
 }
-
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
