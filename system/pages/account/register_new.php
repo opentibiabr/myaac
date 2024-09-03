@@ -35,7 +35,7 @@ else {
                     'recovery_key' => $new_rec_key
                 ));
 
-                if (_mail($account_logged->getEMail(), $config['lua']['serverName'] . " - new recovery key", $mailBody)) {
+                if (_mail($account_logged->getEMail(), configLua('serverName') . " - new recovery key", $mailBody)) {
                     $account_logged->setCustomField("key", $new_rec_key);
                     $account_logged->setCustomField($coinType, $account_logged->getCustomField($coinType) - $needCoins);
                     $account_logged->logAction("Generated new recovery key for {$needCoins} {$coinName}");

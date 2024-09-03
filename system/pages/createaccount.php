@@ -165,7 +165,7 @@ if ($save) {
     }
 
     if (!isset($_POST['accept_rules']) || $_POST['accept_rules'] !== 'true')
-        $errors['accept_rules'] = 'You have to agree to the ' . $config['lua']['serverName'] . ' Rules in order to create an account!';
+        $errors['accept_rules'] = 'You have to agree to the ' . configLua('serverName') . ' Rules in order to create an account!';
 
     $params = array(
         'account' => $account_db,
@@ -247,7 +247,7 @@ if ($save) {
                 'verify_url' => generateLink($verify_url, $verify_url, true)
             ));
 
-            if (_mail($email, 'New account on ' . $config['lua']['serverName'], $body_html)) {
+            if (_mail($email, 'New account on ' . configLua('serverName'), $body_html)) {
                 echo 'Your account has been created.<br/><br/>';
                 $twig->display('success.html.twig', array(
                     'title' => 'Account Created',
@@ -306,7 +306,7 @@ if ($save) {
                     'password' => $password ?? null
                 ));
 
-                if (_mail($email, 'Your account on ' . $config['lua']['serverName'], $mailBody))
+                if (_mail($email, 'Your account on ' . configLua('serverName'), $mailBody))
                     echo '<br /><small>This information was sent on email address <b>' . $email . '</b>.';
                 else {
                     error('An error occurred while sending email. For Admin: More info can be found in system/logs/mailer-error.log');

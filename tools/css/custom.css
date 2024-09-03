@@ -2,8 +2,11 @@
   --columnWidth: calc(100% / 12);
 }
 
-.row {
+.d-flex {
   display: flex;
+}
+
+.row {
   flex-direction: row;
   flex-wrap: wrap;
   box-sizing: border-box;

@@ -49,7 +49,7 @@ $twig->display('serverinfo.html.twig', [
     'serverSave' => $explodeServerSave,
     'serverSaveTime' => $serverSaveTime->format('Y, n-1, j, G, i, s'),
     'rateUseStages' => $rateUseStages = getBoolean(configLua('rateUseStages')),
-    'rateStages' => $rateUseStages && isset($config['lua']['rateStages']) ? $config['lua']['rateStages'] : [],
+    'rateStages' => $rateUseStages && isset($config['lua']['rateStages']) ? configLua('rateStages') : [],
     'serverIp' => str_replace(['http://', 'https://', '/'], '', configLua('url')),
     'clientVersion' => $status['clientVersion'] ?? null,
     'protectionLevel' => configLua('protectionLevel'),

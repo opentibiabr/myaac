@@ -1093,7 +1093,7 @@ function _mail($to, $subject, $body, $altBody = '', $add_html_tags = true)
   $mailer->From = $config['mail_address'];
   $mailer->Sender = $config['mail_address'];
   $mailer->CharSet = 'utf-8';
-  $mailer->FromName = $config['lua']['serverName'];
+  $mailer->FromName = configLua('serverName');
   $mailer->Subject = $subject;
   $mailer->addAddress($to);
   $mailer->Body = $tmp_body;

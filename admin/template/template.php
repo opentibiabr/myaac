@@ -41,7 +41,7 @@ defined('MYAAC') or die('Direct access not allowed!'); ?>
 <head>
   <?php
   echo template_header(true);
-  $title_full = (isset($title) ? $title . $config['title_separator'] : '') . $config['lua']['serverName'];
+  $title_full = (isset($title) ? $title . $config['title_separator'] : '') . configLua('serverName');
   ?>
 
   <title><?= $title_full ?></title>
@@ -145,7 +145,7 @@ defined('MYAAC') or die('Direct access not allowed!'); ?>
         <small> - Admin Panel</small>
         <div class="float-end">
           <span
-            class="badge bg-<?= (($status['online']) ? 'success' : 'danger'); ?>"><?= $config['lua']['serverName'] ?></span>
+            class="badge bg-<?= (($status['online']) ? 'success' : 'danger'); ?>"><?= configLua('serverName') ?></span>
         </div>
       </h1>
     </section>

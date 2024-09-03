@@ -44,14 +44,14 @@ if ($action == 'step3') {
                             if ($account->getCustomField('email_next') < time()) {
                                 $mailBody = '
 								<h3>Your account name and new password!</h3>
-								<p>Changed password and e-mail to your account in Lost Account Interface on server <a href="' . BASE_URL . '"><b>' . $config['lua']['serverName'] . '</b></a></p>
+								<p>Changed password and e-mail to your account in Lost Account Interface on server <a href="' . BASE_URL . '"><b>' . configLua('serverName') . '</b></a></p>
 								<p>Account name: <b>' . $account->getCustomField('name') . '</b></p>
 								<p>New password: <b>' . $new_pass . '</b></p>
 								<p>E-mail: <b>' . $new_email . '</b> (this e-mail)</p>
 								<br />
 								<p><u>It\'s automatic e-mail from OTS Lost Account System. Do not reply!</u></p>';
 
-                                if (_mail($account->getCustomField('email'), $config['lua']['serverName'] . " - New password to your account", $mailBody)) {
+                                if (_mail($account->getCustomField('email'), configLua('serverName') . " - New password to your account", $mailBody)) {
                                     echo '<br /><small>Sent e-mail with your account name and password to new e-mail. You should receive this e-mail in 15 minutes. You can login now with new password!</small>';
                                 } else {
                                     echo '<br /><p class="error">An error occurred while sending email! You will not receive e-mail with this informations. For Admin: More info can be found in system/logs/mailer-error.log</p>';

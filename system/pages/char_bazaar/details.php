@@ -193,7 +193,7 @@ $End = date('Y-m-d H:i:s', strtotime($getAuction['date_end']));
                                                             class="AuctionCharacterName"><?= $character['name'] ?></div>
                                                         Level: <?= $character['level'] ?> |
                                                         Vocation: <?= $character_voc ?> | <?= $character_sex ?> |
-                                                        World: <?= $config['lua']['serverName'] ?>
+                                                        World: <?= getWorldName($character['world_id']) ?>
                                                         <br>
                                                     </div>
                                                     <div class="AuctionBody">
