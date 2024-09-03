@@ -249,7 +249,7 @@ if (isset($config['boxes']))
     </script>
     <?= template_place_holder('head_end'); ?>
 </head>
-<body onBeforeUnLoad="SaveMenu();" onUnload="SaveMenu();" style="background-image:url(<?= $template_path ?><?= getImageMenuRandom('bgs') ?>);
+<body onBeforeUnLoad="SaveMenu();" onUnload="SaveMenu();" style="background-image:url(<?= getImageMenuRandom('bgs') ?>);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -418,7 +418,7 @@ if (isset($config['boxes']))
                                                  style='background-image:url(<?= $template_path; ?>/images/menu/green-light.gif);'></div>
                                         </span>
                                         <div id='<?= $cat['id']; ?>_Icon' class='Icon'
-                                             style='background-image:url(<?= $template_path ?><?= getImageMenuRandom($cat['id']) ?>);'></div>
+                                             style='background-image:url(<?= getImageMenuRandom($cat['id']) ?>);'></div>
                                         <div id='<?= $cat['id']; ?>_Label' class='Label'
                                              style='background-image:url(<?= $template_path; ?>/images/menu/label-<?= $cat['id']; ?>.gif);'></div>
                                         <div id='<?= $cat['id']; ?>_Extend' class='Extend'
@@ -833,7 +833,7 @@ if (isset($config['boxes']))
  */
 function getImageMenuRandom($menu): string
 {
-    global $config;
+    global $config, $template_path;
     if (!$config['allow_menu_animated']) {
         return $menu === 'bgs' ? "/images/header/{$config['background_image']}" : "/images/menu/icon-{$menu}.gif";
     }
@@ -857,5 +857,5 @@ function getImageMenuRandom($menu): string
 
     // generate random number size of the array
     $img = $images[$menu][rand(0, count($images[$menu]) - 1)];
-    return $menu !== 'bgs' ? "/images/menu/anim/{$img}" : "/images/header/bgs/{$img}";
+    return $template_path . ($menu !== 'bgs' ? "/images/menu/anim/{$img}" : "/images/header/bgs/{$img}");
 }

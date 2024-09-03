@@ -1,4 +1,20 @@
 <?php
+global $config, $template_path;
+/**
+ * News
+ *
+ * @package   MyAAC
+ * @author    Gesior <jerzyskalski@wp.pl>
+ * @author    Slawkens <slawkens@gmail.com>
+ * @author    OpenTibiaBR
+ * @copyright 2023 MyAAC
+ * @link      https://github.com/opentibiabr/myaac
+ */
+defined('MYAAC') or die('Direct access not allowed!');
+
+require_once LIBS . 'forum.php';
+require_once LIBS . 'news.php';
+
 if($config['banner_status'] == true){
 ?>
 <div class="modal fade" id="BannerModal" tabindex="-1" aria-labelledby="BannerModalLabel" aria-hidden="true">
@@ -17,22 +33,7 @@ $(document).ready(function(){
 	$("#BannerModal").modal('show');
 });
 </script>
-<?php } ?>
-<?php
-/**
- * News
- *
- * @package   MyAAC
- * @author    Gesior <jerzyskalski@wp.pl>
- * @author    Slawkens <slawkens@gmail.com>
- * @author    OpenTibiaBR
- * @copyright 2023 MyAAC
- * @link      https://github.com/opentibiabr/myaac
- */
-defined('MYAAC') or die('Direct access not allowed!');
-
-require_once LIBS . 'forum.php';
-require_once LIBS . 'news.php';
+<?php }
 
 if(isset($_GET['archive']))
 {
