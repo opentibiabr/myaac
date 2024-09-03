@@ -724,10 +724,7 @@ if (isset($config['boxes'])) {
                          title="Today's boosted creature: <?= ucwords(strtolower(trim($creaturename))) ?>">
 
                     <?php if ($bosstypeEx != 0): ?>
-                        <img id="Boss" src="<?=
-                        $config['item_images_url']
-                        $bosstypeEx
-                        ?>.gif"
+                        <img id="Boss" src="<?="{$config['item_images_url']}{$bosstypeEx}"?>.gif"
                              alt="Boss of the Day"
                              title="Today's boosted boss: <?= ucwords(strtolower(trim($bossname))) ?>">
                     <?php else: ?>
