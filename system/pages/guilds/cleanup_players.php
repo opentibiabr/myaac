@@ -48,13 +48,13 @@ if (count($players_list) > 0) {
   if (!empty($deleted_ranks)) {
     foreach ($deleted_ranks as $rank) {
       echo '<li>' . $rank;
-    };
+    }
   }
   echo "<BR /><BR /><b>Changed ranks of players (rank or guild of rank doesn't exist [bug fix]):</b>";
   if (!empty($changed_ranks_of)) {
     foreach ($changed_ranks_of as $name) {
       echo '<li>' . $name;
-    };
+    }
   }
 } else {
   echo '0 players found.';

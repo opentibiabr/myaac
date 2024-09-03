@@ -53,7 +53,7 @@ if (count($guilds_list) > 0) {
   if (!empty($deleted_guilds)) {
     foreach ($deleted_guilds as $guild) {
       echo '<li>' . $guild;
-    };
+    }
   }
 } else {
   echo '0 guilds found.';

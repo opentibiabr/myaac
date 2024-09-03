@@ -36,6 +36,7 @@ $POLLS = $db->query('SELECT * FROM ' . $db->tableName('myaac_polls') . '');
 $level = 20; // need level to vote
 
 if (empty($_REQUEST['id']) and !isset($_REQUEST['control']) || $_REQUEST['control'] != 'true') {
+
   // list of polls
 
   $active = $db->query('SELECT * FROM `myaac_polls` where `end` > ' . $time . ''); // active polls
