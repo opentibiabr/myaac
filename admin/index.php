@@ -39,7 +39,9 @@ if (config('env') === 'dev') {
 }
 
 // set worlds in global php and twig
-$worlds = $db->hasTable('worlds') ? $db->query("SELECT * FROM `worlds` ORDER BY `id` ASC")->fetchAll() : [];
+$worlds = $db->hasTable('worlds')
+  ? $db->query('SELECT * FROM `worlds` ORDER BY `id` ASC')->fetchAll()
+  : [];
 define('WORLDS', $worlds);
 $twig->addGlobal('worlds', $worlds);
 
