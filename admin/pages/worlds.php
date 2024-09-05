@@ -189,9 +189,7 @@ if ($id > 0 || $action === 'add') {
       </div>
     </div>
   </form>
-<?php } else {
-  $worlds = $db->query("SELECT * FROM `worlds` ORDER BY `id` ASC")->fetchAll();
-  ?>
+<?php } else { ?>
   <div class="row">
     <div class="col-12 col-md-9">
       <div class="box">
@@ -215,7 +213,7 @@ if ($id > 0 || $action === 'add') {
               <th style="width: 220px; text-align: center">Created at</th>
               <th style="width: 40px;"></th>
             </tr>
-            <?php foreach ($worlds as $world) { ?>
+            <?php foreach (WORLDS as $world) { ?>
               <tr>
                 <td style="text-align: center"><?= $world['id'] ?></td>
                 <td><?= $world['name'] ?></td>

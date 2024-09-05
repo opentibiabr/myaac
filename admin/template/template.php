@@ -1,6 +1,8 @@
 <?php
 global $config, $db, $account_logged, $logged, $template_path, $page, $status, $content;
 
+defined('MYAAC') or die('Direct access not allowed!');
+
 $menus = [
   'dashboard' => ['Dashboard', 'dashboard'],
   'news' => ['News', 'newspaper'],
@@ -35,7 +37,17 @@ $menus = [
   ],
 ];
 
-defined('MYAAC') or die('Direct access not allowed!'); ?>
+function getWorldsStatus($style = ''): string
+{
+  global $status;
+  $output = "";
+  foreach (WORLDS as $world) {
+    $_s = $status['online'] ? 'success' : 'danger';
+    $output .= "<span class='badge ms-1 bg-$_s' style='$style'>{$world['name']}</span>";
+  }
+  return $output;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -143,10 +155,7 @@ defined('MYAAC') or die('Direct access not allowed!'); ?>
     <section class="content-header">
       <h1><?= ($title ?? ''); ?>
         <small> - Admin Panel</small>
-        <div class="float-end">
-          <span
-            class="badge bg-<?= (($status['online']) ? 'success' : 'danger'); ?>"><?= configLua('serverName') ?></span>
-        </div>
+        <div class="float-end"><?= getWorldsStatus() ?></div>
       </h1>
     </section>
     <section class="content">
@@ -157,13 +166,7 @@ defined('MYAAC') or die('Direct access not allowed!'); ?>
 
   <footer class="main-footer">
     <div class="hidden-xs float-end">
-      <div id="status">
-        <?php if ($status['online']): ?>
-          <p class="badge bg-success" style="width: 120px; text-align: center;">Server Online</p>
-        <?php else: ?>
-          <p class="badge bg-danger" style="width: 120px; text-align: center;">Server Offline</p>
-        <?php endif; ?>
-      </div>
+      <div id="status"><?= getWorldsStatus('width: 110px') ?></div>
     </div>
     <?= base64_decode('UG93ZXJlZCBieSA8YSBocmVmPSJodHRwczovL2dpdGh1Yi5jb20vb3BlbnRpYmlhYnIvbXlhYWMiIHRhcmdldD0iX2JsYW5rIj5PcGVuVGliaWFCUjwvYT4gYW5kIENvbnRyaWJ1dG9ycy4=') ?>
   </footer>

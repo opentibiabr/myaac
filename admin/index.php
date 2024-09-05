@@ -1,4 +1,4 @@
-<?php
+<?php global $db, $config, $twig, $logged, $status;
 // few things we'll need
 require '../common.php';
 
@@ -37,6 +37,11 @@ if (config('env') === 'dev') {
   ini_set('display_startup_errors', 1);
   error_reporting(E_ALL);
 }
+
+// set worlds in global php and twig
+$worlds = $db->hasTable('worlds') ? $db->query("SELECT * FROM `worlds` ORDER BY `id` ASC")->fetchAll() : [];
+define('WORLDS', $worlds);
+$twig->addGlobal('worlds', $worlds);
 
 // event system
 require_once SYSTEM . 'hooks.php';
