@@ -26,7 +26,6 @@ if (!is_numeric($_page) || $_page < 0 || $_page > PHP_INT_MAX) {
 
 $add_sql = '';
 $config_vocations = $config['vocations'];
-$worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `name` ASC;")->fetchAll();
 
 $normalized_vocations = array_map('strtolower', $config_vocations);
 if (strtolower($vocation) != 'none' && !array_search(strtolower($vocation), $normalized_vocations)) $vocation = "";
@@ -232,7 +231,7 @@ if ($rank_category) {
                 <td>
                   <select name="world">
                     <option value="" <?= (int)$rank_world == 0 ? 'selected' : '' ?>>All Worlds</option>
-                    <?php foreach ($worlds as $item) { ?>
+                    <?php foreach (WORLDS as $item) { ?>
                       <option
                         value="<?= $item['name'] ?>" <?= $world && $item['id'] == $world['id'] ? 'selected' : '' ?>><?= $item['name'] ?></option>
                     <?php } ?>

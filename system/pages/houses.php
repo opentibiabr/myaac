@@ -13,8 +13,6 @@
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Houses';
 
-$worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `name` ASC")->fetchAll();
-
 $errors = array();
 if (!$db->hasColumn('houses', 'name')) {
   $errors[] = 'Houses list is not available on this server.';
@@ -97,7 +95,6 @@ if (isset($_GET['page']) && $_GET['page'] == 'view' && isset($_REQUEST['house'])
     'houseRent' => isset($house['rent']) ? $house['rent'] / 1000 : 0,
     'owner' => $owner ?? null,
     'rentType' => $rentType ?? null,
-    'worlds' => $worlds,
     'worldName' => getWorldName($house['world_id']),
   ));
 
@@ -195,6 +192,5 @@ $twig->display('houses.html.twig', array(
   'cleanOldHouse' => $cleanOldHouse,
   'houses' => $houses ?? [],
   'housesSearch' => $housesSearch,
-  'worlds' => $worlds,
   'worldName' => getWorldName($_POST['world'] ?? 0),
 ));

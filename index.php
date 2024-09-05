@@ -1,5 +1,5 @@
 <?php
-global $db, $twig, $template_path, $account_logged, $logged, $template_name, $status;
+global $db, $config, $twig, $template_path, $account_logged, $logged, $template_name, $status;
 /**
  * Project: MyAAC
  *     Automatic Account Creator for Open Tibia Servers
@@ -182,6 +182,11 @@ require_once SYSTEM . 'init.php';
 if (!$db->hasTable('myaac_account_actions')) {
     throw new RuntimeException('Seems that the table <strong>myaac_account_actions</strong> of MyAAC doesn\'t exist in the database. This is a fatal error. You can try to reinstall MyAAC by visiting <a href="' . BASE_URL . 'install">this</a> url.');
 }
+
+// set worlds in global php and twig
+$worlds = $db->hasTable('worlds') ? $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `name` ASC")->fetchAll() : [];
+define('WORLDS', $worlds);
+$twig->addGlobal('worlds', $worlds);
 
 // event system
 require_once SYSTEM . 'hooks.php';

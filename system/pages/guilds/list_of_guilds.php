@@ -1,4 +1,4 @@
-<?php global $db, $config, $twig, $worlds, $world;
+<?php global $db, $config, $twig, $world;
 /**
  * List of guilds
  *
@@ -39,6 +39,5 @@ $twig->display('guilds.list.html.twig', array(
   'guilds' => $guilds,
   'logged' => $logged ?? false,
   'isAdmin' => admin(),
-  'worlds' => $worlds,
   'world' => $world ?? null,
 ));

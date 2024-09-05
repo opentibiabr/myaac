@@ -20,7 +20,6 @@ else
 define('MOTD_EXISTS', $db->hasColumn('guilds', 'motd'));
 
 $world = null;
-$worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `name` ASC")->fetchAll();
 if ($worldId = $_POST['world_id'] ?? null) {
   $world = $db->query("SELECT `id`, `name` FROM `worlds` WHERE `id` = $worldId")->fetch();
 }

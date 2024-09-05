@@ -15,11 +15,11 @@ $title = 'Who is online?';
 if ($w = $_POST['world'] ?? null) {
   header("Location: ?online/$w");
 }
-$worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `id` ASC")->fetchAll();
+
 if ($world = $_GET['world'] ?? null) {
   $world = $db->query("SELECT * FROM `worlds` WHERE `name` = {$db->quote($world)}")->fetch() ?? null;
 } else {
-  $world = count($worlds) == 1 ? $worlds[0] : $world;
+  $world = count(WORLDS) == 1 ? WORLDS[0] : $world;
 }
 $w_sql = $world ? " AND `players`.`world_id` = {$world['id']} " : "";
 
@@ -113,7 +113,6 @@ $twig->display('online.html.twig', array(
   'players' => $players_data,
   'record' => $record,
   'vocations' => $vocations,
-  'worlds' => $worlds,
   'world' => $world,
 ));
 

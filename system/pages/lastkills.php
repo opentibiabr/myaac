@@ -17,11 +17,10 @@ if ($w = $_POST['world'] ?? null) {
   header("Location: ?lastkills/$w");
 }
 
-$worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `id` ASC")->fetchAll();
 if ($world = $_GET['world'] ?? null) {
   $world = $db->query("SELECT `id`, `name` FROM `worlds` WHERE `name` = {$db->quote($world)}")->fetch() ?? null;
 } else {
-  $world = count($worlds) == 1 ? $worlds[0] : $world;
+  $world = count(WORLDS) == 1 ? WORLDS[0] : $world;
 }
 
 $w_sql = $world ? " AND `p`.`world_id` = {$world['id']} " : "";
@@ -54,7 +53,6 @@ if ($cache->enabled() && $cache->fetch('last_kills', $tmp)) {
 
 $twig->display('lastkills.html.twig', array(
   'lastkills' => $last_kills,
-  'worlds' => $worlds,
   'world' => $world,
 ));
 

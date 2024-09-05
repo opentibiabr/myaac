@@ -52,6 +52,5 @@ if (!$character_created) {
       ['name' => 'Retro Open PvP', 'value' => 'retro', 'desc' => 'Killing other characters is possible, but restricted (old PvP rules)'],
       ['name' => 'Retro Hardcore PvP', 'value' => 'retrohardcore', 'desc' => 'Killing other characters is not restricted at all (old PvP rules)'],
     ],
-    'worlds' => $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `id` ASC")->fetchAll()
   ));
 }
