@@ -34,7 +34,9 @@ if ($statusProtocolPort = configLua('statusProtocolPort')) {
 $statusIp = !empty($config['status_ip'] ?? '') ? $config['status_ip'] : $statusIp;
 
 // port check
-$statusProtocolPort = !empty($config['status_port'] ?? '') ? $config['status_port'] : $statusProtocolPort;
+$statusProtocolPort = !empty($config['status_port'] ?? '')
+  ? $config['status_port']
+  : $statusProtocolPort;
 
 $fetch_from_db = true;
 /** @var Cache $cache */
