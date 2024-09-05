@@ -1,4 +1,4 @@
-<?php global $db, $TABLE_PREFIX, $world;
+<?php global $db, $TABLE_PREFIX;
 /**
  * Server status
  *
@@ -16,34 +16,22 @@ if (config('status_enabled') === false) {
 
 $status = [];
 
-if ($db->hasTable('worlds') && count($worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `id` ASC")->fetchAll()) > 0) {
-  foreach ($worlds as $w) {
-    $status[$w['id']] = [
-      'online' => false,
-      'players' => 0,
-      'playersMax' => 0,
-      'lastCheck' => 0,
-      'uptime' => '0h 0m',
-      'monsters' => 0,
-    ];
-  }
-} else {
-  $status[1] = [
+$worlds = $db->query("SELECT `id`, `name`, `port` FROM `worlds` ORDER BY `id` ASC")->fetchAll();
+foreach ($worlds as $w) {
+  $status[$w['id']] = [
     'online' => false,
     'players' => 0,
     'playersMax' => 0,
     'lastCheck' => 0,
     'uptime' => '0h 0m',
     'monsters' => 0,
+    'gamePort' => $w['port'],
   ];
 }
 
 /** @var array $config */
 $statusIp = configLua('ip');
-if ($statusProtocolPort = configLua('statusProtocolPort')) {
-  $config['lua']['loginPort'] = $statusProtocolPort;
-  $config['lua']['statusPort'] = $statusProtocolPort;
-}
+$statusProtocolPort = configLua('statusProtocolPort');
 
 // ip check
 $statusIp = !empty($config['status_ip'] ?? '') ? $config['status_ip'] : $statusIp;
@@ -70,6 +58,9 @@ if (isset($config['lua']['statustimeout'])) {
 // get status timeout from server config
 $status_timeout = eval("return {$config['lua']['statusTimeout']};") / 1000 + 1;
 $status_interval = @$config['status_interval'];
+if ($status_interval && $status_timeout < $config['status_interval']) {
+  $status_timeout = $config['status_interval'];
+}
 
 foreach ($status as $worldId => $statusItem) {
   if ($fetch_from_db) {
@@ -77,21 +68,17 @@ foreach ($status as $worldId => $statusItem) {
     /** @var OTS_DB_MySQL $db */
     $status_query = $db->query(
       "SELECT `name`, `value` FROM `{$TABLE_PREFIX}config` WHERE {$db->fieldName('name')} LIKE '%status%' AND `world_id` = {$worldId}"
-    );
-    if ($status_query->rowCount() <= 0) {
-      // empty, just insert it
-      foreach ($statusItem as $key => $value) {
-        registerDatabaseConfig('status_' . $key, $value, $worldId);
+    )->fetchAll(PDO::FETCH_ASSOC);
+    if (count($status_query) > 0) {
+      foreach ($status_query as $item) {
+        $statusItem[str_replace('status_', '', $item['name'])] = $item['value'];
       }
     } else {
-      foreach ($status_query as $tmp) {
-        $statusItem[str_replace('status_', '', $tmp['name'])] = $tmp['value'];
+      // empty, just insert it
+      foreach ($statusItem as $key => $value) {
+        registerDatabaseConfig("status_$key", $value, $worldId);
       }
     }
-  }
-
-  if ($status_interval && $status_timeout < $config['status_interval']) {
-    $status_timeout = $config['status_interval'];
   }
 
   if ($statusItem['lastCheck'] + $status_timeout < time()) {
@@ -99,16 +86,12 @@ foreach ($status as $worldId => $statusItem) {
   }
 }
 
-
-function updateStatus($statusItem, $statusIp, $statusPort, $worldId): void
+function updateStatus($_status, $statusIp, $statusPort, $worldId): void
 {
   global $db, $cache, $config, $status;
 
-  // status by id
-  $_status = $statusItem;
-
   // get server status and save it to database
-  $serverInfo = new OTS_ServerInfo($statusIp, $statusPort);
+  $serverInfo = new OTS_ServerInfo($statusIp, $_status['gamePort']);
   $serverStatus = $serverInfo->status();
   if (!$serverStatus) {
     $_status['online'] = false;
@@ -166,7 +149,7 @@ function updateStatus($statusItem, $statusIp, $statusPort, $worldId): void
   }
 
   $tmpVal = null;
-  foreach ($statusItem as $key => $value) {
+  foreach ($_status as $key => $value) {
     if (fetchDatabaseConfig('status_' . $key, $tmpVal)) {
       updateDatabaseConfig('status_' . $key, $value, $worldId);
     } else {
