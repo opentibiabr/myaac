@@ -100,9 +100,9 @@
                     <tr>
                       <td width="25%" class="LabelV150">Status:</td>
                       <td>
-                        {{ world.name }} World is {% if status.online %}<span
-                          style="color: #38ff22">Online</span>{% else %} <span
-                          style="color: #ce0000">Offline</span>{% endif %}
+                        {{ world.name }} World is {% if status.online %}<strong
+                          class="text-green">Online</strong>{% else %} <strong
+                          class="text-red">Offline</strong>{% endif %}
                       </td>
                     </tr>
                     {% if status.online %}
@@ -117,7 +117,7 @@
                     </tr>
                     <tr>
                       <td class="LabelV150">Location:</td>
-                      <td>{{ config.lua.location }}</td>
+                      <td>{{ world.location }}</td>
                     </tr>
                     <tr>
                       <td class="LabelV150">PvP Type:</td>
@@ -129,13 +129,13 @@
                         <table style="width: 100%">
                           <tbody>
                           <tr>
-                            <td><img src="images/white_skull.gif" /> - 1 - 6 Frags</td>
+                            <td><img src="images/white_skull.gif" /> : 1 - 6 Frags</td>
                           </tr>
                           <tr>
-                            <td><img src="images/red_skull.gif" /> - 6+ Frags or Red Skull</td>
+                            <td><img src="images/red_skull.gif" /> : 6+ Frags or Red Skull</td>
                           </tr>
                           <tr>
-                            <td><img src="images/black_skull.gif" /> - 10+ Frags or Black Skull</td>
+                            <td><img src="images/black_skull.gif" /> : 10+ Frags or Black Skull</td>
                           </tr>
                           </tbody>
                         </table>

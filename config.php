@@ -297,8 +297,8 @@ $config = array(
 
 	// banner home
 	'banner_status' => false,
-	'banner_image' => '500x660.png', // templates->tibiacom->images->carousel
-	'banner_link' => 'www.instagram.com',
+	'banner_image' => '500x660.png', // templates->tibiacom->images->banners
+	'banner_link' => 'http://your-url.com', // or set empty ''
 
 	// status bar
 	'status_bar' => true,
@@ -307,18 +307,19 @@ $config = array(
 	'whatsapp_link' => '5511912345678', // wa.me/5511912345678
 	'instagram_link' => 'profile', // www.instagram.com/profile
 	'facebook_link' => 'page', // www.facebook.com/page
-	'collapse_status' => true,
+	'collapse_status' => false,
+
+  // slide
+  'carousel' => array(
+    'runemaster_small.jpg',
+    'merrygarb_small.jpg',
+    'mothcape_small.jpg',
+  ),
 
 	// events
 	'events_xml' => 'data/xml/events.xml',
 
-	// slide
-	'carousel_status' => true,
-	'carousel' => array(
-		'carousel_1' => 'runemaster_small.jpg',
-		'carousel_2' => 'merrygarb_small.jpg',
-		'carousel_3' => 'mothcape_small.jpg',
-	),
+
 
 	// load page
 	'pace_load' => true, // load page top bar

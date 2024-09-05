@@ -21,7 +21,7 @@ $worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `id` ASC")->fet
 if ($world = $_GET['world'] ?? null) {
   $world = $db->query("SELECT `id`, `name` FROM `worlds` WHERE `name` = {$db->quote($world)}")->fetch() ?? null;
 } else {
-  $world = count($worlds) == 1 ? $worlds[0]['id'] : $world;
+  $world = count($worlds) == 1 ? $worlds[0] : $world;
 }
 
 $w_sql = $world ? " AND `p`.`world_id` = {$world['id']} " : "";

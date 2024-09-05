@@ -19,7 +19,7 @@ $worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `id` ASC")->fet
 if ($world = $_GET['world'] ?? null) {
   $world = $db->query("SELECT * FROM `worlds` WHERE `name` = {$db->quote($world)}")->fetch() ?? null;
 } else {
-  $world = count($worlds) == 1 ? $worlds[0]['id'] : $world;
+  $world = count($worlds) == 1 ? $worlds[0] : $world;
 }
 $w_sql = $world ? " AND `players`.`world_id` = {$world['id']} " : "";
 
@@ -98,7 +98,8 @@ if ($config['online_record']) {
   $timestamp = false;
   $query = null;
   if ($db->hasTable('server_config')) {
-    $query = $db->query("SELECT `timestamp`, `value` as `record` FROM `server_config` WHERE `config` = {$db->quote('players_record')}");
+    $w_sql = $world ? " AND `world_id` = {$world['id']}" : "";
+    $query = $db->query("SELECT `timestamp`, `value` as `record` FROM `server_config` WHERE `config` = {$db->quote('players_record')} {$w_sql}");
   }
 
   if ($query && $query->rowCount() > 0) {

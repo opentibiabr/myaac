@@ -5,7 +5,6 @@ require_once 'config.php';
 require_once 'config.local.php';
 require_once SYSTEM . 'functions.php';
 require_once SYSTEM . 'init.php';
-require_once SYSTEM . 'status.php';
 
 // error function
 function sendError($msg)
