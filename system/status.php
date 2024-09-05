@@ -1,5 +1,4 @@
-<?php
-global $TABLE_PREFIX;
+<?php global $db, $TABLE_PREFIX, $world;
 /**
  * Server status
  *
@@ -11,16 +10,32 @@ global $TABLE_PREFIX;
  */
 defined('MYAAC') or die('Direct access not allowed!');
 
-$status = [];
-$status['online'] = false;
-$status['players'] = 0;
-$status['playersMax'] = 0;
-$status['lastCheck'] = 0;
-$status['uptime'] = '0h 0m';
-$status['monsters'] = 0;
-
 if (config('status_enabled') === false) {
   return;
+}
+
+$status = [];
+
+if ($db->hasTable('worlds') && count($worlds = $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `id` ASC")->fetchAll()) > 0) {
+  foreach ($worlds as $w) {
+    $status[$w['id']] = [
+      'online' => false,
+      'players' => 0,
+      'playersMax' => 0,
+      'lastCheck' => 0,
+      'uptime' => '0h 0m',
+      'monsters' => 0,
+    ];
+  }
+} else {
+  $status[1] = [
+    'online' => false,
+    'players' => 0,
+    'playersMax' => 0,
+    'lastCheck' => 0,
+    'uptime' => '0h 0m',
+    'monsters' => 0,
+  ];
 }
 
 /** @var array $config */
@@ -48,58 +63,62 @@ if ($cache->enabled()) {
   }
 }
 
-if ($fetch_from_db) {
-  // get info from db
-  /** @var OTS_DB_MySQL $db */
-  $status_query = $db->query(
-    "SELECT `name`, `value` FROM `{$TABLE_PREFIX}config` WHERE {$db->fieldName(
-      'name'
-    )} LIKE '%status%'"
-  );
-  if ($status_query->rowCount() <= 0) {
-    // empty, just insert it
-    foreach ($status as $key => $value) {
-      registerDatabaseConfig('status_' . $key, $value);
-    }
-  } else {
-    foreach ($status_query as $tmp) {
-      $status[str_replace('status_', '', $tmp['name'])] = $tmp['value'];
-    }
-  }
-}
-
 if (isset($config['lua']['statustimeout'])) {
   $config['lua']['statusTimeout'] = configLua('statustimeout');
 }
 
 // get status timeout from server config
-$status_timeout = eval('return ' . configLua('statusTimeout') . ';') / 1000 + 1;
+$status_timeout = eval("return {$config['lua']['statusTimeout']};") / 1000 + 1;
 $status_interval = @$config['status_interval'];
-if ($status_interval && $status_timeout < $config['status_interval']) {
-  $status_timeout = $config['status_interval'];
+
+foreach ($status as $worldId => $statusItem) {
+  if ($fetch_from_db) {
+    // get info from db
+    /** @var OTS_DB_MySQL $db */
+    $status_query = $db->query(
+      "SELECT `name`, `value` FROM `{$TABLE_PREFIX}config` WHERE {$db->fieldName('name')} LIKE '%status%' AND `world_id` = {$worldId}"
+    );
+    if ($status_query->rowCount() <= 0) {
+      // empty, just insert it
+      foreach ($statusItem as $key => $value) {
+        registerDatabaseConfig('status_' . $key, $value, $worldId);
+      }
+    } else {
+      foreach ($status_query as $tmp) {
+        $statusItem[str_replace('status_', '', $tmp['name'])] = $tmp['value'];
+      }
+    }
+  }
+
+  if ($status_interval && $status_timeout < $config['status_interval']) {
+    $status_timeout = $config['status_interval'];
+  }
+
+  if ($statusItem['lastCheck'] + $status_timeout < time()) {
+    updateStatus($statusItem, $statusIp, $statusProtocolPort, $worldId);
+  }
 }
 
-if ($status['lastCheck'] + $status_timeout < time()) {
-  updateStatus($statusIp, $statusProtocolPort);
-}
 
-function updateStatus($statusIp, $statusPort): void
+function updateStatus($statusItem, $statusIp, $statusPort, $worldId): void
 {
   global $db, $cache, $config, $status;
+
+  // status by id
+  $_status = $statusItem;
 
   // get server status and save it to database
   $serverInfo = new OTS_ServerInfo($statusIp, $statusPort);
   $serverStatus = $serverInfo->status();
   if (!$serverStatus) {
-    $status['online'] = false;
-    $status['players'] = 0;
-    $status['playersMax'] = 0;
+    $_status['online'] = false;
+    $_status['players'] = 0;
+    $_status['playersMax'] = 0;
   } else {
-    $status['lastCheck'] = time(); // this should be set only if server respond
-
-    $status['online'] = true;
-    $status['players'] = $serverStatus->getOnlinePlayers(); // counts all players logged in-game, or only connected clients (if enabled on server side)
-    $status['playersMax'] = $serverStatus->getMaxPlayers();
+    $_status['lastCheck'] = time(); // this should be set only if server respond
+    $_status['online'] = true;
+    $_status['players'] = $serverStatus->getOnlinePlayers(); // counts all players logged in-game, or only connected clients (if enabled on server side)
+    $_status['playersMax'] = $serverStatus->getMaxPlayers();
 
     // for status afk thing
     if ($config['online_afk']) {
@@ -113,33 +132,33 @@ function updateStatus($statusIp, $statusPort): void
         );
       }
 
-      $status['playersTotal'] = 0;
+      $_status['playersTotal'] = 0;
       if ($query->rowCount() > 0) {
         $query = $query->fetch();
-        $status['playersTotal'] = $query['playersTotal'];
+        $_status['playersTotal'] = $query['playersTotal'];
       }
     }
 
-    $uptime = $status['uptime'] = $serverStatus->getUptime();
+    $uptime = $_status['uptime'] = $serverStatus->getUptime();
     $m = date('m', $uptime);
     $m = $m > 1 ? "$m months, " : ($m == 1 ? 'month, ' : '');
     $d = date('d', $uptime);
     $d = $d > 1 ? "$d days, " : ($d == 1 ? 'day, ' : '');
     $h = date('H', $uptime);
     $min = date('i', $uptime);
-    $status['uptimeReadable'] = "{$m}{$d}{$h}h {$min}m";
+    $_status['uptimeReadable'] = "{$m}{$d}{$h}h {$min}m";
 
-    $status['monsters'] = $serverStatus->getMonstersCount();
-    $status['motd'] = $serverStatus->getMOTD();
+    $_status['monsters'] = $serverStatus->getMonstersCount();
+    $_status['motd'] = $serverStatus->getMOTD();
 
-    $status['mapAuthor'] = $serverStatus->getMapAuthor();
-    $status['mapName'] = $serverStatus->getMapName();
-    $status['mapWidth'] = $serverStatus->getMapWidth();
-    $status['mapHeight'] = $serverStatus->getMapHeight();
+    $_status['mapAuthor'] = $serverStatus->getMapAuthor();
+    $_status['mapName'] = $serverStatus->getMapName();
+    $_status['mapWidth'] = $serverStatus->getMapWidth();
+    $_status['mapHeight'] = $serverStatus->getMapHeight();
 
-    $status['server'] = $serverStatus->getServer();
-    $status['serverVersion'] = $serverStatus->getServerVersion();
-    $status['clientVersion'] = $serverStatus->getClientVersion();
+    $_status['server'] = $serverStatus->getServer();
+    $_status['serverVersion'] = $serverStatus->getServerVersion();
+    $_status['clientVersion'] = $serverStatus->getClientVersion();
   }
 
   if ($cache->enabled()) {
@@ -147,11 +166,11 @@ function updateStatus($statusIp, $statusPort): void
   }
 
   $tmpVal = null;
-  foreach ($status as $key => $value) {
+  foreach ($statusItem as $key => $value) {
     if (fetchDatabaseConfig('status_' . $key, $tmpVal)) {
-      updateDatabaseConfig('status_' . $key, $value);
+      updateDatabaseConfig('status_' . $key, $value, $worldId);
     } else {
-      registerDatabaseConfig('status_' . $key, $value);
+      registerDatabaseConfig('status_' . $key, $value, $worldId);
     }
   }
 }

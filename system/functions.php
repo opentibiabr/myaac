@@ -389,11 +389,12 @@ function getDatabaseConfig($name)
  *
  * @param string $name Key name.
  * @param string $value Data to be associated with key.
+ * @param int $worldId optional to identify world_id (changed only on status_) keys.
  */
-function registerDatabaseConfig($name, $value)
+function registerDatabaseConfig($name, $value, int $worldId = 1): void
 {
   global $db;
-  $db->insert(TABLE_PREFIX . 'config', ['name' => $name, 'value' => $value]);
+  $db->insert(TABLE_PREFIX . 'config', ['name' => $name, 'value' => $value, 'world_id' => $worldId]);
 }
 
 /**
@@ -401,11 +402,12 @@ function registerDatabaseConfig($name, $value)
  *
  * @param string $name Key name.
  * @param string $value New data.
+ * @param int $worldId optional to identify world_id (changed only on status_) keys.
  */
-function updateDatabaseConfig($name, $value)
+function updateDatabaseConfig($name, $value, int $worldId = 1): void
 {
   global $db;
-  $db->update(TABLE_PREFIX . 'config', ['value' => $value], ['name' => $name]);
+  $db->update(TABLE_PREFIX . 'config', ['value' => $value], ['name' => $name, 'world_id' => $worldId]);
 }
 
 /**

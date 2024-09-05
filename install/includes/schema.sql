@@ -1,4 +1,4 @@
-SET @myaac_database_version = 34;
+SET @myaac_database_version = 36;
 
 CREATE TABLE `myaac_account_actions`
 (
@@ -78,8 +78,12 @@ CREATE TABLE `myaac_config`
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(30) NOT NULL,
 	`value` VARCHAR(1000) NOT NULL,
+  `world_id` INT(3) UNSIGNED NOT NULL DEFAULT 1,
 	PRIMARY KEY (`id`),
-	UNIQUE (`name`)
+  UNIQUE (`name`, `world_id`),
+  CONSTRAINT `myaac_config_worlds_fk`
+    FOREIGN KEY (`world_id`) REFERENCES `worlds` (`id`)
+      ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
 INSERT INTO `myaac_config` (`name`, `value`) VALUES ('database_version', @myaac_database_version);

@@ -6,6 +6,18 @@ defined('MYAAC') or die('Direct access not allowed!');
 //templates\tibiacom\config.ini
 if (isset($config['boxes']))
     $config['boxes'] = explode(",", $config['boxes']);
+
+function getTotalPlayersOnline()
+{
+  global $status;
+  $total = 0;
+  foreach ($status as $item) {
+    if ($item['online'] ?? false) {
+      $total = $total + ($item['players'] ?? 0);
+    }
+  }
+  return $total > 0 ? "$total Players Online" : 'All Worlds Offline';
+}
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -527,13 +539,13 @@ if (isset($config['boxes']))
                                                target="new"><span class="InfoBarSmallElement">Facebook</span></a>
                                         </span>
                                     <?php } ?>
-                                  <span
-                                    style="float: right; margin-top: <?= $config['collapse_status'] ? '-2' : '1' ?>px; margin-right: 4px">
+                                    <span style="float: right; margin-top: -2px; margin-right: 4px">
                                         <img class="InfoBarBigLogo" src="<?= $template_path; ?>/images/global/header/icon-players-online.png">
                                         <span class="InfoBarNumbers">
                                             <span class="InfoBarSmallElement">
                                                 <a class="InfoBarLinks" href="?online">
-                                                    <?= $status['online'] ? $status['players'] . ' Players Online' : 'Server Offline' ?></a>
+                                                    <?= getTotalPlayersOnline() ?>
+                                                </a>
                                             </span>
                                         </span>
                                         <?php if ($config['collapse_status']) { ?>
