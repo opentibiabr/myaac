@@ -52,7 +52,7 @@ if ($config['highscores_vocation_box'] && isset($vocation)) {
 }
 
 if (!empty($world)) {
-  if (!$world = $db->query("SELECT * FROM `worlds` WHERE `name` = {$db->quote($world)}")->fetch() ?? null) {
+  if (!$world = $db->query("SELECT `id`, `name` FROM `worlds` WHERE `name` = {$db->quote(urldecode($world))}")->fetch() ?? null) {
     header('Location: ' . "?highscores");
     return;
   }
@@ -436,7 +436,7 @@ if ($rank_category) {
                       <tr>
                         <td colspan="2" width="100%" align="right" valign="bottom">
                           <a
-                            href="<?= getLink('highscores') . '/' . $list . ($world ? '/' . $world : '') . (isset($vocation) ? '/' . $vocation : '') . '/' . ($_page - 1) ?>"
+                            href="<?= getLink('highscores') . '/' . $list . ($world ? '/' . $world['name'] : '') . (isset($vocation) ? '/' . $vocation : '') . '/' . ($_page - 1) ?>"
                             class="size_xxs">Previous Page</a>
                         </td>
                       </tr>
@@ -448,7 +448,7 @@ if ($rank_category) {
                       <tr>
                         <td colspan="2" width="100%" align="right" valign="bottom">
                           <a
-                            href="<?= getLink('highscores') . '/' . $list . ($world ? '/' . $world : '') . (isset($vocation) ? '/' . $vocation : '') . '/' . ($_page + 1) ?>"
+                            href="<?= getLink('highscores') . '/' . $list . ($world ? '/' . $world['name'] : '') . (isset($vocation) ? '/' . $vocation : '') . '/' . ($_page + 1) ?>"
                             class="size_xxs">Next Page</a>
                         </td>
                       </TR>

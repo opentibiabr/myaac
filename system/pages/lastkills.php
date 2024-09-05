@@ -18,7 +18,7 @@ if ($w = $_POST['world'] ?? null) {
 }
 
 if ($world = $_GET['world'] ?? null) {
-  $world = $db->query("SELECT `id`, `name` FROM `worlds` WHERE `name` = {$db->quote($world)}")->fetch() ?? null;
+  $world = $db->query("SELECT `id`, `name` FROM `worlds` WHERE `name` = {$db->quote(urldecode($world))}")->fetch() ?? null;
 } else {
   $world = count(WORLDS) == 1 ? WORLDS[0] : $world;
 }

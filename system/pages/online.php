@@ -17,7 +17,7 @@ if ($w = $_POST['world'] ?? null) {
 }
 
 if ($world = $_GET['world'] ?? null) {
-  $world = $db->query("SELECT * FROM `worlds` WHERE `name` = {$db->quote($world)}")->fetch() ?? null;
+  $world = $db->query("SELECT * FROM `worlds` WHERE `name` = {$db->quote(urldecode($world))}")->fetch() ?? null;
 } else {
   $world = count(WORLDS) == 1 ? WORLDS[0] : $world;
 }
@@ -102,6 +102,7 @@ if ($config['online_record']) {
     $query = $db->query("SELECT `timestamp`, `value` as `record` FROM `server_config` WHERE `config` = {$db->quote('players_record')} {$w_sql}");
   }
 
+  $record = 'not online yet';
   if ($query && $query->rowCount() > 0) {
     $result = $query->fetch();
     $d = date('M d Y, H:i:s', strtotime($result['timestamp']));
