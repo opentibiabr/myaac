@@ -437,7 +437,7 @@ WHERE killers.death_id = '" . $death['id'] . "' ORDER BY killers.final_hit DESC,
         $query = $db->query('SELECT `id` FROM `players` WHERE `account_id` = ' . $account->getId() . ' ORDER BY `name`')->fetchAll();
         foreach ($query as $p) {
             $_player = new OTS_Player();
-            $fields = array('id', 'name', 'vocation', 'level', 'online', 'deleted', 'hidden');
+            $fields = array('id', 'name', 'vocation', 'level', 'online', 'deleted', 'hidden', 'world_id');
             $_player->load($p['id'], $fields, false);
             if ($_player->isLoaded() && !$_player->isHidden()) {
                 $account_players[] = $_player;
@@ -534,7 +534,7 @@ WHERE killers.death_id = '" . $death['id'] . "' ORDER BY killers.final_hit DESC,
         'hidden' => $hidden,
         'bannedUntil' => isset($bannedUntil) ? $bannedUntil : null,
         'characters_link' => getLink('characters'),
-        'account_players' => isset($account_players) ? $account_players : null,
+        'account_players' => $account_players ?? null,
         'search_form' => generate_search_form(),
         'canEdit' => hasFlag(FLAG_CONTENT_PLAYERS) || superAdmin(),
         'vip_enabled' => isVipSystemEnabled()
