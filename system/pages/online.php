@@ -115,6 +115,7 @@ $twig->display('online.html.twig', array(
   'record' => $record,
   'vocations' => $vocations,
   'world' => $world,
+  'status' => $world ? $status[$world['id']] : null,
 ));
 
 //search bar

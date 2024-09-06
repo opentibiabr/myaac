@@ -81,5 +81,5 @@ $twig->display('serverinfo.html.twig', [
   'weeklyFragsToRedSkull' => configLua('weekKillsToRedSkull') ?? null,
   'monthlyFragsToRedSkull' => configLua('monthKillsToRedSkull') ?? null,
   'world' => $world,
-  // 'status' => $world ? $status[$world['id']] : null,
+  'status' => $world ? $status[$world['id']] : null,
 ]);
