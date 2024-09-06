@@ -354,14 +354,15 @@ function getForumBoards()
  *
  * @param string $name Key.
  * @param string &$value Reference where requested data will be set to.
+ * @param int $worldId optional to identify world_id (changed only on status_) keys.
  * @return bool False if value was not found in table, otherwise true.
  */
-function fetchDatabaseConfig($name, &$value)
+function fetchDatabaseConfig($name, &$value, int $worldId = 1)
 {
-  global $db;
+  global $db, $TABLE_PREFIX;
 
   $query = $db->query(
-    'SELECT `value` FROM `' . TABLE_PREFIX . 'config` WHERE `name` = ' . $db->quote($name)
+    "SELECT `value` FROM `{$TABLE_PREFIX}config` WHERE `name` = {$db->quote($name)} AND `world_id` = {$worldId}"
   );
   if ($query->rowCount() <= 0) {
     return false;

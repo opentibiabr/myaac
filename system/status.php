@@ -16,7 +16,7 @@ if (config('status_enabled') === false) {
 
 $status = [];
 
-$worlds = $db->query("SELECT `id`, `name`, `port` FROM `worlds` ORDER BY `id` ASC")->fetchAll();
+$worlds = $db->query("SELECT `id`, `name`, `port_status` FROM `worlds` ORDER BY `id` ASC")->fetchAll(PDO::FETCH_ASSOC);
 foreach ($worlds as $w) {
   $status[$w['id']] = [
     'online' => false,
@@ -25,7 +25,7 @@ foreach ($worlds as $w) {
     'lastCheck' => 0,
     'uptime' => '0h 0m',
     'monsters' => 0,
-    'gamePort' => $w['port'],
+    'port' => $w['port_status'],
   ];
 }
 
@@ -51,15 +51,12 @@ if ($cache->enabled()) {
   }
 }
 
-if (isset($config['lua']['statustimeout'])) {
-  $config['lua']['statusTimeout'] = configLua('statustimeout');
-}
-
 // get status timeout from server config
-$status_timeout = eval("return {$config['lua']['statusTimeout']};") / 1000 + 1;
-$status_interval = @$config['status_interval'];
-if ($status_interval && $status_timeout < $config['status_interval']) {
-  $status_timeout = $config['status_interval'];
+$statusTimeout = configLua('statusTimeout');
+$statusTimeout = eval("return {$statusTimeout};") / 1000 + 1;
+$statusInterval = @$config['status_interval'];
+if ($statusInterval && $statusTimeout < $statusInterval) {
+  $statusTimeout = $statusInterval;
 }
 
 foreach ($status as $worldId => $statusItem) {
@@ -81,17 +78,23 @@ foreach ($status as $worldId => $statusItem) {
     }
   }
 
-  if ($statusItem['lastCheck'] + $status_timeout < time()) {
-    updateStatus($statusItem, $statusIp, $statusProtocolPort, $worldId);
+  if ($statusItem['lastCheck'] + $statusTimeout < time()) {
+    updateStatus($statusItem, $statusIp, $worldId);
+  }
+
+  $status[$worldId] = $statusItem;
+
+  if ($cache->enabled()) {
+    $cache->set('status', serialize($status), 120);
   }
 }
 
-function updateStatus($_status, $statusIp, $statusPort, $worldId): void
+function updateStatus(&$_status, $statusIp, $worldId): void
 {
-  global $db, $cache, $config, $status;
+  global $db, $config;
 
   // get server status and save it to database
-  $serverInfo = new OTS_ServerInfo($statusIp, $_status['gamePort']);
+  $serverInfo = new OTS_ServerInfo($statusIp, $_status['port']);
   $serverStatus = $serverInfo->status();
   if (!$serverStatus) {
     $_status['online'] = false;
@@ -108,10 +111,10 @@ function updateStatus($_status, $statusIp, $statusPort, $worldId): void
       // get amount of players that are currently logged in-game, including disconnected clients (exited)
       if ($db->hasTable('players_online')) {
         // tfs 1.x
-        $query = $db->query('SELECT COUNT(`player_id`) AS `playersTotal` FROM `players_online`;');
+        $query = $db->query("SELECT COUNT(`player_id`) AS `playersTotal` FROM `players_online` WHERE `world_id` = {$worldId};");
       } else {
         $query = $db->query(
-          'SELECT COUNT(`id`) AS `playersTotal` FROM `players` WHERE `online` > 0'
+          "SELECT COUNT(`id`) AS `playersTotal` FROM `players` WHERE `online` > 0 AND `world_id` = {$worldId};"
         );
       }
 
@@ -144,16 +147,12 @@ function updateStatus($_status, $statusIp, $statusPort, $worldId): void
     $_status['clientVersion'] = $serverStatus->getClientVersion();
   }
 
-  if ($cache->enabled()) {
-    $cache->set('status', serialize($status), 120);
-  }
-
   $tmpVal = null;
   foreach ($_status as $key => $value) {
-    if (fetchDatabaseConfig('status_' . $key, $tmpVal)) {
-      updateDatabaseConfig('status_' . $key, $value, $worldId);
+    if (fetchDatabaseConfig("status_$key", $tmpVal, $worldId)) {
+      updateDatabaseConfig("status_$key", $value, $worldId);
     } else {
-      registerDatabaseConfig('status_' . $key, $value, $worldId);
+      registerDatabaseConfig("status_$key", $value, $worldId);
     }
   }
 }
