@@ -10,13 +10,15 @@ if (isset($config['boxes']))
 function getTotalPlayersOnline()
 {
   global $status;
-  $total = 0;
+  $servers = 0;
+  $players = 0;
   foreach ($status as $item) {
     if ($item['online'] ?? false) {
-      $total = $total + ($item['players'] ?? 0);
+      $servers++;
+      $players = $players + ($item['players'] ?? 0);
     }
   }
-  return $total > 0 ? "$total Players Online" : 'All Worlds Offline';
+  return $servers == 0 ? "All Worlds Offline" : ($players > 0 ? "$players Players Online" : "$servers Worlds Online");
 }
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
