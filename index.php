@@ -84,6 +84,7 @@ if (empty($uri) || isset($_REQUEST['template'])) {
         $_REQUEST['p'] = $uri;
         $found = true;
     } else {
+        // prettier-ignore
         $regexes = [
           'number'       => "[0-9]+",             // only digits (one or more).
           'text'         => "[a-zA-Z]+",          // only words (one or more).
