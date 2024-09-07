@@ -532,7 +532,7 @@ if (isset($config['boxes']))
                                         <img class="InfoBarBigLogo" src="<?= $template_path; ?>/images/global/header/icon-players-online.png">
                                         <span class="InfoBarNumbers">
                                             <span class="InfoBarSmallElement">
-                                                <a class="InfoBarLinks" href="?online">
+                                                <a class="InfoBarLinks" href="?worlds">
                                                     <?= $status['online'] ? $status['players'] . ' Players Online' : 'Server Offline' ?></a>
                                             </span>
                                         </span>

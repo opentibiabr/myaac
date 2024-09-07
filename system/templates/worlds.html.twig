@@ -1,0 +1,361 @@
+{% if world is empty %}
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tbody>
+    <tr>
+      <td>
+        <div class="TableContainer">
+          <div class="CaptionContainer">
+            <div class="CaptionInnerContainer">
+              <span class="CaptionEdgeLeftTop"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              <span class="CaptionEdgeRightTop"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              <span class="CaptionBorderTop"
+                    style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+              <span class="CaptionVerticalLeft"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+              <div class="Text">Game World Overview</div>
+              <span class="CaptionVerticalRight"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+              <span class="CaptionBorderBottom"
+                    style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+              <span class="CaptionEdgeLeftBottom"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              <span class="CaptionEdgeRightBottom"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+            </div>
+          </div>
+          <table class="Table3" cellpadding="0" cellspacing="0">
+            <tbody>
+            <tr>
+              <td>
+                <div class="TableScrollbarWrapper" style="width: unset;">
+                  <div class="TableScrollbarContainer"></div>
+                </div>
+                <div class="InnerTableContainer" style="max-width: unset;">
+                  <table style="width:100%;">
+                    <tbody>
+                    <tr>
+                      <td>
+                        <div class="TableContentContainer ">
+                          <table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
+                            <tbody>
+                            <tr>
+                              <td><b>Overall Maximum:</b>&nbsp;&nbsp;&nbsp;{{ overall_maximum }}
+                              </td>
+                            </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="TableContentContainer ">
+                          <table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
+                            <tbody>
+                            <tr class="LabelH">
+                              <td style="text-align: center;">Regular Worlds</td>
+                            </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="TableContentContainer ">
+                          <table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
+                            <tbody>
+                            <tr class="LabelH">
+                              <td>World</td>
+                              <td>Online</td>
+                              <td>Location</td>
+                              <td>PvP Type</td>
+                              <td>Additional Information</td>
+                            </tr>
+                            {% set i = 0 %}
+                            {% for w in _worlds %}
+                              {% set i = i + 1 %}
+                              <tr bgcolor="{{ getStyle(i) }}">
+                                <td style="width: 170px;">
+                                  <a href="?worlds/{{ w.name }}">{{ w.name }}</a>
+                                </td>
+                                <td style="text-align: right;">{{ status.players }}</td>
+                                {# <td style="text-align: right;">{{ status[w.id].players }}</td> #}
+                                <td>{{ w.location }}</td>
+                                <td>{{ getWorldType(w.type) }}</td>
+                                <td></td>
+                              </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+{% endif %}
+
+{% if world %}
+  {% if worlds|length  > 1 %}
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tbody>
+      <tr>
+        <td>
+          <div class="TableContainer">
+            <div class="CaptionContainer">
+              <div class="CaptionInnerContainer">
+                <span class="CaptionEdgeLeftTop"
+                      style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+                <span class="CaptionEdgeRightTop"
+                      style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+                <span class="CaptionBorderTop"
+                      style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+                <span class="CaptionVerticalLeft"
+                      style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+                <div class="Text">World Selection</div>
+                <span class="CaptionVerticalRight"
+                      style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+                <span class="CaptionBorderBottom"
+                      style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+                <span class="CaptionEdgeLeftBottom"
+                      style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+                <span class="CaptionEdgeRightBottom"
+                      style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              </div>
+            </div>
+            <table class="Table1" cellpadding="0" cellspacing="0">
+              <tbody>
+              <tr>
+                <td>
+                  <div class="InnerTableContainer">
+                    <table style="width: 100%">
+                      <tbody>
+                      <tr>
+                        <form action="{{ getLink('worlds') }}" method="post">
+                          <td style="vertical-align:middle;" class="LabelV150">World Name:</td>
+                          <td style="width: 100%">
+                            <select name="world" style="width: 100%">
+                              <option value="">(choose world)</option>
+                              {% for item in worlds %}
+                                <option
+                                  value="{{ item.name }}" {% if item.id == world.id %} selected="selected"{% endif %}>{{ item.name }}</option>
+                              {% endfor %}
+                            </select>
+                          </td>
+                          <td>{% set button_name = 'Submit' %}
+                            {% include('buttons.base.html.twig') %}</td>
+                        </form>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <br>
+  {% endif %}
+
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tbody>
+    <tr>
+      <td>
+        <div class="TableContainer">
+          <div class="CaptionContainer">
+            <div class="CaptionInnerContainer">
+            <span class="CaptionEdgeLeftTop"
+                  style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              <span class="CaptionEdgeRightTop"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              <span class="CaptionBorderTop"
+                    style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+              <span class="CaptionVerticalLeft"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+              <div class="Text">World Information</div>
+              <span class="CaptionVerticalRight"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+              <span class="CaptionBorderBottom"
+                    style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+              <span class="CaptionEdgeLeftBottom"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              <span class="CaptionEdgeRightBottom"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+            </div>
+          </div>
+          <table class="Table1" cellpadding="0" cellspacing="0">
+            <tbody>
+            <tr>
+              <td>
+                <div class="InnerTableContainer">
+                  <table style="width: 100%">
+                    <tbody>
+                    <tr>
+                      <td width="25%" class="LabelV150">Status:</td>
+                      <td>
+                        {{ world.name }} World is {% if status.online %}<strong
+                          class="green">Online</strong>{% else %} <strong
+                          class="red">Offline</strong>{% endif %}
+                      </td>
+                    </tr>
+                    {% if status.online %}
+                      <tr>
+                        <td width="25%" class="LabelV150">Players Online:</td>
+                        <td>{{ players|length }} Players Online</td>
+                      </tr>
+                    {% endif %}
+                    <tr>
+                      <td class="LabelV150">Online Record:</td>
+                      <td>{{ record|raw }}</td>
+                    </tr>
+                    <tr>
+                      <td class="LabelV150">Creation Date:</td>
+                      <td>{{ world.creation|date('F Y') }}</td>
+                    </tr>
+                    <tr>
+                      <td class="LabelV150">Location:</td>
+                      <td>{{ world.location }}</td>
+                    </tr>
+                    <tr>
+                      <td class="LabelV150">PvP Type:</td>
+                      <td>{{ getWorldType(world.type) }}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%" class="LabelV150">Frags:</td>
+                      <td>
+                        <table style="width: 100%">
+                          <tbody>
+                          <tr>
+                            <td><img src="images/white_skull.gif" /> : 1 - 6 Frags</td>
+                          </tr>
+                          <tr>
+                            <td><img src="images/red_skull.gif" /> : 6+ Frags or Red Skull</td>
+                          </tr>
+                          <tr>
+                            <td><img src="images/black_skull.gif" /> : 10+ Frags or Black Skull</td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tbody>
+    <tr>
+      <td>
+        <div class="TableContainer">
+          <div class="CaptionContainer">
+            <div class="CaptionInnerContainer">
+            <span class="CaptionEdgeLeftTop"
+                  style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              <span class="CaptionEdgeRightTop"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              <span class="CaptionBorderTop"
+                    style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+              <span class="CaptionVerticalLeft"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+              <div class="Text">Players Online</div>
+              <span class="CaptionVerticalRight"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+              <span class="CaptionBorderBottom"
+                    style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+              <span class="CaptionEdgeLeftBottom"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              <span class="CaptionEdgeRightBottom"
+                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+            </div>
+          </div>
+          <table class="Table3" cellpadding="0" cellspacing="0">
+            <tbody>
+            <tr>
+              <td>
+                <div class="InnerTableContainer">
+                  <table style="width:100%;">
+                    <tbody>
+                    <tr>
+                      <td>
+                        <div class="TableContentContainer">
+                          <table class="TableContent" width="100%">
+                            <tbody>
+                            {% if players|length == 0 %}
+                              <tr style="text-align: center">
+                                <td>Currently, no one is playing on {{ world.name }}.</td>
+                              </tr>
+                            {% else %}
+                              <tr bgcolor="#D4C0A1">
+                                {% if config.account_country %}
+                                  <td class="LabelV150">#</td>
+                                {% endif %}
+                                {% if config.online_outfit %}
+                                  <td class="LabelV150">Outfit</td>
+                                {% endif %}
+                                <td class="LabelV150">Name</td>
+                                <td class="LabelV150">Level</td>
+                                <td class="LabelV150">Vocation</td>
+                              </tr>
+                              {% set i = 0 %}
+                              {% for player in players %}
+                                {% set i = i + 1 %}
+                                <tr bgcolor="{{ getStyle(i) }}" style="height: 44px;">
+                                  {% if config.account_country %}
+                                    <td width="4%">{{ player.country_image|raw }}</td>
+                                  {% endif %}
+                                  {% if config.online_outfit %}
+                                    <td width="10%"><img
+                                        style="position:absolute;margin-top:{% if player.player.looktype in [75, 266, 302] %}-20px;margin-left:-0px;{% else %}-45px;margin-left:-25px;{% endif %}"
+                                        src="{{ player.outfit }}" alt="player outfit" /></td>
+                                  {% endif %}
+                                  <td width="50%">{{ player.name|raw }}{{ player.skull }}</td>
+                                  <td>{{ player.level }}</td>
+                                  <td>{{ player.vocation }}</td>
+                                </tr>
+                              {% endfor %}
+                            {% endif %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <br>
+{% endif %}

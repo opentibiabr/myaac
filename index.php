@@ -129,7 +129,7 @@ if (empty($uri) || isset($_REQUEST['template'])) {
             "/^gallery\/{$regexes['number']}\/?$/" => array("subtopic" => "gallery", "image" => "$1"),
             "/^gifts\/history\/?$/" => array("subtopic" => "gifts", "action" => "show_history"),
             "/^guilds\/{$regexes['special']}$/" => array("subtopic" => "guilds", "action" => "show", "guild" => "$1"),
-            "/^online\/{$regexes['special']}$/" => array("subtopic" => "online", "world" => "$1"),
+            "/^worlds\/{$regexes['special']}$/" => array("subtopic" => "worlds", "world" => "$1"),
             "/^highscores\/{$regexes['url']}\/{$regexes['special']}\/{$regexes['text']}\/{$regexes['number']}\/?$/" => array("subtopic" => "highscores", "list" => "$1", "world" => "$2", "vocation" => "$3", "page" => "$4"),
             "/^highscores\/{$regexes['url']}\/{$regexes['special']}\/{$regexes['number']}\/?$/" => array("subtopic" => "highscores", "list" => "$1", "world" => "$2", "page" => "$3"),
             "/^highscores\/{$regexes['url']}\/{$regexes['special']}\/{$regexes['text']}\/?$/" => array("subtopic" => "highscores", "list" => "$1", "world" => "$2", "vocation" => "$3"),

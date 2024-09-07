@@ -55,6 +55,3 @@ $twig->display('lastkills.html.twig', array(
   'lastkills' => $last_kills,
   'world' => $world,
 ));
-
-//search bar
-$twig->display('online.form.html.twig');
