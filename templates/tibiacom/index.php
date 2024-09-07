@@ -541,7 +541,8 @@ function getTotalPlayersOnline()
                                                target="new"><span class="InfoBarSmallElement">Facebook</span></a>
                                         </span>
                                     <?php } ?>
-                                    <span style="float: right; margin-top: -2px; margin-right: 4px">
+                                  <span
+                                    style="float: right; margin-top: <?= $config['collapse_status'] ? '-2' : '1' ?>px; margin-right: 4px">
                                         <img class="InfoBarBigLogo" src="<?= $template_path; ?>/images/global/header/icon-players-online.png">
                                         <span class="InfoBarNumbers">
                                             <span class="InfoBarSmallElement">
