@@ -128,7 +128,7 @@ class CreateCharacter
             return false;
         }
 
-        if (!$worldId = $db->query("SELECT `id` FROM `worlds` WHERE `name` = {$db->quote($worldName)}")->fetch()['id'] ?? null) {
+        if (!$worldId = $db->query("SELECT `id` FROM `worlds` WHERE `name` = {$db->quote($worldName)}")->fetch(PDO::FETCH_ASSOC)['id'] ?? null) {
           return false;
         }
 

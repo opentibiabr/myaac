@@ -52,7 +52,7 @@ if ($config['highscores_vocation_box'] && isset($vocation)) {
 }
 
 if (!empty($world)) {
-  if (!$world = $db->query("SELECT `id`, `name` FROM `worlds` WHERE `name` = {$db->quote(urldecode($world))}")->fetch() ?? null) {
+  if (!$world = $db->query("SELECT `id`, `name` FROM `worlds` WHERE `name` = {$db->quote(urldecode($world))}")->fetch(PDO::FETCH_ASSOC) ?? null) {
     header('Location: ' . "?highscores");
     return;
   }

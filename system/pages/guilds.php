@@ -21,7 +21,7 @@ define('MOTD_EXISTS', $db->hasColumn('guilds', 'motd'));
 
 $world = null;
 if ($worldId = $_POST['world_id'] ?? null) {
-  $world = $db->query("SELECT `id`, `name` FROM `worlds` WHERE `id` = $worldId")->fetch();
+  $world = $db->query("SELECT `id`, `name` FROM `worlds` WHERE `id` = $worldId")->fetch(PDO::FETCH_ASSOC);
 }
 
 if (!empty($action) && in_array($action, ['create']) && !$world) {

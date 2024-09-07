@@ -1014,7 +1014,7 @@ function getWorldName($id): string
 {
   global $db;
   if ($db->hasTable('worlds')) {
-    if ($world = $db->query("SELECT `name` FROM `worlds` WHERE `id` = {$id}")->fetch()) {
+    if ($world = $db->query("SELECT `name` FROM `worlds` WHERE `id` = {$id}")->fetch(PDO::FETCH_ASSOC)) {
       return $world['name'];
     }
   }

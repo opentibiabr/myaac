@@ -59,7 +59,7 @@ if (isset($_POST['save'])) {
   $motd = $_POST['motd'] ?? '';
 
   if ($id = $_POST['world_id'] ?? null) {
-    $world = $id > 0 ? $db->query("SELECT * FROM `worlds` WHERE `id` = {$id}")->fetch() : null;
+    $world = $id > 0 ? $db->query("SELECT * FROM `worlds` WHERE `id` = {$id}")->fetch(PDO::FETCH_ASSOC) : null;
     if (!$world) {
       echo_error("World with this id doesn't exist.");
     }
@@ -69,11 +69,11 @@ if (isset($_POST['save'])) {
       echo_success("World {$name} saved at: " . date('G:i'));
     }
   } else {
-    if ($db->query("SELECT `id` FROM `worlds` WHERE `name` = {$db->quote($name)}")->fetch()) {
+    if ($db->query("SELECT `id` FROM `worlds` WHERE `name` = {$db->quote($name)}")->fetch(PDO::FETCH_ASSOC)) {
       echo_error("World name is already in use!");
     } else if ($port == 7171) {
       echo_error("World port is unavailable!");
-    } else if ($db->query("SELECT `id` FROM `worlds` WHERE `port` = {$port}")->fetch()) {
+    } else if ($db->query("SELECT `id` FROM `worlds` WHERE `port` = {$port}")->fetch(PDO::FETCH_ASSOC)) {
       echo_error("World port is already in use!");
     }
 
@@ -110,7 +110,7 @@ if (isset($_POST['save'])) {
 $id = $_REQUEST['id'] ?? 0;
 
 if ($id > 0 || $action === 'add') {
-  $world = $id > 0 ? $db->query("SELECT * FROM `worlds` WHERE `id` = {$id}")->fetch() : null;
+  $world = $id > 0 ? $db->query("SELECT * FROM `worlds` WHERE `id` = {$id}")->fetch(PDO::FETCH_ASSOC) : null;
   ?>
   <form action="<?= $base . ($id > 0 ? '&id=' . $id : '') . (!empty($action) ? '&action=' . $action : ''); ?>"
         method="post" class="form-horizontal">

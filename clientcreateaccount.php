@@ -129,7 +129,7 @@ function getWorldsData(): array
 {
   global $db;
   $response = [];
-  foreach ($db->query("SELECT * from `worlds`")->fetchAll() as $world) {
+  foreach ($db->query("SELECT * from `worlds`")->fetchAll(PDO::FETCH_ASSOC) as $world) {
     $playersOnline = $db->query("SELECT COUNT(*) FROM `players_online` WHERE `world_id` = {$world['id']}")->fetchAll()[0][0] ?? 0;
     $response[] = [
       "Name"                        => $world['name'],
