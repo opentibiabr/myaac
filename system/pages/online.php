@@ -1,4 +1,4 @@
-<?php global $db, $config, $twig;
+<?php global $db, $config, $twig, $status;
 /**
  * Online
  *
