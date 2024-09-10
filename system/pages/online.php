@@ -12,16 +12,11 @@
 defined('MYAAC') or die('Direct access not allowed!');
 $title = 'Who is online?';
 
-if ($w = $_POST['world'] ?? null) {
-  header("Location: ?online/$w");
-}
-
-if ($world = $_GET['world'] ?? null) {
+$w_sql = '';
+if ($world = $_POST['world'] ?? null) {
   $world = $db->query("SELECT * FROM `worlds` WHERE `name` = {$db->quote(urldecode($world))}")->fetch(PDO::FETCH_ASSOC) ?? null;
-} else {
-  $world = count(WORLDS) == 1 ? WORLDS[0] : $world;
+  $w_sql = $world ? " AND `players`.`world_id` = {$world['id']} " : "";
 }
-$w_sql = $world ? " AND `players`.`world_id` = {$world['id']} " : "";
 
 if ($config['account_country'])
   require SYSTEM . 'countries.conf.php';
@@ -117,6 +112,3 @@ $twig->display('online.html.twig', array(
   'world' => $world,
   'status' => $world ? $status[$world['id']] : null,
 ));
-
-//search bar
-$twig->display('online.form.html.twig');

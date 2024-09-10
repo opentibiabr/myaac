@@ -546,7 +546,7 @@ function getTotalPlayersOnline()
                                         <img class="InfoBarBigLogo" src="<?= $template_path; ?>/images/global/header/icon-players-online.png">
                                         <span class="InfoBarNumbers">
                                             <span class="InfoBarSmallElement">
-                                                <a class="InfoBarLinks" href="?online">
+                                                <a class="InfoBarLinks" href="?worlds">
                                                     <?= getTotalPlayersOnline() ?>
                                                 </a>
                                             </span>
