@@ -22,7 +22,7 @@ if (Forum::canPost($account_logged)) {
 
     $thread = $db->query("SELECT `" . FORUM_TABLE_PREFIX . "forum`.`post_topic`, `" . FORUM_TABLE_PREFIX . "forum`.`id`, `" . FORUM_TABLE_PREFIX . "forum`.`section` FROM `" . FORUM_TABLE_PREFIX . "forum` WHERE `" . FORUM_TABLE_PREFIX . "forum`.`id` = " . $thread_id . " AND `" . FORUM_TABLE_PREFIX . "forum`.`first_post` = " . $thread_id . " LIMIT 1")->fetch();
     if (isset($thread['id']) && Forum::hasAccess($thread['section'])) {
-        echo '<div class="ForumBreadCrumbs"><a href="' . getLink('forum') . '">Community Boards</a> | <a href="' . getForumBoardLink($thread['section']) . '">' . $sections[$thread['section']]['name'] . '</a> | <a href="' . getForumThreadLink($thread_id) . '">' . $thread['post_topic'] . '</a> | <b>Post New Reply</b></div><br />';
+        echo '<div class="ForumBreadCrumbs"><a href="' . getLink('forum') . '">Community Boards</a> | <a href="' . getForumBoardLink($thread['section']) . '">' . $sections[$thread['section']]['name'] . '</a> | <a href="' . getForumThreadLink($thread_id) . '">' . htmlspecialchars($thread['post_topic']) . '</a> | <b>Post New Reply</b></div><br />';
         $quote = (int)$_REQUEST['quote'] ?? NULL;
         $text = isset($_REQUEST['text']) ? stripslashes(trim($_REQUEST['text'])) : NULL;
         $char_id = (int)$_REQUEST['char_id'] ?? 0;
@@ -95,7 +95,7 @@ if (Forum::canPost($account_logged)) {
                 'post_text' => $text,
                 'post_smile' => $smile > 0,
                 'post_html' => $html > 0,
-                'topic' => $thread['post_topic'],
+                'topic' => htmlspecialchars($thread['post_topic']),
                 'threads' => $threads,
                 'canEdit' => $canEdit
             ));
