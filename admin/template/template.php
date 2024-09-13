@@ -42,7 +42,7 @@ function getWorldsStatus($style = ''): string
   global $status;
   $output = "";
   foreach (WORLDS as $world) {
-    $_s = $status['online'] ? 'success' : 'danger';
+    $_s = $status[$world['id']]['online'] ? 'success' : 'danger';
     $output .= "<span class='badge ms-1 bg-$_s' style='$style'>{$world['name']}</span>";
   }
   return $output;

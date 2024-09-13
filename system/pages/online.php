@@ -1,4 +1,4 @@
-<?php global $db, $config, $twig;
+<?php global $db, $config, $twig, $status;
 /**
  * Online
  *
@@ -110,4 +110,5 @@ $twig->display('online.html.twig', array(
   'record' => $record,
   'vocations' => $vocations,
   'world' => $world,
+  'status' => $world ? $status[$world['id']] : null,
 ));

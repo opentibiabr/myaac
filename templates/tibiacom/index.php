@@ -6,6 +6,20 @@ defined('MYAAC') or die('Direct access not allowed!');
 //templates\tibiacom\config.ini
 if (isset($config['boxes']))
     $config['boxes'] = explode(",", $config['boxes']);
+
+function getTotalPlayersOnline()
+{
+  global $status;
+  $servers = 0;
+  $players = 0;
+  foreach ($status as $item) {
+    if ($item['online'] ?? false) {
+      $servers++;
+      $players = $players + ($item['players'] ?? 0);
+    }
+  }
+  return $servers == 0 ? "All Worlds Offline" : ($players > 0 ? "$players Players Online" : "$servers Worlds Online");
+}
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -533,7 +547,8 @@ if (isset($config['boxes']))
                                         <span class="InfoBarNumbers">
                                             <span class="InfoBarSmallElement">
                                                 <a class="InfoBarLinks" href="?worlds">
-                                                    <?= $status['online'] ? $status['players'] . ' Players Online' : 'Server Offline' ?></a>
+                                                    <?= getTotalPlayersOnline() ?>
+                                                </a>
                                             </span>
                                         </span>
                                         <?php if ($config['collapse_status']) { ?>

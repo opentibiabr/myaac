@@ -354,14 +354,15 @@ function getForumBoards()
  *
  * @param string $name Key.
  * @param string &$value Reference where requested data will be set to.
+ * @param int $worldId optional to identify world_id (changed only on status_) keys.
  * @return bool False if value was not found in table, otherwise true.
  */
-function fetchDatabaseConfig($name, &$value)
+function fetchDatabaseConfig($name, &$value, int $worldId = 1)
 {
-  global $db;
+  global $db, $TABLE_PREFIX;
 
   $query = $db->query(
-    'SELECT `value` FROM `' . TABLE_PREFIX . 'config` WHERE `name` = ' . $db->quote($name)
+    "SELECT `value` FROM `{$TABLE_PREFIX}config` WHERE `name` = {$db->quote($name)} AND `world_id` = {$worldId}"
   );
   if ($query->rowCount() <= 0) {
     return false;
@@ -389,11 +390,12 @@ function getDatabaseConfig($name)
  *
  * @param string $name Key name.
  * @param string $value Data to be associated with key.
+ * @param int $worldId optional to identify world_id (changed only on status_) keys.
  */
-function registerDatabaseConfig($name, $value)
+function registerDatabaseConfig($name, $value, int $worldId = 1): void
 {
   global $db;
-  $db->insert(TABLE_PREFIX . 'config', ['name' => $name, 'value' => $value]);
+  $db->insert(TABLE_PREFIX . 'config', ['name' => $name, 'value' => $value, 'world_id' => $worldId]);
 }
 
 /**
@@ -401,11 +403,12 @@ function registerDatabaseConfig($name, $value)
  *
  * @param string $name Key name.
  * @param string $value New data.
+ * @param int $worldId optional to identify world_id (changed only on status_) keys.
  */
-function updateDatabaseConfig($name, $value)
+function updateDatabaseConfig($name, $value, int $worldId = 1): void
 {
   global $db;
-  $db->update(TABLE_PREFIX . 'config', ['value' => $value], ['name' => $name]);
+  $db->update(TABLE_PREFIX . 'config', ['value' => $value], ['name' => $name, 'world_id' => $worldId]);
 }
 
 /**
