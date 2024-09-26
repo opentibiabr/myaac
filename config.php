@@ -39,7 +39,7 @@ $config = array(
 
 	// what client version are you using on this OT?
 	// used for the Downloads page and some templates as well
-    'client' => 1321, // 1321 = client 13.21
+    'client' => 1340, // 1340 = client 13.40
 
 	'session_prefix' => 'myaac_', // must be unique for every site on your server
 	'friendly_urls' => false, // mod_rewrite is required for this, it makes links looks more elegant to eye, and also are SEO friendly (example: https://localhost/guilds/Testing instead of https://localhost?subtopic=guilds&name=Testing). Remember to rename .htaccess.dist to .htaccess
@@ -88,8 +88,8 @@ $config = array(
 	),
 
 	// images
-	'outfit_images_url' => './outfit/animoutfit.php', // set to animoutfit.php for animated outfit
-	'item_images_url' => 'images/items/', // set to images/items if you host your own items in images folder
+	'outfit_images_url' => 'https://outfit-images-oracle.ots.me/latest_walk/animoutfit.php', // set to animoutfit.php for animated outfit
+	'item_images_url' => 'https://item-images-oracle.ots.me/latest_otbr_anim/', // set to images/items if you host your own items in images fold
 
 	// account
 	'account_management' => true, // disable if you're using other method to manage users (fe. tfs account manager)
@@ -98,14 +98,14 @@ $config = array(
 	'account_create_auto_login' => false, // auto login after creating account?
 	'account_create_character_create' => true, // allow directly to create character on create account page?
 	'account_mail_verify' => false, // force users to confirm their email addresses when registering account
-  'account_verified_only' => false, // force users to confirm their email to login in game
-  'account_mail_confirmed_reward' => [ // reward users for confirming their E-Mails
-      // account_mail_verify needs to be enabled too
-      'premium_days' => 0,
-      'coins_transferable' => 0,
-      'coins' => 0,
-      'message' => 'You received %d %s for confirming your E-Mail address.' // example: You received 20 coins for confirming your E-Mail address.
-  ],
+	'account_verified_only' => false, // force users to confirm their email to login in game
+	'account_mail_confirmed_reward' => [ // reward users for confirming their E-Mails
+		// account_mail_verify needs to be enabled too
+		'premium_days' => 0,
+		'coins_transferable' => 0,
+		'coins' => 0,
+		'message' => 'You received %d %s for confirming your E-Mail address.' // example: You received 20 coins for confirming your E-Mail address.
+	],
 	'account_mail_unique' => true, // email addresses cannot be duplicated? (one account = one email)
 	'account_premium_days' => 0, // default premium days on new account
 	'account_welcome_coins' => 0, // default coins on new account
