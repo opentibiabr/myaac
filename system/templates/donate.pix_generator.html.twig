@@ -1,0 +1,280 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de PIX</title>
+
+<form id="pixForm" method="post">
+	<div class="TableContainer">
+		<div class="CaptionContainer">
+			<div class="CaptionInnerContainer">
+				<span class="CaptionEdgeLeftTop" style="background-image:url({{ template_path }}/images/global/content/box-frame-edge.gif);"></span>
+				<span class="CaptionEdgeRightTop" style="background-image:url({{ template_path }}/images/global/content/box-frame-edge.gif);"></span>
+				<span class="CaptionBorderTop" style="background-image:url({{ template_path }}/images/global/content/table-headline-border.gif);"></span>
+				<span class="CaptionVerticalLeft" style="background-image:url({{ template_path }}/images/global/content/box-frame-vertical.gif);"></span>
+				<div class="Text">Pix</div>
+				<span class="CaptionVerticalRight" style="background-image:url({{ template_path }}/images/global/content/box-frame-vertical.gif);"></span>
+				<span class="CaptionBorderBottom" style="background-image:url({{ template_path }}/images/global/content/table-headline-border.gif);"></span> 
+				<span class="CaptionEdgeLeftBottom" style="background-image:url({{ template_path }}/images/global/content/box-frame-edge.gif);"></span>
+				<span class="CaptionEdgeRightBottom" style="background-image:url({{ template_path }}/images/global/content/box-frame-edge.gif);"></span>
+			</div>
+		</div>
+		<table class="Table5" cellpadding="0" cellspacing="0">
+			<tbody>
+				<tr>
+					<td>
+						<div class="TableScrollbarWrapper" style="width: unset;">
+							<div class="TableScrollbarContainer"></div>
+						</div>
+						<div class="InnerTableContainer" style="max-width: unset;">
+							<table style="width:100%;" id="LoyaltBox">
+								<tbody>
+									<tr>
+										<td>
+											<div class="TableContentContainer ">
+												<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
+													<tbody>
+														<tr>
+															<td>
+																<h2>
+																	<img src="./payments/images/pix.png" width="64" height="64" style="float:right">
+																	What is Pix?
+																</h2>
+																<p>
+																	Pix is an instant payment method that allows money transfers in real time, 24 hours a day. With it, your donations are processed quickly, and you receive immediate confirmation.
+																</p>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<br>
+											<div class="TableContentContainer ">
+												<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
+													<tbody>
+														<tr>
+															<td>
+																<h2>How to make a donation via Pix:</h2>
+																<p>Open your bank's app.</p>
+																<p>Select the option for Pix payment.</p>
+																<p>Enter the amount you wish to donate and click generate.</p>
+																<p>Use the server's Pix key (or scan the QR code available on our site).</p>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<br>
+											<div class="TableContentContainer ">
+												<table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
+													<tbody>
+														<tr>
+															<td style="vertical-align: middle;" class="LabelV200">
+																Account:
+															</td>
+															<td>
+																<input type="text" id="account_name" name="account_name" value="{{ accName }}" style="width: 200px;">
+																<span style="margin-left: 5px; position: absolute; margin-top: 2px;">
+																	<a href="../common/help.php?subtopic=Field_EMailAddress_Comment" target="_blank">
+																		<span class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), 'Information:', 'Used to send you the invoice and status updates on the payment process.', '');" onmouseout="$('#HelperDivContainer').hide();">
+																			<img style="border:0px;" src="{{ template_path }}/images/global/content/info.gif">
+																		</span>
+																	</a>
+																</span>
+															</td>
+														</tr>
+														<tr>
+															<td style="vertical-align: middle;" class="LabelV200">
+																Value:
+															</td>
+															<td>
+																<div style="position: relative; display: inline-block;">
+																	<input type="text" id="price" name="price" placeholder="Valor" required style="width: 200px; padding-left: 20px; padding-right: 25px; text-align: right; font-size: 14px; color: black;" min="0" step="1">
+																	<span style="position: absolute; left: 5px; top: 10px;  transform: translateY(-50%); color: black; font-size: 14px;">R$</span> 
+																	<span style="position: absolute; right: 5px; top: 10px; transform: translateY(-50%); color: black; font-size: 14px;">.00</span>
+																	<span style="margin-left: 5px; position: absolute; margin-top: 2px;">
+																		<a href="../common/help.php?subtopic=Field_EMailAddress_Comment" target="_blank">
+																			<span class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), 'Information:', 'Enter the amount you want to donate.', '');" onmouseout="$('#HelperDivContainer').hide();">
+																				<img style="border:0px;" src="{{ template_path }}/images/global/content/info.gif">
+																			</span>
+																		</a>
+																	</span>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div> 
+	<br>
+	<center>
+		<div class="BigButton" style="background-image:url({{ template_path }}/images/global/buttons/sbutton_green.gif)">
+			<div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
+				<div class="BigButtonOver" style="background-image: url({{ template_path }}/images/global/buttons/sbutton_red_green.gif); visibility: hidden;"></div>
+				<input class="BigButtonText" type="submit" value="Generate">
+			</div>
+		</div>
+	</center>
+</form>
+
+<br>
+
+<div class="SmallBox" style="display: none; text-align: center;">
+	<div class="MessageContainer">
+		<div class="BoxFrameHorizontal" style="background-image:url({{ template_path }}/images/global/content/box-frame-horizontal.gif);"></div>
+		<div class="BoxFrameEdgeLeftTop" style="background-image:url({{ template_path }}/images/global/content/box-frame-edge.gif);"></div>
+		<div class="BoxFrameEdgeRightTop" style="background-image:url({{ template_path }}/images/global/content/box-frame-edge.gif);"></div>
+		<div class="Message">
+			<div class="BoxFrameVerticalLeft" style="background-image:url({{ template_path }}/images/global/content/box-frame-vertical.gif);"></div>
+			<div class="BoxFrameVerticalRight" style="background-image:url({{ template_path }}/images/global/content/box-frame-vertical.gif);"></div>
+			<table style="width:100%;">
+				<tbody>
+					<tr>
+						<td style="vertical-align: middle;" class="LabelV200">
+							Referência:
+						</td>
+						<td>
+							<input type="text" id="reference" value="" style="width: 200px;" readonly>
+							<span style="margin-left: 5px; position: absolute; margin-top: 2px;">
+								<a href="../common/help.php?subtopic=Field_EMailAddress_Comment" target="_blank">
+									<span class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), 'Information:', 'The reference is a way to uniquely identify each transaction.', '');" onmouseout="$('#HelperDivContainer').hide();">
+										<img style="border:0px;" src="{{ template_path }}/images/global/content/info.gif">
+									</span>
+								</a>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td style="vertical-align: middle;" class="LabelV200">
+							Valor:
+						</td>
+						<td>
+							<input type="text" id="pixValue" value="" style="width: 200px;" readonly>
+							<span style="margin-left: 5px; position: absolute; margin-top: 2px;">
+								<a href="../common/help.php?subtopic=Field_EMailAddress_Comment" target="_blank">
+									<span class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), 'Information:', 'Value determined for donation.', '');" onmouseout="$('#HelperDivContainer').hide();">
+										<img style="border:0px;" src="{{ template_path }}/images/global/content/info.gif">
+									</span>
+								</a>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td style="vertical-align: middle;" class="LabelV200">
+							Coins:
+						</td>
+						<td>
+							<input type="text" id="points" value="" style="width: 200px;" readonly>
+							<span style="margin-left: 5px; position: absolute; margin-top: 2px;">
+								<a href="../common/help.php?subtopic=Field_EMailAddress_Comment" target="_blank">
+									<span class="HelperDivIndicator" onmouseover="ActivateHelperDiv($(this), 'Information:', 'Reward that will be delivered to your account.', '');" onmouseout="$('#HelperDivContainer').hide();">
+										<img style="border:0px;" src="{{ template_path }}/images/global/content/info.gif">
+									</span>
+								</a>
+							</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
+			<table style="width:100%;">
+				<tbody>
+					<tr>
+						<td style="text-align: center;">
+							<img id="qrCodeImage" src="" alt="QR Code PIX" style="width: 400px; height: 400px;">
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center; font-weight: bold; color: green; vertical-align: middle;">
+							Scan the QR code to make payment.
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
+			<div style="text-align: center;">
+				<div class="BigButton" style="display: inline-block; background-image:url({{ template_path }}/images/global/buttons/sbutton.gif);">   
+					<div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
+						<div class="BigButtonOver" style="background-image: url({{ template_path }}/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div>
+						<input class="BigButtonText" type="button" value="Copy and Paste" onclick="copyToClipboard()">
+						<input type="text" id="copiaColaValue" value="" style="display: none;" readonly>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="BoxFrameHorizontal" style="background-image:url({{ template_path }}/images/global/content/box-frame-horizontal.gif);"></div>
+		<div class="BoxFrameEdgeRightBottom" style="background-image:url({{ template_path }}/images/global/content/box-frame-edge.gif);"></div>
+		<div class="BoxFrameEdgeLeftBottom" style="background-image:url({{ template_path }}/images/global/content/box-frame-edge.gif);"></div>
+	</div>
+</div>
+
+<script>
+	function showPixModal(reference, price, points, qrCodeBase64, copia_e_cola) {
+		$('#reference').val(reference);
+		$('#pixValue').val(price.toFixed(2).replace('.', ','));
+		$('#points').val(points);
+		$('#qrCodeImage').attr('src', 'data:image/png;base64,' + qrCodeBase64);
+		$('#copiaColaValue').val(copia_e_cola); 
+		$('.SmallBox').fadeIn();
+	}
+
+	function checkPixStatus(reference) {
+		$.ajax({
+			url: 'check_pix_status.php',
+			type: 'POST',
+			dataType: 'json',
+			data: { reference: reference },
+			success: function (response) {
+				if (response.status === 'APROVADO') {
+					$('#qrCodeImage').attr('src', 'payments/images/aprovado.png');
+					clearInterval(pixCheckInterval);
+				}
+
+				if (response.status === 'EXPIRADO') {
+					$('#qrCodeImage').attr('src', 'payments/images/expirado.png');
+					clearInterval(pixCheckInterval);
+				}
+			},
+			error: function (xhr, status, error) {
+				console.log("Erro ao verificar o status do PIX.");
+			}
+		});
+	}
+
+	$('#pixForm').on('submit', function (event) {
+		event.preventDefault();
+
+		$.ajax({
+			url: 'polopag_generate_pix.php',
+			type: 'POST',
+			data: $(this).serialize(),
+			success: function (response) {
+				showPixModal(response.reference, parseFloat(response.price), response.points, response.base64, response.copia_e_cola);
+				pixCheckInterval = setInterval(function () {
+					checkPixStatus(response.reference);
+				}, 3000);
+			},
+			error: function (xhr, status, error) {
+				alert("Error generating the PIX. Please try again.");
+				$('.SmallBox').hide();
+			}
+		});
+	});
+
+	function copyToClipboard() {
+		var copyText = document.getElementById("copiaColaValue");
+		copyText.style.display = "block";
+		copyText.select();
+		copyText.setSelectionRange(0, 99999);
+		document.execCommand("copy");
+		copyText.style.display = "none";
+		alert("Code copied to clipboard!");
+	}
+</script>
