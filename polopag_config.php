@@ -1,25 +1,40 @@
 <?php
 if (!defined('INCLUDED')) {
     http_response_code(403);
-    die('Direct access not permitted.');
+    die('Acesso direto não permitido.');
 }
-
-global $config, $db;
-require_once 'common.php';
-require_once 'config.php';
-require_once 'config.local.php';
 
 error_reporting(0);
 ini_set('display_errors', 0);
 
-function read_config()
+// Path para o config.lua
+$config_path = ''; // Adicionar o caminho do servidor!!!
+function read_config($config_path)
 {
-    $configPolopag['api_url'] = "https://api.polopag.com/v1/cobpix";
-    $configPolopag['api_key'] = "95d2ceff4bd277201b0a28010aa6184a1f990c79fb8427b192c79988450b9cce"; // Adicionar sua key aqui!!!
-    $configPolopag['coins_column'] = "coins_transferable";
-    $configPolopag['webhook_url'] = "https://" . $_SERVER['HTTP_HOST'] . "/polopag_webhook.php";
+    $config = [];
+    if (!file_exists($config_path)) {
+        die("Arquivo de configuração não encontrado.");
+    }
 
-    return $configPolopag;
+    $file_content = file_get_contents($config_path);
+
+    preg_match('/mysqlHost\s*=\s*"(.*)"/', $file_content, $host_match);
+    preg_match('/mysqlUser\s*=\s*"(.*)"/', $file_content, $user_match);
+    preg_match('/mysqlPass\s*=\s*"(.*)"/', $file_content, $password_match);
+    preg_match('/mysqlDatabase\s*=\s*"(.*)"/', $file_content, $database_match);
+    preg_match('/mysqlPort\s*=\s*(\d+)/', $file_content, $port_match);
+
+    $config['host'] = $host_match[1];
+    $config['user'] = $user_match[1];
+    $config['password'] = $password_match[1];
+    $config['database'] = $database_match[1];
+    $config['port'] = $port_match[1];
+    $config['api_url'] = "https://api.polopag.com/v1/cobpix";
+    $config['api_key'] = ""; // Adicionar sua key aqui!!!
+    $config['coins_column'] = "coins_transferable";
+    $config['webhook_url'] = "https://" . $_SERVER['HTTP_HOST'] . "/polopag_webhook.php";
+
+    return $config;
 }
 
 function calculatePromotionPoints($price) { // Implemente ou modifique sua própria fórmula de cálculo de pontos

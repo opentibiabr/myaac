@@ -1,13 +1,23 @@
 <?php
-global $config, $db;
 define('INCLUDED', true);
 require 'polopag_config.php';
 
 error_reporting(0);
 ini_set('display_errors', 0);
 session_start();
+function connect_to_database($config)
+{
+    try {
+        $dsn = "mysql:host={$config['host']};dbname={$config['database']};port={$config['port']};charset=utf8mb4";
+        $pdo = new PDO($dsn, $config['user'], $config['password']);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $pdo;
+    } catch (PDOException $e) {
+        die("Erro ao conectar ao banco de dados: ");
+    }
+}
 
-function generate_pix_from_polopag($reference, $price, $configPolopag)
+function generate_pix_from_polopag($reference, $price, $config)
 {
     $data = [
         "valor" => number_format($price, 2, '.', ''),
@@ -15,16 +25,16 @@ function generate_pix_from_polopag($reference, $price, $configPolopag)
         "referencia" => $reference,
         "solicitacaoPagador" => "Pagamento via PIX",
         "infoAdicionais" => [],
-        "webhookUrl" => $configPolopag['webhook_url']
+        "webhookUrl" => $config['webhook_url']
     ];
 
     $headers = [
-        "Api-Key: {$configPolopag['api_key']}",
+        "Api-Key: {$config['api_key']}",
         "Content-Type: application/json"
     ];
 
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $configPolopag['api_url']);
+    curl_setopt($ch, CURLOPT_URL, $config['api_url']);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -42,7 +52,7 @@ function generate_pix_from_polopag($reference, $price, $configPolopag)
     }
 }
 
-function check_existing_pix($account_id, $price)
+function check_existing_pix($account_id, $price, $pdo)
 {
     $query_check = "SELECT * FROM polopag_transacoes 
                     WHERE account_id = :account_id 
@@ -50,7 +60,7 @@ function check_existing_pix($account_id, $price)
                     AND status = 'ATIVA' 
                     AND expires_at > NOW() 
                     LIMIT 1";
-    $stmt_check = $db->prepare($query_check);
+    $stmt_check = $pdo->prepare($query_check);
     $stmt_check->execute([
         ':account_id' => $account_id,
         ':price' => $price
@@ -74,26 +84,23 @@ function check_existing_pix($account_id, $price)
     return false;
 }
 
-function get_account_id($account_name)
+function get_account_id($account_name, $pdo)
 {
     try {
-        $account_id_query = $db->query("SELECT id FROM accounts WHERE name = :account_name LIMIT 1");
+        $account_id_query = $pdo->prepare("SELECT id FROM accounts WHERE name = :account_name LIMIT 1");
         $account_id_query->execute([':account_name' => $account_name]);
         $account = $account_id_query->fetch(PDO::FETCH_ASSOC);
 
-        $account = new OTS_Account();
-        $account->load($account_id_query['id']);
-        if (!$account->isLoaded()) {
+        if (!$account) {
             return false;
         }
 
-        return $account->getId();
+        return $account['id'];
     } catch (PDOException $e) {
         die("Erro ao buscar o ID da conta.");
     }
 }
-
-function store_pix_data($reference, $txid, $internalId, $base64, $copia_e_cola, $price, $points, $status, $type, $account_id)
+function store_pix_data($reference, $txid, $internalId, $base64, $copia_e_cola, $price, $points, $status, $type, $account_id, $pdo)
 {
     $current_time = time();
     $last_generated_time = $_SESSION['last_pix_generated_time'] ?? 0;
@@ -107,7 +114,7 @@ function store_pix_data($reference, $txid, $internalId, $base64, $copia_e_cola, 
     try {
         $query = "INSERT INTO polopag_transacoes (account_id, reference, txid, internalId, base64, copia_e_cola, price, points, status, type, origin, created_at, expires_at)
                   VALUES (:account_id, :reference, :txid, :internalId, :base64, :copia_e_cola, :price, :points, :status, :type, 'site', NOW(), NOW() + INTERVAL 1 HOUR)";
-        $stmt = $db->prepare($query);
+        $stmt = $pdo->prepare($query);
 
         $stmt->execute([
             ':account_id' => $account_id,
@@ -137,7 +144,6 @@ function store_pix_data($reference, $txid, $internalId, $base64, $copia_e_cola, 
         die("Erro ao armazenar dados do PIX.");
     }
 }
-
 function return_json_response($reference, $price, $points, $base64, $copia_e_cola)
 {
     if (ob_get_length()) {
@@ -157,41 +163,41 @@ function return_json_response($reference, $price, $points, $base64, $copia_e_col
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $configPolopag = read_config();
-
+    $config = read_config($config_path);
     $account_name = filter_input(INPUT_POST, 'account_name', FILTER_SANITIZE_STRING);
     $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_STRING);
 
     if ($price <= 1) {
-        die("O pre�o deve ser maior que 1.");
+        die("O preço deve ser maior que 1.");
     }
 
     if (!$account_name) {
-        die("Nome da conta inv�lido.");
+        die("Nome da conta inválido.");
     }
 
-    $account_id = get_account_id($account_name);
+    $pdo = connect_to_database($config);
+    $account_id = get_account_id($account_name, $pdo);
 
     if (!$account_id) {
         die("Conta não encontrada para o nome de usuário: $account_name");
     }
 
     $reference = 'REF' . strtoupper(uniqid()) . strtoupper(uniqid());
-    $existing_pix = check_existing_pix($account_id, $price);
+    $existing_pix = check_existing_pix($account_id, $price, $pdo);
 
     if ($existing_pix) {
         return_json_response($existing_pix['reference'], $existing_pix['price'], $existing_pix['points'], $existing_pix['base64']);
     } else {
-        $pix_data = generate_pix_from_polopag($reference, $price, $configPolopag);
+        $pix_data = generate_pix_from_polopag($reference, $price, $config);
         $txid = $pix_data['txid'];
         $internalId = $pix_data['internalId'];
         $base64 = $pix_data['qrcodeBase64'];
         $copia_e_cola = $pix_data['pixCopiaECola'];
         $status = $pix_data['status'];
-        $type = $configPolopag['coins_column'];
+        $type = $config['coins_column'];
         $points = calculatePromotionPoints($price);
 
-        store_pix_data($reference, $txid, $internalId, $base64, $copia_e_cola, $price, $points, $status, $type, $account_id);
+        store_pix_data($reference, $txid, $internalId, $base64, $copia_e_cola, $price, $points, $status, $type, $account_id, $pdo);
         return_json_response($reference, $price, $points, $base64, $copia_e_cola); // Adicione copia_e_cola aqui
     }
 }

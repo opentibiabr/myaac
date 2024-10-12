@@ -3,8 +3,7 @@ global $config, $twig, $logged;
 
 /**
  * @name      myaac-polopag-pix
- * @author    Rokam
- * @author    Luan Luciano
+ * @author    Marcinho1994, Rokam and luanluciano93
  * @version   1.0
  */
  
