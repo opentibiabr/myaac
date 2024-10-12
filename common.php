@@ -29,7 +29,7 @@ if (version_compare(phpversion(), '7.4', '<')) die('PHP version 7.4 or higher is
 
 define('MYAAC', true);
 define('MYAAC_VERSION', '0.8.16');
-define('DATABASE_VERSION', 35);
+define('DATABASE_VERSION', 36);
 define('TABLE_PREFIX', 'myaac_');
 define('START_TIME', microtime(true));
 define('MYAAC_OS', stripos(PHP_OS, 'WIN') === 0 ? 'WINDOWS' : (strtoupper(PHP_OS) === 'DARWIN' ? 'MAC' : 'LINUX'));

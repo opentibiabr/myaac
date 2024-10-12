@@ -30,7 +30,7 @@ function read_config($config_path)
     $config['database'] = $database_match[1];
     $config['port'] = $port_match[1];
     $config['api_url'] = "https://api.polopag.com/v1/cobpix";
-    $config['api_key'] = ""; // Adicionar sua key aqui!!!
+    $config['api_key'] = ""; // Adicionar sua key aqui!!! Works with PIX from: https://polopag.com
     $config['coins_column'] = "coins_transferable";
     $config['webhook_url'] = "https://" . $_SERVER['HTTP_HOST'] . "/polopag_webhook.php";
 
