@@ -75,8 +75,8 @@ define('MENU_CATEGORY_ACCOUNT', 2);
 define('MENU_CATEGORY_COMMUNITY', 3);
 define('MENU_CATEGORY_FORUM', 4);
 define('MENU_CATEGORY_LIBRARY', 5);
-define('MENU_CATEGORY_SHOP', 6);
-define('MENU_CATEGORY_CHARBAAZAR', 7);
+define('MENU_CATEGORY_CHARBAAZAR', 6);
+define('MENU_CATEGORY_SHOP', 7);
 
 // otserv versions
 define('OTSERV', 1);
