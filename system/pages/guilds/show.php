@@ -113,12 +113,19 @@ $guild_balance = $guild->getCustomField('balance');
 
 // RESIDENCE
 $guild_residence = $guild->getCustomField('residence');
-$select_guildhouse = $db->query('SELECT `house_id`, `listid`, `list` FROM `house_lists` WHERE `house_id` = '.$guild_residence.'');
+
+// Preparar e executar a primeira consulta
+$select_guildhouse = $db->prepare('SELECT house_id, listid, list FROM house_lists WHERE house_id = :house_id');
+$select_guildhouse->execute(['house_id' => $guild_residence]);
 $get_guildhouse = $select_guildhouse->fetch();
 $count_guildhouse = $select_guildhouse->rowCount();
-if($count_guildhouse > 0){
-	$get_house = $db->query('SELECT `id`, `owner`, `paid`, `name`, `town_id` FROM `houses` WHERE `id` = '.$get_guildhouse['house_id'].'')->fetch();
-	$house_name = $get_house['name'];
+
+if ($count_guildhouse > 0) {
+// Preparar e executar a segunda consulta
+$get_house = $db->prepare('SELECT id, owner, paid, name, town_id FROM houses WHERE id = :id');
+$get_house->execute(['id' => $get_guildhouse['house_id']]);
+$house = $get_house->fetch();
+$house_name = $house['name'];
 }
 
 
