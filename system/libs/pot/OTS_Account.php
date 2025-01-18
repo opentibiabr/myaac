@@ -248,12 +248,32 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
      */
     public function findByEMail($email)
     {
-        // finds player's ID
-        $id = $this->db->query('SELECT `id` FROM `accounts` WHERE `email` = ' . $this->db->quote($email))->fetch();
+        // Check valid email
+        if (empty($email)) {
+            sendError("Email is not correct");
+            return;
+        }
 
-        // if anything was found
-        if (isset($id['id'])) {
-            $this->load($id['id']);
+        try {
+            // Prepare the query to prevent SQL Injection
+            $stmt = $this->db->prepare('SELECT `id` FROM `accounts` WHERE `email` = :email');
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+
+            // Execute the prepared statement
+            $stmt->execute();
+
+            // Fetch the result
+            $id = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // If anything was found, load the account by ID
+            if (isset($id['id'])) {
+                $this->load($id['id']);
+            } else {
+                sendError("No account found for the provided email.");
+            }
+        } catch (Exception $e) {
+            sendError("Error while executing query: " . $e->getMessage());
+            throw $e;
         }
     }
 
