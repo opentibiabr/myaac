@@ -80,13 +80,6 @@ $config = array(
 	'database_persistent' => false, // use database permanent connection (like server), may speed up your site
 	'database_encryption' => 'sha1',
 
-	// multiworld system (only TFS 0.3)
-	'multiworld' => false, // use multiworld system?
-	'worlds' => array( // list of worlds
-		//'1' => 'Your World Name',
-		//'2' => 'Your Second World Name'
-	),
-
 	// images
 	'outfit_images_url' => './outfit/animoutfit.php', // set to animoutfit.php for animated outfit
 	'item_images_url' => 'images/items/', // set to images/items if you host your own items in images folder
@@ -164,6 +157,8 @@ $config = array(
 		1 => 'Male'
 	),
 
+  'show_filters' => true,
+
 	// vocations
 	'vocations' => array(
 		0 => 'None',
@@ -179,11 +174,11 @@ $config = array(
 
 	// new character config
 	'character_samples' => array( // vocations, format: ID_of_vocation => 'Name of Character to copy'
-		//0 => 'Rook Sample',
-		1 => 'Sorcerer Sample',
-		2 => 'Druid Sample',
-		3 => 'Paladin Sample',
-		4 => 'Knight Sample'
+		0 => 'Rook Sample',
+		//1 => 'Sorcerer Sample',
+		//2 => 'Druid Sample',
+		//3 => 'Paladin Sample',
+		//4 => 'Knight Sample'
 	),
 
     'use_character_sample_skills' => false,
@@ -241,7 +236,6 @@ $config = array(
 	'team_style' => 2, // 1/2 (1 - normal table, 2 - in boxes, grouped by group id)
 	'team_display_status' => true,
 	'team_display_lastlogin' => true,
-	'team_display_world' => false,
 	'team_display_outfit' => true,
 
 	// bans page
@@ -303,8 +297,8 @@ $config = array(
 
 	// banner home
 	'banner_status' => false,
-	'banner_image' => '500x660.png', // templates->tibiacom->images->carousel
-	'banner_link' => 'www.instagram.com',
+	'banner_image' => '500x660.png', // templates->tibiacom->images->banners
+	'banner_link' => 'http://your-url.com', // or set empty ''
 
 	// status bar
 	'status_bar' => true,
@@ -313,18 +307,19 @@ $config = array(
 	'whatsapp_link' => '5511912345678', // wa.me/5511912345678
 	'instagram_link' => 'profile', // www.instagram.com/profile
 	'facebook_link' => 'page', // www.facebook.com/page
-	'collapse_status' => true,
+	'collapse_status' => false,
+
+  // slide
+  'carousel' => array(
+    'runemaster_small.jpg',
+    'merrygarb_small.jpg',
+    'mothcape_small.jpg',
+  ),
 
 	// events
 	'events_xml' => 'data/xml/events.xml',
 
-	// slide
-	'carousel_status' => true,
-	'carousel' => array(
-		'carousel_1' => 'runemaster_small.jpg',
-		'carousel_2' => 'merrygarb_small.jpg',
-		'carousel_3' => 'mothcape_small.jpg',
-	),
+
 
 	// load page
 	'pace_load' => true, // load page top bar

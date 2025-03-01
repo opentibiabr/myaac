@@ -1,5 +1,5 @@
 <?php
-global $db, $twig, $template_path, $account_logged, $logged, $template_name, $status;
+global $db, $config, $twig, $template_path, $account_logged, $logged, $template_name, $status;
 /**
  * Project: MyAAC
  *     Automatic Account Creator for Open Tibia Servers
@@ -84,53 +84,66 @@ if (empty($uri) || isset($_REQUEST['template'])) {
         $_REQUEST['p'] = $uri;
         $found = true;
     } else {
+        // prettier-ignore
+        $regexes = [
+          'number'       => "[0-9]+",             // only digits (one or more).
+          'text'         => "[a-zA-Z]+",          // only words (one or more).
+          'alphanumeric' => "[a-zA-Z0-9]+",       // words and/or numbers (one or more).
+          'url'          => "[A-Za-z0-9-_]+",     // words, numbers, hyphen e underscore (one or more).
+          'special'      => "[A-Za-z0-9-_%+\']+", // words, numbers, hyphen, underscore, percentage, plus signal and apostrophe (one or more).
+        ];
+
         $rules = array(
-            '/^account\/manage\/?$/' => array('subtopic' => 'accountmanagement'),
-            '/^account\/create\/?$/' => array('subtopic' => 'createaccount'),
-            '/^account\/lost\/?$/' => array('subtopic' => 'lostaccount'),
-            '/^account\/logout\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'logout'),
-            '/^account\/password\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_password'),
-            '/^account\/register\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'register'),
-            '/^account\/register\/new\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'register_new'),
-            '/^account\/resend\/verify\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'resend_verify'),
-            '/^account\/email\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_email'),
-            '/^account\/info\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_info'),
-            '/^account\/character\/create\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'create_character'),
-            '/^account\/character\/name\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_name'),
-            '/^account\/character\/sex\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_sex'),
-            '/^account\/character\/main\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_main'),
-            '/^account\/character\/delete\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'delete_character'),
-            '/^account\/character\/comment\/[A-Za-z0-9-_%+\']+\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_comment', 'name' => '$3'),
-            '/^account\/character\/comment\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'change_comment'),
-            '/^account\/confirm_email\/[A-Za-z0-9-_]+\/?$/' => array('subtopic' => 'accountmanagement', 'action' => 'confirm_email', 'v' => '$2'),
-            '/^characters\/[A-Za-z0-9-_%+\']+$/' => array('subtopic' => 'characters', 'name' => '$1'),
-            '/^changelog\/[0-9]+\/?$/' => array('subtopic' => 'changelog', 'page' => '$1'),
-            '/^commands\/add\/?$/' => array('subtopic' => 'commands', 'action' => 'add'),
-            '/^commands\/edit\/?$/' => array('subtopic' => 'commands', 'action' => 'edit'),
-            '/^faq\/add\/?$/' => array('subtopic' => 'faq', 'action' => 'add'),
-            '/^faq\/edit\/?$/' => array('subtopic' => 'faq', 'action' => 'edit'),
-            '/^forum\/add_board\/?$/' => array('subtopic' => 'forum', 'action' => 'add_board'),#
-            '/^forum\/edit_board\/?$/' => array('subtopic' => 'forum', 'action' => 'edit_board'),
-            '/^forum\/board\/[0-9]+\/?$/' => array('subtopic' => 'forum', 'action' => 'show_board', 'id' => '$2'),
-            '/^forum\/board\/[0-9]+\/[0-9]+\/?$/' => array('subtopic' => 'forum', 'action' => 'show_board', 'id' => '$2', 'page' => '$3'),
-            '/^forum\/thread\/[0-9]+\/?$/' => array('subtopic' => 'forum', 'action' => 'show_thread', 'id' => '$2'),
-            '/^forum\/thread\/[0-9]+\/[0-9]+\/?$/' => array('subtopic' => 'forum', 'action' => 'show_thread', 'id' => '$2', 'page' => '$3'),
-            '/^gallery\/add\/?$/' => array('subtopic' => 'gallery', 'action' => 'add'),
-            '/^gallery\/edit\/?$/' => array('subtopic' => 'gallery', 'action' => 'edit'),
-            '/^gallery\/[0-9]+\/?$/' => array('subtopic' => 'gallery', 'image' => '$1'),
-            '/^gifts\/history\/?$/' => array('subtopic' => 'gifts', 'action' => 'show_history'),
-            '/^guilds\/[A-Za-z0-9-_%+\']+$/' => array('subtopic' => 'guilds', 'action' => 'show', 'guild' => '$1'),
-            '/^highscores\/[A-Za-z0-9-_]+\/[A-Za-z0-9-_]+\/[0-9]+\/?$/' => array('subtopic' => 'highscores', 'list' => '$1', 'vocation' => '$2', 'page' => '$3'),
-            '/^highscores\/[A-Za-z0-9-_]+\/[0-9]+\/?$/' => array('subtopic' => 'highscores', 'list' => '$1', 'page' => '$2'),
-            '/^highscores\/[A-Za-z0-9-_]+\/[A-Za-z0-9-_]+\/?$/' => array('subtopic' => 'highscores', 'list' => '$1', 'vocation' => '$2'),
-            '/^highscores\/[A-Za-z0-9-_\']+\/?$/' => array('subtopic' => 'highscores', 'list' => '$1'),
-            '/^news\/add\/?$/' => array('subtopic' => 'news', 'action' => 'add'),
-            '/^news\/edit\/?$/' => array('subtopic' => 'news', 'action' => 'edit'),
-            '/^news\/archive\/?$/' => array('subtopic' => 'newsarchive'),
-            '/^news\/archive\/[0-9]+\/?$/' => array('subtopic' => 'newsarchive', 'id' => '$2'),
-            '/^polls\/[0-9]+\/?$/' => array('subtopic' => 'polls', 'id' => '$1'),
-            '/^spells\/[A-Za-z0-9-_%]+\/[A-Za-z0-9-_]+\/?$/' => array('subtopic' => 'spells', 'vocation' => '$1', 'order' => '$2'),
-            '/^houses\/view\/?$/' => array('subtopic' => 'houses', 'page' => 'view')
+            "/^account\/manage\/?$/" => array("subtopic" => "accountmanagement"),
+            "/^account\/create\/?$/" => array("subtopic" => "createaccount"),
+            "/^account\/lost\/?$/" => array("subtopic" => "lostaccount"),
+            "/^account\/logout\/?$/" => array("subtopic" => "accountmanagement", "action" => "logout"),
+            "/^account\/password\/?$/" => array("subtopic" => "accountmanagement", "action" => "change_password"),
+            "/^account\/register\/?$/" => array("subtopic" => "accountmanagement", "action" => "register"),
+            "/^account\/register\/new\/?$/" => array("subtopic" => "accountmanagement", "action" => "register_new"),
+            "/^account\/resend\/verify\/?$/" => array("subtopic" => "accountmanagement", "action" => "resend_verify"),
+            "/^account\/email\/?$/" => array("subtopic" => "accountmanagement", "action" => "change_email"),
+            "/^account\/info\/?$/" => array("subtopic" => "accountmanagement", "action" => "change_info"),
+            "/^account\/character\/create\/?$/" => array("subtopic" => "accountmanagement", "action" => "create_character"),
+            "/^account\/character\/name\/?$/" => array("subtopic" => "accountmanagement", "action" => "change_name"),
+            "/^account\/character\/sex\/?$/" => array("subtopic" => "accountmanagement", "action" => "change_sex"),
+            "/^account\/character\/main\/?$/" => array("subtopic" => "accountmanagement", "action" => "change_main"),
+            "/^account\/character\/delete\/?$/" => array("subtopic" => "accountmanagement", "action" => "delete_character"),
+            "/^account\/character\/comment\/{$regexes['special']}\/?$/" => array("subtopic" => "accountmanagement", "action" => "change_comment", "name" => "$3"),
+            "/^account\/character\/comment\/?$/" => array("subtopic" => "accountmanagement", "action" => "change_comment"),
+            "/^account\/confirm_email\/{$regexes['url']}\/?$/" => array("subtopic" => "accountmanagement", "action" => "confirm_email", "v" => "$2"),
+            "/^characters\/{$regexes['special']}$/" => array("subtopic" => "characters", "name" => "$1"),
+            "/^changelog\/{$regexes['number']}\/?$/" => array("subtopic" => "changelog", "page" => "$1"),
+            "/^commands\/add\/?$/" => array("subtopic" => "commands", "action" => "add"),
+            "/^commands\/edit\/?$/" => array("subtopic" => "commands", "action" => "edit"),
+            "/^faq\/add\/?$/" => array("subtopic" => "faq", "action" => "add"),
+            "/^faq\/edit\/?$/" => array("subtopic" => "faq", "action" => "edit"),
+            "/^forum\/add_board\/?$/" => array("subtopic" => "forum", "action" => "add_board"),#
+            "/^forum\/edit_board\/?$/" => array("subtopic" => "forum", "action" => "edit_board"),
+            "/^forum\/board\/{$regexes['number']}\/?$/" => array("subtopic" => "forum", "action" => "show_board", "id" => "$2"),
+            "/^forum\/board\/{$regexes['number']}\/{$regexes['number']}\/?$/" => array("subtopic" => "forum", "action" => "show_board", "id" => "$2", "page" => "$3"),
+            "/^forum\/thread\/{$regexes['number']}\/?$/" => array("subtopic" => "forum", "action" => "show_thread", "id" => "$2"),
+            "/^forum\/thread\/{$regexes['number']}\/{$regexes['number']}\/?$/" => array("subtopic" => "forum", "action" => "show_thread", "id" => "$2", "page" => "$3"),
+            "/^gallery\/add\/?$/" => array("subtopic" => "gallery", "action" => "add"),
+            "/^gallery\/edit\/?$/" => array("subtopic" => "gallery", "action" => "edit"),
+            "/^gallery\/{$regexes['number']}\/?$/" => array("subtopic" => "gallery", "image" => "$1"),
+            "/^gifts\/history\/?$/" => array("subtopic" => "gifts", "action" => "show_history"),
+            "/^guilds\/{$regexes['special']}$/" => array("subtopic" => "guilds", "action" => "show", "guild" => "$1"),
+            "/^worlds\/{$regexes['special']}$/" => array("subtopic" => "worlds", "world" => "$1"),
+            "/^highscores\/{$regexes['url']}\/{$regexes['special']}\/{$regexes['text']}\/{$regexes['number']}\/?$/" => array("subtopic" => "highscores", "list" => "$1", "world" => "$2", "vocation" => "$3", "page" => "$4"),
+            "/^highscores\/{$regexes['url']}\/{$regexes['special']}\/{$regexes['number']}\/?$/" => array("subtopic" => "highscores", "list" => "$1", "world" => "$2", "page" => "$3"),
+            "/^highscores\/{$regexes['url']}\/{$regexes['special']}\/{$regexes['text']}\/?$/" => array("subtopic" => "highscores", "list" => "$1", "world" => "$2", "vocation" => "$3"),
+            "/^highscores\/{$regexes['url']}\/{$regexes['text']}\/?$/" => array("subtopic" => "highscores", "list" => "$1", "vocation" => "$2"),
+            "/^highscores\/{$regexes['url']}\/{$regexes['special']}\/?$/" => array("subtopic" => "highscores", "list" => "$1", "world" => "$2"),
+            "/^highscores\/{$regexes['url']}\/?$/" => array("subtopic" => "highscores", "list" => "$1"),
+            "/^lastkills\/{$regexes['special']}$/" => array("subtopic" => "lastkills", "world" => "$1"),
+            "/^news\/add\/?$/" => array("subtopic" => "news", "action" => "add"),
+            "/^news\/edit\/?$/" => array("subtopic" => "news", "action" => "edit"),
+            "/^news\/archive\/?$/" => array("subtopic" => "newsarchive"),
+            "/^news\/archive\/{$regexes['number']}\/?$/" => array("subtopic" => "newsarchive", "id" => "$2"),
+            "/^polls\/{$regexes['number']}\/?$/" => array("subtopic" => "polls", "id" => "$1"),
+            "/^spells\/{$regexes['text']}\/{$regexes['url']}\/?$/" => array("subtopic" => "spells", "vocation" => "$1", "order" => "$2"),
+            "/^houses\/view\/?$/" => array("subtopic" => "houses", "page" => "view")
         );
 
         foreach ($rules as $rule => $redirect) {
@@ -179,6 +192,11 @@ require_once SYSTEM . 'init.php';
 if (!$db->hasTable('myaac_account_actions')) {
     throw new RuntimeException('Seems that the table <strong>myaac_account_actions</strong> of MyAAC doesn\'t exist in the database. This is a fatal error. You can try to reinstall MyAAC by visiting <a href="' . BASE_URL . 'install">this</a> url.');
 }
+
+// set worlds in global php and twig
+$worlds = $db->hasTable('worlds') ? $db->query("SELECT `id`, `name` FROM `worlds` ORDER BY `name` ASC")->fetchAll(PDO::FETCH_ASSOC) : [];
+define('WORLDS', $worlds);
+$twig->addGlobal('worlds', $worlds);
 
 // event system
 require_once SYSTEM . 'hooks.php';
@@ -328,7 +346,7 @@ if ($config['backward_support']) {
     $topic = $title;
 }
 
-$title_full = (isset($title) ? $title . $config['title_separator'] : '') . $config['lua']['serverName'];
+$title_full = (isset($title) ? $title . $config['title_separator'] : '') . configLua('serverName');
 require $template_path . '/' . $template_index;
 
 echo base64_decode('PCEtLSBQb3dlcmVkIGJ5IE9wZW5UaWJpYUJSIE15QUFDIDo6IGh0dHBzOi8vZ2l0aHViLmNvbS9vcGVudGliaWFici9teWFhYyAtLT4=') . PHP_EOL;

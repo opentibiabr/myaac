@@ -125,7 +125,7 @@ foreach ($auctions as $auction) { /* LOOP AUCTIONS */
                                     </div>
                                     Level: <?= $character['level'] ?> |
                                     Vocation: <?= $character_voc ?> | <?= $character_sex ?> |
-                                    World: <?= $config['lua']['serverName'] ?>
+                                    World: <?= getWorldName($character['world_id']) ?>
                                     <br>
                                 </div>
                                 <div class="AuctionBody">

@@ -1,22 +1,21 @@
-<?php
-if($config['banner_status'] == true){
-?>
-<div class="modal fade" id="BannerModal" tabindex="-1" aria-labelledby="BannerModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content" style="background: none; border: none; border-radius: 0.3rem;">
-      <div class="modal-body">
-		  <a href="http://<?php echo $config['banner_link'] ?>">
-			<img src="<?php echo $template_path; ?>/images/carousel/<?php echo $config['banner_image'] ?>" style="width: 100%;">
-		  </a>
+<?php global $config, $template_path;
+if ($config['banner_status']) { ?>
+  <div class="modal fade" id="BannerModal" tabindex="-1" aria-labelledby="BannerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background: none; border: none; border-radius: 0.3rem;">
+        <div class="modal-body">
+          <a href="<?= $config['banner_link'] ?: 'javascript:void(0)' ?>">
+            <img src="<?= $template_path ?>/images/banners/<?= $config['banner_image'] ?>" style="width: 100%;">
+          </a>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){
-	$("#BannerModal").modal('show');
-});
-</script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#BannerModal").modal("show");
+    });
+  </script>
 <?php } ?>
 <?php
 /**

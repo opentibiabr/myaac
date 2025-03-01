@@ -13,8 +13,13 @@ defined('MYAAC') or die('Direct access not allowed!');
 
 $title = "Players Online Records";
 
+if (!$db->hasTable('server_record')) {
+  echo "Table 'server_record' not found!";
+  return;
+}
+
 echo '
-<b><div style="text-align:center">Players online records on '.$config['lua']['serverName'].'</div></b>
+<b><div style="text-align:center">Players online records on '.configLua('serverName').'</div></b>
 <TABLE BORDER=0 CELLSPACING=1 CELLPADDING=4 WIDTH=100%>
 	<TR BGCOLOR="'.$config['vdarkborder'].'">
 		<TD class="white"><b><div style="text-align:center">Players</div></b></TD>

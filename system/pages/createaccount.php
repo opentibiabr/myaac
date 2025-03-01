@@ -165,7 +165,7 @@ if ($save) {
     }
 
     if (!isset($_POST['accept_rules']) || $_POST['accept_rules'] !== 'true')
-        $errors['accept_rules'] = 'You have to agree to the ' . $config['lua']['serverName'] . ' Rules in order to create an account!';
+        $errors['accept_rules'] = 'You have to agree to the ' . configLua('serverName') . ' Rules in order to create an account!';
 
     $params = array(
         'account' => $account_db,
@@ -187,6 +187,7 @@ if ($save) {
     if (config('account_create_character_create')) {
         $character_name = isset($_POST['name']) ? stripslashes(ucwords(strtolower($_POST['name']))) : null;
         $character_sex = isset($_POST['sex']) ? (int)$_POST['sex'] : null;
+        $character_world = isset($_POST['world']) ? stripslashes(ucwords(strtolower($_POST['world']))) : null;
         $character_vocation = isset($_POST['vocation']) ? (int)$_POST['vocation'] : null;
         $character_town = isset($_POST['town']) ? (int)$_POST['town'] : null;
         $createCharacter->check($character_name, $character_sex, $character_vocation, $character_town, $errors);
@@ -246,7 +247,7 @@ if ($save) {
                 'verify_url' => generateLink($verify_url, $verify_url, true)
             ));
 
-            if (_mail($email, 'New account on ' . $config['lua']['serverName'], $body_html)) {
+            if (_mail($email, 'New account on ' . configLua('serverName'), $body_html)) {
                 echo 'Your account has been created.<br/><br/>';
                 $twig->display('success.html.twig', array(
                     'title' => 'Account Created',
@@ -262,7 +263,7 @@ if ($save) {
         } else {
             if (config('account_create_character_create')) {
                 // character creation
-                $character_created = $createCharacter->doCreate($character_name, $character_sex, $character_vocation, $character_town, $new_account, $errors);
+                $character_created = $createCharacter->doCreate($character_world, $character_name, $character_sex, $character_vocation, $character_town, $new_account, $errors);
                 if (!$character_created) {
                     error('There was an error creating your character. Please create your character later in account management page.');
                     error(implode(' ', $errors));
@@ -305,7 +306,7 @@ if ($save) {
                     'password' => $password ?? null
                 ));
 
-                if (_mail($email, 'Your account on ' . $config['lua']['serverName'], $mailBody))
+                if (_mail($email, 'Your account on ' . configLua('serverName'), $mailBody))
                     echo '<br /><small>This information was sent on email address <b>' . $email . '</b>.';
                 else {
                     error('An error occurred while sending email. For Admin: More info can be found in system/logs/mailer-error.log');

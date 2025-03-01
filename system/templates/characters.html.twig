@@ -97,6 +97,12 @@
 
                           {% set rows = rows + 1 %}
                           <tr bgcolor="{{ getStyle(rows) }}">
+                            <td class="LabelV175">World:</td>
+                            <td>{{ getWorldName(player.getWorldId()) }}</td>
+                          </tr>
+
+                          {% set rows = rows + 1 %}
+                          <tr bgcolor="{{ getStyle(rows) }}">
                             <td class="LabelV175">Residence:</td>
                             <td>{{ town }}</td>
                           </tr>
@@ -1016,11 +1022,12 @@
                           <table class="TableContent" width="100%">
                             <tbody>
                             <tr bgcolor="{{ config.darkborder }}">
-                              <td width="40%"><B>Name</b></td>
-                              <td width="15%"><B>Level</b></td>
+                              <td width="30%"><B>Name</b></td>
+                              <td width="23%"><B>World</b></td>
+                              <td width="12%"><B>Level</b></td>
                               <td width="20%"><B>Vocation</b></td>
-                              <td width="25%"><b>Status</b></td>
-                              <td><b>&#160;</b></td>
+                              <td width="15%"><b>Status</b></td>
+                              <td></td>
                             </tr>
                             {% set i = 0 %}
                             {% for player in account_players %}
@@ -1031,6 +1038,7 @@
                                     <nobr>{{ i }}.&#160;{{ player.getName() }}{% if player.isDeleted() %}<span
                                         style="color: red"> [DELETED]</span>{% endif %}</nobr>
                                   </td>
+                                  <td>{{ getWorldName(player.getWorldId()) }}</td>
                                   <td>{{ player.getLevel() }}</td>
                                   <td>{{ player.getVocationName() }}</td>
                                   <td>{% if player.isOnline() %}<img src="{{ template_path }}/images/on.gif"

@@ -132,7 +132,7 @@ class OTS_Guild extends OTS_Row_DAO implements IteratorAggregate, Countable
 			$creationdata = 'creation_time';
 
         // SELECT query on database
-        $this->data = $this->db->query('SELECT `id`, `name`, `' . $ownerid . '` as `ownerid`, `' . $creationdata . '` as `creationdata` FROM `guilds` WHERE `id` = ' . (int) $id)->fetch();
+        $this->data = $this->db->query('SELECT `id`, `name`, `' . $ownerid . '` as `ownerid`, `' . $creationdata . '` as `creationdata`, `world_id` FROM `guilds` WHERE `id` = ' . (int) $id)->fetch();
     }
 
 /**
@@ -174,33 +174,30 @@ class OTS_Guild extends OTS_Row_DAO implements IteratorAggregate, Countable
  * @version 0.0.5
  * @throws PDOException On PDO operation error.
  */
-    public function save()
-    {
-		$ownerid = 'ownerid';
-		if($this->db->hasColumn('guilds', 'owner_id'))
-			$ownerid = 'owner_id';
+  public function save()
+  {
+    $ownerid = 'ownerid';
+    if ($this->db->hasColumn('guilds', 'owner_id'))
+      $ownerid = 'owner_id';
 
-		$creationdata = 'creationdata';
-		if($this->db->hasColumn('guilds', 'creationdate'))
-			$creationdata = 'creationdate';
-		else if($this->db->hasColumn('guilds', 'creation_time'))
-			$creationdata = 'creation_time';
+    $creationdata = 'creationdata';
+    if ($this->db->hasColumn('guilds', 'creationdate'))
+      $creationdata = 'creationdate';
+    else if ($this->db->hasColumn('guilds', 'creation_time'))
+      $creationdata = 'creation_time';
 
-        // updates existing guild
-        if( isset($this->data['id']) )
-        {
-            // UPDATE query on database
-            $this->db->exec('UPDATE `guilds` SET `name` = ' . $this->db->quote($this->data['name']) . ', `' . $ownerid . '` = ' . $this->data['ownerid'] . ', `' . $creationdata . '` = ' . $this->data['creationdata'] . ' WHERE `id` = ' . $this->data['id']);
-        }
-        // creates new guild
-        else
-        {
-            // INSERT query on database
-            $this->db->exec("INSERT INTO `guilds` (`name`, `" . $ownerid . "`, `" . $creationdata . "`, `description`) VALUES (" . $this->db->quote($this->data['name']) . ", " . $this->data['ownerid'] . ", " . $this->data['creationdata'] . ", '')");
-            // ID of new group
-            $this->data['id'] = $this->db->lastInsertId();
-        }
+    // updates existing guild
+    if (isset($this->data['id'])) {
+      // UPDATE query on database
+      $this->db->exec('UPDATE `guilds` SET `name` = ' . $this->db->quote($this->data['name']) . ', `' . $ownerid . '` = ' . $this->data['ownerid'] . ', `' . $creationdata . '` = ' . $this->data['creationdata'] . ' WHERE `id` = ' . $this->data['id']);
+    } // creates new guild
+    else {
+      // INSERT query on database
+      $this->db->exec("INSERT INTO `guilds` (`name`, `$ownerid`, `$creationdata`, `description`, `world_id`) VALUES ({$this->db->quote($this->data['name'])}, {$this->data['ownerid']}, {$this->data['creationdata']}, '', {$this->data['world_id']})");
+      // ID of new guild
+      $this->data['id'] = $this->db->lastInsertId();
     }
+  }
 
 /**
  * Guild ID.
@@ -282,6 +279,21 @@ class OTS_Guild extends OTS_Row_DAO implements IteratorAggregate, Countable
     {
         $this->data['ownerid'] = $owner->getId();
     }
+
+  public function getWorldId()
+  {
+      if( !isset($this->data['world_id']) )
+      {
+        throw new E_OTS_NotLoaded();
+      }
+
+    return $this->data['world_id'];
+  }
+
+  public function setWorldId(int $worldId)
+  {
+    $this->data['world_id'] = $worldId;
+  }
 
     public function hasMember(OTS_Player $player) {
         global $db;
@@ -767,6 +779,9 @@ class OTS_Guild extends OTS_Row_DAO implements IteratorAggregate, Countable
             case 'requests':
                 return $this->listRequests();
 
+            case 'worldId':
+                return  $this->getWorldId();
+
             default:
                 throw new OutOfBoundsException();
         }
@@ -805,6 +820,10 @@ class OTS_Guild extends OTS_Row_DAO implements IteratorAggregate, Countable
             case 'requestsDriver':
                 $this->setRequestsDriver($value);
                 break;
+
+            case 'worldId':
+              $this->setWorldId($value);
+              break;
 
             default:
                 throw new OutOfBoundsException();

@@ -50,7 +50,7 @@ if ($action == 'step1' && $action_type == 'no_char') {
         if ($account->getEMail() == $email_rcv) {
             $newcode = generateRandomString(30, true, false, true);
             $mailBody = "
-					You asked to reset your {$config['lua']['serverName']} password.<br/>
+					You asked to reset your {configLua('serverName')} password.<br/>
 					<p>Account name: {$account->getCustomField('name')}</p>
 					<br />
 					To do so, please click this link:
@@ -59,7 +59,7 @@ if ($action == 'step1' && $action_type == 'no_char') {
 					<br/><p>If you did not request a password change, you may ignore this message and your password will remain unchanged.";
 
             $account_mail = $account->getCustomField('email');
-            if (_mail($account_mail, $config['lua']['serverName'] . ' - Recover your account', $mailBody)) {
+            if (_mail($account_mail, configLua('serverName') . ' - Recover your account', $mailBody)) {
                 $account->setCustomField('email_code', $newcode);
                 $account->setCustomField('email_next', (time() + $config['email_lai_sec_interval']));
                 echo '<br />Details about steps required to recover your account has been sent to <b>' . $account_mail . '</b>. You should receive this email within 15 minutes. Please check your inbox/spam directory.';
@@ -98,7 +98,7 @@ if ($action == 'step1' && $action_type == 'no_char') {
                     if ($account->getEMail() == $email) {
                         $newcode = generateRandomString(30, true, false, true);
                         $mailBody = '
-					You asked to reset your ' . $config['lua']['serverName'] . ' password.<br/>
+					You asked to reset your ' . configLua('serverName') . ' password.<br/>
 					<p>Account name: ' . $account->getCustomField('name') . '</p>
 					<br />
 					To do so, please click this link:
@@ -108,7 +108,7 @@ if ($action == 'step1' && $action_type == 'no_char') {
 						<p>If you did not request a password change, you may ignore this message and your password will remain unchanged.';
 
                         $account_mail = $account->getCustomField('email');
-                        if (_mail($account_mail, $config['lua']['serverName'] . ' - Recover your account', $mailBody)) {
+                        if (_mail($account_mail, configLua('serverName') . ' - Recover your account', $mailBody)) {
                             $account->setCustomField('email_code', $newcode);
                             $account->setCustomField('email_next', (time() + $config['email_lai_sec_interval']));
                             echo '<br />Details about steps required to recover your account has been sent to <b>' . $account_mail . '</b>. You should receive this email within 15 minutes. Please check your inbox/spam directory.';
@@ -258,13 +258,13 @@ if ($action == 'step1' && $action_type == 'no_char') {
 
                         $mailBody = '
 					<h3>Your account name and password!</h3>
-					<p>Changed password to your account in Lost Account Interface on server <a href="' . BASE_URL . '"><b>' . $config['lua']['serverName'] . '</b></a></p>
+					<p>Changed password to your account in Lost Account Interface on server <a href="' . BASE_URL . '"><b>' . configLua('serverName') . '</b></a></p>
 					<p>Account name: <b>' . $account->getName() . '</b></p>
 					<p>New password: <b>' . $newpassword . '</b></p>
 					<br />
 					<p><u>It\'s automatic e-mail from OTS Lost Account System. Do not reply!</u></p>';
 
-                        if (_mail($account->getCustomField('email'), $config['lua']['serverName'] . " - Your new password", $mailBody)) {
+                        if (_mail($account->getCustomField('email'), configLua('serverName') . " - Your new password", $mailBody)) {
                             echo '<br /><small>New password work! Sent e-mail with your password and account name. You should receive this e-mail in 15 minutes. You can login now with new password!';
                         } else {
                             echo '<br /><p class="error">New password work! An error occurred while sending email! You will not receive e-mail with new password. For Admin: More info can be found in system/logs/mailer-error.log';

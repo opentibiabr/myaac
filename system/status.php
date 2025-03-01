@@ -24,33 +24,19 @@ if (config('status_enabled') === false) {
 }
 
 /** @var array $config */
-$status_ip = $config['lua']['ip'];
-if ($statusProtocolPort = $config['lua']['statusProtocolPort'] ?? null) {
+$statusIp = configLua('ip');
+if ($statusProtocolPort = configLua('statusProtocolPort')) {
   $config['lua']['loginPort'] = $statusProtocolPort;
   $config['lua']['statusPort'] = $statusProtocolPort;
-  $status_port = $statusProtocolPort;
-} elseif ($statusPort = $config['lua']['status_port'] ?? null) {
-  $config['lua']['loginPort'] = $statusPort;
-  $config['lua']['statusPort'] = $statusPort;
-  $status_port = $statusPort;
 }
 
 // ip check
-if (isset($config['status_ip'][0])) {
-  $status_ip = $config['status_ip'];
-} elseif (!isset($status_ip[0])) {
-  // try localhost if no ip specified
-  $status_ip = '127.0.0.1';
-}
+$statusIp = !empty($config['status_ip'] ?? '') ? $config['status_ip'] : $statusIp;
 
 // port check
-$status_port = $config['lua']['statusPort'];
-if (isset($config['status_port'][0])) {
-  $status_port = $config['status_port'];
-} elseif (!isset($status_port[0])) {
-  // try 7171 if no ip specified
-  $status_port = 7171;
-}
+$statusProtocolPort = !empty($config['status_port'] ?? '')
+  ? $config['status_port']
+  : $statusProtocolPort;
 
 $fetch_from_db = true;
 /** @var Cache $cache */
@@ -83,26 +69,26 @@ if ($fetch_from_db) {
 }
 
 if (isset($config['lua']['statustimeout'])) {
-  $config['lua']['statusTimeout'] = $config['lua']['statustimeout'];
+  $config['lua']['statusTimeout'] = configLua('statustimeout');
 }
 
 // get status timeout from server config
-$status_timeout = eval('return ' . $config['lua']['statusTimeout'] . ';') / 1000 + 1;
+$status_timeout = eval('return ' . configLua('statusTimeout') . ';') / 1000 + 1;
 $status_interval = @$config['status_interval'];
 if ($status_interval && $status_timeout < $config['status_interval']) {
   $status_timeout = $config['status_interval'];
 }
 
 if ($status['lastCheck'] + $status_timeout < time()) {
-  updateStatus();
+  updateStatus($statusIp, $statusProtocolPort);
 }
 
-function updateStatus()
+function updateStatus($statusIp, $statusPort): void
 {
-  global $db, $cache, $config, $status, $status_ip, $status_port;
+  global $db, $cache, $config, $status;
 
   // get server status and save it to database
-  $serverInfo = new OTS_ServerInfo($status_ip, $status_port);
+  $serverInfo = new OTS_ServerInfo($statusIp, $statusPort);
   $serverStatus = $serverInfo->status();
   if (!$serverStatus) {
     $status['online'] = false;

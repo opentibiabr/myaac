@@ -91,11 +91,11 @@ if ($config_lua_reload) {
 unset($tmp);
 
 if (isset($config['lua']['servername'])) {
-  $config['lua']['serverName'] = $config['lua']['servername'];
+  $config['lua']['serverName'] = configLua('servername');
 }
 
 if (isset($config['lua']['houserentperiod'])) {
-  $config['lua']['houseRentPeriod'] = $config['lua']['houserentperiod'];
+  $config['lua']['houseRentPeriod'] = configLua('houserentperiod');
 }
 
 if ($config['item_images_url'][strlen($config['item_images_url']) - 1] !== '/') {
@@ -108,7 +108,7 @@ foreach (['dataDirectory', 'data_directory', 'datadir'] as $key) {
     break;
   }
 
-  $foundValue = $config['lua'][$key];
+  $foundValue = configLua($key);
   if ($foundValue[0] !== '/') {
     $foundValue = $config['server_path'] . $foundValue;
   }

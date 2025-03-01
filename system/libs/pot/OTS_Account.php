@@ -740,7 +740,7 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
      * @version 0.1.4
      * @since 0.0.5
      */
-    public function getPlayersList($withDeleted = true)
+    public function getPlayersList($withDeleted = true, $worldId = null)
     {
         if (!isset($this->data['id'])) {
             throw new E_OTS_NotLoaded();
@@ -757,6 +757,10 @@ class OTS_Account extends OTS_Row_DAO implements IteratorAggregate, Countable
             } else {
                 $filter->compareField('deleted', 0);
             }
+        }
+
+        if ($worldId) {
+          $filter->compareField('world_id', $worldId);
         }
 
         // creates list object

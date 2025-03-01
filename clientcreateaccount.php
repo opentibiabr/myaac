@@ -30,9 +30,10 @@ $response = null;
 
 switch ($action) {
   case 'getaccountcreationstatus':
+    $data     = getWorldsData();
     $response = json_encode([
-      "Worlds"               => [getServerStatus()],
-      "RecommendedWorld"     => configLua('serverName'),
+      "Worlds"               => $data['data'],
+      "RecommendedWorld"     => $data['recommended'],
       "IsCaptchaDeactivated" => true
     ]);
     break;
@@ -95,10 +96,10 @@ switch ($action) {
             "password"      => $result->Password,
             "characterName" => stripslashes(ucwords(strtolower($result->CharacterName))),
             "characterSex"  => $result->CharacterSex == 'male' ? 1 : 0,
-            //"clientType"      => "Client",
-            //"recaptcha2token" => "",
+            "selectedWorld" => stripslashes(ucwords(strtolower($result->SelectedWorld))),
             //"recaptcha3token" => "",
-            //"selectedWorld"   => configLua('serverName'),
+            //"recaptcha2token" => "",
+            //"clientType"      => "Client",
           ]),
           // "Password" => $result->Password
         ]);
@@ -124,38 +125,25 @@ die($response);
  *
  * @return array
  */
-function getServerStatus(): array
+function getWorldsData(): array
 {
   global $db;
-  $playersOnline = $db->query("SELECT COUNT(*) FROM `players_online`")->fetchAll()[0][0] ?? 0;
-  $date          = $db->query("SELECT `date` FROM `myaac_changelog`")->fetch()['date'] ?? 0;
-  switch (configLua('worldType')) {
-    default:
-    case 'pvp':
-      $pvpType = "Open PVP";
-      break;
-    case 'no-pvp':
-      $pvpType = 'Optional PVP';
-      break;
-    case 'pvp-enforced':
-      $pvpType = 'PVP';
-      break;
-    case 'retro-pvp':
-      $pvpType = 'Retro PvP';
-      break;
+  $response = [];
+  foreach ($db->query("SELECT * from `worlds`")->fetchAll(PDO::FETCH_ASSOC) as $world) {
+    $playersOnline = $db->query("SELECT COUNT(*) FROM `players_online` WHERE `world_id` = {$world['id']}")->fetchAll()[0][0] ?? 0;
+    $response[] = [
+      "Name"                        => $world['name'],
+      "PlayersOnline"               => intval($playersOnline),
+      "CreationDate"                => intval($world['creation'] ?? 0),
+      "Region"                      => $world['location'],
+      "PvPType"                     => getWorldType($world['type']),
+      "PremiumOnly"                 => configLua('onlyPremiumAccount'),
+      "TransferType"                => "Blocked", //or "Available"
+      "BattlEyeActivationTimestamp" => intval($world['creation'] ?? 0),
+      "BattlEyeInitiallyActive"     => 1
+    ];
   }
-  return [
-    "Name"                        => configLua('serverName'),
-    "PlayersOnline"               => intval($playersOnline),
-    "CreationDate"                => intval($date),
-    "Region"                      => "America",
-    "PvPType"                     => $pvpType,
-    "PremiumOnly"                 => configLua('onlyPremiumAccount'),
-    "TransferType"                => "Blocked",
-    "BattlEyeActivationTimestamp" => intval($date),
-    "BattlEyeInitiallyActive"     => 0
-  ];
-
+  return ['data' => $response, 'recommended' => $response[array_rand($response)]['Name']];
 }
 
 /**
@@ -172,7 +160,7 @@ function validatePassword($password): array
 
   if (strlen($password) < $minLength) $checks = [0];
   foreach ($invalids as $char) {
-    if (strpos($password, $char) !== false) $checks = array_merge($checks, [1]);
+    if (str_contains($password, $char)) $checks = array_merge($checks, [1]);
   }
   if (!preg_match('/[a-z]/', $password)) $checks = array_merge($checks, [2]);
   if (!preg_match('/[A-Z]/', $password)) $checks = array_merge($checks, [3]);
@@ -184,7 +172,7 @@ function validatePassword($password): array
  * Function to create account
  *
  * @param array $data
- * @return false|string
+ * @return string
  * @throws Exception
  */
 function createAccount(array $data)
@@ -251,13 +239,13 @@ function createAccount(array $data)
         'verify_url' => generateLink($verify_url, $verify_url, true)
       ));
 
-      if (!_mail($data['email'], 'New account on ' . configLua('serverName'), $body_html)) {
+      if (!_mail($data['email'], 'New account on ' . $data['selectedWorld'], $body_html)) {
         $new_account->delete();
         throw new Exception('An error occurred while sending email! Account not created. Try again. For Admin: More info can be found in system/logs/mailer-error.log');
       }
     } else if ($config['mail_enabled'] && $config['account_welcome_mail']) {
       $mailBody = $twig->render('account.welcome_mail.html.twig', ['account' => $account_name]);
-      if (!_mail($data['email'], 'Your account on ' . configLua('serverName'), $mailBody)) {
+      if (!_mail($data['email'], 'Your account on ' . $data['selectedWorld'], $mailBody)) {
         throw new Exception('An error occurred while sending email. For Admin: More info can be found in system/logs/mailer-error.log');
       }
     }
@@ -270,7 +258,7 @@ function createAccount(array $data)
       require_once LIBS . 'CreateCharacter.php';
       $createCharacter = new CreateCharacter();
       $errors = [];
-      if (!$createCharacter->doCreate($data['characterName'], $data['characterSex'], 0, 0, $new_account, $errors)) {
+      if (!$createCharacter->doCreate($data['selectedWorld'], $data['characterName'], $data['characterSex'], 0, 0, $new_account, $errors)) {
         throw new Exception('There was an error creating your character. Please create your character later in account management page.');
       }
     }

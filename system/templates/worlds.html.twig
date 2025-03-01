@@ -1,4 +1,4 @@
-{% if worlds|length  > 1 %}
+{% if world is empty %}
   <table border="0" cellpadding="0" cellspacing="0" width="100%">
     <tbody>
     <tr>
@@ -14,7 +14,7 @@
                     style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
               <span class="CaptionVerticalLeft"
                     style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
-              <div class="Text">World Selection</div>
+              <div class="Text">Game World Overview</div>
               <span class="CaptionVerticalRight"
                     style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
               <span class="CaptionBorderBottom"
@@ -25,28 +25,73 @@
                     style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
             </div>
           </div>
-          <table class="Table1" cellpadding="0" cellspacing="0">
+          <table class="Table3" cellpadding="0" cellspacing="0">
             <tbody>
             <tr>
               <td>
-                <div class="InnerTableContainer">
-                  <table style="width: 100%">
+                <div class="TableScrollbarWrapper" style="width: unset;">
+                  <div class="TableScrollbarContainer"></div>
+                </div>
+                <div class="InnerTableContainer" style="max-width: unset;">
+                  <table style="width:100%;">
                     <tbody>
                     <tr>
-                      <form action="{{ getLink('online') }}" method="post">
-                        <td style="vertical-align:middle;" class="LabelV150">World Name:</td>
-                        <td style="width: 100%">
-                          <select name="world" style="width: 100%">
-                            <option value="">(choose world)</option>
-                            {% for item in worlds %}
-                              <option
-                                value="{{ item.name }}" {% if item.id == world.id %} selected="selected"{% endif %}>{{ item.name }}</option>
+                      <td>
+                        <div class="TableContentContainer ">
+                          <table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
+                            <tbody>
+                            <tr>
+                              <td><b>Overall Maximum:</b>&nbsp;&nbsp;&nbsp;{{ overall_maximum }}
+                              </td>
+                            </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="TableContentContainer ">
+                          <table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
+                            <tbody>
+                            <tr class="LabelH">
+                              <td style="text-align: center;">Regular Worlds</td>
+                            </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="TableContentContainer ">
+                          <table class="TableContent" width="100%" style="border:1px solid #faf0d7;">
+                            <tbody>
+                            <tr class="LabelH">
+                              <td>World</td>
+                              <td>Online</td>
+                              <td>Location</td>
+                              <td>PvP Type</td>
+                              <td>Additional Information</td>
+                            </tr>
+                            {% set i = 0 %}
+                            {% for w in _worlds %}
+                              {% set i = i + 1 %}
+                              <tr bgcolor="{{ getStyle(i) }}">
+                                <td style="width: 170px;">
+                                  <a href="?worlds/{{ w.name }}">{{ w.name }}</a>
+                                </td>
+                                <td style="text-align: right;">{{ status.players }}</td>
+                                {# <td style="text-align: right;">{{ status[w.id].players }}</td> #}
+                                <td>{{ w.location }}</td>
+                                <td>{{ getWorldType(w.type) }}</td>
+                                <td></td>
+                              </tr>
                             {% endfor %}
-                          </select>
-                        </td>
-                        <td>{% set button_name = 'Submit' %}
-                          {% include('buttons.base.html.twig') %}</td>
-                      </form>
+                            </tbody>
+                          </table>
+                        </div>
+                      </td>
                     </tr>
                     </tbody>
                   </table>
@@ -60,10 +105,74 @@
     </tr>
     </tbody>
   </table>
-  <br>
 {% endif %}
 
 {% if world %}
+  {% if worlds|length  > 1 %}
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tbody>
+      <tr>
+        <td>
+          <div class="TableContainer">
+            <div class="CaptionContainer">
+              <div class="CaptionInnerContainer">
+                <span class="CaptionEdgeLeftTop"
+                      style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+                <span class="CaptionEdgeRightTop"
+                      style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+                <span class="CaptionBorderTop"
+                      style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+                <span class="CaptionVerticalLeft"
+                      style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+                <div class="Text">World Selection</div>
+                <span class="CaptionVerticalRight"
+                      style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
+                <span class="CaptionBorderBottom"
+                      style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
+                <span class="CaptionEdgeLeftBottom"
+                      style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+                <span class="CaptionEdgeRightBottom"
+                      style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
+              </div>
+            </div>
+            <table class="Table1" cellpadding="0" cellspacing="0">
+              <tbody>
+              <tr>
+                <td>
+                  <div class="InnerTableContainer">
+                    <table style="width: 100%">
+                      <tbody>
+                      <tr>
+                        <form action="{{ getLink('worlds') }}" method="post">
+                          <td style="vertical-align:middle;" class="LabelV150">World Name:</td>
+                          <td style="width: 100%">
+                            <select name="world" style="width: 100%">
+                              <option value="">(choose world)</option>
+                              {% for item in worlds %}
+                                <option
+                                  value="{{ item.name }}" {% if item.id == world.id %} selected="selected"{% endif %}>{{ item.name }}</option>
+                              {% endfor %}
+                            </select>
+                          </td>
+                          <td>{% set button_name = 'Submit' %}
+                            {% include('buttons.base.html.twig') %}</td>
+                        </form>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <br>
+  {% endif %}
+
   <table border="0" cellpadding="0" cellspacing="0" width="100%">
     <tbody>
     <tr>
@@ -114,6 +223,10 @@
                     <tr>
                       <td class="LabelV150">Online Record:</td>
                       <td>{{ record|raw }}</td>
+                    </tr>
+                    <tr>
+                      <td class="LabelV150">Creation Date:</td>
+                      <td>{{ world.creation|date('F Y') }}</td>
                     </tr>
                     <tr>
                       <td class="LabelV150">Location:</td>
@@ -170,111 +283,6 @@
                     style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
               <span class="CaptionVerticalLeft"
                     style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
-              <div class="Text">Vocations Status</div>
-              <span class="CaptionVerticalRight"
-                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
-              <span class="CaptionBorderBottom"
-                    style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
-              <span class="CaptionEdgeLeftBottom"
-                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
-              <span class="CaptionEdgeRightBottom"
-                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
-            </div>
-          </div>
-          <table class="Table5" cellpadding="0" cellspacing="0">
-            <tbody>
-            <tr>
-              <td>
-                <div class="InnerTableContainer">
-                  <table style="width:100%;">
-                    <tbody>
-                    <tr>
-                      <td>
-                        <div class="TableContentContainer">
-                          <table class="TableContent" width="100%">
-                            <tbody>
-                            <tr style="text-align: center">
-                              <td class="LabelV150">Sorcerers</td>
-                            </tr>
-                            <tr style="text-align: center">
-                              <td>{{ vocations[1] }}</td>
-                            </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="TableContentContainer">
-                          <table class="TableContent" width="100%">
-                            <tbody>
-                            <tr style="text-align: center">
-                              <td class="LabelV150">Druids</td>
-                            </tr>
-                            <tr style="text-align: center">
-                              <td>{{ vocations[2] }}</td>
-                            </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="TableContentContainer">
-                          <table class="TableContent" width="100%">
-                            <tbody>
-                            <tr style="text-align: center">
-                              <td class="LabelV150">Paladins</td>
-                            </tr>
-                            <tr style="text-align: center">
-                              <td>{{ vocations[3] }}</td>
-                            </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="TableContentContainer">
-                          <table class="TableContent" width="100%">
-                            <tbody>
-                            <tr style="text-align: center">
-                              <td class="LabelV150">Knights</td>
-                            </tr>
-                            <tr style="text-align: center">
-                              <td>{{ vocations[4] }}</td>
-                            </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  <br>
-
-  <table border="0" cellpadding="0" cellspacing="0" width="100%">
-    <tbody>
-    <tr>
-      <td>
-        <div class="TableContainer">
-          <div class="CaptionContainer">
-            <div class="CaptionInnerContainer">
-            <span class="CaptionEdgeLeftTop"
-                  style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
-              <span class="CaptionEdgeRightTop"
-                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-edge.gif);"></span>
-              <span class="CaptionBorderTop"
-                    style="background-image:url(templates/tibiacom/images/global/content/table-headline-border.gif);"></span>
-              <span class="CaptionVerticalLeft"
-                    style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
               <div class="Text">Players Online</div>
               <span class="CaptionVerticalRight"
                     style="background-image:url(templates/tibiacom/images/global/content/box-frame-vertical.gif);"></span>
@@ -300,7 +308,7 @@
                             <tbody>
                             {% if players|length == 0 %}
                               <tr style="text-align: center">
-                                <td>Currently, no one is playing on {{ world.name }} World.</td>
+                                <td>Currently, no one is playing on {{ world.name }}.</td>
                               </tr>
                             {% else %}
                               <tr bgcolor="#D4C0A1">

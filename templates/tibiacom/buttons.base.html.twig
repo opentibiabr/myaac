@@ -3,6 +3,9 @@
     <div onmouseover="MouseOverBigButton(this);" onmouseout="MouseOutBigButton(this);">
       <div class="BigButtonOver"
            style="background-image: url({{ template_path }}/images/global/buttons/sbutton_over.gif); visibility: hidden;"></div>
+      {% if world_id is not empty %}
+        <input type="hidden" name="world_id" value="{{ world_id }}">
+      {% endif %}
       <input class="BigButtonText" type="submit" value="{{ button_name }}" title="{{ button_name }} {{ button_title }}">
     </div>
   </div>

@@ -5,7 +5,6 @@ require_once 'config.php';
 require_once 'config.local.php';
 require_once SYSTEM . 'functions.php';
 require_once SYSTEM . 'init.php';
-require_once SYSTEM . 'status.php';
 
 // error function
 function sendError($msg)
@@ -84,7 +83,6 @@ switch ($action) {
     ]));
 
   case 'eventschedule':
-    $eventlist = [];
     $file_path = config('server_path') . 'data/XML/events.xml';
     if (!file_exists($file_path)) {
       die(json_encode([]));
@@ -93,6 +91,7 @@ switch ($action) {
     $xml->load($file_path);
     $tableevent = $xml->getElementsByTagName('event');
 
+    $eventlist = [];
     foreach ($tableevent as $event) {
       if ($event) {
         $eventlist[] = [
@@ -115,32 +114,34 @@ switch ($action) {
     $bossBoost     = $db->query("SELECT * FROM " . $db->tableName('boosted_boss'))->fetchAll();
     die(json_encode([
       'boostedcreature' => true,
-      'creatureraceid'  => intval($creatureBoost[0]['raceid']),
-      'bossraceid'      => intval($bossBoost[0]['raceid'])
+      'creatureraceid'  => intval($creatureBoost[0]['raceid'] ?? 0),
+      'bossraceid'      => intval($bossBoost[0]['raceid'] ?? 0)
     ]));
 
   case 'login':
-    $ip   = configLua('ip');
-    $port = configLua('gameProtocolPort');
-
-    // default world info
-    $world = [
-      'id'                         => 0,
-      'name'                       => configLua('serverName'),
-      'externaladdress'            => $ip,
-      'externaladdressprotected'   => $ip,
-      'externaladdressunprotected' => $ip,
-      'externalport'               => $port,
-      'externalportprotected'      => $port,
-      'externalportunprotected'    => $port,
-      'previewstate'               => 0,
-      'location'                   => 'BRA', // BRA, EUR, USA
-      'anticheatprotection'        => false,
-      'pvptype'                    => array_search(configLua('worldType'), ['pvp', 'no-pvp', 'pvp-enforced']),
-      'istournamentworld'          => false,
-      'restrictedstore'            => false,
-      'currenttournamentphase'     => 2
-    ];
+    $queryW = $db->query("SELECT * FROM worlds");
+    $worlds = [];
+    if ($queryW && $queryW->rowCount() > 0) {
+      foreach ($queryW->fetchAll() as $world) {
+        $worlds[] = [
+          'id'                         => $world['id'],
+          'name'                       => $world['name'],
+          'externaladdress'            => $world['ip'],
+          'externaladdressprotected'   => $world['ip'],
+          'externaladdressunprotected' => $world['ip'],
+          'externalport'               => $world['port'],
+          'externalportprotected'      => $world['port'],
+          'externalportunprotected'    => $world['port'],
+          'previewstate'               => 0, // 0 => regular or 1 => experimental
+          'location'                   => $world['location'],
+          'anticheatprotection'        => false,
+          'pvptype'                    => array_search($world['type'], ['pvp', 'no-pvp', 'pvp-enforced', 'retro-pvp', 'retro-pvp-enforced']),
+          'istournamentworld'          => false,
+          'restrictedstore'            => false,
+          'currenttournamentphase'     => 0
+        ];
+      }
+    }
 
     $account = new OTS_Account();
     $account->findByEmail($result->email);
@@ -156,25 +157,24 @@ switch ($action) {
     }
 
     // common columns
-    $columns    = 'name, level, sex, vocation, looktype, lookhead, lookbody, looklegs, lookfeet, lookaddons, lastlogin, isreward, istutorial, ismain, hidden';
-    $players    = $db->query("SELECT {$columns} FROM players WHERE account_id = {$account->getId()} AND deletion = 0");
+    $accId      = $account->getId();
+    $columns    = 'name, level, sex, vocation, looktype, lookhead, lookbody, looklegs, lookfeet, lookaddons, lastlogin, isreward, istutorial, ismain, hidden, world_id';
+    $queryP     = $db->query("SELECT {$columns} FROM players WHERE account_id = {$accId} AND deletion = 0");
     $characters = [];
-    if ($players && $players->rowCount() > 0) {
-      $players = $players->fetchAll();
-      foreach ($players as $player) {
+    if ($queryP && $queryP->rowCount() > 0) {
+      foreach ($queryP->fetchAll() as $player) {
         $characters[] = createChar($config, $player);
       }
     }
 
-    $query = $db->query("SELECT `premdays`, `lastday` FROM `accounts` WHERE `id` = {$account->getId()}");
+    $query = $db->query("SELECT `premdays`, `lastday` FROM `accounts` WHERE `id` = {$accId}")->fetch();
     $premU = 0;
-    if ($query->rowCount() > 0) {
-      $premU = checkPremium($db, $query->fetch(), $account);
+    if ($account) {
+      $premU = checkPremium($query, $accId);
     } else {
       sendError("Error while fetching your account data. Please contact admin.");
     }
 
-    $worlds   = [$world];
     $playdata = compact('worlds', 'characters');
     $session  = [
       'sessionkey'                    => "$result->email\n$result->password",
@@ -206,7 +206,7 @@ switch ($action) {
 function createChar($config, $player)
 {
   return [
-    'worldid'                          => 0,
+    'worldid'                          => $player['world_id'],
     'name'                             => $player['name'],
     'ismale'                           => intval($player['sex']) === 1,
     'tutorial'                         => (bool)$player['istutorial'],
@@ -228,13 +228,13 @@ function createChar($config, $player)
 
 /**
  * Function to check account has premium time and update days
- * @param $db
- * @param $query
- * @param $account
+ * @param array $query
+ * @param int $accId
  * @return float|int
  */
-function checkPremium($db, $query, $account)
+function checkPremium(array $query, int $accId)
 {
+  global $db;
   $lastDay = (int)$query['lastday'];
   $timeNow = time();
 
@@ -256,6 +256,6 @@ function checkPremium($db, $query, $account)
     }
   }
 
-  $db->query("UPDATE `accounts` SET `premdays` = {$premDays}, `lastday` = {$lastDay} WHERE `id` = {$account->getId()}");
+  $db->query("UPDATE `accounts` SET `premdays` = {$premDays}, `lastday` = {$lastDay} WHERE `id` = {$accId}");
   return $lastDay;
 }

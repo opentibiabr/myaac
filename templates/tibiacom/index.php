@@ -13,6 +13,7 @@ if (isset($config['boxes']))
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL; ?>images/favicon.ico"/>
     <link rel="shortcut icon" type="image/x-icon" href="<?= BASE_URL; ?>images/favicon.ico"/>
     <link href="<?= $template_path; ?>/basic.css" rel="stylesheet" type="text/css"/>
+    <link href="<?= BASE_URL ?>tools/css/custom.css" rel="stylesheet" type="text/css"/>
 
     <script type="text/javascript" src="tools/basic.js"></script>
     <script type="text/javascript" src="<?= $template_path; ?>/ticker.js"></script>
@@ -526,13 +527,13 @@ if (isset($config['boxes']))
                                                target="new"><span class="InfoBarSmallElement">Facebook</span></a>
                                         </span>
                                     <?php } ?>
-                                    <span style="float: right; margin-top: 1px; margin-right: 4px">
+                                  <span
+                                    style="float: right; margin-top: <?= $config['collapse_status'] ? '-2' : '1' ?>px; margin-right: 4px">
                                         <img class="InfoBarBigLogo" src="<?= $template_path; ?>/images/global/header/icon-players-online.png">
                                         <span class="InfoBarNumbers">
                                             <span class="InfoBarSmallElement">
-                                                <a class="InfoBarLinks" href="?online">
-                                                    <?= $status['online'] ? $status['players'] . ' Players Online' : 'Server Offline' ?>
-                                                </a>
+                                                <a class="InfoBarLinks" href="?worlds">
+                                                    <?= $status['online'] ? $status['players'] . ' Players Online' : 'Server Offline' ?></a>
                                             </span>
                                         </span>
                                         <?php if ($config['collapse_status']) { ?>
@@ -552,7 +553,6 @@ if (isset($config['boxes']))
                                             <td>
                                                 <div class="InnerTableContainer"
                                                      style="display: flex; flex-wrap: wrap; font-family: Verdana;">
-                                                    <?php if ($config['carousel_status']) { ?>
                                                         <table style="width:100%;">
                                                             <tbody>
                                                             <tr>
@@ -569,31 +569,14 @@ if (isset($config['boxes']))
                                                                                             class="carousel slide"
                                                                                             data-bs-ride="carousel">
                                                                                             <div class="carousel-inner">
-                                                                                                <?php
-                                                                                                $count = 1;
-                                                                                                foreach ($config['carousel'] as $carousel) {
-                                                                                                    if ($count == 1) {
-                                                                                                        ?>
-                                                                                                        <div
-                                                                                                            class="carousel-item active">
-                                                                                                            <img
-                                                                                                                src="<?= $template_path ?>/images/carousel/<?= $carousel ?>"
-                                                                                                                style="width: 100%;">
-                                                                                                        </div>
-                                                                                                        <?php
-                                                                                                    } elseif ($count > 1) {
-                                                                                                        ?>
-                                                                                                        <div
-                                                                                                            class="carousel-item">
-                                                                                                            <img
-                                                                                                                src="<?= $template_path ?>/images/carousel/<?= $carousel ?>"
-                                                                                                                style="width: 100%;">
-                                                                                                        </div>
-                                                                                                        <?php
-                                                                                                    }
-                                                                                                    $count++;
-                                                                                                }
-                                                                                                ?>
+                                                                                                <?php foreach ($config['carousel'] as $k => $carousel) { ?>
+                                                                                                    <div
+                                                                                                      class="carousel-item <?= $k == 0 ? 'active' : '' ?>">
+                                                                                                      <img
+                                                                                                        src="<?= $template_path ?>/images/carousel/<?= $carousel ?>"
+                                                                                                        style="width: 100%;">
+                                                                                                    </div>
+                                                                                                <?php } ?>
                                                                                             </div>
                                                                                             <button
                                                                                                 class="carousel-control-prev"
@@ -624,7 +607,6 @@ if (isset($config['boxes']))
                                                             </tr>
                                                             </tbody>
                                                         </table>
-                                                    <?php } ?>
                                                 </div>
                                             </td>
                                         </tr>

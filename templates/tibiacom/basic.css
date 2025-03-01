@@ -2058,7 +2058,7 @@ img {
 .Content #NewsTicker .NewsTickerDate {
   font-size: 7pt;
   position: absolute;
-  top: 0px;
+  top: 2px;
   float: left;
 }
 

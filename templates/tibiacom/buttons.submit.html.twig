@@ -1,3 +1,6 @@
 {% set button_name = 'Submit' %}
 {% set button_image = '_sbutton_submit' %}
+{% if world_id is not empty %}
+  {% set world_id = world_id %}
+{% endif %}
 {% include('buttons.base.html.twig') %}

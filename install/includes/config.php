@@ -19,13 +19,13 @@ if((!isset($error) || !$error) && !file_exists($config['server_path'] . 'config.
 if(!isset($error) || !$error) {
 	$config['lua'] = load_config_lua($config['server_path'] . 'config.lua');
 	if(isset($config['lua']['sqlType'])) // tfs 0.3
-		$config['database_type'] = $config['lua']['sqlType'];
+		$config['database_type'] = configLua('sqlType');
 	else if(isset($config['lua']['mysqlHost'])) // tfs 0.2/1.0
 		$config['database_type'] = 'mysql';
 	else if(isset($config['lua']['database_type'])) // otserv
-		$config['database_type'] = $config['lua']['database_type'];
+		$config['database_type'] = configLua('database_type');
 	else if(isset($config['lua']['sql_type'])) // otserv
-		$config['database_type'] = $config['lua']['sql_type'];
+		$config['database_type'] = configLua('sql_type');
 
 	$config['database_type'] = strtolower($config['database_type']);
 	if(empty($config['database_type'])) {
