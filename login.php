@@ -142,6 +142,21 @@ switch ($action) {
       'currenttournamentphase'     => 2
     ];
 
+    if ($result->email == "@cast") {
+      $columns          = "name, level, sex, vocation, looktype, lookhead, lookbody, looklegs, lookfeet, lookaddons, lastlogin";
+      $liveCastersQuery = $db->query("SELECT {$columns} FROM players p JOIN active_casters lc ON p.id = lc.caster_id WHERE lc.cast_status >= 1");
+      if (!$liveCastersQuery || $liveCastersQuery->rowCount() == 0) {
+        sendError("There are no players with the cast on.");
+      }
+
+      $characters = [];
+      foreach ($liveCastersQuery->fetchAll() as $caster) {
+        $characters[] = createChar($config, $caster);
+      }
+
+      die(json_encode(getSessionData($world, $result, $characters, false)));
+    }
+
     $account = new OTS_Account();
     $account->findByEmail($result->email);
     $config_salt_enabled = fieldExist('salt', 'accounts');
@@ -174,23 +189,7 @@ switch ($action) {
       sendError("Error while fetching your account data. Please contact admin.");
     }
 
-    $worlds   = [$world];
-    $playdata = compact('worlds', 'characters');
-    $session  = [
-      'sessionkey'                    => "$result->email\n$result->password",
-      'lastlogintime'                 => $account ? $account->getLastLogin() : 0,
-      'ispremium'                     => $account->isPremium(),
-      'premiumuntil'                  => $premU,
-      'status'                        => 'active', // active, frozen or suspended
-      'returnernotification'          => false,
-      'showrewardnews'                => true,
-      'isreturner'                    => true,
-      'fpstracking'                   => false,
-      'optiontracking'                => false,
-      'tournamentticketpurchasestate' => 0,
-      'emailcoderequest'              => false
-    ];
-    die(json_encode(compact('session', 'playdata')));
+    die(json_encode(getSessionData($world, $result, $characters, true, $account, $premU)));
 
   default:
     sendError("Unrecognized event {$action}.");
@@ -209,7 +208,7 @@ function createChar($config, $player)
     'worldid'                          => 0,
     'name'                             => $player['name'],
     'ismale'                           => intval($player['sex']) === 1,
-    'tutorial'                         => (bool)$player['istutorial'],
+    'tutorial'                         => (bool)($player['istutorial'] ?? false),
     'level'                            => intval($player['level']),
     'vocation'                         => $config['vocations'][$player['vocation']],
     'outfitid'                         => intval($player['looktype']),
@@ -218,12 +217,43 @@ function createChar($config, $player)
     'legscolor'                        => intval($player['looklegs']),
     'detailcolor'                      => intval($player['lookfeet']),
     'addonsflags'                      => intval($player['lookaddons']),
-    'ishidden'                         => (bool)$player['hidden'],
+    'ishidden'                         => (bool)($player['hidden'] ?? false),
     'istournamentparticipant'          => false,
-    'ismaincharacter'                  => (bool)($player['ismain']),
-    'dailyrewardstate'                 => intval($player['isreward']),
+    'ismaincharacter'                  => (bool)($player['ismain'] ?? false),
+    'dailyrewardstate'                 => intval($player['isreward'] ?? 0),
     'remainingdailytournamentplaytime' => 0
   ];
+}
+
+/**
+ * Check and return session and playdata compacted after checking normal login
+ * @param $world
+ * @param $result
+ * @param $characters
+ * @param bool $login
+ * @param $account
+ * @param int $premU
+ * @return array
+ */
+function getSessionData($world, $result, $characters, bool $login = true, $account = null, int $premU = 0): array
+{
+  $worlds   = [$world];
+  $playdata = compact('worlds', 'characters');
+  $session  = [
+    'sessionkey'                    => "$result->email\n$result->password",
+    'lastlogintime'                 => $login && $account ? $account->getLastLogin() : 0,
+    'ispremium'                     => $login ? $account->isPremium() : false,
+    'premiumuntil'                  => $premU,
+    'status'                        => 'active', // active, frozen or suspended
+    'returnernotification'          => false,
+    'showrewardnews'                => $login,
+    'isreturner'                    => $login,
+    'fpstracking'                   => false,
+    'optiontracking'                => false,
+    'tournamentticketpurchasestate' => 0,
+    'emailcoderequest'              => false
+  ];
+  return compact('session', 'playdata');
 }
 
 /**
