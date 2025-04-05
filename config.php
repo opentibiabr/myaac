@@ -259,6 +259,9 @@ $config = array(
 	'highscores_ids_hidden' => array(0), // this ids of players will be hidden on the highscores (should be ids of samples)
 	'highscores_length' => 100, // how many records per page on highscores
 
+	// Online list configuration
+	'hide_staff_on_online_list' => true, // true to hide GOD/GMs/CMs (account type > 3) from online list, false to show all
+
 	// characters page
 	'characters' => array( // what things to display on character view page (true/false in each option)
 		'level' => true,
