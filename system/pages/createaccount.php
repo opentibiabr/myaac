@@ -230,8 +230,9 @@ if ($save) {
             }
         }
 
-        if ($config['account_premium_coins']) {
-            $new_account->setCustomField('coins', $config['account_premium_coins']);
+        if (($welcomeCoins = ($config['account_welcome_coins'] ?? 0)) > 0) {
+          $coinType = $config['account_coin_type_usage'] ?? 'coins_transferable';
+          $new_account->setCustomField($coinType, $welcomeCoins);
         }
 
         $tmp_account = (USE_ACCOUNT_NAME ? $account_name : $account_id);

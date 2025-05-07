@@ -187,7 +187,8 @@ INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VA
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'My Auctions', 'owncharactertrades', 7, 3);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Create Auction', 'createcharacterauction', 7, 4);
 /* MENU_CATEGORY_SHOP tibiacom */
-INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Buy Points', 'points', 6, 0);
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Donate', 'donate', 6, 0);
+INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Boxes', 'boxes', 6, 0);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Shop Offer', 'gifts', 6, 1);
 INSERT INTO `myaac_menu` (`template`, `name`, `link`, `category`, `ordering`) VALUES ('tibiacom', 'Shop History', 'gifts/history', 6, 2);
 
@@ -283,7 +284,7 @@ CREATE TABLE `myaac_pages`
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(30) NOT NULL,
 	`title` VARCHAR(30) NOT NULL,
-	`body` TEXT NOT NULL,
+	`body` LONGTEXT NOT NULL,
 	`date` INT(11) NOT NULL DEFAULT 0,
 	`player_id` INT(11) NOT NULL DEFAULT 0,
 	`php` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0 - plain html, 1 - php',

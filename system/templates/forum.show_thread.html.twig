@@ -79,7 +79,7 @@
                             <div class="PostBody">
                               <div class="PostSeparatorV"></div>
                               <div class="PostUpper">
-                                <div class="PostCharacterText"><b>{{ author_link|raw }}</b><br>
+                                <div class="PostCharacterText"><b>{{ post.player_link|raw }}</b><br>
                                   {% if post.outfit is defined %}
                                     <img
                                       style="margin-left:{% if post.player.getLookType() in [75, 266, 302] %}-0px;margin-top:-0px;width:64px;height:64px;{% else %}-60px;margin-top:-60px;width:128px;height:128px;{% endif %}"

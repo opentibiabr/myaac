@@ -9,7 +9,7 @@
   - any: ['install/**/*']
 
 "Area: Plugins":
-  - any: ['plugins/**/*']
+  - any: ['plugins/**/*', 'payments/**/*']
 
 "Area: System":
   - any: ['system/**/*']
@@ -20,3 +20,5 @@
 "Area: Tools":
   - any: ['tools/**/*']
 
+"Area: Workflow":
+    - any: ['./github/**/*']
