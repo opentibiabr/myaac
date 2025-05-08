@@ -322,8 +322,8 @@ if ($player->isLoaded() && !$player->isDeleted()) {
             $number_of_rows = 0;
             foreach ($player_deaths as $death) {
                 $killers = $db->query("SELECT environment_killers.name AS monster_name, players.name AS player_name, players.deleted AS player_exists FROM killers LEFT JOIN environment_killers ON killers.id = environment_killers.kill_id
-LEFT JOIN player_killers ON killers.id = player_killers.kill_id LEFT JOIN players ON players.id = player_killers.player_id
-WHERE killers.death_id = '" . $death['id'] . "' ORDER BY killers.final_hit DESC, killers.id ASC")->fetchAll();
+                LEFT JOIN player_killers ON killers.id = player_killers.kill_id LEFT JOIN players ON players.id = player_killers.player_id
+                WHERE killers.death_id = '" . $death['id'] . "' ORDER BY killers.final_hit DESC, killers.id ASC")->fetchAll();
 
                 $description = '';
                 $i = 0;
@@ -364,33 +364,65 @@ WHERE killers.death_id = '" . $death['id'] . "' ORDER BY killers.final_hit DESC,
     } else if ($db->hasTableAndColumns('player_deaths', ['time', 'level', 'killed_by', 'is_player'])) {
         $mostdamage = '';
         if ($db->hasColumn('player_deaths', 'mostdamage_by'))
-            $mostdamage = ', `mostdamage_by`, `mostdamage_is_player`, `unjustified`, `mostdamage_unjustified`';
+            $mostdamage = ', `mostdamage_by`, `mostdamage_is_player`, `unjustified`, `mostdamage_unjustified`, `participants`';
         $deaths_db = $db->query('SELECT
-				`player_id`, `time`, `level`, `killed_by`, `is_player`' . $mostdamage . '
-				FROM `player_deaths`
-				WHERE `player_id` = ' . $player->getId() . ' ORDER BY `time` DESC LIMIT 10;')->fetchAll();
+            `player_id`, `time`, `level`, `killed_by`, `is_player`' . $mostdamage . '
+            FROM `player_deaths`
+            WHERE `player_id` = ' . $player->getId() . ' ORDER BY `time` DESC LIMIT 10;')->fetchAll();
 
         if (count($deaths_db)) {
             $number_of_rows = 0;
             foreach ($deaths_db as $death) {
                 $lasthit = ($death['is_player']) ? getPlayerLink($death['killed_by']) : $death['killed_by'];
                 $description = 'Killed at level ' . $death['level'] . ' by ' . $lasthit;
-                if ($death['unjustified']) {
-                    $description .= ' <span style="color: red; font-style: italic;">(unjustified)</span>';
+                $participants = [];
+                $skipped = [];
+                if ($db->hasColumn('player_deaths', 'participants') && isset($death['participants'])) {
+                    $lines = preg_split('/\n(?=Name: )/', trim($death['participants']));
+                    foreach ($lines as $line) {
+                        preg_match('/Name: (.+)\nType: (.+)/', $line, $matches);
+                        if (count($matches) === 3) {
+                            $name = $matches[1];
+                            $type = $matches[2];
+                            if (($name === $death['killed_by'] || $name === $death['mostdamage_by'])) {
+                                if (!isset($skipped[$name])) {
+                                    $skipped[$name] = true;
+                                    continue;
+                                }
+                            }
+                            if (!isset($participants[$name])) {
+                                $participants[$name] = ['type' => $type, 'count' => 1];
+                            } else {
+                                $participants[$name]['count'] += 1;
+                            }
+                        }
+                    }
                 }
-
-                $mostdmg = ($death['mostdamage_by'] !== $death['killed_by']) ? true : false;
+                $mostdmg = ($death['mostdamage_by'] !== $death['killed_by']);
                 if ($mostdmg) {
-                    $mostdmg = ($death['mostdamage_is_player']) ? getPlayerLink($death['mostdamage_by']) : $death['mostdamage_by'];
-                    $description .= ' and by ' . $mostdmg;
-
+                    $mostdmgText = ($death['mostdamage_is_player']) ? getPlayerLink($death['mostdamage_by']) : $death['mostdamage_by'];
+                    $description .= ' and by ' . $mostdmgText;
                     if ($death['mostdamage_unjustified']) {
                         $description .= ' <span style="color: red; font-style: italic;">(unjustified)</span>';
                     }
                 } else {
                     $description .= " <b>(soled)</b>";
                 }
+                if (!empty($participants)) {
+                    $players = [];
+                    $monsters = [];
+                    foreach ($participants as $name => $data) {
+                        $countPrefix = ($data['count'] > 1 ? $data['count'] . 'x ' : '');
+                        $entry = $countPrefix . htmlspecialchars($name);
 
+                        if ($data['type'] === 'player') {
+                            $players[] = getPlayerLink($entry);
+                        } else {
+                            $monsters[] = $entry;
+                        }
+                    }
+                    $description .= ', ' . implode(', ', array_merge($players, $monsters));
+                }
                 $deaths[] = array('time' => $death['time'], 'description' => $description);
             }
         }
